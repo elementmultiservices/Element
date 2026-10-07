@@ -1,0 +1,32 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# testing
+/coverage
+/playwright-report
+/test-results
+
+# env files (only the examples are committed)
+.env
+.env.*
+!.env.example
+supabase/functions/.env
+!supabase/functions/.env.example
+
+# supabase
+supabase/.branches
+supabase/.temp
+supabase/signing_keys.json
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+.vercel
+.sentryclirc

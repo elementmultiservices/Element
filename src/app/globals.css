@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * Element design tokens.
+ * The brand palette lives ONLY in this block: swap these values to rebrand.
+ */
+:root {
+  /* Brand */
+  --brand-primary: #0b2545;          /* navy */
+  --brand-primary-hover: #12345e;
+  --brand-accent: #1d5b8f;           /* muted blue, used sparingly (links, focus) */
+
+  /* Neutrals */
+  --neutral-0: #ffffff;
+  --neutral-50: #f6f7f9;
+  --neutral-100: #eef0f3;
+  --neutral-200: #dde1e7;
+  --neutral-300: #c5ccd6;
+  --neutral-500: #5b6573;
+  --neutral-700: #374151;
+  --neutral-900: #111827;
+
+  /* Status */
+  --status-success: #1e6b3a;
+  --status-success-bg: #eaf5ee;
+  --status-warning: #8a5a00;
+  --status-warning-bg: #fdf5e3;
+  --status-error: #b42318;
+  --status-error-bg: #fdecea;
+  --status-info: #1d5b8f;
+  --status-info-bg: #e8f0f7;
+
+  /* Semantic tokens consumed by components (shadcn/ui contract) */
+  --background: var(--neutral-0);
+  --foreground: var(--neutral-900);
+  --card: var(--neutral-0);
+  --card-foreground: var(--neutral-900);
+  --popover: var(--neutral-0);
+  --popover-foreground: var(--neutral-900);
+  --primary: var(--brand-primary);
+  --primary-hover: var(--brand-primary-hover);
+  --primary-foreground: var(--neutral-0);
+  --secondary: var(--neutral-100);
+  --secondary-foreground: var(--neutral-900);
+  --muted: var(--neutral-50);
+  --muted-foreground: var(--neutral-500);
+  --accent: var(--neutral-100);
+  --accent-foreground: var(--brand-primary);
+  --link: var(--brand-accent);
+  --destructive: var(--status-error);
+  --destructive-foreground: var(--neutral-0);
+  --success: var(--status-success);
+  --warning: var(--status-warning);
+  --info: var(--status-info);
+  --border: var(--neutral-200);
+  --input: var(--neutral-300);
+  --ring: var(--brand-accent);
+  --surface: var(--neutral-50);
+
+  --radius: 0.25rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-link: var(--link);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-bg: var(--status-success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--status-warning-bg);
+  --color-error-bg: var(--status-error-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--status-info-bg);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+
+  --radius-sm: calc(var(--radius) - 1px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+  h1, h2, h3, h4 {
+    @apply text-primary;
+    line-height: 1.25;
+    font-weight: 600;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

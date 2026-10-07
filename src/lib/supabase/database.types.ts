@@ -1,0 +1,382 @@
+
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+
+export type Database = {
+  
+  "graphql_public": {
+          Tables: {
+            [_ in never]: never
+          }
+          Views: {
+            [_ in never]: never
+          }
+          Functions: {
+            "graphql":
+{ Args: { "extensions"?: Json,"operationName"?: string,"query"?: string,"variables"?: Json }; Returns: Json
+                           }
+          }
+          Enums: {
+            [_ in never]: never
+          }
+          CompositeTypes: {
+            [_ in never]: never
+          }
+        },"public": {
+          Tables: {
+            "audit_logs": {
+                  Row: {
+                    "action": string,"actor_id": string | null,"created_at": string,"id": number,"ip": unknown,"metadata": NonNullable<Json>,"target_id": string | null,"target_type": string | null,"user_agent": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"actor_id"?: string | null,"created_at"?: string,"id"?: never,"ip"?: unknown,"metadata"?: NonNullable<Json>,"target_id"?: string | null,"target_type"?: string | null,"user_agent"?: string | null
+                  }
+                  Update: {
+                    "action"?: string,"actor_id"?: string | null,"created_at"?: string,"id"?: never,"ip"?: unknown,"metadata"?: NonNullable<Json>,"target_id"?: string | null,"target_type"?: string | null,"user_agent"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"contact_messages": {
+                  Row: {
+                    "created_at": string,"email": string,"handled_at": string | null,"handled_by": string | null,"id": string,"is_handled": boolean,"locale": Database["public"]['Enums']["app_locale"],"message": string,"name": string,"subject": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"email": string,"handled_at"?: string | null,"handled_by"?: string | null,"id"?: string,"is_handled"?: boolean,"locale"?: Database["public"]['Enums']["app_locale"],"message": string,"name": string,"subject": string
+                  }
+                  Update: {
+                    "created_at"?: string,"email"?: string,"handled_at"?: string | null,"handled_by"?: string | null,"id"?: string,"is_handled"?: boolean,"locale"?: Database["public"]['Enums']["app_locale"],"message"?: string,"name"?: string,"subject"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "contact_messages_handled_by_fkey"
+      columns: ["handled_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"file_categories": {
+                  Row: {
+                    "created_at": string,"id": string,"is_archived": boolean,"name_en": string,"name_es": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"is_archived"?: boolean,"name_en": string,"name_es": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"is_archived"?: boolean,"name_en"?: string,"name_es"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"files": {
+                  Row: {
+                    "category_id": string | null,"checksum_sha256": string,"created_at": string,"deleted_at": string | null,"deleted_by": string | null,"description": string | null,"id": string,"mime_type": string,"original_name": string,"owner_id": string,"size_bytes": number,"storage_path": string,"uploaded_by": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "category_id"?: string | null,"checksum_sha256": string,"created_at"?: string,"deleted_at"?: string | null,"deleted_by"?: string | null,"description"?: string | null,"id"?: string,"mime_type": string,"original_name": string,"owner_id": string,"size_bytes": number,"storage_path": string,"uploaded_by": string
+                  }
+                  Update: {
+                    "category_id"?: string | null,"checksum_sha256"?: string,"created_at"?: string,"deleted_at"?: string | null,"deleted_by"?: string | null,"description"?: string | null,"id"?: string,"mime_type"?: string,"original_name"?: string,"owner_id"?: string,"size_bytes"?: number,"storage_path"?: string,"uploaded_by"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "files_category_id_fkey"
+      columns: ["category_id"]
+isOneToOne: false
+      referencedRelation: "file_categories"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "files_deleted_by_fkey"
+      columns: ["deleted_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "files_owner_id_fkey"
+      columns: ["owner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "files_uploaded_by_fkey"
+      columns: ["uploaded_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"post_categories": {
+                  Row: {
+                    "created_at": string,"id": string,"name_en": string,"name_es": string,"slug_en": string,"slug_es": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"name_en": string,"name_es": string,"slug_en": string,"slug_es": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"name_en"?: string,"name_es"?: string,"slug_en"?: string,"slug_es"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"post_translations": {
+                  Row: {
+                    "content": string,"created_at": string,"excerpt": string,"id": string,"locale": Database["public"]['Enums']["app_locale"],"post_id": string,"slug": string,"title": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "content"?: string,"created_at"?: string,"excerpt"?: string,"id"?: string,"locale": Database["public"]['Enums']["app_locale"],"post_id": string,"slug": string,"title": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "content"?: string,"created_at"?: string,"excerpt"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"post_id"?: string,"slug"?: string,"title"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "post_translations_post_id_fkey"
+      columns: ["post_id"]
+isOneToOne: false
+      referencedRelation: "posts"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"posts": {
+                  Row: {
+                    "author_id": string,"category_id": string | null,"cover_path": string | null,"created_at": string,"id": string,"published_at": string | null,"status": Database["public"]['Enums']["post_status"],"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "author_id": string,"category_id"?: string | null,"cover_path"?: string | null,"created_at"?: string,"id"?: string,"published_at"?: string | null,"status"?: Database["public"]['Enums']["post_status"],"updated_at"?: string
+                  }
+                  Update: {
+                    "author_id"?: string,"category_id"?: string | null,"cover_path"?: string | null,"created_at"?: string,"id"?: string,"published_at"?: string | null,"status"?: Database["public"]['Enums']["post_status"],"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "posts_author_id_fkey"
+      columns: ["author_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "posts_category_id_fkey"
+      columns: ["category_id"]
+isOneToOne: false
+      referencedRelation: "post_categories"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"profiles": {
+                  Row: {
+                    "created_at": string,"full_name": string,"id": string,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"full_name"?: string,"id": string,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
+                  }
+                  Update: {
+                    "created_at"?: string,"full_name"?: string,"id"?: string,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"upload_intents": {
+                  Row: {
+                    "category_id": string | null,"consumed_at": string | null,"created_at": string,"declared_mime": string,"declared_size": number,"description": string | null,"expires_at": string,"id": string,"original_name": string,"owner_id": string,"requested_by": string,"storage_path": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "category_id"?: string | null,"consumed_at"?: string | null,"created_at"?: string,"declared_mime": string,"declared_size": number,"description"?: string | null,"expires_at": string,"id"?: string,"original_name": string,"owner_id": string,"requested_by": string,"storage_path": string
+                  }
+                  Update: {
+                    "category_id"?: string | null,"consumed_at"?: string | null,"created_at"?: string,"declared_mime"?: string,"declared_size"?: number,"description"?: string | null,"expires_at"?: string,"id"?: string,"original_name"?: string,"owner_id"?: string,"requested_by"?: string,"storage_path"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "upload_intents_category_id_fkey"
+      columns: ["category_id"]
+isOneToOne: false
+      referencedRelation: "file_categories"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "upload_intents_owner_id_fkey"
+      columns: ["owner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "upload_intents_requested_by_fkey"
+      columns: ["requested_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                }
+          }
+          Views: {
+            [_ in never]: never
+          }
+          Functions: {
+            "auth_user_id_by_email":
+{ Args: { "p_email": string }; Returns: string
+                           },
+"invoke_purge_trash":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"is_active_user":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"is_admin":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"my_auth_activity":
+{ Args: { "p_limit"?: number }; Returns: {
+              "action": string,"created_at": string,"id": number,"ip": unknown,"user_agent": string
+            }[]
+                           },
+"publish_due_posts":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"revoke_user_sessions":
+{ Args: { "p_user": string }; Returns: undefined
+                           },
+"session_context":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "full_name": string,"has_verified_mfa": boolean,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"]
+            }[]
+                           },
+"storage_usage":
+{ Args: { "p_owner": string }; Returns: {
+              "pending_bytes": number,"quota_bytes": number,"used_bytes": number
+            }[]
+                           }
+          }
+          Enums: {
+            "app_locale": "en"|"es","post_status": "draft"|"scheduled"|"published","user_role": "user"|"admin"
+          }
+          CompositeTypes: {
+            [_ in never]: never
+          }
+        }
+}
+
+type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+  ? (DefaultSchema["Tables"] & DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never
+> = DefaultSchemaEnumNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+  ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+  : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof DatabaseWithoutInternals }
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+  ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+  : never
+
+export const Constants = {
+  "graphql_public": {
+          Enums: {
+            
+          }
+        },"public": {
+          Enums: {
+            "app_locale": ["en", "es"],"post_status": ["draft", "scheduled", "published"],"user_role": ["user", "admin"]
+          }
+        }
+} as const
