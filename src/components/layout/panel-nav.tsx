@@ -38,6 +38,7 @@ function useItems(variant: PanelVariant): Item[] {
       { href: "/admin/blog", icon: Newspaper, label: t("admin.blog") },
       { href: "/admin/messages", icon: Mail, label: t("admin.messages") },
       { href: "/admin/audit", icon: ScrollText, label: t("admin.audit") },
+      { href: "/admin/profile", icon: UserRound, label: t("admin.profile") },
     ];
   }
   return [

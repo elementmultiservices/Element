@@ -221,7 +221,37 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "auth_user_id_by_email":
+            "admin_list_categories":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "created_at": string,"file_count": number,"id": string,"is_archived": boolean,"name_en": string,"name_es": string
+            }[]
+                           },
+"admin_list_users":
+{ Args: { "p_dir"?: string,"p_id"?: string,"p_limit"?: number,"p_offset"?: number,"p_role"?: string,"p_search"?: string,"p_sort"?: string,"p_status"?: string }; Returns: {
+              "created_at": string,"email": string,"file_count": number,"full_name": string,"has_mfa": boolean,"id": string,"invitation_pending": boolean,"is_active": boolean,"last_sign_in_at": string,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number,"total_count": number,"used_bytes": number
+            }[]
+                           },
+"admin_overview":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "files_active": number,"files_trashed": number,"storage_trashed_bytes": number,"storage_used_bytes": number,"uploads_last_7d": number,"users_active": number,"users_inactive": number,"users_pending": number,"users_total": number
+            }[]
+                           },
+"admin_search_audit":
+{ Args: { "p_action"?: string,"p_actor"?: string,"p_from"?: string,"p_limit"?: number,"p_offset"?: number,"p_q"?: string,"p_subject"?: string,"p_to"?: string }; Returns: {
+              "action": string,"actor_email": string,"actor_id": string,"actor_name": string,"created_at": string,"id": number,"ip": unknown,"metadata": Json,"target_id": string,"target_label": string,"target_type": string,"total_count": number,"user_agent": string
+            }[]
+                           },
+"admin_user_labels":
+{ Args: { "p_ids": (string)[] }; Returns: {
+              "email": string,"full_name": string,"id": string
+            }[]
+                           },
+"admin_user_options":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "email": string,"full_name": string,"id": string,"is_active": boolean,"role": Database["public"]['Enums']["user_role"]
+            }[]
+                           },
+"auth_user_id_by_email":
 { Args: { "p_email": string }; Returns: string
                            },
 "invoke_purge_trash":
@@ -232,6 +262,9 @@ isOneToOne: false
                            },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"like_escape":
+{ Args: { "p": string }; Returns: string
                            },
 "my_auth_activity":
 { Args: { "p_limit"?: number }; Returns: {
@@ -246,7 +279,7 @@ isOneToOne: false
                            },
 "session_context":
 { Args: Record<PropertyKey, never>; Returns: {
-              "full_name": string,"has_verified_mfa": boolean,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"]
+              "full_name": string,"has_verified_mfa": boolean,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"session_valid": boolean
             }[]
                            },
 "storage_usage":

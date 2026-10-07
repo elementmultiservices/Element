@@ -7,8 +7,8 @@ import { toLocale } from "@/i18n/routing";
 import { requireAdmin } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/seo";
 
-// Placeholder routes for sections delivered in phases 3 and 4 (replaced by real pages).
-const sections = ["users", "files", "trash", "categories", "blog", "messages", "audit"] as const;
+// Placeholder routes for sections delivered in phase 4 (replaced by real pages).
+const sections = ["blog", "messages"] as const;
 type Section = (typeof sections)[number];
 const isSection = (v: string): v is Section => (sections as readonly string[]).includes(v);
 

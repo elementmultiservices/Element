@@ -4,8 +4,8 @@ Element is a file management web application with an institutional blog. It runs
 Next.js (App Router) and Supabase, is bilingual (English/Spanish), and is built with
 security as a primary requirement.
 
-> **Status:** Phases 1 (foundation) and 2 (user dashboard) complete. Later phases add the
-> admin panel, the blog and public site, and production hardening. Sections marked
+> **Status:** Phases 1 (foundation), 2 (user dashboard) and 3 (admin panel) complete. Later
+> phases add the blog and public site, and production hardening. Sections marked
 > _(phase N)_ are completed in that phase.
 
 ## Stack
@@ -165,6 +165,28 @@ scripts/create-admin.ts
 - **Invitation and reset links** are single-use, expire after 24 h, and are only consumed by an
   explicit POST, so email link scanners cannot burn them.
 - **`audit_logs` is append-only**, enforced by a trigger even for the service role.
+- **Revocation is immediate.** `session_context()` and the RLS helpers also require the token's
+  session to still exist, so deactivating an account, forcing a password reset or "signing out
+  other sessions" cuts access on the next request, without waiting for the access token to
+  expire.
+
+### Administration
+
+- **Users:** list, search, filters, invitation (always with the `user` role; administrators are
+  created only with `npm run admin:create`), resend invitation while it is pending,
+  activate/deactivate (bans the auth user and revokes every session), force password reset
+  (the current password becomes unusable, sessions are revoked and a recovery link is
+  emailed), storage quota, files and recent activity.
+- **Files:** a global list with filters, upload on behalf of a user (the user is notified by
+  email in their language), move to trash, restore, and permanent deletion only from the
+  trash. Trashed files are purged automatically after 30 days.
+- **Categories:** create, rename and archive. Names are unique per language, ignoring case.
+- **Audit:** free-text search plus filters by action group, actor, user and date.
+- **CSV exports** (users, files, audit) apply the on-screen filters. They are UTF-8 with a BOM,
+  use `;` as the separator for Spanish and `,` for English, are protected against formula
+  injection, and are themselves audited.
+- Admin data comes from `admin_*` SQL functions that check `is_admin()` (active admin, MFA
+  session) inside Postgres, so the service role is not needed to read it.
 
 ### File upload and download flow
 

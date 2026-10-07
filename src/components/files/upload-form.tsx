@@ -31,6 +31,7 @@ const ERROR_KEYS = [
   "upload_missing",
   "intent_invalid",
   "invalid_category",
+  "invalid_owner",
   "network",
   "generic",
 ] as const;
@@ -73,8 +74,23 @@ async function postJson(url: string, body: unknown): Promise<{ ok: boolean; data
   return { ok: res.ok, data };
 }
 
-export function UploadForm({ categories, ownerId }: { categories: CategoryOption[]; ownerId?: string }) {
+export type OwnerOption = { id: string; label: string };
+
+/**
+ * Upload form. Users upload to their own account. Administrators pass `owners`
+ * and must pick the account that receives the file (the server re-validates it).
+ */
+export function UploadForm({
+  categories,
+  owners,
+  defaultOwnerId,
+}: {
+  categories: CategoryOption[];
+  owners?: OwnerOption[];
+  defaultOwnerId?: string;
+}) {
   const t = useTranslations("Upload");
+  const ta = useTranslations("Admin.files");
   const locale = useLocale();
   const router = useRouter();
   const getToken = useRecaptcha();
@@ -86,6 +102,8 @@ export function UploadForm({ categories, ownerId }: { categories: CategoryOption
   const [phase, setPhase] = useState<Phase>("idle");
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<UploadErrorKey | null>(null);
+  const [ownerError, setOwnerError] = useState(false);
+  const [lastOwnerId, setLastOwnerId] = useState<string | null>(null);
 
   const maxLabel = formatBytes(MAX_FILE_BYTES, locale);
   const busy = phase === "preparing" || phase === "uploading" || phase === "verifying";
@@ -120,6 +138,10 @@ export function UploadForm({ categories, ownerId }: { categories: CategoryOption
     if (!check.ok) return setError("type_not_allowed");
 
     const form = new FormData(e.currentTarget);
+    const ownerId = owners ? String(form.get("ownerId") ?? "") : null;
+    setOwnerError(false);
+    if (owners && !ownerId) return setOwnerError(true);
+    setLastOwnerId(ownerId);
     setError(null);
     setPhase("preparing");
     try {
@@ -129,7 +151,7 @@ export function UploadForm({ categories, ownerId }: { categories: CategoryOption
         mime: check.mime,
         categoryId: (form.get("categoryId") as string) || null,
         description: (form.get("description") as string) || null,
-        ownerId: ownerId ?? null,
+        ownerId,
         recaptchaToken: await getToken("upload"),
       });
       if (!intent.ok) throw new Error(toErrorKey(intent.data.error));
@@ -166,11 +188,9 @@ export function UploadForm({ categories, ownerId }: { categories: CategoryOption
           <Button type="button" onClick={reset}>
             {t("uploadAnother")}
           </Button>
-          {ownerId ? null : (
-            <Button asChild variant="outline">
-              <Link href="/dashboard">{t("viewFiles")}</Link>
-            </Button>
-          )}
+          <Button asChild variant="outline">
+            <Link href={owners ? `/admin/files${lastOwnerId ? `?owner=${lastOwnerId}` : ""}` : "/dashboard"}>{t("viewFiles")}</Link>
+          </Button>
         </div>
       </div>
     );
@@ -229,6 +249,35 @@ export function UploadForm({ categories, ownerId }: { categories: CategoryOption
       </div>
 
       <div className="grid gap-5 md:grid-cols-2">
+        {owners ? (
+          <div className="space-y-1.5 md:col-span-2">
+            <Label htmlFor={`${ids}-owner`}>
+              {ta("ownerLabel")}
+              <span aria-hidden="true" className="text-destructive"> *</span>
+            </Label>
+            <NativeSelect
+              id={`${ids}-owner`}
+              name="ownerId"
+              defaultValue={defaultOwnerId ?? ""}
+              disabled={busy}
+              required
+              aria-invalid={ownerError || undefined}
+              aria-describedby={ownerError ? `${ids}-owner-error` : undefined}
+            >
+              <option value="">{ta("ownerPlaceholder")}</option>
+              {owners.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.label}
+                </option>
+              ))}
+            </NativeSelect>
+            {ownerError ? (
+              <p id={`${ids}-owner-error`} role="alert" className="text-sm text-destructive">
+                {ta("ownerRequired")}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
         <div className="space-y-1.5">
           <Label htmlFor={`${ids}-category`}>{t("fields.category")}</Label>
           <NativeSelect id={`${ids}-category`} name="categoryId" defaultValue="" disabled={busy}>

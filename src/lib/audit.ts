@@ -20,6 +20,21 @@ export type AuditAction =
   | "file.uploaded"
   | "file.upload_rejected"
   | "file.downloaded"
+  | "file.trashed"
+  | "file.restored"
+  | "file.deleted_permanently"
+  | "file.purged"
+  | "user.invited"
+  | "user.invitation_resent"
+  | "user.activated"
+  | "user.deactivated"
+  | "user.password_reset.forced"
+  | "user.quota.changed"
+  | "category.created"
+  | "category.renamed"
+  | "category.archived"
+  | "category.unarchived"
+  | "admin.export"
   | "admin.bootstrap";
 
 export type AuditEntry = {

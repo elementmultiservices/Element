@@ -51,13 +51,16 @@ export async function POST(request: NextRequest) {
 
   const admin = createAdminClient();
 
-  // Owner: the caller, or (admins only) the user the file is uploaded for.
+  // Owner: users upload for themselves; admins always upload on behalf of an
+  // active account with the user role.
   let ownerId = ctx.userId;
-  if (input.ownerId && input.ownerId !== ctx.userId) {
-    if (ctx.role !== "admin") return apiError("forbidden", 403);
-    const { data: owner } = await admin.from("profiles").select("id, is_active").eq("id", input.ownerId).maybeSingle();
-    if (!owner?.is_active) return apiError("invalid_owner", 422);
+  if (ctx.role === "admin") {
+    if (!input.ownerId) return apiError("invalid_owner", 422);
+    const { data: owner } = await admin.from("profiles").select("id, is_active, role").eq("id", input.ownerId).maybeSingle();
+    if (!owner?.is_active || owner.role !== "user") return apiError("invalid_owner", 422);
     ownerId = owner.id;
+  } else if (input.ownerId && input.ownerId !== ctx.userId) {
+    return apiError("forbidden", 403);
   }
 
   if (input.categoryId) {
@@ -78,7 +81,9 @@ export async function POST(request: NextRequest) {
   if (usage.used_bytes + usage.pending_bytes + input.size > usage.quota_bytes) return apiError("quota_exceeded", 422);
 
   // Daily cap is counted per authorized upload attempt.
-  if (!(await rateLimit("uploadDailyUser", ctx.userId)).success) return apiError("daily_cap", 429);
+  if (!(await rateLimit(ctx.role === "admin" ? "uploadDailyAdmin" : "uploadDailyUser", ctx.userId)).success) {
+    return apiError("daily_cap", 429);
+  }
 
   const storagePath = `pending/${crypto.randomUUID()}`;
   const { data: intent, error: intentError } = await admin

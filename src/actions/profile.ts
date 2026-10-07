@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "@/i18n/navigation";
 import { LOCALE_COOKIE } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
-import { requireUser } from "@/lib/auth/session";
+import { homePathFor, requireUser } from "@/lib/auth/session";
 import { serverEnv } from "@/lib/env";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
 import { hashIdentifier } from "@/lib/security/hash";
@@ -59,7 +59,7 @@ export async function updateLocaleAction(_prev: FormState, formData: FormData): 
     maxAge: 60 * 60 * 24 * 365,
   });
   await audit({ actorId: session.userId, action: "user.profile.updated", targetType: "user", targetId: session.userId, metadata: { fields: ["preferred_locale"] } });
-  return redirect({ href: "/dashboard/profile", locale: parsed.data });
+  return redirect({ href: `${homePathFor(session.role)}/profile`, locale: parsed.data });
 }
 
 // ---------------------------------------------------------------------------

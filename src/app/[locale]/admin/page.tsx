@@ -1,30 +1,149 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { FileText, HardDrive, Upload, Users } from "lucide-react";
+import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/layout/page-header";
-import { ComingSoon } from "@/components/states/coming-soon";
+import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
+import { getOverview, listAdminFiles, searchAudit, userDisplayName, userLabels } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/auth/session";
+import { sanitizeDisplayName } from "@/lib/files/rules";
+import { formatBytes } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
+import { createClient } from "@/lib/supabase/server";
+import { describeUserAgent } from "@/lib/user-agent";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/admin">): Promise<Metadata> {
   const { locale } = await params;
   return pageMetadata({ locale: toLocale(locale), path: "/admin", page: "admin", noIndex: true });
 }
 
+function StatCard({ icon: Icon, label, value, detail }: { icon: typeof Users; label: string; value: string; detail?: string }) {
+  return (
+    <div className="rounded-lg border bg-card p-5">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm font-medium text-muted-foreground">{label}</p>
+        <Icon aria-hidden="true" className="size-4 text-link" />
+      </div>
+      <p className="mt-2 text-2xl font-semibold text-primary tabular-nums">{value}</p>
+      {detail ? <p className="mt-1 text-xs text-muted-foreground">{detail}</p> : null}
+    </div>
+  );
+}
+
+function Panel({ title, href, linkLabel, children }: { title: string; href: string; linkLabel: string; children: React.ReactNode }) {
+  return (
+    <section className="rounded-lg border bg-card">
+      <div className="flex items-center justify-between border-b px-5 py-3">
+        <h2 className="text-base">{title}</h2>
+        <Link href={href} className="text-sm text-link hover:underline">
+          {linkLabel}
+        </Link>
+      </div>
+      {children}
+    </section>
+  );
+}
+
 export default async function AdminOverviewPage({ params }: PageProps<"/[locale]/admin">) {
-  const { locale } = await params;
-  setRequestLocale(toLocale(locale));
+  const { locale: rawLocale } = await params;
+  const locale = toLocale(rawLocale);
+  setRequestLocale(locale);
   const session = await requireAdmin();
-  const t = await getTranslations("Panel");
+  const t = await getTranslations();
+  const format = await getFormatter();
+  const supabase = await createClient();
+
+  const [overview, uploads, signIns] = await Promise.all([
+    getOverview(supabase),
+    listAdminFiles(supabase, { sort: "created_at", dir: "desc", page: 1 }, { limit: 8 }),
+    searchAudit(supabase, { page: 1 }, { limit: 8, exactAction: "auth.sign_in.success" }),
+  ]);
+  const labels = await userLabels(supabase, uploads.rows.map((f) => f.ownerId));
+  const number = (n: number) => format.number(n);
 
   return (
     <>
       <PageHeader
-        title={t("admin.overview")}
-        description={session.fullName ? t("welcome", { name: session.fullName }) : t("welcomeFallback")}
-        breadcrumbs={[{ label: t("adminTitle"), href: "/admin" }, { label: t("admin.overview") }]}
+        title={t("Panel.admin.overview")}
+        description={session.fullName ? t("Panel.welcome", { name: session.fullName }) : t("Admin.overview.description")}
+        breadcrumbs={[{ label: t("Panel.adminTitle"), href: "/admin" }, { label: t("Panel.admin.overview") }]}
       />
-      <ComingSoon />
+
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatCard
+          icon={Users}
+          label={t("Admin.overview.users")}
+          value={number(overview.usersTotal)}
+          detail={t("Admin.overview.usersDetail", {
+            active: number(overview.usersActive),
+            inactive: number(overview.usersInactive),
+            pending: number(overview.usersPending),
+          })}
+        />
+        <StatCard
+          icon={FileText}
+          label={t("Admin.overview.files")}
+          value={number(overview.filesActive)}
+          detail={t("Admin.overview.filesDetail", { trashed: number(overview.filesTrashed) })}
+        />
+        <StatCard
+          icon={HardDrive}
+          label={t("Admin.overview.storage")}
+          value={formatBytes(overview.storageUsedBytes, locale)}
+          detail={t("Admin.overview.storageDetail", { trashed: formatBytes(overview.storageTrashedBytes, locale) })}
+        />
+        <StatCard icon={Upload} label={t("Admin.overview.uploads7d")} value={number(overview.uploadsLast7d)} />
+      </div>
+
+      <div className="mt-6 grid gap-6 xl:grid-cols-2">
+        <Panel title={t("Admin.overview.recentUploads")} href="/admin/files" linkLabel={t("Admin.overview.viewAll")}>
+          {uploads.rows.length === 0 ? (
+            <p className="px-5 py-6 text-sm text-muted-foreground">{t("Admin.overview.noUploads")}</p>
+          ) : (
+            <ul className="divide-y">
+              {uploads.rows.map((f) => (
+                <li key={f.id} className="flex items-center justify-between gap-4 px-5 py-3 text-sm">
+                  <div className="min-w-0">
+                    <p className="truncate font-medium">{sanitizeDisplayName(f.originalName)}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {userDisplayName(labels.get(f.ownerId), t("Admin.common.unknownUser"))} · {formatBytes(f.sizeBytes, locale)}
+                    </p>
+                  </div>
+                  <time dateTime={f.createdAt} className="shrink-0 text-xs text-muted-foreground">
+                    {format.dateTime(new Date(f.createdAt), "short")}
+                  </time>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Panel>
+
+        <Panel
+          title={t("Admin.overview.recentSignIns")}
+          href="/admin/audit?action=auth"
+          linkLabel={t("Admin.overview.viewAll")}
+        >
+          {signIns.rows.length === 0 ? (
+            <p className="px-5 py-6 text-sm text-muted-foreground">{t("Admin.overview.noSignIns")}</p>
+          ) : (
+            <ul className="divide-y">
+              {signIns.rows.map((a) => (
+                <li key={a.id} className="flex items-center justify-between gap-4 px-5 py-3 text-sm">
+                  <div className="min-w-0">
+                    <p className="truncate font-medium">{a.actorName?.trim() || a.actorEmail || t("Admin.common.unknownUser")}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {[a.ip, describeUserAgent(a.userAgent)].filter(Boolean).join(" · ")}
+                    </p>
+                  </div>
+                  <time dateTime={a.createdAt} className="shrink-0 text-xs text-muted-foreground">
+                    {format.dateTime(new Date(a.createdAt), "long")}
+                  </time>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Panel>
+      </div>
     </>
   );
 }

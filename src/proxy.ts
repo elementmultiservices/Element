@@ -125,7 +125,7 @@ export async function proxy(request: NextRequest) {
   // 4. Account state, MFA and role (fresh from the database) ------------------
   if (area !== "public" || isApi) {
     const { data: ctx, error } = await supabase.rpc("session_context").maybeSingle();
-    if (error || !ctx || !ctx.is_active) return endSession();
+    if (error || !ctx || !ctx.is_active || !ctx.session_valid) return endSession();
     role = ctx.role;
 
     const aal = claims?.aal === "aal2" ? "aal2" : "aal1";

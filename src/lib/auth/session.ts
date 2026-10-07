@@ -37,7 +37,7 @@ export const getSessionContext = cache(async (): Promise<SessionContext | null> 
   if (!activity || activity.sub !== claims.sub) return null;
 
   const { data: ctx, error: ctxError } = await supabase.rpc("session_context").maybeSingle();
-  if (ctxError || !ctx) return null;
+  if (ctxError || !ctx || !ctx.session_valid) return null;
 
   return {
     userId: claims.sub,

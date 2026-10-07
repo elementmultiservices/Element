@@ -4,7 +4,16 @@ import type { StorageUsage } from "@/lib/files/queries";
 import { cn } from "@/lib/utils";
 
 /** Storage quota indicator (accessible progress meter). */
-export async function QuotaMeter({ usage, className }: { usage: StorageUsage; className?: string }) {
+export async function QuotaMeter({
+  usage,
+  className,
+  bare = false,
+}: {
+  usage: StorageUsage;
+  className?: string;
+  /** Without border/padding and with a visually hidden heading (inside a titled section). */
+  bare?: boolean;
+}) {
   const t = await getTranslations("Quota");
   const locale = await getLocale();
   const ratio = usage.quotaBytes > 0 ? Math.min(usage.usedBytes / usage.quotaBytes, 1) : 1;
@@ -13,9 +22,9 @@ export async function QuotaMeter({ usage, className }: { usage: StorageUsage; cl
   const quota = formatBytes(usage.quotaBytes, locale);
 
   return (
-    <section aria-labelledby="quota-heading" className={cn("rounded-lg border bg-card p-4", className)}>
+    <section aria-labelledby="quota-heading" className={cn(!bare && "rounded-lg border bg-card p-4", className)}>
       <div className="flex items-baseline justify-between gap-3">
-        <h2 id="quota-heading" className="text-sm font-semibold">
+        <h2 id="quota-heading" className={bare ? "sr-only" : "text-sm font-semibold"}>
           {t("title")}
         </h2>
         <span className="text-sm text-muted-foreground">{t("percentUsed", { percent: formatPercent(ratio, locale) })}</span>

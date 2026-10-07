@@ -14,7 +14,15 @@
       "notFound": "Página no encontrada",
       "error": "Error",
       "upload": "Subir archivo",
-      "profile": "Perfil"
+      "profile": "Perfil",
+      "adminUsers": "Usuarios",
+      "adminUser": "Detalle del usuario",
+      "adminInvite": "Invitar usuario",
+      "adminFiles": "Archivos",
+      "adminUpload": "Subir archivo para un usuario",
+      "adminTrash": "Papelera",
+      "adminCategories": "Categorías de archivos",
+      "adminAudit": "Registro de auditoría"
     }
   },
   "Common": {
@@ -101,7 +109,8 @@
       "categories": "Categorías de archivos",
       "blog": "Blog",
       "messages": "Mensajes de contacto",
-      "audit": "Registro de auditoría"
+      "audit": "Registro de auditoría",
+      "profile": "Mi perfil"
     },
     "roles": {
       "user": "Usuario",
@@ -189,7 +198,14 @@
     "weakPassword": "Esta contraseña no es lo suficientemente segura. Elija otra.",
     "mfaInvalid": "El código es incorrecto o ya venció.",
     "sessionExpired": "Su sesión ha vencido. Por favor, inicie sesión nuevamente.",
-    "currentPasswordInvalid": "La contraseña actual es incorrecta."
+    "currentPasswordInvalid": "La contraseña actual es incorrecta.",
+    "selfAction": "No puede realizar esta acción sobre su propia cuenta.",
+    "lastAdmin": "Esta es la última cuenta de administrador activa; no puede desactivarse.",
+    "emailExists": "Ya existe una cuenta con este correo electrónico.",
+    "notPending": "Esta cuenta ya fue activada; no es posible reenviar la invitación.",
+    "notFound": "El elemento solicitado ya no existe. Recargue la página.",
+    "duplicateName": "Ya existe una categoría con este nombre.",
+    "deliveryFailed": "La acción se completó, pero no fue posible enviar el correo. Intente nuevamente más tarde."
   },
   "NotFound": {
     "code": "Error 404",
@@ -238,6 +254,17 @@
       "greetingFallback": "Hola:",
       "body": "Un administrador agregó el documento “{fileName}” a su cuenta de Element. Puede consultarlo y descargarlo desde su panel.",
       "cta": "Ver mis archivos"
+    },
+    "passwordForced": {
+      "subject": "Su contraseña fue restablecida",
+      "preview": "Un administrador restableció la contraseña de su cuenta de Element.",
+      "heading": "Contraseña restablecida por un administrador",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "body": "Por razones de seguridad, un administrador restableció la contraseña de su cuenta de Element y cerró sus sesiones activas. Para acceder nuevamente, defina una nueva contraseña con el siguiente botón.",
+      "cta": "Definir nueva contraseña",
+      "expiry": "Este enlace es válido por 24 horas y solo puede usarse una vez.",
+      "ignore": "Si tiene preguntas sobre este cambio, comuníquese con el administrador."
     }
   },
   "Files": {
@@ -293,8 +320,8 @@
     "title": "Almacenamiento",
     "usage": "{used} de {quota} utilizados",
     "percentUsed": "{percent} utilizado",
-    "nearLimit": "Está cerca del límite de almacenamiento.",
-    "full": "Su almacenamiento está lleno. Comuníquese con el administrador para solicitar más espacio."
+    "nearLimit": "Cerca de la cuota de almacenamiento.",
+    "full": "La cuota de almacenamiento está llena."
   },
   "Upload": {
     "description": "Los archivos se verifican antes de almacenarse. Solo se aceptan los formatos indicados.",
@@ -339,7 +366,8 @@
       "intent_invalid": "La autorización de carga venció. Por favor, intente nuevamente.",
       "invalid_category": "La categoría seleccionada no está disponible.",
       "network": "La conexión se interrumpió durante la carga. Por favor, intente nuevamente.",
-      "generic": "No fue posible cargar el archivo. Por favor, intente nuevamente en unos minutos."
+      "generic": "No fue posible cargar el archivo. Por favor, intente nuevamente en unos minutos.",
+      "invalid_owner": "El usuario seleccionado no puede recibir archivos."
     }
   },
   "Profile": {
@@ -409,6 +437,275 @@
         "mfa_failed": "Código de verificación incorrecto",
         "mfa_disabled": "Verificación en dos pasos desactivada",
         "other": "Otra actividad"
+      }
+    }
+  },
+  "Admin": {
+    "common": {
+      "search": "Buscar",
+      "status": "Estado",
+      "role": "Rol",
+      "all": "Todos",
+      "apply": "Aplicar filtros",
+      "clear": "Limpiar filtros",
+      "actions": "Acciones",
+      "view": "Ver",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "working": "Procesando…",
+      "export": "Exportar CSV",
+      "never": "Nunca",
+      "unknownUser": "Usuario desconocido",
+      "system": "Sistema",
+      "from": "Desde",
+      "to": "Hasta",
+      "yes": "Sí",
+      "no": "No"
+    },
+    "statuses": {
+      "active": "Activa",
+      "inactive": "Inactiva",
+      "pending": "Invitación pendiente"
+    },
+    "overview": {
+      "description": "Estado general de la plataforma.",
+      "users": "Usuarios",
+      "usersDetail": "{active} activos · {inactive} inactivos · {pending} pendientes",
+      "files": "Archivos",
+      "filesDetail": "{trashed} en la papelera",
+      "storage": "Almacenamiento utilizado",
+      "storageDetail": "{trashed} en la papelera",
+      "uploads7d": "Cargas de los últimos 7 días",
+      "recentUploads": "Cargas recientes",
+      "recentSignIns": "Inicios de sesión recientes",
+      "noUploads": "Aún no hay cargas.",
+      "noSignIns": "Aún no hay inicios de sesión.",
+      "viewAll": "Ver todo"
+    },
+    "users": {
+      "description": "Cuentas con acceso a la plataforma. El registro está cerrado: los usuarios ingresan solo por invitación.",
+      "invite": {
+        "description": "La persona recibirá un correo, en el idioma seleccionado, con un enlace para definir su contraseña. El enlace vence en 24 horas.",
+        "name": "Nombre completo",
+        "email": "Correo electrónico",
+        "language": "Idioma",
+        "quota": "Cuota de almacenamiento (MB)",
+        "submit": "Enviar invitación",
+        "submitting": "Enviando…",
+        "success": "La invitación fue enviada a {email}.",
+        "roleNote": "Las cuentas invitadas siempre tienen el rol de usuario.",
+        "another": "Invitar a otro usuario",
+        "viewUser": "Ver usuario"
+      },
+      "searchLabel": "Buscar por nombre o correo",
+      "searchPlaceholder": "Nombre o correo",
+      "table": {
+        "caption": "Usuarios",
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "role": "Rol",
+        "status": "Estado",
+        "files": "Archivos",
+        "storage": "Almacenamiento",
+        "lastSignIn": "Último inicio de sesión",
+        "created": "Creación"
+      },
+      "empty": "No hay usuarios que coincidan con los filtros.",
+      "noName": "(sin nombre)",
+      "detail": {
+        "summary": "Resumen de la cuenta",
+        "created": "Creación",
+        "lastSignIn": "Último inicio de sesión",
+        "language": "Idioma preferido",
+        "files": "Archivos activos",
+        "mfa": "Verificación en dos pasos",
+        "mfaOn": "Activa",
+        "mfaOff": "No activada",
+        "storageHeading": "Almacenamiento",
+        "quotaLabel": "Cuota de almacenamiento (MB)",
+        "quotaHint": "Entre 0 y 102.400 MB. Las cargas que superen la cuota se rechazan.",
+        "saveQuota": "Guardar cuota",
+        "quotaSaved": "La cuota de almacenamiento fue actualizada.",
+        "actionsHeading": "Acciones sobre la cuenta",
+        "viewFiles": "Ver archivos",
+        "uploadForUser": "Subir un archivo para este usuario",
+        "activity": "Actividad reciente",
+        "activityEmpty": "No hay actividad registrada para esta cuenta.",
+        "viewAudit": "Ver en el registro de auditoría",
+        "self": "Esta es su propia cuenta. Adminístrela desde su perfil."
+      },
+      "actions": {
+        "deactivate": "Desactivar cuenta",
+        "deactivateTitle": "¿Desactivar esta cuenta?",
+        "deactivateBody": "El usuario perderá el acceso de inmediato y se cerrarán todas sus sesiones activas. Sus archivos se conservan.",
+        "deactivated": "La cuenta fue desactivada.",
+        "activate": "Activar cuenta",
+        "activateTitle": "¿Activar esta cuenta?",
+        "activateBody": "El usuario podrá iniciar sesión nuevamente con su contraseña actual.",
+        "activated": "La cuenta fue activada.",
+        "resend": "Reenviar invitación",
+        "resendTitle": "¿Reenviar la invitación?",
+        "resendBody": "Se enviará un nuevo correo de invitación. El enlace anterior dejará de funcionar.",
+        "resent": "La invitación fue reenviada.",
+        "forceReset": "Forzar restablecimiento de contraseña",
+        "forceResetTitle": "¿Forzar el restablecimiento de la contraseña?",
+        "forceResetBody": "La contraseña actual dejará de funcionar, se cerrarán todas las sesiones y el usuario recibirá un correo para definir una nueva contraseña.",
+        "forceResetDone": "La contraseña fue restablecida y se notificó al usuario."
+      },
+      "inviteCta": "Invitar usuario"
+    },
+    "files": {
+      "description": "Todos los archivos de la plataforma. Los archivos enviados a la papelera pueden restaurarse durante 30 días.",
+      "upload": "Subir archivo para un usuario",
+      "owner": "Usuario",
+      "allOwners": "Todos los usuarios",
+      "table": {
+        "caption": "Archivos",
+        "name": "Nombre",
+        "owner": "Usuario",
+        "category": "Categoría",
+        "type": "Tipo",
+        "size": "Tamaño",
+        "uploaded": "Fecha de carga",
+        "source": "Cargado por"
+      },
+      "byAdmin": "Administrador",
+      "byOwner": "Usuario",
+      "trash": "Enviar a la papelera",
+      "trashTitle": "¿Enviar este archivo a la papelera?",
+      "trashBody": "“{name}” dejará de estar visible para el usuario. Podrá restaurarse desde la papelera durante 30 días.",
+      "trashed": "El archivo fue enviado a la papelera.",
+      "empty": "No hay archivos que coincidan con los filtros.",
+      "uploadDescription": "El archivo se verifica antes de almacenarse y el usuario recibe una notificación por correo en su idioma.",
+      "ownerLabel": "Usuario que recibe el archivo",
+      "ownerPlaceholder": "Seleccione un usuario",
+      "noOwners": "No hay usuarios activos para recibir archivos.",
+      "ownerRequired": "Seleccione el usuario que recibirá el archivo."
+    },
+    "trash": {
+      "description": "Archivos enviados a la papelera. Se eliminan de forma permanente y automática 30 días después de haber sido enviados aquí.",
+      "table": {
+        "caption": "Archivos en la papelera",
+        "name": "Nombre",
+        "owner": "Usuario",
+        "size": "Tamaño",
+        "deletedAt": "Enviado a la papelera",
+        "deletedBy": "Enviado por",
+        "purgeOn": "Eliminación definitiva"
+      },
+      "restore": "Restaurar",
+      "restoreTitle": "¿Restaurar este archivo?",
+      "restoreBody": "“{name}” volverá a estar visible para el usuario.",
+      "restored": "El archivo fue restaurado.",
+      "delete": "Eliminar definitivamente",
+      "deleteTitle": "¿Eliminar este archivo definitivamente?",
+      "deleteBody": "“{name}” se eliminará de forma permanente. Esta acción no se puede deshacer.",
+      "deleted": "El archivo fue eliminado definitivamente.",
+      "empty": "La papelera está vacía."
+    },
+    "categories": {
+      "description": "Las categorías ayudan a clasificar los archivos. Las categorías archivadas se conservan en los archivos existentes, pero no pueden seleccionarse en nuevas cargas.",
+      "createHeading": "Nueva categoría",
+      "nameEn": "Nombre en inglés",
+      "nameEs": "Nombre en español",
+      "create": "Crear categoría",
+      "creating": "Creando…",
+      "created": "La categoría fue creada.",
+      "table": {
+        "caption": "Categorías de archivos",
+        "nameEn": "Inglés",
+        "nameEs": "Español",
+        "files": "Archivos activos",
+        "status": "Estado"
+      },
+      "statusActive": "Activa",
+      "statusArchived": "Archivada",
+      "rename": "Renombrar",
+      "renameTitle": "Renombrar categoría",
+      "save": "Guardar",
+      "renamed": "La categoría fue renombrada.",
+      "archive": "Archivar",
+      "archiveTitle": "¿Archivar esta categoría?",
+      "archiveBody": "“{name}” dejará de estar disponible para nuevas cargas. Los archivos existentes la conservan.",
+      "archived": "La categoría fue archivada.",
+      "unarchive": "Restaurar",
+      "unarchived": "La categoría fue restaurada.",
+      "empty": "Aún no hay categorías."
+    },
+    "audit": {
+      "description": "Registro de solo inserción de las acciones relevantes para la seguridad. Las entradas no pueden modificarse ni eliminarse.",
+      "searchLabel": "Buscar",
+      "searchPlaceholder": "Acción, objetivo, IP o detalles",
+      "action": "Tipo de acción",
+      "allActions": "Todas las acciones",
+      "groups": {
+        "auth": "Autenticación",
+        "user": "Usuarios",
+        "file": "Archivos",
+        "category": "Categorías",
+        "post": "Blog",
+        "contact": "Contacto",
+        "admin": "Administración"
+      },
+      "actor": "Realizada por",
+      "actorPlaceholder": "Nombre o correo",
+      "table": {
+        "caption": "Registro de auditoría",
+        "date": "Fecha",
+        "action": "Acción",
+        "actor": "Realizada por",
+        "target": "Objetivo",
+        "ip": "Dirección IP",
+        "details": "Detalles"
+      },
+      "empty": "No hay entradas que coincidan con los filtros."
+    },
+    "pagination": {
+      "label": "Paginación",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "summary": "Mostrando {from}–{to} de {total}",
+      "page": "Página {page} de {pages}"
+    },
+    "csv": {
+      "users": {
+        "id": "ID",
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "role": "Rol",
+        "status": "Estado",
+        "language": "Idioma",
+        "files": "Archivos activos",
+        "usedBytes": "Almacenamiento utilizado (bytes)",
+        "quotaBytes": "Cuota de almacenamiento (bytes)",
+        "mfa": "Verificación en dos pasos",
+        "lastSignIn": "Último inicio de sesión",
+        "created": "Creación"
+      },
+      "files": {
+        "id": "ID",
+        "name": "Nombre",
+        "ownerName": "Usuario",
+        "ownerEmail": "Correo del usuario",
+        "category": "Categoría",
+        "type": "Tipo",
+        "sizeBytes": "Tamaño (bytes)",
+        "checksum": "SHA-256",
+        "uploadedBy": "Cargado por",
+        "created": "Fecha de carga",
+        "deletedAt": "Enviado a la papelera"
+      },
+      "audit": {
+        "id": "ID",
+        "date": "Fecha",
+        "action": "Acción",
+        "actorEmail": "Realizada por",
+        "targetType": "Tipo de objetivo",
+        "targetId": "ID del objetivo",
+        "targetLabel": "Objetivo",
+        "ip": "Dirección IP",
+        "userAgent": "Agente de usuario",
+        "details": "Detalles"
       }
     }
   }

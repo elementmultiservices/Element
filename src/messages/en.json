@@ -14,7 +14,15 @@
       "notFound": "Page not found",
       "error": "Error",
       "upload": "Upload file",
-      "profile": "Profile"
+      "profile": "Profile",
+      "adminUsers": "Users",
+      "adminUser": "User details",
+      "adminInvite": "Invite user",
+      "adminFiles": "Files",
+      "adminUpload": "Upload file for a user",
+      "adminTrash": "Trash",
+      "adminCategories": "File categories",
+      "adminAudit": "Audit log"
     }
   },
   "Common": {
@@ -101,7 +109,8 @@
       "categories": "File categories",
       "blog": "Blog",
       "messages": "Contact messages",
-      "audit": "Audit log"
+      "audit": "Audit log",
+      "profile": "My profile"
     },
     "roles": {
       "user": "User",
@@ -189,7 +198,14 @@
     "weakPassword": "This password is not secure enough. Choose a different one.",
     "mfaInvalid": "The code is incorrect or has expired.",
     "sessionExpired": "Your session has expired. Please sign in again.",
-    "currentPasswordInvalid": "The current password is incorrect."
+    "currentPasswordInvalid": "The current password is incorrect.",
+    "selfAction": "You cannot perform this action on your own account.",
+    "lastAdmin": "This is the last active administrator account; it cannot be deactivated.",
+    "emailExists": "An account with this email address already exists.",
+    "notPending": "This account has already been activated; the invitation cannot be resent.",
+    "notFound": "The requested item no longer exists. Reload the page.",
+    "duplicateName": "A category with this name already exists.",
+    "deliveryFailed": "The action was completed, but the email could not be sent. Try again later."
   },
   "NotFound": {
     "code": "Error 404",
@@ -238,6 +254,17 @@
       "greetingFallback": "Hello,",
       "body": "An administrator has added the document “{fileName}” to your Element account. You can view and download it from your panel.",
       "cta": "View my files"
+    },
+    "passwordForced": {
+      "subject": "Your password was reset",
+      "preview": "An administrator reset the password of your Element account.",
+      "heading": "Password reset by an administrator",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "body": "For security reasons, an administrator reset the password of your Element account and closed your active sessions. To access your account again, set a new password with the button below.",
+      "cta": "Set new password",
+      "expiry": "This link is valid for 24 hours and can be used only once.",
+      "ignore": "If you have questions about this change, contact the administrator."
     }
   },
   "Files": {
@@ -293,8 +320,8 @@
     "title": "Storage",
     "usage": "{used} of {quota} used",
     "percentUsed": "{percent} used",
-    "nearLimit": "You are close to your storage limit.",
-    "full": "Your storage is full. Contact the administrator to request more space."
+    "nearLimit": "Close to the storage quota.",
+    "full": "The storage quota is full."
   },
   "Upload": {
     "description": "Files are verified before they are stored. Only the listed formats are accepted.",
@@ -339,7 +366,8 @@
       "intent_invalid": "The upload authorization expired. Please try again.",
       "invalid_category": "The selected category is not available.",
       "network": "The connection was interrupted during the upload. Please try again.",
-      "generic": "The file could not be uploaded. Please try again in a few minutes."
+      "generic": "The file could not be uploaded. Please try again in a few minutes.",
+      "invalid_owner": "The selected user cannot receive files."
     }
   },
   "Profile": {
@@ -409,6 +437,275 @@
         "mfa_failed": "Incorrect verification code",
         "mfa_disabled": "Two-step verification disabled",
         "other": "Other activity"
+      }
+    }
+  },
+  "Admin": {
+    "common": {
+      "search": "Search",
+      "status": "Status",
+      "role": "Role",
+      "all": "All",
+      "apply": "Apply filters",
+      "clear": "Clear filters",
+      "actions": "Actions",
+      "view": "View",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "working": "Processing…",
+      "export": "Export CSV",
+      "never": "Never",
+      "unknownUser": "Unknown user",
+      "system": "System",
+      "from": "From",
+      "to": "To",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Invitation pending"
+    },
+    "overview": {
+      "description": "General status of the platform.",
+      "users": "Users",
+      "usersDetail": "{active} active · {inactive} inactive · {pending} pending",
+      "files": "Files",
+      "filesDetail": "{trashed} in the trash",
+      "storage": "Storage used",
+      "storageDetail": "{trashed} in the trash",
+      "uploads7d": "Uploads in the last 7 days",
+      "recentUploads": "Recent uploads",
+      "recentSignIns": "Recent sign-ins",
+      "noUploads": "There are no uploads yet.",
+      "noSignIns": "There are no sign-ins yet.",
+      "viewAll": "View all"
+    },
+    "users": {
+      "description": "Accounts with access to the platform. Registration is closed: users join only by invitation.",
+      "invite": {
+        "description": "The person will receive an email, in the selected language, with a link to set their password. The link expires in 24 hours.",
+        "name": "Full name",
+        "email": "Email address",
+        "language": "Language",
+        "quota": "Storage quota (MB)",
+        "submit": "Send invitation",
+        "submitting": "Sending…",
+        "success": "The invitation was sent to {email}.",
+        "roleNote": "Invited accounts always have the user role.",
+        "another": "Invite another user",
+        "viewUser": "View user"
+      },
+      "searchLabel": "Search by name or email",
+      "searchPlaceholder": "Name or email",
+      "table": {
+        "caption": "Users",
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "files": "Files",
+        "storage": "Storage",
+        "lastSignIn": "Last sign-in",
+        "created": "Created"
+      },
+      "empty": "There are no users matching the filters.",
+      "noName": "(no name)",
+      "detail": {
+        "summary": "Account summary",
+        "created": "Created",
+        "lastSignIn": "Last sign-in",
+        "language": "Preferred language",
+        "files": "Active files",
+        "mfa": "Two-step verification",
+        "mfaOn": "Enabled",
+        "mfaOff": "Not enabled",
+        "storageHeading": "Storage",
+        "quotaLabel": "Storage quota (MB)",
+        "quotaHint": "Between 0 and 102,400 MB. Uploads that exceed the quota are rejected.",
+        "saveQuota": "Save quota",
+        "quotaSaved": "The storage quota was updated.",
+        "actionsHeading": "Account actions",
+        "viewFiles": "View files",
+        "uploadForUser": "Upload a file for this user",
+        "activity": "Recent activity",
+        "activityEmpty": "There is no recorded activity for this account.",
+        "viewAudit": "View in audit log",
+        "self": "This is your own account. Manage it from your profile."
+      },
+      "actions": {
+        "deactivate": "Deactivate account",
+        "deactivateTitle": "Deactivate this account?",
+        "deactivateBody": "The user will lose access immediately and all active sessions will be closed. Their files are kept.",
+        "deactivated": "The account was deactivated.",
+        "activate": "Activate account",
+        "activateTitle": "Activate this account?",
+        "activateBody": "The user will be able to sign in again with their current password.",
+        "activated": "The account was activated.",
+        "resend": "Resend invitation",
+        "resendTitle": "Resend the invitation?",
+        "resendBody": "A new invitation email will be sent. The previous link stops working.",
+        "resent": "The invitation was resent.",
+        "forceReset": "Force password reset",
+        "forceResetTitle": "Force a password reset?",
+        "forceResetBody": "The current password will stop working, all sessions will be closed and the user will receive an email to set a new password.",
+        "forceResetDone": "The password was reset and the user was notified."
+      },
+      "inviteCta": "Invite user"
+    },
+    "files": {
+      "description": "All files on the platform. Files moved to the trash can be restored for 30 days.",
+      "upload": "Upload file for a user",
+      "owner": "User",
+      "allOwners": "All users",
+      "table": {
+        "caption": "Files",
+        "name": "Name",
+        "owner": "User",
+        "category": "Category",
+        "type": "Type",
+        "size": "Size",
+        "uploaded": "Uploaded",
+        "source": "Uploaded by"
+      },
+      "byAdmin": "Administrator",
+      "byOwner": "User",
+      "trash": "Move to trash",
+      "trashTitle": "Move this file to the trash?",
+      "trashBody": "“{name}” will no longer be visible to the user. It can be restored from the trash for 30 days.",
+      "trashed": "The file was moved to the trash.",
+      "empty": "There are no files matching the filters.",
+      "uploadDescription": "The file is verified before it is stored, and the user receives an email notification in their language.",
+      "ownerLabel": "User receiving the file",
+      "ownerPlaceholder": "Select a user",
+      "noOwners": "There are no active users to receive files.",
+      "ownerRequired": "Select the user who will receive the file."
+    },
+    "trash": {
+      "description": "Files moved to the trash. They are deleted permanently and automatically 30 days after being moved here.",
+      "table": {
+        "caption": "Files in the trash",
+        "name": "Name",
+        "owner": "User",
+        "size": "Size",
+        "deletedAt": "Moved to trash",
+        "deletedBy": "Moved by",
+        "purgeOn": "Permanent deletion"
+      },
+      "restore": "Restore",
+      "restoreTitle": "Restore this file?",
+      "restoreBody": "“{name}” will be visible to the user again.",
+      "restored": "The file was restored.",
+      "delete": "Delete permanently",
+      "deleteTitle": "Delete this file permanently?",
+      "deleteBody": "“{name}” will be deleted permanently. This action cannot be undone.",
+      "deleted": "The file was deleted permanently.",
+      "empty": "The trash is empty."
+    },
+    "categories": {
+      "description": "Categories help classify files. Archived categories stay on existing files but cannot be selected for new uploads.",
+      "createHeading": "New category",
+      "nameEn": "Name in English",
+      "nameEs": "Name in Spanish",
+      "create": "Create category",
+      "creating": "Creating…",
+      "created": "The category was created.",
+      "table": {
+        "caption": "File categories",
+        "nameEn": "English",
+        "nameEs": "Spanish",
+        "files": "Active files",
+        "status": "Status"
+      },
+      "statusActive": "Active",
+      "statusArchived": "Archived",
+      "rename": "Rename",
+      "renameTitle": "Rename category",
+      "save": "Save",
+      "renamed": "The category was renamed.",
+      "archive": "Archive",
+      "archiveTitle": "Archive this category?",
+      "archiveBody": "“{name}” will no longer be available for new uploads. Existing files keep it.",
+      "archived": "The category was archived.",
+      "unarchive": "Restore",
+      "unarchived": "The category was restored.",
+      "empty": "There are no categories yet."
+    },
+    "audit": {
+      "description": "Append-only record of security-relevant actions. Entries cannot be modified or deleted.",
+      "searchLabel": "Search",
+      "searchPlaceholder": "Action, target, IP or details",
+      "action": "Action type",
+      "allActions": "All actions",
+      "groups": {
+        "auth": "Authentication",
+        "user": "Users",
+        "file": "Files",
+        "category": "Categories",
+        "post": "Blog",
+        "contact": "Contact",
+        "admin": "Administration"
+      },
+      "actor": "Performed by",
+      "actorPlaceholder": "Name or email",
+      "table": {
+        "caption": "Audit log",
+        "date": "Date",
+        "action": "Action",
+        "actor": "Performed by",
+        "target": "Target",
+        "ip": "IP address",
+        "details": "Details"
+      },
+      "empty": "There are no entries matching the filters."
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "summary": "Showing {from}–{to} of {total}",
+      "page": "Page {page} of {pages}"
+    },
+    "csv": {
+      "users": {
+        "id": "ID",
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "language": "Language",
+        "files": "Active files",
+        "usedBytes": "Storage used (bytes)",
+        "quotaBytes": "Storage quota (bytes)",
+        "mfa": "Two-step verification",
+        "lastSignIn": "Last sign-in",
+        "created": "Created"
+      },
+      "files": {
+        "id": "ID",
+        "name": "Name",
+        "ownerName": "User",
+        "ownerEmail": "User email",
+        "category": "Category",
+        "type": "Type",
+        "sizeBytes": "Size (bytes)",
+        "checksum": "SHA-256",
+        "uploadedBy": "Uploaded by",
+        "created": "Uploaded",
+        "deletedAt": "Moved to trash"
+      },
+      "audit": {
+        "id": "ID",
+        "date": "Date",
+        "action": "Action",
+        "actorEmail": "Performed by",
+        "targetType": "Target type",
+        "targetId": "Target ID",
+        "targetLabel": "Target",
+        "ip": "IP address",
+        "userAgent": "User agent",
+        "details": "Details"
       }
     }
   }
