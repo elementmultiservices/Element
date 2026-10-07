@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { createServerClient } from "@supabase/ssr";
 import { defaultLocale, isAppLocale, LOCALE_COOKIE, routing, type AppLocale } from "@/i18n/routing";
@@ -13,6 +13,7 @@ import type { Database } from "@/lib/supabase/database.types";
  *   2. Supabase session refresh + JWT verification.
  *   3. Inactivity timeout (30 min admin / 8 h user).
  *   4. Active account, MFA (aal2) and role checks for protected areas.
+ * Every response also gets a per-request nonce-based Content-Security-Policy.
  */
 
 const intl = createIntlMiddleware(routing);
@@ -53,7 +54,61 @@ function jsonWith(status: number, error: string, base: NextResponse): NextRespon
   return res;
 }
 
+/**
+ * Content-Security-Policy with a per-request nonce. Scripts run only if they
+ * carry the nonce (Next.js adds it to its own scripts) or are loaded by one
+ * that does (strict-dynamic, e.g. reCAPTCHA). Inline style attributes are
+ * allowed (used by components and next/image); styles cannot run code.
+ */
+function buildCsp(nonce: string): string {
+  const supabase = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://localhost").origin;
+  const isDev = process.env.NODE_ENV === "development";
+  const directives: Record<string, string[]> = {
+    "default-src": ["'self'"],
+    "script-src": [
+      "'self'",
+      `'nonce-${nonce}'`,
+      "'strict-dynamic'",
+      "https://www.google.com/recaptcha/",
+      "https://www.gstatic.com/recaptcha/",
+      ...(isDev ? ["'unsafe-eval'"] : []),
+    ],
+    "style-src": ["'self'", "'unsafe-inline'"],
+    "img-src": ["'self'", "data:", "blob:", supabase, "https://www.gstatic.com/recaptcha/"],
+    "font-src": ["'self'"],
+    "connect-src": ["'self'", supabase, "https://www.google.com/recaptcha/", ...(isDev ? ["ws:", "wss:"] : [])],
+    "frame-src": ["https://www.google.com/recaptcha/", "https://recaptcha.google.com/recaptcha/"],
+    "worker-src": ["'self'", "blob:"],
+    "manifest-src": ["'self'"],
+    "object-src": ["'none'"],
+    "base-uri": ["'self'"],
+    "form-action": ["'self'"],
+    "frame-ancestors": ["'none'"],
+  };
+  const policy = Object.entries(directives).map(([k, v]) => `${k} ${v.join(" ")}`);
+  if (!isDev) policy.push("upgrade-insecure-requests");
+  return policy.join("; ");
+}
+
 export async function proxy(request: NextRequest) {
+  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  const csp = buildCsp(nonce);
+
+  // Next.js reads the nonce from the request CSP header while rendering pages.
+  let forwarded = request;
+  if (request.method === "GET" || request.method === "HEAD") {
+    const headers = new Headers(request.headers);
+    headers.set("x-nonce", nonce);
+    headers.set("Content-Security-Policy", csp);
+    forwarded = new NextRequest(request, { headers });
+  }
+
+  const response = await handle(forwarded);
+  response.headers.set("Content-Security-Policy", csp);
+  return response;
+}
+
+async function handle(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
   const isApi = pathname.startsWith("/api/");
 

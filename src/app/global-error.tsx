@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import * as Sentry from "@sentry/nextjs";
 import en from "@/messages/en.json";
 import es from "@/messages/es.json";
 
@@ -8,8 +10,11 @@ import es from "@/messages/es.json";
  * Last-resort error boundary (replaces the root layout, so no providers are
  * available). Copy comes from the message files; never shows error details.
  */
-export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   const pathname = usePathname();
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
   const locale = pathname?.startsWith("/es") ? "es" : "en";
   const m = (locale === "es" ? es : en).ErrorPage;
 

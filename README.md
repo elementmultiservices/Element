@@ -4,9 +4,9 @@ Element is a file management web application with an institutional blog. It runs
 Next.js (App Router) and Supabase, is bilingual (English/Spanish), and is built with
 security as a primary requirement.
 
-> **Status:** Phases 1–4 complete (foundation, user dashboard, admin panel, blog and public
-> site). Phase 5 adds production hardening. Sections marked _(phase 5)_ are completed in
-> that phase.
+> **Status:** all five phases are complete: foundation, user dashboard, admin panel, blog and
+> public site, and hardening. Review [SECURITY-CHECKLIST.md](SECURITY-CHECKLIST.md) before
+> going live.
 
 ## Stack
 
@@ -19,7 +19,7 @@ security as a primary requirement.
 | Validation | Zod (server-side on every input) |
 | Abuse prevention | reCAPTCHA v3 (server-verified), Upstash Redis rate limiting |
 | Email | Resend + React Email |
-| Monitoring | Sentry _(phase 5)_ |
+| Monitoring | Sentry (personal data and file names scrubbed) |
 
 ## Local development
 
@@ -86,6 +86,10 @@ npm run dev           # http://localhost:3100
 | `npm run lint` | ESLint (no `any`, locale-aware links enforced) |
 | `npm run typecheck` | Route type generation + `tsc --noEmit` |
 | `npm test` | Unit tests (Vitest) |
+| `npm run test:integration` | RLS and Storage tests against local Supabase, with real sessions |
+| `npm run test:e2e` | Playwright browser tests (starts or reuses the dev server) |
+| `npm run test:all` | All three suites |
+| `npm run check` | Typecheck, lint, unit tests and dependency audit |
 | `npm run audit:deps` | `npm audit` of production dependencies |
 | `npm run db:start` / `db:stop` / `db:reset` | Local Supabase lifecycle |
 | `npm run db:types` | Regenerate `src/lib/supabase/database.types.ts` |
@@ -122,8 +126,58 @@ Use **separate projects** for development/preview and production, each with its 
 - **reCAPTCHA v3**: create a v3 site key restricted to your domains. Set `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` and `RECAPTCHA_SECRET_KEY`.
 - **Upstash Redis**: create a Redis database (a region close to the Vercel functions). Set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`.
 - **Resend**: verify the sending domain (SPF/DKIM). Set `RESEND_API_KEY` and `EMAIL_FROM`.
-- **Sentry** _(phase 5)_.
-- **Vercel deployment** _(phase 5)_.
+- **Sentry**: create a Next.js project and set `NEXT_PUBLIC_SENTRY_DSN`. For source-map upload, also set
+  `SENTRY_AUTH_TOKEN`, `SENTRY_ORG` and `SENTRY_PROJECT`. With the DSN empty, monitoring is off.
+  The SDK runs with `sendDefaultPii: false`, without session replay, and every event goes through
+  `scrubEvent`. The scrubber removes the user, cookies, headers, request bodies, query strings, emails,
+  file names, tokens and IP addresses.
+
+## Deploying to Vercel
+
+1. **Import the repository** in Vercel (framework: Next.js). Node.js 22 or later; build command
+   `npm run build`; install command `npm ci`.
+2. **Environment variables.** Set every variable from `.env.example` **per environment**:
+   - Production points to the **production** Supabase project.
+   - Preview and Development point to the **development** project, so they never share keys.
+   - `NEXT_PUBLIC_SITE_URL` is the canonical URL of that environment.
+   - `SUPABASE_SERVICE_ROLE_KEY`, `SESSION_SECRET`, `RECAPTCHA_SECRET_KEY`, `UPSTASH_*`, `RESEND_API_KEY`
+     and `SENTRY_AUTH_TOKEN` are secrets. Mark them as "Sensitive" and never prefix them with
+     `NEXT_PUBLIC_`.
+   - Generate a different `SESSION_SECRET` for each environment.
+3. **Region**: choose the Vercel function region closest to the Supabase project.
+4. **Domain**: add the custom domain, then:
+   - add `https://<domain>/**` to the Supabase redirect allow list and set the Site URL;
+   - add the domain to the reCAPTCHA key;
+   - verify the domain in Resend.
+5. **Production safety net**: a production server refuses to serve requests if reCAPTCHA, Upstash or
+   Resend credentials are missing. Look for `Missing production configuration` in the logs.
+6. **After the first deployment**:
+   - create the first administrator (`npm run admin:create` against production);
+   - sign in and enroll MFA;
+   - check the response headers (for example, with securityheaders.com);
+   - complete the [security checklist](SECURITY-CHECKLIST.md).
+
+### Security headers
+
+- `src/proxy.ts` sets a **per-request nonce-based Content-Security-Policy**:
+  - `script-src` uses the nonce with `'strict-dynamic'`;
+  - no `unsafe-eval` in production, and `unsafe-inline` is allowed for styles only;
+  - `frame-ancestors 'none'`, `object-src 'none'` and `form-action 'self'`;
+  - `connect-src` is limited to the site itself, Supabase and reCAPTCHA.
+- `next.config.ts` adds HSTS (production only), `X-Frame-Options: DENY`, `X-Content-Type-Options`,
+  `Referrer-Policy`, `Permissions-Policy` and `Cross-Origin-Opener-Policy`.
+
+## Tests
+
+| Suite | What it proves |
+| --- | --- |
+| Unit (`tests/unit`) | File-name rules; content inspection (magic bytes, macros, PDF scripts, decompression bombs); HTML sanitizer (XSS vectors); CSV formula-injection protection; Sentry scrubbing; en/es message parity (same keys and placeholders) |
+| Integration (`tests/integration`) | With real Supabase sessions: users cannot read, list, sign or download files of other users, nor trashed ones. They cannot self-assign role or quota, call admin functions, or write files and audit entries. Admins need MFA. Audit logs are immutable. Deactivated or revoked sessions lose access immediately |
+| End-to-end (`tests/e2e`) | Admin routes and APIs reject regular and anonymous users. Deactivated accounts cannot sign in, and open sessions are cut. Cross-user downloads return 404 and trashed files are hidden. Disallowed types, double extensions, macros, spoofed content and oversized files are rejected (UI and API). All public, user and admin pages render in both locales with the correct `lang` and no missing translation keys |
+
+The integration and end-to-end suites run only against the local stack (`npm run db:start`); the
+fixtures refuse any non-loopback Supabase URL. They create their own `e2e-*` accounts and delete
+them afterwards.
 
 ## Architecture overview
 
@@ -214,7 +268,7 @@ server with the service role. `storage_usage()` is limited to admins and the ser
 When the quota is exceeded, the user sees a neutral message asking them to contact the
 administrator.
 
-See `SECURITY-CHECKLIST.md` _(phase 5)_ before going live.
+See [SECURITY-CHECKLIST.md](SECURITY-CHECKLIST.md) before going live.
 
 ## Blog and public site
 

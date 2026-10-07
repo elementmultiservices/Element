@@ -19,11 +19,16 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > src/lib/supabase/database.types.ts",
-    "admin:create": "tsx --env-file=.env.local scripts/create-admin.ts"
+    "admin:create": "tsx --env-file=.env.local scripts/create-admin.ts",
+    "test:integration": "vitest run --config vitest.integration.config.mts",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test && npm run test:integration && npm run test:e2e",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run audit:deps"
   },
   "dependencies": {
     "@react-email/components": "1.0.12",
     "@react-email/render": "2.1.0",
+    "@sentry/nextjs": "11.4.0",
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.117.2",
     "@tiptap/pm": "3.31.4",
