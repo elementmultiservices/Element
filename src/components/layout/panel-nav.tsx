@@ -11,6 +11,7 @@ import {
   Newspaper,
   ScrollText,
   Trash2,
+  Upload,
   UserRound,
   Users,
   type LucideIcon,
@@ -41,6 +42,7 @@ function useItems(variant: PanelVariant): Item[] {
   }
   return [
     { href: "/dashboard", icon: FileText, label: t("user.files"), exact: true },
+    { href: "/dashboard/upload", icon: Upload, label: t("user.upload") },
     { href: "/dashboard/profile", icon: UserRound, label: t("user.profile") },
   ];
 }

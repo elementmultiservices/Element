@@ -12,7 +12,9 @@
       "dashboard": "My files",
       "admin": "Administration",
       "notFound": "Page not found",
-      "error": "Error"
+      "error": "Error",
+      "upload": "Upload file",
+      "profile": "Profile"
     }
   },
   "Common": {
@@ -88,7 +90,8 @@
     "adminTitle": "Administration",
     "user": {
       "files": "My files",
-      "profile": "Profile"
+      "profile": "Profile",
+      "upload": "Upload file"
     },
     "admin": {
       "overview": "Overview",
@@ -185,7 +188,8 @@
     "samePassword": "The new password must be different from the current one.",
     "weakPassword": "This password is not secure enough. Choose a different one.",
     "mfaInvalid": "The code is incorrect or has expired.",
-    "sessionExpired": "Your session has expired. Please sign in again."
+    "sessionExpired": "Your session has expired. Please sign in again.",
+    "currentPasswordInvalid": "The current password is incorrect."
   },
   "NotFound": {
     "code": "Error 404",
@@ -225,6 +229,187 @@
       "cta": "Activate account",
       "expiry": "This link is valid for 24 hours and can be used only once.",
       "ignore": "If you were not expecting this invitation, you can ignore this message."
+    },
+    "fileAssigned": {
+      "subject": "A new document is available",
+      "preview": "A new document has been added to your Element account.",
+      "heading": "New document available",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "body": "An administrator has added the document “{fileName}” to your Element account. You can view and download it from your panel.",
+      "cta": "View my files"
+    }
+  },
+  "Files": {
+    "description": "Documents in your account. Downloads use temporary links valid for 60 seconds.",
+    "uploadCta": "Upload file",
+    "filters": {
+      "heading": "Filter files",
+      "search": "Search by name",
+      "searchPlaceholder": "File name",
+      "type": "Type",
+      "allTypes": "All types",
+      "category": "Category",
+      "allCategories": "All categories",
+      "from": "From",
+      "to": "To",
+      "apply": "Apply filters",
+      "clear": "Clear filters"
+    },
+    "table": {
+      "caption": "Your files",
+      "name": "Name",
+      "category": "Category",
+      "type": "Type",
+      "size": "Size",
+      "uploaded": "Uploaded",
+      "source": "Source",
+      "actions": "Actions",
+      "download": "Download",
+      "downloadLabel": "Download {name}",
+      "noCategory": "No category"
+    },
+    "source": {
+      "self": "Uploaded by you",
+      "admin": "Uploaded by administrator"
+    },
+    "empty": {
+      "title": "You have no files yet",
+      "body": "Files you upload, or that the administrator assigns to you, will appear here."
+    },
+    "noResults": {
+      "title": "No files match the filters",
+      "body": "Adjust or clear the filters to see more results."
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "summary": "Showing {from}–{to} of {total}",
+      "page": "Page {page} of {pages}"
+    }
+  },
+  "Quota": {
+    "title": "Storage",
+    "usage": "{used} of {quota} used",
+    "percentUsed": "{percent} used",
+    "nearLimit": "You are close to your storage limit.",
+    "full": "Your storage is full. Contact the administrator to request more space."
+  },
+  "Upload": {
+    "description": "Files are verified before they are stored. Only the listed formats are accepted.",
+    "dropzone": {
+      "title": "Drag and drop a file here",
+      "or": "or",
+      "browse": "Choose a file",
+      "hint": "PDF, DOCX, XLSX, PPTX, JPG or PNG · up to {max} per file",
+      "change": "Choose another file",
+      "selected": "Selected file"
+    },
+    "fields": {
+      "description": "Description",
+      "descriptionHint": "Optional. Up to 1,000 characters.",
+      "category": "Category",
+      "noCategory": "No category"
+    },
+    "submit": "Upload file",
+    "status": {
+      "preparing": "Preparing upload…",
+      "uploading": "Uploading… {percent}",
+      "verifying": "Verifying the file…",
+      "done": "The file was uploaded and verified successfully."
+    },
+    "progressLabel": "Upload progress",
+    "uploadAnother": "Upload another file",
+    "viewFiles": "View my files",
+    "errors": {
+      "noFile": "Select a file to upload.",
+      "invalid_name": "The file name is not valid. Rename the file and try again.",
+      "double_extension": "File names with more than one extension are not allowed (for example, “invoice.exe.pdf”).",
+      "type_not_allowed": "This file type is not allowed. Use PDF, DOCX, XLSX, PPTX, JPG or PNG.",
+      "too_large": "The file exceeds the maximum size of {max}.",
+      "empty_file": "The file is empty.",
+      "quota_exceeded": "There is not enough storage space for this file.",
+      "daily_cap": "You have reached the daily upload limit. Try again tomorrow.",
+      "rate_limited": "Too many uploads in a short time. Please wait a few minutes.",
+      "recaptcha_failed": "We could not verify your request. Reload the page and try again.",
+      "content_rejected": "The file content does not match its type or contains active content (macros, scripts or executables).",
+      "size_mismatch": "The uploaded file does not match the selected file. Please try again.",
+      "upload_missing": "The upload did not complete. Please try again.",
+      "intent_invalid": "The upload authorization expired. Please try again.",
+      "invalid_category": "The selected category is not available.",
+      "network": "The connection was interrupted during the upload. Please try again.",
+      "generic": "The file could not be uploaded. Please try again in a few minutes."
+    }
+  },
+  "Profile": {
+    "description": "Manage your personal details, language, password and security.",
+    "details": {
+      "heading": "Personal details",
+      "name": "Full name",
+      "email": "Email address",
+      "emailHint": "To change your email address, contact the administrator.",
+      "role": "Role",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "Your details were updated."
+    },
+    "language": {
+      "heading": "Preferred language",
+      "description": "Used for the interface and for the emails we send you.",
+      "label": "Language",
+      "save": "Save language",
+      "saving": "Saving…"
+    },
+    "password": {
+      "heading": "Change password",
+      "description": "After the change, other active sessions are closed.",
+      "current": "Current password",
+      "new": "New password",
+      "confirm": "Confirm new password",
+      "submit": "Change password",
+      "submitting": "Saving…",
+      "success": "Your password was changed."
+    },
+    "mfa": {
+      "heading": "Two-step verification",
+      "enabledBody": "Two-step verification is enabled. You will be asked for a code from your authenticator app when you sign in.",
+      "disabledBody": "Add a second layer of protection: when you sign in, you will also need a code from an authenticator app.",
+      "requiredForAdmins": "Two-step verification is mandatory for administrator accounts and cannot be disabled.",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "enable": "Enable two-step verification",
+      "disableHeading": "Disable two-step verification",
+      "disableHint": "Enter a current code from your authenticator app to confirm.",
+      "code": "Verification code",
+      "disable": "Disable",
+      "disabling": "Disabling…",
+      "disabledSuccess": "Two-step verification was disabled."
+    },
+    "activity": {
+      "heading": "Recent sign-in activity",
+      "description": "If you see activity you do not recognize, change your password and contact the administrator.",
+      "date": "Date",
+      "event": "Event",
+      "ip": "IP address",
+      "device": "Device",
+      "empty": "There is no recorded activity yet.",
+      "unknown": "Unknown",
+      "events": {
+        "sign_in_success": "Successful sign-in",
+        "sign_in_failure": "Failed sign-in attempt",
+        "sign_in_locked": "Sign-in temporarily blocked",
+        "sign_out": "Sign-out",
+        "session_ended": "Session ended",
+        "password_reset_requested": "Password reset requested",
+        "password_updated": "Password changed",
+        "link_verified": "Access link used",
+        "mfa_enrolled": "Two-step verification enabled",
+        "mfa_verified": "Two-step verification completed",
+        "mfa_failed": "Incorrect verification code",
+        "mfa_disabled": "Two-step verification disabled",
+        "other": "Other activity"
+      }
     }
   }
 }

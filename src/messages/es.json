@@ -12,7 +12,9 @@
       "dashboard": "Mis archivos",
       "admin": "Administración",
       "notFound": "Página no encontrada",
-      "error": "Error"
+      "error": "Error",
+      "upload": "Subir archivo",
+      "profile": "Perfil"
     }
   },
   "Common": {
@@ -88,7 +90,8 @@
     "adminTitle": "Administración",
     "user": {
       "files": "Mis archivos",
-      "profile": "Perfil"
+      "profile": "Perfil",
+      "upload": "Subir archivo"
     },
     "admin": {
       "overview": "Resumen",
@@ -185,7 +188,8 @@
     "samePassword": "La nueva contraseña debe ser diferente de la actual.",
     "weakPassword": "Esta contraseña no es lo suficientemente segura. Elija otra.",
     "mfaInvalid": "El código es incorrecto o ya venció.",
-    "sessionExpired": "Su sesión ha vencido. Por favor, inicie sesión nuevamente."
+    "sessionExpired": "Su sesión ha vencido. Por favor, inicie sesión nuevamente.",
+    "currentPasswordInvalid": "La contraseña actual es incorrecta."
   },
   "NotFound": {
     "code": "Error 404",
@@ -225,6 +229,187 @@
       "cta": "Activar cuenta",
       "expiry": "Este enlace es válido por 24 horas y solo puede usarse una vez.",
       "ignore": "Si no esperaba esta invitación, puede ignorar este mensaje."
+    },
+    "fileAssigned": {
+      "subject": "Hay un nuevo documento disponible",
+      "preview": "Se agregó un nuevo documento a su cuenta de Element.",
+      "heading": "Nuevo documento disponible",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "body": "Un administrador agregó el documento “{fileName}” a su cuenta de Element. Puede consultarlo y descargarlo desde su panel.",
+      "cta": "Ver mis archivos"
+    }
+  },
+  "Files": {
+    "description": "Documentos de su cuenta. Las descargas usan enlaces temporales válidos por 60 segundos.",
+    "uploadCta": "Subir archivo",
+    "filters": {
+      "heading": "Filtrar archivos",
+      "search": "Buscar por nombre",
+      "searchPlaceholder": "Nombre del archivo",
+      "type": "Tipo",
+      "allTypes": "Todos los tipos",
+      "category": "Categoría",
+      "allCategories": "Todas las categorías",
+      "from": "Desde",
+      "to": "Hasta",
+      "apply": "Aplicar filtros",
+      "clear": "Limpiar filtros"
+    },
+    "table": {
+      "caption": "Sus archivos",
+      "name": "Nombre",
+      "category": "Categoría",
+      "type": "Tipo",
+      "size": "Tamaño",
+      "uploaded": "Fecha de carga",
+      "source": "Origen",
+      "actions": "Acciones",
+      "download": "Descargar",
+      "downloadLabel": "Descargar {name}",
+      "noCategory": "Sin categoría"
+    },
+    "source": {
+      "self": "Cargado por usted",
+      "admin": "Cargado por el administrador"
+    },
+    "empty": {
+      "title": "Aún no tiene archivos",
+      "body": "Aquí aparecerán los archivos que usted cargue o que el administrador le asigne."
+    },
+    "noResults": {
+      "title": "Ningún archivo coincide con los filtros",
+      "body": "Ajuste o limpie los filtros para ver más resultados."
+    },
+    "pagination": {
+      "label": "Paginación",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "summary": "Mostrando {from}–{to} de {total}",
+      "page": "Página {page} de {pages}"
+    }
+  },
+  "Quota": {
+    "title": "Almacenamiento",
+    "usage": "{used} de {quota} utilizados",
+    "percentUsed": "{percent} utilizado",
+    "nearLimit": "Está cerca del límite de almacenamiento.",
+    "full": "Su almacenamiento está lleno. Comuníquese con el administrador para solicitar más espacio."
+  },
+  "Upload": {
+    "description": "Los archivos se verifican antes de almacenarse. Solo se aceptan los formatos indicados.",
+    "dropzone": {
+      "title": "Arrastre y suelte un archivo aquí",
+      "or": "o",
+      "browse": "Seleccionar archivo",
+      "hint": "PDF, DOCX, XLSX, PPTX, JPG o PNG · hasta {max} por archivo",
+      "change": "Seleccionar otro archivo",
+      "selected": "Archivo seleccionado"
+    },
+    "fields": {
+      "description": "Descripción",
+      "descriptionHint": "Opcional. Hasta 1.000 caracteres.",
+      "category": "Categoría",
+      "noCategory": "Sin categoría"
+    },
+    "submit": "Subir archivo",
+    "status": {
+      "preparing": "Preparando la carga…",
+      "uploading": "Cargando… {percent}",
+      "verifying": "Verificando el archivo…",
+      "done": "El archivo se cargó y verificó correctamente."
+    },
+    "progressLabel": "Progreso de la carga",
+    "uploadAnother": "Subir otro archivo",
+    "viewFiles": "Ver mis archivos",
+    "errors": {
+      "noFile": "Seleccione un archivo para cargar.",
+      "invalid_name": "El nombre del archivo no es válido. Cambie el nombre e intente nuevamente.",
+      "double_extension": "No se permiten nombres de archivo con más de una extensión (por ejemplo, “factura.exe.pdf”).",
+      "type_not_allowed": "Este tipo de archivo no está permitido. Use PDF, DOCX, XLSX, PPTX, JPG o PNG.",
+      "too_large": "El archivo supera el tamaño máximo de {max}.",
+      "empty_file": "El archivo está vacío.",
+      "quota_exceeded": "No hay suficiente espacio de almacenamiento para este archivo.",
+      "daily_cap": "Alcanzó el límite diario de cargas. Intente nuevamente mañana.",
+      "rate_limited": "Demasiadas cargas en poco tiempo. Por favor, espere unos minutos.",
+      "recaptcha_failed": "No pudimos verificar su solicitud. Recargue la página e intente nuevamente.",
+      "content_rejected": "El contenido del archivo no corresponde a su tipo o contiene contenido activo (macros, scripts o ejecutables).",
+      "size_mismatch": "El archivo cargado no coincide con el seleccionado. Por favor, intente nuevamente.",
+      "upload_missing": "La carga no se completó. Por favor, intente nuevamente.",
+      "intent_invalid": "La autorización de carga venció. Por favor, intente nuevamente.",
+      "invalid_category": "La categoría seleccionada no está disponible.",
+      "network": "La conexión se interrumpió durante la carga. Por favor, intente nuevamente.",
+      "generic": "No fue posible cargar el archivo. Por favor, intente nuevamente en unos minutos."
+    }
+  },
+  "Profile": {
+    "description": "Administre sus datos personales, idioma, contraseña y seguridad.",
+    "details": {
+      "heading": "Datos personales",
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "emailHint": "Para cambiar su correo electrónico, comuníquese con el administrador.",
+      "role": "Rol",
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "saved": "Sus datos fueron actualizados."
+    },
+    "language": {
+      "heading": "Idioma preferido",
+      "description": "Se usa en la interfaz y en los correos que le enviamos.",
+      "label": "Idioma",
+      "save": "Guardar idioma",
+      "saving": "Guardando…"
+    },
+    "password": {
+      "heading": "Cambiar contraseña",
+      "description": "Después del cambio se cerrarán las demás sesiones activas.",
+      "current": "Contraseña actual",
+      "new": "Nueva contraseña",
+      "confirm": "Confirme la nueva contraseña",
+      "submit": "Cambiar contraseña",
+      "submitting": "Guardando…",
+      "success": "Su contraseña fue cambiada."
+    },
+    "mfa": {
+      "heading": "Verificación en dos pasos",
+      "enabledBody": "La verificación en dos pasos está activa. Al iniciar sesión se le pedirá un código de su aplicación de autenticación.",
+      "disabledBody": "Agregue una segunda capa de protección: al iniciar sesión también necesitará un código de una aplicación de autenticación.",
+      "requiredForAdmins": "La verificación en dos pasos es obligatoria para las cuentas de administrador y no puede desactivarse.",
+      "enabled": "Activa",
+      "disabled": "Inactiva",
+      "enable": "Activar verificación en dos pasos",
+      "disableHeading": "Desactivar verificación en dos pasos",
+      "disableHint": "Ingrese un código vigente de su aplicación de autenticación para confirmar.",
+      "code": "Código de verificación",
+      "disable": "Desactivar",
+      "disabling": "Desactivando…",
+      "disabledSuccess": "La verificación en dos pasos fue desactivada."
+    },
+    "activity": {
+      "heading": "Actividad reciente de inicio de sesión",
+      "description": "Si ve actividad que no reconoce, cambie su contraseña y comuníquese con el administrador.",
+      "date": "Fecha",
+      "event": "Evento",
+      "ip": "Dirección IP",
+      "device": "Dispositivo",
+      "empty": "Aún no hay actividad registrada.",
+      "unknown": "Desconocido",
+      "events": {
+        "sign_in_success": "Inicio de sesión exitoso",
+        "sign_in_failure": "Intento fallido de inicio de sesión",
+        "sign_in_locked": "Inicio de sesión bloqueado temporalmente",
+        "sign_out": "Cierre de sesión",
+        "session_ended": "Sesión finalizada",
+        "password_reset_requested": "Solicitud de restablecimiento de contraseña",
+        "password_updated": "Contraseña cambiada",
+        "link_verified": "Enlace de acceso utilizado",
+        "mfa_enrolled": "Verificación en dos pasos activada",
+        "mfa_verified": "Verificación en dos pasos completada",
+        "mfa_failed": "Código de verificación incorrecto",
+        "mfa_disabled": "Verificación en dos pasos desactivada",
+        "other": "Otra actividad"
+      }
     }
   }
 }

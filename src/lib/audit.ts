@@ -15,6 +15,11 @@ export type AuditAction =
   | "auth.mfa.enrolled"
   | "auth.mfa.verified"
   | "auth.mfa.failed"
+  | "auth.mfa.disabled"
+  | "user.profile.updated"
+  | "file.uploaded"
+  | "file.upload_rejected"
+  | "file.downloaded"
   | "admin.bootstrap";
 
 export type AuditEntry = {

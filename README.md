@@ -4,7 +4,7 @@ Element is a file management web application with an institutional blog. It runs
 Next.js (App Router) and Supabase, is bilingual (English/Spanish), and is built with
 security as a primary requirement.
 
-> **Status:** Phase 1 (foundation) complete. Later phases add the user dashboard, the
+> **Status:** Phases 1 (foundation) and 2 (user dashboard) complete. Later phases add the
 > admin panel, the blog and public site, and production hardening. Sections marked
 > _(phase N)_ are completed in that phase.
 
@@ -165,6 +165,26 @@ scripts/create-admin.ts
 - **Invitation and reset links** are single-use, expire after 24 h, and are only consumed by an
   explicit POST, so email link scanners cannot burn them.
 - **`audit_logs` is append-only**, enforced by a trigger even for the service role.
+
+### File upload and download flow
+
+1. `POST /api/files/upload-intent` checks the session, same origin, reCAPTCHA, the per-IP and
+   per-user rate limits, the name (one allowed extension, no double extensions), the MIME
+   type, the size (10 MB max), the category and the remaining quota. It then records an
+   intent and returns a signed upload URL for a random `pending/<uuid>` path.
+2. The browser uploads the file **directly to Supabase Storage**. The file never passes
+   through the Vercel function.
+3. `POST /api/files/confirm` consumes the intent exactly once, downloads the object and
+   verifies its real size, its content type and its magic bytes. It rejects PDF scripts or
+   launch actions (including inside compressed streams), Office macros, ActiveX controls,
+   embedded executables and decompression bombs. It then computes the SHA-256, re-checks
+   the quota, moves the object to `<owner>/<uuid>` and only then inserts the `files` row.
+   Rejected objects are deleted and the attempt is audited.
+4. `GET /api/files/<id>/download` checks permissions with the user's own client (RLS on
+   `files` and `storage.objects`), audits the download and redirects to a 60-second signed
+   URL served with `Content-Disposition: attachment` and a sanitized name.
+
+A daily cap of 50 authorized uploads per user applies (`DAILY_UPLOAD_CAP`).
 
 See `SECURITY-CHECKLIST.md` _(phase 5)_ before going live.
 

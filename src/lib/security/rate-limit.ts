@@ -2,13 +2,14 @@ import "server-only";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { serverEnv } from "@/lib/env";
+import { DAILY_UPLOAD_CAP } from "@/lib/files/rules";
 
 type Duration = `${number} ${"s" | "m" | "h" | "d"}`;
 type LimitConfig = { tokens: number; window: Duration };
 
 /**
  * Central rate-limit catalogue. Each action is limited per IP and, where an
- * identity exists, per user/account. Later phases add upload and contact limits.
+ * identity exists, per user/account. Later phases add contact-form limits.
  */
 export const LIMITS = {
   signInIp: { tokens: 20, window: "10 m" },
@@ -17,6 +18,13 @@ export const LIMITS = {
   confirmLinkIp: { tokens: 20, window: "10 m" },
   mfaUser: { tokens: 10, window: "10 m" },
   passwordUpdateUser: { tokens: 10, window: "1 h" },
+  profileUpdateUser: { tokens: 30, window: "1 h" },
+  uploadIntentUser: { tokens: 20, window: "10 m" },
+  uploadIntentIp: { tokens: 60, window: "10 m" },
+  uploadDailyUser: { tokens: DAILY_UPLOAD_CAP, window: "1 d" },
+  uploadConfirmUser: { tokens: 30, window: "10 m" },
+  downloadUser: { tokens: 120, window: "10 m" },
+  downloadIp: { tokens: 300, window: "10 m" },
 } as const satisfies Record<string, LimitConfig>;
 
 export type LimitName = keyof typeof LIMITS;
