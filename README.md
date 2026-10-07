@@ -186,6 +186,12 @@ scripts/create-admin.ts
 
 A daily cap of 50 authorized uploads per user applies (`DAILY_UPLOAD_CAP`).
 
+Storage quota and usage are **never disclosed to regular users**. Quota checks run on the
+server with the service role. `storage_usage()` is limited to admins and the service role, and
+`profiles.storage_quota_bytes` is not readable by authenticated sessions (column privileges).
+When the quota is exceeded, the user sees a neutral message asking them to contact the
+administrator.
+
 See `SECURITY-CHECKLIST.md` _(phase 5)_ before going live.
 
 ## Legal

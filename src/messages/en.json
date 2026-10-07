@@ -329,7 +329,7 @@
       "type_not_allowed": "This file type is not allowed. Use PDF, DOCX, XLSX, PPTX, JPG or PNG.",
       "too_large": "The file exceeds the maximum size of {max}.",
       "empty_file": "The file is empty.",
-      "quota_exceeded": "There is not enough storage space for this file.",
+      "quota_exceeded": "The file could not be uploaded to your account. Please contact the administrator.",
       "daily_cap": "You have reached the daily upload limit. Try again tomorrow.",
       "rate_limited": "Too many uploads in a short time. Please wait a few minutes.",
       "recaptcha_failed": "We could not verify your request. Reload the page and try again.",

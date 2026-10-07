@@ -3,14 +3,13 @@ import { FileText, SearchX, Upload } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { FileFilters } from "@/components/files/file-filters";
 import { FilesTable } from "@/components/files/files-table";
-import { QuotaMeter } from "@/components/files/quota-meter";
 import { PageHeader } from "@/components/layout/page-header";
 import { EmptyState } from "@/components/states/empty-state";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { requireUser } from "@/lib/auth/session";
-import { getStorageUsage, listActiveCategories, listFiles } from "@/lib/files/queries";
+import { listActiveCategories, listFiles } from "@/lib/files/queries";
 import { pageMetadata } from "@/lib/seo";
 import { createClient } from "@/lib/supabase/server";
 import { fileListParamsSchema } from "@/lib/validation/files";
@@ -28,9 +27,8 @@ export default async function DashboardPage({ params, searchParams }: PageProps<
 
   const filters = fileListParamsSchema.parse(await searchParams);
   const supabase = await createClient();
-  const [list, usage, categories] = await Promise.all([
+  const [list, categories] = await Promise.all([
     listFiles(supabase, filters, { ownerId: session.userId }),
-    getStorageUsage(supabase, session.userId),
     listActiveCategories(supabase),
   ]);
   const hasFilters = Boolean(filters.q || filters.type || filters.category || filters.from || filters.to);
@@ -51,7 +49,6 @@ export default async function DashboardPage({ params, searchParams }: PageProps<
         }
       />
       <div className="min-w-0 space-y-4">
-        <QuotaMeter usage={usage} className="max-w-xl" />
         <div className="min-w-0 space-y-4">
           <FileFilters params={filters} categories={categories} basePath="/dashboard" />
           {list.total === 0 ? (
