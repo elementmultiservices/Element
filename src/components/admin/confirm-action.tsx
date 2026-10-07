@@ -37,6 +37,7 @@ export function ConfirmAction({
   size = "sm",
   triggerVariant,
   className,
+  redirectTo,
 }: {
   action: Action;
   fields: Record<string, string>;
@@ -49,6 +50,8 @@ export function ConfirmAction({
   size?: "sm" | "default";
   triggerVariant?: "outline" | "ghost" | "destructive" | "default";
   className?: string;
+  /** Navigate here after success instead of refreshing the current page. */
+  redirectTo?: string;
 }) {
   const t = useTranslations();
   const router = useRouter();
@@ -65,7 +68,8 @@ export function ConfirmAction({
       if (result.status === "success") {
         setOpen(false);
         toast.success(successMessage);
-        router.refresh();
+        if (redirectTo) router.replace(redirectTo);
+        else router.refresh();
       } else {
         setError(result.error ?? "generic");
       }

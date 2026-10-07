@@ -45,7 +45,7 @@ export function ActionEmail(props: ActionEmailProps) {
               {props.heading}
             </Heading>
             <Text style={{ color: colors.text, fontSize: 15, lineHeight: "24px" }}>{props.greeting}</Text>
-            <Text style={{ color: colors.text, fontSize: 15, lineHeight: "24px" }}>{props.body}</Text>
+            <Text style={{ color: colors.text, fontSize: 15, lineHeight: "24px", whiteSpace: "pre-line" }}>{props.body}</Text>
             <Section style={{ margin: "24px 0" }}>
               <Button
                 href={props.ctaUrl}

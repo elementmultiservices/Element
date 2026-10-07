@@ -9,7 +9,7 @@ type LimitConfig = { tokens: number; window: Duration };
 
 /**
  * Central rate-limit catalogue. Each action is limited per IP and, where an
- * identity exists, per user/account. Phase 4 adds contact-form limits.
+ * identity exists, per user/account. 
  */
 export const LIMITS = {
   signInIp: { tokens: 20, window: "10 m" },
@@ -30,6 +30,9 @@ export const LIMITS = {
   adminInviteUser: { tokens: 30, window: "1 h" },
   adminEmailUser: { tokens: 60, window: "1 h" },
   adminExportUser: { tokens: 30, window: "10 m" },
+  contactIp: { tokens: 5, window: "1 h" },
+  contactEmail: { tokens: 3, window: "1 h" },
+  coverUploadUser: { tokens: 30, window: "10 m" },
 } as const satisfies Record<string, LimitConfig>;
 
 export type LimitName = keyof typeof LIMITS;

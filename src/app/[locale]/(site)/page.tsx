@@ -3,7 +3,9 @@ import { FolderLock, LockKeyhole, ShieldCheck } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { PostCard } from "@/components/blog/post-card";
 import { toLocale } from "@/i18n/routing";
+import { listPublishedPosts } from "@/lib/blog/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
@@ -11,11 +13,12 @@ export async function generateMetadata({ params }: PageProps<"/[locale]">): Prom
   return pageMetadata({ locale: toLocale(locale), path: "/", page: "home" });
 }
 
-// Institutional home page. Full public content arrives in phase 4.
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
-  const { locale } = await params;
-  setRequestLocale(toLocale(locale));
+  const { locale: rawLocale } = await params;
+  const locale = toLocale(rawLocale);
+  setRequestLocale(locale);
   const t = await getTranslations("Home");
+  const latest = await listPublishedPosts(locale, { limit: 3 });
 
   const features = [
     { key: "security", icon: ShieldCheck },
@@ -50,6 +53,27 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               <p className="mt-2 text-sm text-muted-foreground">{t(`features.${key}.body`)}</p>
             </div>
           ))}
+        </div>
+      </section>
+      <section className="border-t bg-surface">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h2 className="text-2xl">{t("latestHeading")}</h2>
+            {latest.total > 0 ? (
+              <Link href="/blog" className="text-sm font-medium text-link hover:underline">
+                {t("viewAllPosts")}
+              </Link>
+            ) : null}
+          </div>
+          {latest.posts.length === 0 ? (
+            <p className="mt-6 text-muted-foreground">{t("latestEmpty")}</p>
+          ) : (
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {latest.posts.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

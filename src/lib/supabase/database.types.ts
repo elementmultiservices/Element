@@ -236,6 +236,9 @@ isOneToOne: false
               "files_active": number,"files_trashed": number,"storage_trashed_bytes": number,"storage_used_bytes": number,"uploads_last_7d": number,"users_active": number,"users_inactive": number,"users_pending": number,"users_total": number
             }[]
                            },
+"admin_save_post":
+{ Args: { "p_category_id"?: string,"p_id"?: string,"p_published_at"?: string,"p_status": Database["public"]['Enums']["post_status"],"p_translations": Json }; Returns: string
+                           },
 "admin_search_audit":
 { Args: { "p_action"?: string,"p_actor"?: string,"p_from"?: string,"p_limit"?: number,"p_offset"?: number,"p_q"?: string,"p_subject"?: string,"p_to"?: string }; Returns: {
               "action": string,"actor_email": string,"actor_id": string,"actor_name": string,"created_at": string,"id": number,"ip": unknown,"metadata": Json,"target_id": string,"target_label": string,"target_type": string,"total_count": number,"user_agent": string
@@ -254,6 +257,29 @@ isOneToOne: false
 "auth_user_id_by_email":
 { Args: { "p_email": string }; Returns: string
                            },
+"blog_categories":
+{ Args: { "p_locale": Database["public"]['Enums']["app_locale"] }; Returns: {
+              "name": string,"post_count": number,"slug": string
+            }[]
+                           },
+"blog_list":
+{ Args: { "p_category"?: string,"p_limit"?: number,"p_locale": Database["public"]['Enums']["app_locale"],"p_offset"?: number }; Returns: {
+              "category_name": string,"category_slug": string,"cover_path": string,"excerpt": string,"post_id": string,"published_at": string,"slug": string,"title": string,"total_count": number
+            }[]
+                           },
+"blog_post":
+{ Args: { "p_locale": Database["public"]['Enums']["app_locale"],"p_slug": string }; Returns: {
+              "category_name": string,"category_slug": string,"content": string,"cover_path": string,"excerpt": string,"post_id": string,"published_at": string,"slug": string,"slugs": Json,"title": string,"updated_at": string
+            }[]
+                           },
+"blog_sitemap":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "post_id": string,"slugs": Json,"updated_at": string
+            }[]
+                           },
+"current_session_valid":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "invoke_purge_trash":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
@@ -270,6 +296,9 @@ isOneToOne: false
 { Args: { "p_limit"?: number }; Returns: {
               "action": string,"created_at": string,"id": number,"ip": unknown,"user_agent": string
             }[]
+                           },
+"post_is_visible":
+{ Args: { "p_published_at": string,"p_status": Database["public"]['Enums']["post_status"] }; Returns: boolean
                            },
 "publish_due_posts":
 { Args: Record<PropertyKey, never>; Returns: number

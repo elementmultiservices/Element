@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import en from "@/messages/en.json";
 import es from "@/messages/es.json";
 
-type Tree = { [key: string]: string | Tree };
+type Tree = { [key: string]: string | Tree } | Tree[];
 
 function flatten(tree: Tree, prefix = ""): Map<string, string> {
   const out = new Map<string, string>();
@@ -17,8 +17,8 @@ function flatten(tree: Tree, prefix = ""): Map<string, string> {
 const placeholders = (s: string) => [...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
 
 describe("message catalogues", () => {
-  const enKeys = flatten(en as Tree);
-  const esKeys = flatten(es as Tree);
+  const enKeys = flatten(en as unknown as Tree);
+  const esKeys = flatten(es as unknown as Tree);
 
   it("have exactly the same keys in English and Spanish", () => {
     const missingInEs = [...enKeys.keys()].filter((k) => !esKeys.has(k));

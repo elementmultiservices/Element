@@ -5,14 +5,16 @@ import { cn } from "@/lib/utils";
 
 type FormFieldProps = Omit<ComponentProps<typeof Input>, "id" | "name"> & {
   name: string;
+  /** Defaults to "field-<name>"; set it when the same form appears several times on a page. */
+  id?: string;
   label: string;
   error?: string;
   hint?: string;
 };
 
 /** Labeled input with accessible hint and error wiring. */
-export function FormField({ name, label, error, hint, className, required, ...inputProps }: FormFieldProps) {
-  const id = `field-${name}`;
+export function FormField({ name, id: idProp, label, error, hint, className, required, ...inputProps }: FormFieldProps) {
+  const id = idProp ?? `field-${name}`;
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;

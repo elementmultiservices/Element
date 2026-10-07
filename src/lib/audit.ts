@@ -35,6 +35,18 @@ export type AuditAction =
   | "category.archived"
   | "category.unarchived"
   | "admin.export"
+  | "post.created"
+  | "post.updated"
+  | "post.published"
+  | "post.deleted"
+  | "post.cover_updated"
+  | "post.cover_removed"
+  | "post_category.created"
+  | "post_category.updated"
+  | "post_category.deleted"
+  | "contact.received"
+  | "contact.handled"
+  | "contact.reopened"
   | "admin.bootstrap";
 
 export type AuditEntry = {

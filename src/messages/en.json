@@ -22,7 +22,26 @@
       "adminUpload": "Upload file for a user",
       "adminTrash": "Trash",
       "adminCategories": "File categories",
-      "adminAudit": "Audit log"
+      "adminAudit": "Audit log",
+      "about": "About us",
+      "blog": "Blog",
+      "contact": "Contact",
+      "privacy": "Privacy policy",
+      "dataPolicy": "Personal data processing policy",
+      "terms": "Terms of use",
+      "cookies": "Cookie notice",
+      "adminBlog": "Blog",
+      "adminPostNew": "New post",
+      "adminPostEdit": "Edit post",
+      "adminPostPreview": "Post preview",
+      "adminPostCategories": "Blog categories",
+      "adminMessages": "Contact messages"
+    },
+    "descriptions": {
+      "about": "Who we are and how Element protects the documents of organizations and their clients.",
+      "blog": "News, guides and announcements from Element.",
+      "contact": "Get in touch with the Element team.",
+      "legal": "Legal information about the use of Element."
     }
   },
   "Common": {
@@ -88,7 +107,10 @@
         "title": "Institutional support",
         "body": "Accounts are created and managed by our team; there is no open registration."
       }
-    }
+    },
+    "latestHeading": "Latest from the blog",
+    "latestEmpty": "There are no published posts yet.",
+    "viewAllPosts": "View all posts"
   },
   "Panel": {
     "userNavigation": "Dashboard navigation",
@@ -110,15 +132,14 @@
       "blog": "Blog",
       "messages": "Contact messages",
       "audit": "Audit log",
-      "profile": "My profile"
+      "profile": "My profile",
+      "blogCategories": "Blog categories"
     },
     "roles": {
       "user": "User",
       "admin": "Administrator"
     },
     "signedInAs": "Signed in as {name}",
-    "comingSoonTitle": "Section in preparation",
-    "comingSoonBody": "This section will be available in an upcoming phase of the project.",
     "welcome": "Welcome, {name}",
     "welcomeFallback": "Welcome"
   },
@@ -186,7 +207,16 @@
     "passwordMismatch": "The passwords do not match.",
     "codeInvalid": "Enter the 6-digit code.",
     "tooLong": "This value is too long.",
-    "invalid": "The value entered is not valid."
+    "invalid": "The value entered is not valid.",
+    "consentRequired": "You must accept the processing of your personal data to send the message.",
+    "messageMin": "The message must have at least 10 characters.",
+    "slugInvalid": "Use only lowercase letters, numbers and hyphens (for example, “annual-report-2026”).",
+    "slugTaken": "This address is already used by another item in this language.",
+    "titleRequired": "The title is required.",
+    "contentRequired": "The content is required.",
+    "translationRequired": "Complete at least one language (title and content).",
+    "scheduleFuture": "The scheduled date must be in the future.",
+    "dateRequired": "Indicate the publication date and time."
   },
   "Errors": {
     "generic": "Something went wrong. Please try again in a few minutes.",
@@ -205,7 +235,8 @@
     "notPending": "This account has already been activated; the invitation cannot be resent.",
     "notFound": "The requested item no longer exists. Reload the page.",
     "duplicateName": "A category with this name already exists.",
-    "deliveryFailed": "The action was completed, but the email could not be sent. Try again later."
+    "deliveryFailed": "The action was completed, but the email could not be sent. Try again later.",
+    "coverInvalid": "The image must be a JPG, PNG or WebP file of up to 4 MB."
   },
   "NotFound": {
     "code": "Error 404",
@@ -265,6 +296,14 @@
       "cta": "Set new password",
       "expiry": "This link is valid for 24 hours and can be used only once.",
       "ignore": "If you have questions about this change, contact the administrator."
+    },
+    "contactNotice": {
+      "subject": "New contact message: {subject}",
+      "preview": "A new message was received through the contact form.",
+      "heading": "New contact message",
+      "greeting": "Hello,",
+      "body": "From: {name} ({email})\nSubject: {subject}\nLanguage: {language}\n\n{message}",
+      "cta": "View in the admin panel"
     }
   },
   "Files": {
@@ -707,6 +746,446 @@
         "userAgent": "User agent",
         "details": "Details"
       }
+    },
+    "blog": {
+      "description": "Posts in English and Spanish. A post is shown in a language only when it has a translation in that language.",
+      "newPost": "New post",
+      "categoriesLink": "Categories",
+      "statusFilter": "Status",
+      "searchLabel": "Search by title",
+      "table": {
+        "caption": "Posts",
+        "title": "Title",
+        "status": "Status",
+        "languages": "Languages",
+        "category": "Category",
+        "date": "Publication",
+        "updated": "Updated"
+      },
+      "statuses": {
+        "draft": "Draft",
+        "scheduled": "Scheduled",
+        "published": "Published"
+      },
+      "untitled": "(untitled)",
+      "empty": "There are no posts yet.",
+      "edit": "Edit",
+      "preview": "Preview",
+      "delete": "Delete",
+      "deleteTitle": "Delete this post?",
+      "deleteBody": "The post, its translations and its cover image will be deleted permanently.",
+      "deleted": "The post was deleted.",
+      "missing": "Missing",
+      "complete": "Complete",
+      "editor": {
+        "settings": "Publication",
+        "status": "Status",
+        "publishedAt": "Publication date and time (Bogotá)",
+        "publishedAtHint": "Required for scheduled posts. For published posts, leave empty to use the current time.",
+        "category": "Category",
+        "noCategory": "No category",
+        "languagesHeading": "Content",
+        "languagesHint": "Edit each language in its tab. Empty languages are not published.",
+        "tabMissing": "missing translation",
+        "title": "Title",
+        "slug": "Address (slug)",
+        "slugHint": "Generated from the title if left empty. Example: /{locale}/blog/{slug}",
+        "excerpt": "Summary",
+        "excerptHint": "Shown in listings and search results. Up to 500 characters.",
+        "content": "Content",
+        "save": "Save",
+        "saving": "Saving…",
+        "saved": "The post was saved.",
+        "created": "The post was created.",
+        "previewLanguage": "Preview in {language}",
+        "coverHeading": "Cover image",
+        "coverHint": "JPG, PNG or WebP, up to 4 MB. Recommended 1600 × 900 px.",
+        "coverSaveFirst": "Save the post first to add a cover image.",
+        "coverUpload": "Upload image",
+        "coverReplace": "Replace image",
+        "coverRemove": "Remove image",
+        "coverUploading": "Uploading…",
+        "coverUpdated": "The cover image was updated.",
+        "coverRemoved": "The cover image was removed.",
+        "coverAlt": "Current cover image",
+        "toolbar": {
+          "label": "Formatting",
+          "paragraph": "Paragraph",
+          "heading2": "Heading",
+          "heading3": "Subheading",
+          "bold": "Bold",
+          "italic": "Italic",
+          "underline": "Underline",
+          "strike": "Strikethrough",
+          "bulletList": "Bulleted list",
+          "orderedList": "Numbered list",
+          "blockquote": "Quote",
+          "link": "Link",
+          "linkPrompt": "Link address (https://…)",
+          "unlink": "Remove link",
+          "rule": "Divider",
+          "undo": "Undo",
+          "redo": "Redo"
+        }
+      },
+      "previewBanner": "Preview — this is how the post will look in {language}. Status: {status}.",
+      "previewMissing": "There is no translation in this language yet.",
+      "backToEditor": "Back to the editor"
+    },
+    "postCategories": {
+      "description": "Categories used to filter the blog. Each one has a name and an address in each language.",
+      "createHeading": "New category",
+      "nameEn": "Name in English",
+      "nameEs": "Name in Spanish",
+      "slugEn": "Address in English",
+      "slugEs": "Address in Spanish",
+      "slugHint": "Generated from the name if left empty.",
+      "create": "Create category",
+      "save": "Save",
+      "saving": "Saving…",
+      "created": "The category was created.",
+      "saved": "The category was updated.",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleteTitle": "Delete this category?",
+      "deleteBody": "“{name}” will be deleted. Its posts are kept, without a category.",
+      "deleted": "The category was deleted.",
+      "table": {
+        "caption": "Blog categories",
+        "name": "Name",
+        "slugs": "Addresses",
+        "posts": "Posts"
+      },
+      "empty": "There are no categories yet."
+    },
+    "messages": {
+      "description": "Messages received through the contact form. They contain personal data: handle them according to the data processing policy.",
+      "filters": {
+        "status": "Status",
+        "pending": "Pending",
+        "handled": "Handled",
+        "all": "All",
+        "search": "Search",
+        "searchPlaceholder": "Name, email or subject"
+      },
+      "table": {
+        "caption": "Contact messages",
+        "from": "From",
+        "subject": "Subject",
+        "language": "Language",
+        "received": "Received",
+        "status": "Status"
+      },
+      "pending": "Pending",
+      "handled": "Handled",
+      "handledBy": "Handled by {name} on {date}",
+      "showMessage": "Show message",
+      "markHandled": "Mark as handled",
+      "markHandledTitle": "Mark this message as handled?",
+      "markHandledBody": "It will move to the handled messages.",
+      "markedHandled": "The message was marked as handled.",
+      "reopen": "Reopen",
+      "reopenTitle": "Reopen this message?",
+      "reopenBody": "It will return to the pending messages.",
+      "reopened": "The message was reopened.",
+      "reply": "Reply by email",
+      "empty": "There are no messages matching the filters."
+    }
+  },
+  "About": {
+    "eyebrow": "About us",
+    "title": "A secure, orderly channel for your documents",
+    "intro": "Element is a document management platform designed for organizations that need to share information with their clients in a controlled, traceable and private way.",
+    "sections": {
+      "mission": {
+        "title": "Our mission",
+        "body": "To provide a reliable space in which each person accesses only the documents that concern them, with clear rules and a complete record of every action."
+      },
+      "approach": {
+        "title": "How we work",
+        "body": "Accounts are created and managed by the organization. Every file is verified before it is stored, downloads use temporary links, and administrators work with two-step verification."
+      },
+      "commitment": {
+        "title": "Our commitment",
+        "body": "We process personal data in accordance with Colombian Law 1581 of 2012 and its regulations, and we apply security measures appropriate to the sensitivity of the information we manage."
+      }
+    },
+    "valuesHeading": "Principles",
+    "values": {
+      "confidentiality": "Confidentiality: access is limited to authorized people.",
+      "traceability": "Traceability: relevant actions are recorded and cannot be altered.",
+      "availability": "Availability: documents are always within reach of those who need them.",
+      "service": "Service: clear and timely attention to each request."
+    },
+    "contactCta": "Contact us",
+    "placeholderNotice": "Institutional text pending final approval."
+  },
+  "Blog": {
+    "title": "Blog",
+    "description": "News, guides and announcements from Element.",
+    "categoriesLabel": "Filter by category",
+    "allCategories": "All",
+    "readMore": "Read more",
+    "readMoreAbout": "Read more about {title}",
+    "publishedOn": "Published on {date}",
+    "empty": "There are no published posts yet.",
+    "emptyCategory": "There are no posts in this category yet.",
+    "backToBlog": "Back to the blog",
+    "category": "Category",
+    "otherLanguage": "This post is also available in {language}.",
+    "pagination": {
+      "label": "Blog pagination",
+      "previous": "Newer posts",
+      "next": "Older posts",
+      "page": "Page {page} of {pages}"
+    }
+  },
+  "Contact": {
+    "title": "Contact",
+    "description": "Send us your question or request and we will reply as soon as possible.",
+    "detailsHeading": "Contact details",
+    "formHeading": "Send us a message",
+    "name": "Full name",
+    "email": "Email address",
+    "subject": "Subject",
+    "message": "Message",
+    "messageHint": "Between 10 and 5,000 characters. Do not include passwords or sensitive information.",
+    "consent": "I authorize the processing of my personal data to handle this request, in accordance with the",
+    "consentLink": "personal data processing policy",
+    "submit": "Send message",
+    "submitting": "Sending…",
+    "successTitle": "Message sent",
+    "success": "Thank you for writing to us. We will reply to the email address you provided.",
+    "sendAnother": "Send another message",
+    "honeypot": "Leave this field empty"
+  },
+  "CookieNotice": {
+    "label": "Cookie notice",
+    "text": "We only use cookies that are strictly necessary for the site to work and to protect it (session, language and Google reCAPTCHA). We do not use advertising or analytics cookies.",
+    "link": "Learn more",
+    "accept": "Understood"
+  },
+  "Legal": {
+    "reviewBanner": "PROVISIONAL TEXT — PENDING LEGAL REVIEW. This content is a placeholder and must be reviewed and approved by legal counsel before publication.",
+    "lastUpdated": "Last updated: {date}",
+    "updatedDate": "[PENDING: effective date]",
+    "otherDocuments": "Other legal documents",
+    "cookieTable": {
+      "name": "Cookie",
+      "purpose": "Purpose",
+      "duration": "Duration",
+      "type": "Type"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "This policy explains what information Element collects, why, and how it is protected.",
+      "sections": [
+        {
+          "heading": "1. Data controller",
+          "body": [
+            "[PENDING: legal name of the organization], tax ID [PENDING], domiciled at [PENDING: address], email [PENDING: privacy contact email], is responsible for the personal data processed through Element."
+          ]
+        },
+        {
+          "heading": "2. Information we collect",
+          "body": [
+            "Account data provided by the organization (name, email address, preferred language).",
+            "Files and their descriptions uploaded by users or administrators.",
+            "Security records: sign-ins, IP address, browser type and actions performed, kept to protect accounts and investigate incidents.",
+            "Messages sent through the contact form."
+          ]
+        },
+        {
+          "heading": "3. Purposes",
+          "body": [
+            "To provide the document management service, authenticate users, send transactional emails (invitations, password resets and file notifications), keep the platform secure, respond to contact requests and comply with legal obligations."
+          ]
+        },
+        {
+          "heading": "4. Service providers",
+          "body": [
+            "Element relies on providers that process data on our behalf: Supabase (database, authentication and storage), Vercel (hosting), Resend (email delivery), Upstash (abuse prevention), Google reCAPTCHA (bot protection) and Sentry (error monitoring, without personal data or file names). Some of these providers store data outside Colombia. [PENDING: confirm regions and transfer agreements]"
+          ]
+        },
+        {
+          "heading": "5. Retention",
+          "body": [
+            "Files moved to the trash are permanently deleted after 30 days. Security records and contact messages are kept for [PENDING: retention period]."
+          ]
+        },
+        {
+          "heading": "6. Your rights",
+          "body": [
+            "You may exercise your rights to know, update, rectify and delete your data, and to revoke your authorization, as described in the personal data processing policy."
+          ]
+        },
+        {
+          "heading": "7. Changes",
+          "body": [
+            "We will publish any change to this policy on this page, indicating the date of the last update."
+          ]
+        }
+      ]
+    },
+    "dataPolicy": {
+      "title": "Personal data processing policy",
+      "intro": "This policy is adopted in compliance with Colombian Law 1581 of 2012, Decree 1377 of 2013 (compiled in Decree 1074 of 2015) and other applicable regulations.",
+      "sections": [
+        {
+          "heading": "1. Controller",
+          "body": [
+            "[PENDING: legal name], tax ID [PENDING], address [PENDING], phone [PENDING], email for data requests [PENDING]."
+          ]
+        },
+        {
+          "heading": "2. Processing and purposes",
+          "body": [
+            "Personal data is collected, stored, used and deleted to: manage user accounts; provide the document management service; send transactional communications; ensure the security of the platform and keep an audit trail; and respond to requests received through the contact form."
+          ]
+        },
+        {
+          "heading": "3. Rights of data subjects",
+          "body": [
+            "Under article 8 of Law 1581 of 2012, data subjects have the right to: (a) know, update and rectify their personal data; (b) request proof of the authorization granted; (c) be informed about the use given to their data; (d) file complaints with the Superintendence of Industry and Commerce; (e) revoke the authorization and/or request the deletion of data when the processing does not respect constitutional and legal principles, rights and guarantees; and (f) access their personal data free of charge."
+          ]
+        },
+        {
+          "heading": "4. Authorization",
+          "body": [
+            "Data is processed with the prior, express and informed authorization of the data subject, except in the cases provided by law. Authorization for contact requests is obtained through the form's acceptance box."
+          ]
+        },
+        {
+          "heading": "5. Inquiries and claims",
+          "body": [
+            "Inquiries will be answered within a maximum of ten (10) business days from their receipt, extendable by five (5) additional business days. Claims will be answered within a maximum of fifteen (15) business days, extendable by eight (8) additional business days. Requests must be sent to [PENDING: email or channel], indicating the data subject's identification, a description of the request and contact details."
+          ]
+        },
+        {
+          "heading": "6. Area responsible",
+          "body": [
+            "[PENDING: area or person responsible for handling requests from data subjects]."
+          ]
+        },
+        {
+          "heading": "7. Sensitive data and minors",
+          "body": [
+            "Element is not intended to collect sensitive data or data of minors. If such information is included in documents, it will be processed only with the authorizations required by law. [PENDING: legal review]"
+          ]
+        },
+        {
+          "heading": "8. Transfers and transmissions",
+          "body": [
+            "Data may be transmitted to the technology providers listed in the privacy policy, some of which are located outside Colombia, under conditions that guarantee an adequate level of protection. [PENDING: legal review]"
+          ]
+        },
+        {
+          "heading": "9. Effective date",
+          "body": [
+            "This policy is effective from [PENDING: date]. Databases will be kept for as long as necessary to fulfill the purposes described."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "These terms govern access to and use of Element. By using the platform you accept them.",
+      "sections": [
+        {
+          "heading": "1. Access",
+          "body": [
+            "Accounts are created exclusively by invitation from the organization. Credentials are personal and non-transferable; the user must keep them confidential and enable two-step verification when available."
+          ]
+        },
+        {
+          "heading": "2. Acceptable use",
+          "body": [
+            "It is forbidden to upload malicious content, files that infringe third-party rights, or information not related to the purpose of the service, and to attempt to access information or accounts of others."
+          ]
+        },
+        {
+          "heading": "3. Files",
+          "body": [
+            "Only the allowed formats are accepted, up to the published size and storage limits. Element may reject files that fail its security checks."
+          ]
+        },
+        {
+          "heading": "4. Availability",
+          "body": [
+            "We make reasonable efforts to keep the service available, but we do not guarantee uninterrupted operation. [PENDING: service level, if any]"
+          ]
+        },
+        {
+          "heading": "5. Suspension",
+          "body": [
+            "The organization may deactivate accounts that breach these terms or for security reasons."
+          ]
+        },
+        {
+          "heading": "6. Liability",
+          "body": [
+            "[PENDING: limitation of liability clause reviewed by legal counsel]"
+          ]
+        },
+        {
+          "heading": "7. Applicable law",
+          "body": [
+            "These terms are governed by the laws of the Republic of Colombia. [PENDING: jurisdiction]"
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Cookie notice",
+      "intro": "Element only uses cookies that are strictly necessary for the site to work securely. We do not use advertising, profiling or analytics cookies.",
+      "sections": [
+        {
+          "heading": "What are cookies?",
+          "body": [
+            "Cookies are small files that a website stores in your browser to remember information between visits."
+          ]
+        },
+        {
+          "heading": "How to manage them",
+          "body": [
+            "You can delete or block cookies from your browser settings. If you block the necessary cookies, you will not be able to sign in."
+          ]
+        }
+      ],
+      "tableHeading": "Cookies we use",
+      "rows": [
+        {
+          "name": "sb-…-auth-token",
+          "purpose": "Keeps your session open after you sign in.",
+          "duration": "Session / until sign-out",
+          "type": "Necessary"
+        },
+        {
+          "name": "el_activity",
+          "purpose": "Closes the session after a period of inactivity.",
+          "duration": "30 minutes (administrators) / 8 hours (users)",
+          "type": "Necessary"
+        },
+        {
+          "name": "NEXT_LOCALE",
+          "purpose": "Remembers the language you chose.",
+          "duration": "1 year",
+          "type": "Necessary"
+        },
+        {
+          "name": "el_cookie_notice",
+          "purpose": "Remembers that you have read this notice.",
+          "duration": "1 year",
+          "type": "Necessary"
+        },
+        {
+          "name": "_GRECAPTCHA",
+          "purpose": "Google reCAPTCHA: protects forms against automated abuse.",
+          "duration": "6 months",
+          "type": "Security (third party)"
+        }
+      ]
     }
   }
 }

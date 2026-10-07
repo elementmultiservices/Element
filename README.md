@@ -4,9 +4,9 @@ Element is a file management web application with an institutional blog. It runs
 Next.js (App Router) and Supabase, is bilingual (English/Spanish), and is built with
 security as a primary requirement.
 
-> **Status:** Phases 1 (foundation), 2 (user dashboard) and 3 (admin panel) complete. Later
-> phases add the blog and public site, and production hardening. Sections marked
-> _(phase N)_ are completed in that phase.
+> **Status:** Phases 1–4 complete (foundation, user dashboard, admin panel, blog and public
+> site). Phase 5 adds production hardening. Sections marked _(phase 5)_ are completed in
+> that phase.
 
 ## Stack
 
@@ -216,7 +216,37 @@ administrator.
 
 See `SECURITY-CHECKLIST.md` _(phase 5)_ before going live.
 
+## Blog and public site
+
+- **Bilingual posts.** Each post has optional English and Spanish translations (title, slug,
+  summary, content). A post appears in a language only when it has a translation in that
+  language. Switching language on a post goes to its translated address, or to the blog index
+  when there is no translation.
+- **Statuses:** draft, scheduled (visible from its date; a cron job also flips the status every
+  5 minutes) and published. Dates are entered in Bogotá time.
+- **Editing:** a Tiptap rich text editor, tabs per language with a missing-translation indicator,
+  a cover image (JPG/PNG/WebP up to 4 MB, verified by magic bytes and stored under a random
+  name), a preview of drafts in each language, and blog categories with per-language slugs.
+  Saves are atomic (`admin_save_post`).
+- **HTML safety:** post HTML is sanitized with an allowlist (`src/lib/blog/sanitize.ts`)
+  **before saving and again before rendering**. Scripts, styles, iframes, event handlers and
+  `javascript:`/`data:` URLs are removed. External links get `rel="noopener noreferrer nofollow"`.
+- **Public reads** use an anonymous Supabase client and SQL functions (`blog_*`) that filter
+  visibility explicitly, so a signed-in administrator browsing the site never sees drafts.
+- **Contact form:** validation, consent to data processing (Law 1581), a honeypot, reCAPTCHA,
+  and rate limits per IP (5/h) and per email (3/h). Messages are stored with the service role
+  (there is no public insert policy) and the inbox (`CONTACT_INBOX`) is notified. Admins mark
+  messages as handled or reopen them.
+- **SEO:** localized titles and descriptions, canonical URLs, hreflang alternates (per
+  translated slug for posts), Open Graph/Twitter tags, `sitemap.xml` for both languages
+  (revalidated hourly) and `robots.txt`.
+
 ## Legal
 
-Legal pages (privacy policy, personal data processing policy under Colombian Law 1581 of 2012,
-terms of use, cookie notice) are added in phase 4 with placeholder text marked for legal review.
+The privacy policy, the personal data processing policy (Colombian Law 1581 of 2012 and Decree
+1377 of 2013), the terms of use and the cookie notice are available in both languages at
+`/{locale}/legal/{privacy|data-policy|terms|cookies}`. **The texts are placeholders.** Every page
+shows a "pending legal review" banner, and the details to complete are marked `[PENDIENTE: …]`
+/ `[PENDING: …]` in `src/messages/*.json` (the `Legal` key). The cookie notice is informative:
+only strictly necessary cookies are used (session, inactivity, language, notice) plus Google
+reCAPTCHA for security.
