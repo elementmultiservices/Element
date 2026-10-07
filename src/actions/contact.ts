@@ -5,11 +5,12 @@ import { getLocale } from "next-intl/server";
 import { toLocale } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/auth/session";
-import { sendContactNotification } from "@/lib/email/contact-email";
+import { contactReference, sendContactAcknowledgement, sendContactNotification } from "@/lib/email/contact-email";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
 import { hashIdentifier } from "@/lib/security/hash";
 import { rateLimit } from "@/lib/security/rate-limit";
-import { verifyRecaptcha } from "@/lib/security/recaptcha";
+import { checkFormToken } from "@/lib/security/form-token";
+import { assessRecaptcha } from "@/lib/security/recaptcha";
 import { requestMeta } from "@/lib/security/request-meta";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -18,10 +19,20 @@ import { contactSchema } from "@/lib/validation/blog";
 
 export type ContactField = "name" | "email" | "subject" | "message" | "consent";
 
+/** reCAPTCHA score required to send the acknowledgement (stricter than accepting the message). */
+const ACK_MIN_SCORE = 0.7;
+
 /**
- * Public contact form: validation, honeypot, reCAPTCHA, per-IP and per-email
- * limits. Messages are stored with the service role (there is no public insert
- * policy) and the inbox is notified after the response is sent.
+ * Public contact form: validation, honeypot, time trap, reCAPTCHA, per-IP and
+ * per-email limits. Messages are stored with the service role (there is no
+ * public insert policy); the inbox is notified after the response is sent.
+ *
+ * The sender also receives an acknowledgement, guarded so the form cannot be
+ * used to send email to arbitrary people:
+ *   - the email contains NO visitor-supplied text (only a reference number),
+ *     so it is useless as a spam or phishing carrier;
+ *   - at most one acknowledgement per address every 24 h and a global daily cap;
+ *   - a stricter reCAPTCHA score than the one needed to accept the message.
  */
 export async function submitContactAction(_prev: FormState<ContactField>, formData: FormData): Promise<FormState<ContactField>> {
   const meta = await requestMeta();
@@ -30,6 +41,11 @@ export async function submitContactAction(_prev: FormState<ContactField>, formDa
   // Honeypot: real visitors never fill this hidden field. Pretend success.
   const trap = formData.get("website");
   if (typeof trap === "string" && trap.trim() !== "") return { status: "success" };
+
+  // Time trap: bots submit instantly; a stale page asks for a reload.
+  const timing = await checkFormToken(formData.get("formToken"), "contact");
+  if (timing === "expired") return { status: "error", error: "formExpired" };
+  if (timing !== "ok") return { status: "success" };
 
   const parsed = contactSchema.safeParse({
     name: formData.get("name"),
@@ -40,7 +56,8 @@ export async function submitContactAction(_prev: FormState<ContactField>, formDa
   });
   if (!parsed.success) return { status: "error", fieldErrors: fieldErrorsFrom<ContactField>(parsed.error) };
 
-  if (!(await verifyRecaptcha(formData.get("recaptchaToken"), "contact", meta.ip))) return { status: "error", error: "recaptchaFailed" };
+  const recaptcha = await assessRecaptcha(formData.get("recaptchaToken"), "contact", meta.ip);
+  if (!recaptcha.ok) return { status: "error", error: "recaptchaFailed" };
   if (!(await rateLimit("contactIp", meta.ip)).success) return { status: "error", error: "rateLimited" };
   if (!(await rateLimit("contactEmail", hashIdentifier(parsed.data.email))).success) return { status: "error", error: "rateLimited" };
 
@@ -55,16 +72,29 @@ export async function submitContactAction(_prev: FormState<ContactField>, formDa
     return { status: "error", error: "generic" };
   }
 
+  const acknowledge = await mayAcknowledge(email, recaptcha.score);
+
   // No personal data in the audit metadata; the message itself is the record.
-  await audit({ actorId: null, action: "contact.received", targetType: "contact", targetId: data.id, metadata: { locale } }, meta);
+  await audit(
+    { actorId: null, action: "contact.received", targetType: "contact", targetId: data.id, metadata: { locale, acknowledgement: acknowledge ? "sent" : "skipped" } },
+    meta,
+  );
   after(async () => {
     try {
       await sendContactNotification({ id: data.id, name, email, subject, message, locale });
+      if (acknowledge) await sendContactAcknowledgement({ to: email, reference: contactReference(data.id), locale });
     } catch {
       console.error("[contact] notification failed");
     }
   });
   return { status: "success" };
+}
+
+/** Anti-abuse gate for the acknowledgement email (see the action comment). */
+async function mayAcknowledge(email: string, score: number | null): Promise<boolean> {
+  if (score !== null && score < ACK_MIN_SCORE) return false;
+  if (!(await rateLimit("contactAckRecipient", hashIdentifier(email))).success) return false;
+  return (await rateLimit("contactAckGlobal", "all")).success;
 }
 
 async function setHandled(formData: FormData, handled: boolean): Promise<FormState<never>> {

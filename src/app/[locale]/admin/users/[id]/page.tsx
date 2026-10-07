@@ -131,7 +131,7 @@ export default async function AdminUserPage({ params }: PageProps<"/[locale]/adm
               </Link>
             </FormAlert>
           ) : (
-            <AccountActions userId={user.id} isActive={user.isActive} invitationPending={user.invitationPending} />
+            <AccountActions userId={user.id} isActive={user.isActive} invitationPending={user.invitationPending} role={user.role} />
           )}
         </Section>
       </div>

@@ -16,7 +16,8 @@ export default async function SignInPage({ params, searchParams }: PageProps<"/[
   const { reason } = await searchParams;
   const t = await getTranslations("Auth.signIn");
 
-  const notice = reason === "session_ended" ? "sessionEnded" : reason === "password_updated" ? "passwordUpdated" : undefined;
+  const notices = { session_ended: "sessionEnded", password_updated: "passwordUpdated", mfa_reset: "mfaReset" } as const;
+  const notice = typeof reason === "string" && Object.hasOwn(notices, reason) ? notices[reason as keyof typeof notices] : undefined;
 
   return (
     <AuthCard title={t("title")} subtitle={t("subtitle")}>

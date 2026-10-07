@@ -1,20 +1,54 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Loader2 } from "lucide-react";
-import { startMfaEnrollmentAction, verifyMfaAction, type MfaEnrollment, type MfaField } from "@/actions/auth";
+import {
+  redeemRecoveryCodeAction,
+  startMfaEnrollmentAction,
+  verifyMfaAction,
+  type MfaEnrollment,
+  type MfaField,
+  type MfaState,
+  type RecoveryField,
+} from "@/actions/auth";
+import { RecoveryCodesPanel } from "@/components/auth/recovery-codes-panel";
 import { FormAlert } from "@/components/forms/form-alert";
 import { FormField } from "@/components/forms/form-field";
 import { SubmitButton } from "@/components/forms/submit-button";
 import { Button } from "@/components/ui/button";
 import { useProtectedAction } from "@/hooks/use-protected-action";
+import { useRouter } from "@/i18n/navigation";
 
-function CodeForm({ factorId }: { factorId?: string }) {
+/**
+ * Owns the recovery codes returned by a first enrollment. Verifying MFA updates
+ * the session cookies, which re-renders the page on the server; keeping the
+ * codes here (above that re-render) guarantees they are shown before leaving.
+ */
+export function MfaFlow({ mode, home }: { mode: "enroll" | "verify" | "done"; home: string }) {
+  const router = useRouter();
+  const [codes, setCodes] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    if (mode === "done" && !codes) router.replace(home);
+  }, [mode, codes, home, router]);
+
+  if (codes) return <RecoveryCodesPanel codes={codes} onContinue={() => router.replace(home)} />;
+  if (mode === "enroll") return <MfaEnroll onCodes={setCodes} />;
+  if (mode === "verify") return <MfaVerify />;
+  return null;
+}
+
+function CodeForm({ factorId, onCodes }: { factorId?: string; onCodes?: (codes: string[]) => void }) {
   const t = useTranslations("Auth.mfa");
   const tv = useTranslations("Validation");
   const te = useTranslations("Errors");
-  const { state, onSubmit, pending } = useProtectedAction<MfaField>(verifyMfaAction);
+  const { state, onSubmit, pending } = useProtectedAction<MfaField>(verifyMfaAction, {
+    onSuccess: (result) => {
+      const codes = (result as MfaState).recoveryCodes;
+      if (codes) onCodes?.(codes);
+    },
+  });
 
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-5">
@@ -36,11 +70,49 @@ function CodeForm({ factorId }: { factorId?: string }) {
   );
 }
 
-export function MfaVerify() {
-  return <CodeForm />;
+function RecoveryForm() {
+  const t = useTranslations("Auth.mfa");
+  const tv = useTranslations("Validation");
+  const te = useTranslations("Errors");
+  const { state, onSubmit, pending } = useProtectedAction<RecoveryField>(redeemRecoveryCodeAction);
+
+  return (
+    <form onSubmit={onSubmit} noValidate className="space-y-5">
+      <div>
+        <h2 className="text-lg">{t("recoveryTitle")}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{t("recoveryBody")}</p>
+      </div>
+      {state.error ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
+      <FormField
+        name="recoveryCode"
+        label={t("recoveryCode")}
+        autoComplete="off"
+        autoCapitalize="characters"
+        spellCheck={false}
+        maxLength={20}
+        required
+        className="max-w-64 font-mono"
+        error={state.fieldErrors?.recoveryCode ? tv(state.fieldErrors.recoveryCode) : undefined}
+      />
+      <SubmitButton pending={pending} label={t("recoverySubmit")} pendingLabel={t("recoverySubmitting")} />
+    </form>
+  );
 }
 
-export function MfaEnroll() {
+function MfaVerify() {
+  const t = useTranslations("Auth.mfa");
+  const [recovery, setRecovery] = useState(false);
+  return (
+    <div className="space-y-4">
+      {recovery ? <RecoveryForm /> : <CodeForm />}
+      <button type="button" onClick={() => setRecovery((r) => !r)} className="text-sm text-link hover:underline">
+        {recovery ? t("useCode") : t("useRecovery")}
+      </button>
+    </div>
+  );
+}
+
+function MfaEnroll({ onCodes }: { onCodes: (codes: string[]) => void }) {
   const t = useTranslations("Auth.mfa");
   const te = useTranslations("Errors");
   const [enrollment, setEnrollment] = useState<MfaEnrollment | null>(null);
@@ -57,7 +129,7 @@ export function MfaEnroll() {
           <p className="text-muted-foreground">{t("manualKey")}</p>
           <code className="mt-1 block rounded-sm bg-muted px-2 py-1.5 font-mono text-xs break-all">{enrollment.secret}</code>
         </div>
-        <CodeForm factorId={enrollment.factorId} />
+        <CodeForm factorId={enrollment.factorId} onCodes={onCodes} />
       </div>
     );
   }

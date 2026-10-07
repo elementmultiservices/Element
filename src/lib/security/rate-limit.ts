@@ -32,6 +32,8 @@ export const LIMITS = {
   adminExportUser: { tokens: 30, window: "10 m" },
   contactIp: { tokens: 5, window: "1 h" },
   contactEmail: { tokens: 3, window: "1 h" },
+  contactAckRecipient: { tokens: 1, window: "1 d" },
+  contactAckGlobal: { tokens: 200, window: "1 d" },
   coverUploadUser: { tokens: 30, window: "10 m" },
 } as const satisfies Record<string, LimitConfig>;
 

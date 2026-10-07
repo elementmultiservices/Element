@@ -74,6 +74,12 @@ export const quotaSchema = z.object({ userId: z.uuid(), quotaMb });
 
 export const idSchema = z.object({ id: z.uuid() });
 
+export const roleChangeSchema = z.object({
+  id: z.uuid(),
+  role: z.enum(["user", "admin"]),
+  code: z.string({ error: "required" }).trim().regex(/^\d{6}$/, { error: "codeInvalid" }),
+});
+
 const categoryName = z.string({ error: "required" }).trim().min(1, { error: "required" }).max(80, { error: "tooLong" });
 export const categoryCreateSchema = z.object({ nameEn: categoryName, nameEs: categoryName });
 export const categoryRenameSchema = z.object({ id: z.uuid(), nameEn: categoryName, nameEs: categoryName });

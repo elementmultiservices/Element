@@ -153,6 +153,29 @@ describe("admin functions and tables", () => {
   });
 });
 
+describe("MFA recovery codes", () => {
+  it("users cannot read hashes, write codes or consume them directly", async () => {
+    const service = serviceClient();
+    await service.from("mfa_recovery_codes").insert({ user_id: userA.id, code_hash: "a".repeat(64) });
+
+    const { error: hashError } = await clientA.from("mfa_recovery_codes").select("code_hash");
+    expect(hashError).not.toBeNull();
+    const { data: own } = await clientA.from("mfa_recovery_codes").select("id, used_at");
+    expect(own).toHaveLength(1);
+    const { data: others } = await clientB.from("mfa_recovery_codes").select("id");
+    expect(others ?? []).toEqual([]);
+
+    const { error: insertError } = await clientA.from("mfa_recovery_codes").insert({ user_id: userA.id, code_hash: "b".repeat(64) });
+    expect(insertError).not.toBeNull();
+    const { error: rpcError } = await clientA.rpc("consume_recovery_code", { p_user: userA.id, p_hash: "a".repeat(64) });
+    expect(rpcError).not.toBeNull();
+
+    const { data: remaining } = await clientA.rpc("my_recovery_codes_remaining");
+    expect(remaining).toBe(1);
+    await service.from("mfa_recovery_codes").delete().eq("user_id", userA.id);
+  });
+});
+
 describe("audit log is append-only", () => {
   it("not even the service role can update or delete entries", async () => {
     const service = serviceClient();

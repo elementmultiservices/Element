@@ -8,8 +8,10 @@ import { isAppLocale, LOCALE_COOKIE, type AppLocale } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { ACTIVITY_COOKIE, activityCookieOptions, signActivity } from "@/lib/auth/activity";
 import { generateRecoveryLink } from "@/lib/auth/links";
+import { consumeRecoveryCode, issueRecoveryCodes, resetMfaFactors } from "@/lib/auth/recovery-codes";
 import { getSessionContext, homePathFor, requireSession } from "@/lib/auth/session";
 import { sendAuthLinkEmail } from "@/lib/email/auth-emails";
+import { sendSecurityNotice } from "@/lib/email/security-emails";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
 import { hashIdentifier } from "@/lib/security/hash";
 import { clearFailures, isLockedOut, rateLimit, registerFailure } from "@/lib/security/rate-limit";
@@ -275,8 +277,10 @@ export async function startMfaEnrollmentAction(): Promise<MfaEnrollment> {
 }
 
 export type MfaField = "code";
+/** On first enrollment the action returns the recovery codes (shown once) instead of redirecting. */
+export type MfaState = FormState<MfaField> & { recoveryCodes?: string[]; next?: string };
 
-export async function verifyMfaAction(_prev: FormState<MfaField>, formData: FormData): Promise<FormState<MfaField>> {
+export async function verifyMfaAction(_prev: MfaState, formData: FormData): Promise<MfaState> {
   const session = await requireSession();
   const meta = await requestMeta();
 
@@ -308,7 +312,59 @@ export async function verifyMfaAction(_prev: FormState<MfaField>, formData: Form
     { actorId: session.userId, action: enrolling ? "auth.mfa.enrolled" : "auth.mfa.verified", targetType: "user", targetId: session.userId },
     meta,
   );
+  if (enrolling) {
+    const recoveryCodes = await issueRecoveryCodes(session.userId);
+    return { status: "success", recoveryCodes, next: homePathFor(session.role) };
+  }
   return redirect({ href: homePathFor(session.role), locale: session.locale });
+}
+
+// ---------------------------------------------------------------------------
+// MFA recovery code: resets two-step verification (all factors are removed,
+// which revokes every session) and asks the user to sign in again. Admins then
+// have to enroll a new authenticator before reaching the panel.
+// ---------------------------------------------------------------------------
+export type RecoveryField = "recoveryCode";
+const RECOVERY_SCOPE = "mfa-recovery";
+
+export async function redeemRecoveryCodeAction(_prev: FormState<RecoveryField>, formData: FormData): Promise<FormState<RecoveryField>> {
+  const session = await requireSession();
+  const meta = await requestMeta();
+  const raw = formData.get("recoveryCode");
+  if (typeof raw !== "string" || raw.trim() === "") return { status: "error", fieldErrors: { recoveryCode: "required" } };
+  if (!session.hasVerifiedMfa) return { status: "error", error: "recoveryInvalid" };
+
+  const key = hashIdentifier(session.userId);
+  if (!(await rateLimit("mfaUser", session.userId)).success || (await isLockedOut(RECOVERY_SCOPE, key))) {
+    return { status: "error", error: "rateLimited" };
+  }
+
+  if (!(await consumeRecoveryCode(session.userId, raw))) {
+    await registerFailure(RECOVERY_SCOPE, key);
+    await audit({ actorId: session.userId, action: "auth.mfa.recovery_failed", targetType: "user", targetId: session.userId }, meta);
+    return { status: "error", error: "recoveryInvalid" };
+  }
+
+  await clearFailures(RECOVERY_SCOPE, key);
+  const reset = await resetMfaFactors(session.userId);
+  if (!reset) {
+    console.error("[mfa] factor reset failed");
+    return { status: "error", error: "generic" };
+  }
+  await audit({ actorId: session.userId, action: "auth.mfa.recovery_used", targetType: "user", targetId: session.userId }, meta);
+
+  after(async () => {
+    try {
+      await sendSecurityNotice({ kind: "recoveryUsed", userId: session.userId });
+    } catch {
+      console.error("[mfa] recovery notice failed");
+    }
+  });
+
+  const supabase = await createClient();
+  await supabase.auth.signOut({ scope: "local" });
+  (await cookies()).delete(ACTIVITY_COOKIE);
+  return redirect({ href: { pathname: "/sign-in", query: { reason: "mfa_reset" } }, locale: session.locale });
 }
 
 // ---------------------------------------------------------------------------

@@ -1,16 +1,20 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   changePasswordAction,
   disableMfaAction,
+  regenerateRecoveryCodesAction,
   updateLocaleAction,
   updateNameAction,
   type ChangePasswordField,
   type DisableMfaField,
   type NameField,
+  type RegenerateField,
+  type RegenerateState,
 } from "@/actions/profile";
+import { RecoveryCodesPanel } from "@/components/auth/recovery-codes-panel";
 import { FormAlert } from "@/components/forms/form-alert";
 import { FormField } from "@/components/forms/form-field";
 import { SubmitButton } from "@/components/forms/submit-button";
@@ -18,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { NativeSelect } from "@/components/ui/native-select";
 import { useProtectedAction } from "@/hooks/use-protected-action";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { locales, type AppLocale } from "@/i18n/routing";
 
 export function NameForm({ fullName }: { fullName: string }) {
@@ -158,6 +162,66 @@ export function MfaControls({ enabled, isAdmin }: { enabled: boolean; isAdmin: b
           <Link href="/mfa">{t("enable")}</Link>
         </Button>
       )}
+    </div>
+  );
+}
+
+/** Remaining recovery codes and regeneration (requires a current TOTP code). */
+export function RecoveryCodesSection({ remaining }: { remaining: number }) {
+  const t = useTranslations("Profile.recovery");
+  const tv = useTranslations("Validation");
+  const te = useTranslations("Errors");
+  const router = useRouter();
+  const [codes, setCodes] = useState<string[] | null>(null);
+  const [formKey, setFormKey] = useState(0);
+  const { state, onSubmit, pending } = useProtectedAction<RegenerateField>(regenerateRecoveryCodesAction, {
+    onSuccess: (result) => {
+      const issued = (result as RegenerateState).recoveryCodes;
+      if (issued) setCodes(issued);
+    },
+  });
+
+  if (codes) {
+    return (
+      <div className="space-y-4">
+        <FormAlert variant="success">{t("regenerated")}</FormAlert>
+        <RecoveryCodesPanel
+          codes={codes}
+          continueLabel={t("done")}
+          onContinue={() => {
+            setCodes(null);
+            setFormKey((k) => k + 1);
+            router.refresh();
+          }}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4 rounded-md border bg-surface p-4">
+      <div>
+        <h3 className="text-sm font-semibold">{t("heading")}</h3>
+        <p className={remaining > 0 ? "mt-1 text-sm text-muted-foreground" : "mt-1 text-sm text-warning"}>
+          {remaining > 0 ? t("remaining", { count: remaining }) : t("none")}
+        </p>
+        <p className="mt-1 text-sm text-muted-foreground">{t("regenerateHint")}</p>
+      </div>
+      <form key={formKey} onSubmit={onSubmit} noValidate className="space-y-3">
+        {state.status === "error" && state.error ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
+        <FormField
+          name="code"
+          id="field-regenerate-code"
+          label={t("code")}
+          inputMode="numeric"
+          autoComplete="one-time-code"
+          maxLength={6}
+          required
+          className="max-w-48"
+          error={state.fieldErrors?.code ? tv(state.fieldErrors.code) : undefined}
+        />
+        <SubmitButton pending={pending} label={t("regenerate")} pendingLabel={t("regenerating")} className="w-auto" />
+      </form>
     </div>
   );
 }

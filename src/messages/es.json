@@ -155,7 +155,8 @@
       "forgot": "¿Olvidó su contraseña?",
       "closedRegistration": "Las cuentas son creadas por el administrador. Si necesita acceso, por favor contáctenos.",
       "sessionEnded": "Su sesión ha finalizado. Por favor, inicie sesión nuevamente.",
-      "passwordUpdated": "Su contraseña fue actualizada. Por favor, inicie sesión."
+      "passwordUpdated": "Su contraseña fue actualizada. Por favor, inicie sesión.",
+      "mfaReset": "La verificación en dos pasos se restableció con un código de recuperación. Inicie sesión nuevamente; los administradores deberán configurar una nueva aplicación de autenticación."
     },
     "reset": {
       "title": "Restablecer contraseña",
@@ -195,7 +196,24 @@
       "code": "Código de verificación",
       "verify": "Verificar",
       "verifying": "Verificando…",
-      "useAnotherAccount": "Iniciar sesión con otra cuenta"
+      "useAnotherAccount": "Iniciar sesión con otra cuenta",
+      "useRecovery": "¿Perdió el acceso a su aplicación de autenticación? Use un código de recuperación",
+      "useCode": "Usar un código de la aplicación de autenticación",
+      "recoveryTitle": "Usar un código de recuperación",
+      "recoveryBody": "Ingrese uno de los códigos de recuperación que guardó al configurar la verificación en dos pasos. Al usarlo se restablece la verificación en dos pasos y se cierran todas sus sesiones; luego deberá iniciar sesión nuevamente.",
+      "recoveryCode": "Código de recuperación",
+      "recoverySubmit": "Usar código de recuperación",
+      "recoverySubmitting": "Verificando…",
+      "codesTitle": "Guarde sus códigos de recuperación",
+      "codesBody": "Cada código puede usarse una vez si pierde el acceso a su aplicación de autenticación. Guárdelos en un lugar seguro (por ejemplo, un gestor de contraseñas). No se volverán a mostrar.",
+      "codesWarning": "Cualquier persona con estos códigos y su contraseña podría restablecer su verificación en dos pasos.",
+      "codesListLabel": "Códigos de recuperación",
+      "copy": "Copiar códigos",
+      "copied": "Códigos copiados",
+      "download": "Descargar como archivo de texto",
+      "fileHeader": "Element — códigos de recuperación de la verificación en dos pasos. Cada código puede usarse una vez.",
+      "savedConfirm": "Guardé mis códigos de recuperación en un lugar seguro",
+      "continue": "Continuar"
     }
   },
   "Validation": {
@@ -236,7 +254,10 @@
     "notFound": "El elemento solicitado ya no existe. Recargue la página.",
     "duplicateName": "Ya existe una categoría con este nombre.",
     "deliveryFailed": "La acción se completó, pero no fue posible enviar el correo. Intente nuevamente más tarde.",
-    "coverInvalid": "La imagen debe ser un archivo JPG, PNG o WebP de hasta 4 MB."
+    "coverInvalid": "La imagen debe ser un archivo JPG, PNG o WebP de hasta 4 MB.",
+    "recoveryInvalid": "El código de recuperación es incorrecto o ya fue utilizado.",
+    "formExpired": "El formulario venció. Recargue la página e intente nuevamente.",
+    "roleChangeUnavailable": "El rol solo puede cambiarse en cuentas activas que hayan completado su invitación."
   },
   "NotFound": {
     "code": "Error 404",
@@ -304,6 +325,36 @@
       "greeting": "Hola:",
       "body": "De: {name} ({email})\nAsunto: {subject}\nIdioma: {language}\n\n{message}",
       "cta": "Ver en el panel de administración"
+    },
+    "roleChanged": {
+      "subject": "El rol de su cuenta cambió",
+      "preview": "Se cambió el rol de su cuenta de Element.",
+      "heading": "El rol de su cuenta cambió",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "bodyAdmin": "Un administrador le otorgó a su cuenta de Element el rol de administrador. En su próximo inicio de sesión deberá configurar la verificación en dos pasos con una aplicación de autenticación.",
+      "bodyUser": "Un administrador cambió el rol de su cuenta de Element a usuario. Ya no tiene acceso al panel de administración.",
+      "cta": "Iniciar sesión",
+      "ignore": "Si no esperaba este cambio, comuníquese con el administrador."
+    },
+    "recoveryUsed": {
+      "subject": "Se usó un código de recuperación en su cuenta",
+      "preview": "Se restableció la verificación en dos pasos de su cuenta de Element.",
+      "heading": "Verificación en dos pasos restablecida",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "body": "Se usó un código de recuperación para restablecer la verificación en dos pasos de su cuenta de Element, y se cerraron todas las sesiones.",
+      "cta": "Iniciar sesión",
+      "ignore": "Si no fue usted, cambie su contraseña de inmediato y comuníquese con el administrador."
+    },
+    "contactAck": {
+      "subject": "Recibimos su mensaje (referencia {reference})",
+      "preview": "Gracias por comunicarse con Element.",
+      "heading": "Recibimos su mensaje",
+      "greeting": "Hola:",
+      "body": "Gracias por comunicarse con Element. Su mensaje fue recibido con la referencia {reference} y nuestro equipo le responderá a esta dirección a la mayor brevedad.",
+      "cta": "Visitar Element",
+      "ignore": "Si usted no nos escribió, puede ignorar este correo; no recibirá más mensajes."
     }
   },
   "Files": {
@@ -475,8 +526,22 @@
         "mfa_verified": "Verificación en dos pasos completada",
         "mfa_failed": "Código de verificación incorrecto",
         "mfa_disabled": "Verificación en dos pasos desactivada",
-        "other": "Otra actividad"
+        "other": "Otra actividad",
+        "mfa_recovery_used": "Código de recuperación utilizado (verificación en dos pasos restablecida)",
+        "mfa_recovery_failed": "Código de recuperación incorrecto",
+        "mfa_recovery_regenerated": "Nuevos códigos de recuperación generados"
       }
+    },
+    "recovery": {
+      "heading": "Códigos de recuperación",
+      "remaining": "Tiene {count} códigos de recuperación sin usar.",
+      "none": "No tiene códigos de recuperación sin usar. Genere nuevos para no perder el acceso a su cuenta.",
+      "regenerateHint": "Al generar nuevos códigos, los anteriores dejan de servir. Ingrese un código vigente de su aplicación de autenticación para confirmar.",
+      "code": "Código de verificación",
+      "regenerate": "Generar nuevos códigos",
+      "regenerating": "Generando…",
+      "regenerated": "Se generaron nuevos códigos de recuperación. Guárdelos ahora; no se volverán a mostrar.",
+      "done": "Ya los guardé"
     }
   },
   "Admin": {
@@ -589,7 +654,16 @@
         "forceReset": "Forzar restablecimiento de contraseña",
         "forceResetTitle": "¿Forzar el restablecimiento de la contraseña?",
         "forceResetBody": "La contraseña actual dejará de funcionar, se cerrarán todas las sesiones y el usuario recibirá un correo para definir una nueva contraseña.",
-        "forceResetDone": "La contraseña fue restablecida y se notificó al usuario."
+        "forceResetDone": "La contraseña fue restablecida y se notificó al usuario.",
+        "makeAdmin": "Convertir en administrador",
+        "makeUser": "Cambiar a usuario",
+        "roleTitleAdmin": "¿Otorgar el rol de administrador?",
+        "roleBodyAdmin": "Esta persona verá todos los archivos y usuarios y administrará la plataforma. Se cerrarán sus sesiones y deberá configurar la verificación en dos pasos en su próximo inicio de sesión.",
+        "roleTitleUser": "¿Quitar el rol de administrador?",
+        "roleBodyUser": "Esta persona perderá el acceso al panel de administración. Se cerrarán sus sesiones.",
+        "stepUp": "Para confirmar, ingrese un código vigente de SU aplicación de autenticación.",
+        "stepUpCode": "Su código de verificación",
+        "roleChanged": "El rol fue cambiado. Se notificó al usuario por correo."
       },
       "inviteCta": "Invitar usuario"
     },

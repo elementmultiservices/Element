@@ -1,19 +1,33 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
   activateUserAction,
+  changeRoleAction,
   deactivateUserAction,
   forcePasswordResetAction,
   resendInvitationAction,
   updateQuotaAction,
   type QuotaField,
+  type RoleField,
 } from "@/actions/admin-users";
 import { ConfirmAction } from "@/components/admin/confirm-action";
 import { FormAlert } from "@/components/forms/form-alert";
 import { FormField } from "@/components/forms/form-field";
 import { SubmitButton } from "@/components/forms/submit-button";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { useProtectedAction } from "@/hooks/use-protected-action";
 import { useRouter } from "@/i18n/navigation";
 import { MAX_QUOTA_MB } from "@/lib/validation/admin";
@@ -57,10 +71,12 @@ export function AccountActions({
   userId,
   isActive,
   invitationPending,
+  role,
 }: {
   userId: string;
   isActive: boolean;
   invitationPending: boolean;
+  role: "user" | "admin";
 }) {
   const t = useTranslations("Admin.users.actions");
   const tc = useTranslations("Admin.common");
@@ -114,6 +130,70 @@ export function AccountActions({
           successMessage={t("forceResetDone")}
         />
       ) : null}
+      {!invitationPending && isActive ? <RoleChangeButton userId={userId} currentRole={role} /> : null}
     </div>
+  );
+}
+
+/** Role change with step-up verification (the acting admin enters a TOTP code). */
+export function RoleChangeButton({ userId, currentRole }: { userId: string; currentRole: "user" | "admin" }) {
+  const t = useTranslations("Admin.users.actions");
+  const tc = useTranslations("Admin.common");
+  const tv = useTranslations("Validation");
+  const te = useTranslations("Errors");
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [formKey, setFormKey] = useState(0);
+  const target = currentRole === "admin" ? "user" : "admin";
+  const { state, onSubmit, pending } = useProtectedAction<RoleField>(changeRoleAction, {
+    onSuccess: () => {
+      setOpen(false);
+      toast.success(t("roleChanged"));
+      router.refresh();
+    },
+  });
+
+  return (
+    <AlertDialog
+      open={open}
+      onOpenChange={(next) => {
+        if (pending) return;
+        setOpen(next);
+        if (next) setFormKey((k) => k + 1);
+      }}
+    >
+      <AlertDialogTrigger asChild>
+        <Button type="button" size="sm" variant="outline">
+          {target === "admin" ? t("makeAdmin") : t("makeUser")}
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <form key={formKey} onSubmit={onSubmit} noValidate className="space-y-4">
+          <AlertDialogHeader>
+            <AlertDialogTitle>{target === "admin" ? t("roleTitleAdmin") : t("roleTitleUser")}</AlertDialogTitle>
+            <AlertDialogDescription>{target === "admin" ? t("roleBodyAdmin") : t("roleBodyUser")}</AlertDialogDescription>
+          </AlertDialogHeader>
+          {state.status === "error" && state.error && !state.fieldErrors?.code ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
+          <input type="hidden" name="id" value={userId} />
+          <input type="hidden" name="role" value={target} />
+          <p className="text-sm">{t("stepUp")}</p>
+          <FormField
+            name="code"
+            id="field-stepup-code"
+            label={t("stepUpCode")}
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            maxLength={6}
+            required
+            className="max-w-48"
+            error={state.fieldErrors?.code ? tv(state.fieldErrors.code) : undefined}
+          />
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={pending}>{tc("cancel")}</AlertDialogCancel>
+            <SubmitButton pending={pending} label={tc("confirm")} pendingLabel={tc("working")} className="w-auto" />
+          </AlertDialogFooter>
+        </form>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

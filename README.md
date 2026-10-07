@@ -173,7 +173,7 @@ Use **separate projects** for development/preview and production, each with its 
 | --- | --- |
 | Unit (`tests/unit`) | File-name rules; content inspection (magic bytes, macros, PDF scripts, decompression bombs); HTML sanitizer (XSS vectors); CSV formula-injection protection; Sentry scrubbing; en/es message parity (same keys and placeholders) |
 | Integration (`tests/integration`) | With real Supabase sessions: users cannot read, list, sign or download files of other users, nor trashed ones. They cannot self-assign role or quota, call admin functions, or write files and audit entries. Admins need MFA. Audit logs are immutable. Deactivated or revoked sessions lose access immediately |
-| End-to-end (`tests/e2e`) | Admin routes and APIs reject regular and anonymous users. Deactivated accounts cannot sign in, and open sessions are cut. Cross-user downloads return 404 and trashed files are hidden. Disallowed types, double extensions, macros, spoofed content and oversized files are rejected (UI and API). All public, user and admin pages render in both locales with the correct `lang` and no missing translation keys |
+| End-to-end (`tests/e2e`) | Admin routes and APIs reject regular and anonymous users. Deactivated accounts cannot sign in, and open sessions are cut. Cross-user downloads return 404 and trashed files are hidden. Disallowed types, double extensions, macros, spoofed content and oversized files are rejected (UI and API). All public, user and admin pages render in both locales with the correct `lang` and no missing translation keys. Recovery codes reset MFA and cut every session. Role changes require step-up verification. The contact form's time trap and acknowledgement limits hold |
 
 The integration and end-to-end suites run only against the local stack (`npm run db:start`); the
 fixtures refuse any non-loopback Supabase URL. They create their own `e2e-*` accounts and delete
@@ -223,6 +223,12 @@ scripts/create-admin.ts
   session to still exist, so deactivating an account, forcing a password reset or "signing out
   other sessions" cuts access on the next request, without waiting for the access token to
   expire.
+- **MFA recovery codes.** Ten single-use codes (about 49 bits each) are shown **once** when TOTP
+  is enrolled, and can be regenerated from the profile with a current TOTP code. Only an
+  HMAC-SHA256 bound to the user is stored. Using a code resets two-step verification: every
+  factor is deleted, **all sessions are revoked** and the owner is notified by email.
+  Administrators must then enroll a new authenticator before reaching the panel. Failed attempts
+  are rate-limited and lock out after 5 tries.
 
 ### Administration
 
@@ -231,6 +237,11 @@ scripts/create-admin.ts
   activate/deactivate (bans the auth user and revokes every session), force password reset
   (the current password becomes unusable, sessions are revoked and a recovery link is
   emailed), storage quota, files and recent activity.
+- **Role changes** (user ↔ administrator) require **step-up verification**: the acting admin
+  re-enters a current TOTP code. Admins cannot change their own role, and the last active
+  admin cannot be demoted (database trigger). The target's sessions are revoked, the change is
+  audited and the person is notified by email. Promoted users must enroll MFA at their next
+  sign-in.
 - **Files:** a global list with filters, upload on behalf of a user (the user is notified by
   email in their language), move to trash, restore, and permanent deletion only from the
   trash. Trashed files are purged automatically after 30 days.
@@ -291,6 +302,14 @@ See [SECURITY-CHECKLIST.md](SECURITY-CHECKLIST.md) before going live.
   and rate limits per IP (5/h) and per email (3/h). Messages are stored with the service role
   (there is no public insert policy) and the inbox (`CONTACT_INBOX`) is notified. Admins mark
   messages as handled or reopen them.
+- **Sender acknowledgement, hardened against spam relaying.** Because anyone can type any
+  address, the acknowledgement:
+  - contains **no visitor-supplied text**, only a reference number and a link to the site, so it
+    cannot carry spam or phishing;
+  - is limited to **one per address every 24 h** and **200 per day** in total;
+  - requires a **higher reCAPTCHA score** (0.7) than accepting the message.
+  A signed **time trap** silently drops submissions made less than 3 s after the page loaded
+  and asks the visitor to reload after 2 h. It works alongside the honeypot.
 - **SEO:** localized titles and descriptions, canonical URLs, hreflang alternates (per
   translated slug for posts), Open Graph/Twitter tags, `sitemap.xml` for both languages
   (revalidated hourly) and `robots.txt`.

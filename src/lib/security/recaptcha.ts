@@ -21,9 +21,24 @@ export async function verifyRecaptcha(
   action: RecaptchaAction,
   ip: string | null,
 ): Promise<boolean> {
+  return (await assessRecaptcha(token, action, ip)).ok;
+}
+
+export type RecaptchaAssessment = { ok: boolean; score: number | null };
+
+/**
+ * Same verification, also returning the score so callers can demand a higher
+ * one for riskier side effects (e.g. sending an email to a typed address).
+ * Without a secret key (development only) the score is null.
+ */
+export async function assessRecaptcha(
+  token: FormDataEntryValue | string | null | undefined,
+  action: RecaptchaAction,
+  ip: string | null,
+): Promise<RecaptchaAssessment> {
   const env = serverEnv();
-  if (!env.RECAPTCHA_SECRET_KEY) return !isProduction;
-  if (typeof token !== "string" || token.length < 20 || token.length > 4000) return false;
+  if (!env.RECAPTCHA_SECRET_KEY) return { ok: !isProduction, score: null };
+  if (typeof token !== "string" || token.length < 20 || token.length > 4000) return { ok: false, score: null };
 
   const body = new URLSearchParams({ secret: env.RECAPTCHA_SECRET_KEY, response: token });
   if (ip) body.set("remoteip", ip);
@@ -35,13 +50,14 @@ export async function verifyRecaptcha(
       cache: "no-store",
       signal: AbortSignal.timeout(5000),
     });
-    if (!res.ok) return false;
+    if (!res.ok) return { ok: false, score: null };
     const parsed = responseSchema.safeParse(await res.json());
-    if (!parsed.success) return false;
+    if (!parsed.success) return { ok: false, score: null };
     const { success, score, action: returnedAction } = parsed.data;
-    return success && returnedAction === action && (score ?? 0) >= env.RECAPTCHA_MIN_SCORE;
+    const value = score ?? 0;
+    return { ok: success && returnedAction === action && value >= env.RECAPTCHA_MIN_SCORE, score: value };
   } catch {
     console.error("[recaptcha] verification request failed");
-    return false;
+    return { ok: false, score: null };
   }
 }

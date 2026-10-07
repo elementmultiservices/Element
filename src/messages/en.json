@@ -155,7 +155,8 @@
       "forgot": "Forgot your password?",
       "closedRegistration": "Accounts are created by the administrator. If you need access, please contact us.",
       "sessionEnded": "Your session has ended. Please sign in again.",
-      "passwordUpdated": "Your password has been updated. Please sign in."
+      "passwordUpdated": "Your password has been updated. Please sign in.",
+      "mfaReset": "Two-step verification was reset with a recovery code. Sign in again; administrators must set up a new authenticator app."
     },
     "reset": {
       "title": "Reset password",
@@ -195,7 +196,24 @@
       "code": "Verification code",
       "verify": "Verify",
       "verifying": "Verifying…",
-      "useAnotherAccount": "Sign in with another account"
+      "useAnotherAccount": "Sign in with another account",
+      "useRecovery": "Lost access to your authenticator app? Use a recovery code",
+      "useCode": "Use a code from the authenticator app",
+      "recoveryTitle": "Use a recovery code",
+      "recoveryBody": "Enter one of the recovery codes you saved when you set up two-step verification. Using it resets two-step verification and closes all your sessions; you will then sign in again.",
+      "recoveryCode": "Recovery code",
+      "recoverySubmit": "Use recovery code",
+      "recoverySubmitting": "Checking…",
+      "codesTitle": "Save your recovery codes",
+      "codesBody": "Each code can be used once if you lose access to your authenticator app. Keep them in a safe place (for example, a password manager). They will not be shown again.",
+      "codesWarning": "Anyone with these codes and your password can reset your two-step verification.",
+      "codesListLabel": "Recovery codes",
+      "copy": "Copy codes",
+      "copied": "Codes copied",
+      "download": "Download as text file",
+      "fileHeader": "Element — two-step verification recovery codes. Each code can be used once.",
+      "savedConfirm": "I have saved my recovery codes in a safe place",
+      "continue": "Continue"
     }
   },
   "Validation": {
@@ -236,7 +254,10 @@
     "notFound": "The requested item no longer exists. Reload the page.",
     "duplicateName": "A category with this name already exists.",
     "deliveryFailed": "The action was completed, but the email could not be sent. Try again later.",
-    "coverInvalid": "The image must be a JPG, PNG or WebP file of up to 4 MB."
+    "coverInvalid": "The image must be a JPG, PNG or WebP file of up to 4 MB.",
+    "recoveryInvalid": "The recovery code is incorrect or has already been used.",
+    "formExpired": "The form expired. Reload the page and try again.",
+    "roleChangeUnavailable": "The role can only be changed for active accounts that have completed their invitation."
   },
   "NotFound": {
     "code": "Error 404",
@@ -304,6 +325,36 @@
       "greeting": "Hello,",
       "body": "From: {name} ({email})\nSubject: {subject}\nLanguage: {language}\n\n{message}",
       "cta": "View in the admin panel"
+    },
+    "roleChanged": {
+      "subject": "Your account role changed",
+      "preview": "The role of your Element account was changed.",
+      "heading": "Your account role changed",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "bodyAdmin": "An administrator granted your Element account the administrator role. At your next sign-in you will have to set up two-step verification with an authenticator app.",
+      "bodyUser": "An administrator changed the role of your Element account to user. You no longer have access to the administration panel.",
+      "cta": "Sign in",
+      "ignore": "If you did not expect this change, contact the administrator."
+    },
+    "recoveryUsed": {
+      "subject": "A recovery code was used on your account",
+      "preview": "Two-step verification on your Element account was reset.",
+      "heading": "Two-step verification reset",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "body": "A recovery code was used to reset two-step verification on your Element account, and all sessions were closed.",
+      "cta": "Sign in",
+      "ignore": "If this was not you, change your password immediately and contact the administrator."
+    },
+    "contactAck": {
+      "subject": "We received your message (reference {reference})",
+      "preview": "Thank you for contacting Element.",
+      "heading": "We received your message",
+      "greeting": "Hello,",
+      "body": "Thank you for contacting Element. Your message was received with reference {reference}, and our team will reply to this address as soon as possible.",
+      "cta": "Visit Element",
+      "ignore": "If you did not write to us, you can ignore this email; you will not receive further messages."
     }
   },
   "Files": {
@@ -475,8 +526,22 @@
         "mfa_verified": "Two-step verification completed",
         "mfa_failed": "Incorrect verification code",
         "mfa_disabled": "Two-step verification disabled",
-        "other": "Other activity"
+        "other": "Other activity",
+        "mfa_recovery_used": "Recovery code used (two-step verification reset)",
+        "mfa_recovery_failed": "Incorrect recovery code",
+        "mfa_recovery_regenerated": "New recovery codes generated"
       }
+    },
+    "recovery": {
+      "heading": "Recovery codes",
+      "remaining": "You have {count} unused recovery codes.",
+      "none": "You have no unused recovery codes. Generate new ones so you do not lose access to your account.",
+      "regenerateHint": "Generating new codes invalidates the previous ones. Enter a current code from your authenticator app to confirm.",
+      "code": "Verification code",
+      "regenerate": "Generate new codes",
+      "regenerating": "Generating…",
+      "regenerated": "New recovery codes were generated. Save them now; they will not be shown again.",
+      "done": "I have saved them"
     }
   },
   "Admin": {
@@ -589,7 +654,16 @@
         "forceReset": "Force password reset",
         "forceResetTitle": "Force a password reset?",
         "forceResetBody": "The current password will stop working, all sessions will be closed and the user will receive an email to set a new password.",
-        "forceResetDone": "The password was reset and the user was notified."
+        "forceResetDone": "The password was reset and the user was notified.",
+        "makeAdmin": "Make administrator",
+        "makeUser": "Change to user",
+        "roleTitleAdmin": "Grant administrator role?",
+        "roleBodyAdmin": "This person will see all files and users and manage the platform. Their sessions will be closed and they must set up two-step verification at their next sign-in.",
+        "roleTitleUser": "Remove administrator role?",
+        "roleBodyUser": "This person will lose access to the administration panel. Their sessions will be closed.",
+        "stepUp": "To confirm, enter a current code from YOUR authenticator app.",
+        "stepUpCode": "Your verification code",
+        "roleChanged": "The role was changed. The user was notified by email."
       },
       "inviteCta": "Invite user"
     },

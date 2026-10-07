@@ -109,6 +109,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"mfa_recovery_codes": {
+                  Row: {
+                    "code_hash": string,"created_at": string,"id": string,"used_at": string | null,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "code_hash": string,"created_at"?: string,"id"?: string,"used_at"?: string | null,"user_id": string
+                  }
+                  Update: {
+                    "code_hash"?: string,"created_at"?: string,"id"?: string,"used_at"?: string | null,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "mfa_recovery_codes_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"post_categories": {
                   Row: {
                     "created_at": string,"id": string,"name_en": string,"name_es": string,"slug_en": string,"slug_es": string
@@ -277,6 +297,9 @@ isOneToOne: false
               "post_id": string,"slugs": Json,"updated_at": string
             }[]
                            },
+"consume_recovery_code":
+{ Args: { "p_hash": string,"p_user": string }; Returns: boolean
+                           },
 "current_session_valid":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
@@ -296,6 +319,9 @@ isOneToOne: false
 { Args: { "p_limit"?: number }; Returns: {
               "action": string,"created_at": string,"id": number,"ip": unknown,"user_agent": string
             }[]
+                           },
+"my_recovery_codes_remaining":
+{ Args: Record<PropertyKey, never>; Returns: number
                            },
 "post_is_visible":
 { Args: { "p_published_at": string,"p_status": Database["public"]['Enums']["post_status"] }; Returns: boolean

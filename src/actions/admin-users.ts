@@ -1,17 +1,19 @@
 "use server";
 
 import { randomBytes } from "node:crypto";
+import { after } from "next/server";
 import { getUser } from "@/lib/admin/queries";
 import { audit } from "@/lib/audit";
 import { generateInviteLink, generateRecoveryLink } from "@/lib/auth/links";
 import { requireAdmin, type SessionContext } from "@/lib/auth/session";
 import { sendAuthLinkEmail } from "@/lib/email/auth-emails";
+import { sendSecurityNotice } from "@/lib/email/security-emails";
 import { fieldErrorsFrom, type ErrorKey, type FormState } from "@/lib/forms";
 import { rateLimit } from "@/lib/security/rate-limit";
 import { requestMeta } from "@/lib/security/request-meta";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { idSchema, inviteUserSchema, quotaSchema } from "@/lib/validation/admin";
+import { idSchema, inviteUserSchema, quotaSchema, roleChangeSchema } from "@/lib/validation/admin";
 
 const MB = 1024 * 1024;
 const BAN_FOREVER = "876000h"; // ~100 years
@@ -204,6 +206,61 @@ export async function updateQuotaAction(_prev: FormState<QuotaField>, formData: 
     targetType: "user",
     targetId: parsed.data.userId,
     metadata: { from_bytes: before.quotaBytes, to_bytes: bytes },
+  });
+  return { status: "success" };
+}
+
+// ---------------------------------------------------------------------------
+// Role change (step-up: the acting admin re-enters a current TOTP code).
+// Self-changes and demoting the last active admin are refused (also enforced
+// by the protect_profile_columns trigger). The target's sessions are revoked so
+// the new role applies from a fresh sign-in; promoted users must enroll MFA.
+// ---------------------------------------------------------------------------
+export type RoleField = "code";
+
+export async function changeRoleAction(_prev: FormState<RoleField>, formData: FormData): Promise<FormState<RoleField>> {
+  const g = await guard();
+  if (!g.ok) return g.result;
+  const meta = await requestMeta();
+
+  const parsed = roleChangeSchema.safeParse({ id: formData.get("id"), role: formData.get("role"), code: formData.get("code") });
+  if (!parsed.success) {
+    const fieldErrors = fieldErrorsFrom<RoleField>(parsed.error);
+    return Object.keys(fieldErrors).length > 0 ? { status: "error", fieldErrors } : { status: "error", error: "notFound" };
+  }
+  const { id, role, code } = parsed.data;
+  if (id === g.session.userId) return { status: "error", error: "selfAction" };
+  if (!(await rateLimit("mfaUser", g.session.userId)).success) return { status: "error", error: "rateLimited" };
+
+  const supabase = await createClient();
+  const target = await getUser(supabase, id);
+  if (!target) return { status: "error", error: "notFound" };
+  if (!target.isActive || target.invitationPending) return { status: "error", error: "roleChangeUnavailable" };
+  if (target.role === role) return { status: "success" };
+
+  // Step-up verification of the acting administrator.
+  const { data: factors } = await supabase.auth.mfa.listFactors();
+  const factor = factors?.totp.find((f) => f.status === "verified");
+  if (!factor) return { status: "error", error: "mfaInvalid" };
+  const { error: mfaError } = await supabase.auth.mfa.challengeAndVerify({ factorId: factor.id, code });
+  if (mfaError) {
+    await audit({ actorId: g.session.userId, action: "auth.mfa.failed", targetType: "user", targetId: g.session.userId }, meta);
+    return { status: "error", error: "mfaInvalid" };
+  }
+
+  const { error } = await supabase.from("profiles").update({ role }).eq("id", id);
+  if (error) return { status: "error", error: profileErrorKey(error.message) };
+
+  const { error: revokeError } = await createAdminClient().rpc("revoke_user_sessions", { p_user: id });
+  if (revokeError) console.error(`[admin] session revocation failed: ${revokeError.code}`);
+
+  await audit({ actorId: g.session.userId, action: "user.role.changed", targetType: "user", targetId: id, metadata: { from: target.role, to: role } }, meta);
+  after(async () => {
+    try {
+      await sendSecurityNotice({ kind: "roleChanged", userId: id, role });
+    } catch {
+      console.error("[admin] role notice failed");
+    }
   });
   return { status: "success" };
 }

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import type { SessionContext } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { describeUserAgent } from "@/lib/user-agent";
-import { LocaleForm, MfaControls, NameForm, PasswordForm } from "./profile-forms";
+import { LocaleForm, MfaControls, NameForm, PasswordForm, RecoveryCodesSection } from "./profile-forms";
 
 type EventKey = keyof Messages["Profile"]["activity"]["events"];
 const EVENT_KEYS = new Set<string>([
@@ -22,6 +22,9 @@ const EVENT_KEYS = new Set<string>([
   "mfa_verified",
   "mfa_failed",
   "mfa_disabled",
+  "mfa_recovery_used",
+  "mfa_recovery_failed",
+  "mfa_recovery_regenerated",
 ] satisfies EventKey[]);
 
 function eventKey(action: string): EventKey {
@@ -47,7 +50,10 @@ export async function ProfileView({ session }: { session: SessionContext }) {
   const format = await getFormatter();
 
   const supabase = await createClient();
-  const { data: activity } = await supabase.rpc("my_auth_activity", { p_limit: 20 });
+  const [{ data: activity }, { data: recoveryRemaining }] = await Promise.all([
+    supabase.rpc("my_auth_activity", { p_limit: 20 }),
+    supabase.rpc("my_recovery_codes_remaining"),
+  ]);
   const isAdmin = session.role === "admin";
 
   return (
@@ -104,6 +110,11 @@ export async function ProfileView({ session }: { session: SessionContext }) {
           </p>
           <div className="mt-4">
             <MfaControls enabled={session.hasVerifiedMfa} isAdmin={session.role === "admin"} />
+            {session.hasVerifiedMfa ? (
+              <div className="mt-5">
+                <RecoveryCodesSection remaining={recoveryRemaining ?? 0} />
+              </div>
+            ) : null}
           </div>
         </Section>
       </div>

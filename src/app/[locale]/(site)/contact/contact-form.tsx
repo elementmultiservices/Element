@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useProtectedAction } from "@/hooks/use-protected-action";
 import { Link } from "@/i18n/navigation";
 
-export function ContactForm() {
+export function ContactForm({ formToken }: { formToken: string }) {
   const t = useTranslations("Contact");
   const tv = useTranslations("Validation");
   const te = useTranslations("Errors");
@@ -75,6 +75,7 @@ export function ContactForm() {
         ) : null}
       </div>
 
+      <input type="hidden" name="formToken" value={formToken} />
       {/* Honeypot: hidden from people and assistive technology; bots tend to fill it. */}
       <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
         <label htmlFor="field-website">{t("honeypot")}</label>

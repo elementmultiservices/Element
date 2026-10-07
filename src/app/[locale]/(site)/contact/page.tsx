@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { toLocale } from "@/i18n/routing";
+import { issueFormToken } from "@/lib/security/form-token";
 import { pageMetadata } from "@/lib/seo";
 import { ContactForm } from "./contact-form";
 
@@ -14,6 +15,7 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
   const { locale } = await params;
   setRequestLocale(toLocale(locale));
   const t = await getTranslations();
+  const formToken = await issueFormToken("contact");
   const details = [
     { icon: MapPin, text: t("Footer.address") },
     { icon: Phone, text: t("Footer.phone") },
@@ -33,7 +35,7 @@ export default async function ContactPage({ params }: PageProps<"/[locale]/conta
             {t("Contact.formHeading")}
           </h2>
           <div className="mt-6">
-            <ContactForm />
+            <ContactForm formToken={formToken} />
           </div>
         </section>
         <aside aria-labelledby="contact-details-heading" className="h-fit rounded-lg border bg-surface p-6">

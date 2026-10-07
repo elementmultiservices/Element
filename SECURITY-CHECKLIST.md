@@ -21,7 +21,8 @@ the person deploying, and the open items reviewed again after each major change.
 - [ ] MFA TOTP is enabled.
 - [ ] The Site URL and redirect allow list contain **only** the production domain.
 - [ ] The first administrator was created with `npm run admin:create` and has enrolled MFA. **At least two administrators** exist, so losing one authenticator does not lock the organization out.
-- [ ] A documented procedure exists for an administrator who loses their authenticator. Today it means another person with database access removes their factor from `auth.mfa_factors`, with the change recorded.
+- [ ] Every administrator has stored their **MFA recovery codes** in a safe place (password manager or sealed envelope). A lost authenticator is recovered with one of those codes, which forces enrollment of a new authenticator. Without codes, the last resort is a person with database access removing the factor from `auth.mfa_factors`, with the change recorded.
+- [ ] Role changes are reviewed in the audit log (`user.role.changed`). The list of administrators is kept to the minimum necessary.
 
 ## Database and storage
 

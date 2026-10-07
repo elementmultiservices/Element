@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "@/i18n/navigation";
 import { LOCALE_COOKIE } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
+import { deleteRecoveryCodes, issueRecoveryCodes } from "@/lib/auth/recovery-codes";
 import { homePathFor, requireUser } from "@/lib/auth/session";
 import { serverEnv } from "@/lib/env";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
@@ -144,6 +145,36 @@ export async function disableMfaAction(_prev: FormState<DisableMfaField>, formDa
     console.error(`[profile] mfa unenroll failed: ${error.code ?? "unknown"}`);
     return { status: "error", error: "generic" };
   }
+  await deleteRecoveryCodes(session.userId);
   await audit({ actorId: session.userId, action: "auth.mfa.disabled", targetType: "user", targetId: session.userId });
   return { status: "success" };
+}
+
+// ---------------------------------------------------------------------------
+// Regenerate MFA recovery codes (requires a current TOTP code)
+// ---------------------------------------------------------------------------
+export type RegenerateField = "code";
+export type RegenerateState = FormState<RegenerateField> & { recoveryCodes?: string[] };
+
+export async function regenerateRecoveryCodesAction(_prev: RegenerateState, formData: FormData): Promise<RegenerateState> {
+  const session = await requireUser();
+  if (!session.hasVerifiedMfa || session.aal !== "aal2") return { status: "error", error: "generic" };
+
+  const parsed = mfaVerifySchema.safeParse({ code: formData.get("code") });
+  if (!parsed.success) return { status: "error", fieldErrors: fieldErrorsFrom<RegenerateField>(parsed.error) };
+  if (!(await rateLimit("mfaUser", session.userId)).success) return { status: "error", error: "rateLimited" };
+
+  const supabase = await createClient();
+  const { data: factors } = await supabase.auth.mfa.listFactors();
+  const factor = factors?.totp.find((f) => f.status === "verified");
+  if (!factor) return { status: "error", error: "generic" };
+  const { error } = await supabase.auth.mfa.challengeAndVerify({ factorId: factor.id, code: parsed.data.code });
+  if (error) {
+    await audit({ actorId: session.userId, action: "auth.mfa.failed", targetType: "user", targetId: session.userId });
+    return { status: "error", error: "mfaInvalid" };
+  }
+
+  const recoveryCodes = await issueRecoveryCodes(session.userId);
+  await audit({ actorId: session.userId, action: "auth.mfa.recovery_regenerated", targetType: "user", targetId: session.userId });
+  return { status: "success", recoveryCodes };
 }
