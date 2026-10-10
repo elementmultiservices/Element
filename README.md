@@ -100,7 +100,11 @@ npm run dev           # http://localhost:3100
 Use **separate projects** for development/preview and production, each with its own keys.
 
 1. **Create the project** and link it: `npx supabase link --project-ref <ref>`.
-2. **Apply the migrations**: `npx supabase db push`.
+2. **Apply the migrations**: `npx supabase db push` (recommended: it records the migration
+   history). Alternative for a **new, empty** project: paste `supabase/full-schema.sql` into the SQL
+   editor. The file contains every migration in order and is regenerated with `npm run db:bundle`.
+   Use only one of the two methods. If you use the SQL editor and later switch to the CLI, mark the
+   migrations as applied with `npx supabase migration repair --status applied <version>…`.
 3. **Push the auth configuration** in `supabase/config.toml` (`npx supabase config push`), or set it in the dashboard:
    - Sign-ups **disabled** (Authentication → Sign In / Providers → "Allow new users to sign up" off). Keep the **Email provider enabled**.
    - Minimum password length **12**, requirement "lowercase, uppercase and digits".
