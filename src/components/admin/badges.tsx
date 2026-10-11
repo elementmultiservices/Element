@@ -18,6 +18,19 @@ export async function UserStatusBadge({ isActive, invitationPending }: { isActiv
   );
 }
 
+/** Whether a user account may upload documents (granted by an administrator). */
+export async function UploadAccessBadge({ canUpload }: { canUpload: boolean }) {
+  const t = await getTranslations("Admin.users.upload");
+  return (
+    <Badge
+      variant="outline"
+      className={cn("font-normal", canUpload ? "border-success/30 bg-success-bg text-success" : "border-warning/30 bg-warning-bg text-warning")}
+    >
+      {canUpload ? t("allowed") : t("notAllowed")}
+    </Badge>
+  );
+}
+
 export async function RoleBadge({ role }: { role: "user" | "admin" }) {
   const t = await getTranslations("Panel.roles");
   return (

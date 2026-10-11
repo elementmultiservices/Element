@@ -43,7 +43,10 @@ export function anonClient(): Db {
 export type TestUser = { id: string; email: string; password: string; role: "user" | "admin" };
 
 /** Creates a confirmed account with a unique email (prefix "e2e-"). */
-export async function createTestUser(label: string, options: { role?: "user" | "admin"; isActive?: boolean } = {}): Promise<TestUser> {
+export async function createTestUser(
+  label: string,
+  options: { role?: "user" | "admin"; isActive?: boolean; canUpload?: boolean } = {},
+): Promise<TestUser> {
   const admin = serviceClient();
   const email = `e2e-${label}-${randomUUID().slice(0, 8)}@test.local`;
   const password = `T${randomBytes(12).toString("base64url")}a1`;
@@ -55,7 +58,10 @@ export async function createTestUser(label: string, options: { role?: "user" | "
   });
   if (error || !data.user) throw new Error(`createUser failed: ${error?.message}`);
   const role = options.role ?? "user";
-  const { error: upErr } = await admin.from("profiles").update({ role, is_active: options.isActive ?? true }).eq("id", data.user.id);
+  const { error: upErr } = await admin
+    .from("profiles")
+    .update({ role, is_active: options.isActive ?? true, can_upload: options.canUpload ?? true })
+    .eq("id", data.user.id);
   if (upErr) throw new Error(`profile update failed: ${upErr.message}`);
   return { id: data.user.id, email, password, role };
 }

@@ -8,7 +8,9 @@ import {
   changeRoleAction,
   deactivateUserAction,
   forcePasswordResetAction,
+  grantUploadAction,
   resendInvitationAction,
+  revokeUploadAction,
   updateQuotaAction,
   type QuotaField,
   type RoleField,
@@ -64,6 +66,36 @@ export function QuotaForm({ userId, quotaMb }: { userId: string; quotaMb: number
       />
       <SubmitButton pending={pending} label={t("saveQuota")} pendingLabel={t("saveQuota")} className="w-auto" />
     </form>
+  );
+}
+
+/** Grants or revokes the permission to upload documents. */
+export function UploadAccessControl({ userId, canUpload }: { userId: string; canUpload: boolean }) {
+  const t = useTranslations("Admin.users.upload");
+  const fields = { id: userId };
+  return canUpload ? (
+    <ConfirmAction
+      action={revokeUploadAction}
+      fields={fields}
+      destructive
+      triggerVariant="outline"
+      triggerLabel={t("revoke")}
+      title={t("revokeTitle")}
+      description={t("revokeBody")}
+      confirmLabel={t("revoke")}
+      successMessage={t("revoked")}
+    />
+  ) : (
+    <ConfirmAction
+      action={grantUploadAction}
+      fields={fields}
+      triggerVariant="default"
+      triggerLabel={t("grant")}
+      title={t("grantTitle")}
+      description={t("grantBody")}
+      confirmLabel={t("grant")}
+      successMessage={t("granted")}
+    />
   );
 }
 

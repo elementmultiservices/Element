@@ -4,14 +4,15 @@ import { after } from "next/server";
 import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
-import { isAppLocale, LOCALE_COOKIE, type AppLocale } from "@/i18n/routing";
+import { isAppLocale, LOCALE_COOKIE, toLocale, type AppLocale } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { ACTIVITY_COOKIE, activityCookieOptions, signActivity } from "@/lib/auth/activity";
-import { generateRecoveryLink } from "@/lib/auth/links";
+import { generateInviteLink, generateRecoveryLink } from "@/lib/auth/links";
 import { consumeRecoveryCode, issueRecoveryCodes, resetMfaFactors } from "@/lib/auth/recovery-codes";
 import { getSessionContext, homePathFor, requireSession } from "@/lib/auth/session";
 import { sendAuthLinkEmail } from "@/lib/email/auth-emails";
 import { sendSecurityNotice } from "@/lib/email/security-emails";
+import { serverEnv } from "@/lib/env";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
 import { hashIdentifier } from "@/lib/security/hash";
 import { clearFailures, isLockedOut, rateLimit, registerFailure } from "@/lib/security/rate-limit";
@@ -24,6 +25,7 @@ import {
   mfaVerifySchema,
   passwordResetRequestSchema,
   signInSchema,
+  signUpSchema,
   updatePasswordSchema,
 } from "@/lib/validation/auth";
 
@@ -169,6 +171,82 @@ export async function requestPasswordResetAction(_prev: FormState<ResetField>, f
         await audit({ actorId: null, action: "auth.password_reset.requested", targetType: "user", targetId: userId }, meta);
       } catch {
         console.error("[auth] password reset delivery failed");
+      }
+    });
+  }
+
+  await padResponse(startedAt);
+  return { status: "success" };
+}
+
+// ---------------------------------------------------------------------------
+// Self-service sign-up (identical response whether or not the account exists).
+// The account is created unconfirmed and the password is chosen only after the
+// address is verified through the emailed link, so nobody can pre-register an
+// address they do not control. New accounts cannot upload until an admin
+// authorizes them (or pre-authorized the address).
+// ---------------------------------------------------------------------------
+export type SignUpField = "fullName" | "email" | "consent";
+
+export async function signUpAction(_prev: FormState<SignUpField>, formData: FormData): Promise<FormState<SignUpField>> {
+  const startedAt = Date.now();
+  const meta = await requestMeta();
+  const locale = toLocale(await getLocale());
+
+  const parsed = signUpSchema.safeParse({
+    fullName: formData.get("fullName"),
+    email: formData.get("email"),
+    consent: formData.get("consent"),
+  });
+  if (!parsed.success) return { status: "error", fieldErrors: fieldErrorsFrom<SignUpField>(parsed.error) };
+  const { fullName, email } = parsed.data;
+
+  if (!(await verifyRecaptcha(formData.get("recaptchaToken"), "sign_up", meta.ip))) {
+    return { status: "error", error: "recaptchaFailed" };
+  }
+  if (!(await rateLimit("signUpIp", meta.ip)).success) {
+    return { status: "error", error: "rateLimited" };
+  }
+
+  const accountAllowed = (await rateLimit("signUpAccount", hashIdentifier(email))).success;
+
+  if (accountAllowed) {
+    after(async () => {
+      try {
+        const admin = createAdminClient();
+        const { data: userId } = await admin.rpc("auth_user_id_by_email", { p_email: email });
+
+        if (userId) {
+          const [{ data: profile }, { data: existing }] = await Promise.all([
+            admin.from("profiles").select("full_name, is_active, preferred_locale").eq("id", userId).maybeSingle(),
+            admin.auth.admin.getUserById(userId),
+          ]);
+          if (!profile?.is_active) return;
+          // Already verified: tell the owner instead of creating anything.
+          if (existing.user?.email_confirmed_at) {
+            const base = serverEnv().NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+            await sendAuthLinkEmail({
+              kind: "accountExists",
+              to: email,
+              locale: profile.preferred_locale,
+              name: profile.full_name,
+              url: `${base}/${profile.preferred_locale}/sign-in`,
+            });
+            await audit({ actorId: null, action: "auth.sign_up.existing", targetType: "user", targetId: userId }, meta);
+            return;
+          }
+        }
+
+        // New or still-unverified account: (re)issue the verification link.
+        const link = await generateInviteLink({ email, fullName, locale });
+        if ("error" in link) {
+          console.error(`[auth] sign-up link failed: ${link.error}`);
+          return;
+        }
+        await sendAuthLinkEmail({ kind: "signUp", to: email, locale, name: fullName, url: link.url });
+        await audit({ actorId: null, action: "auth.sign_up.requested", targetType: "user", targetId: link.userId }, meta);
+      } catch {
+        console.error("[auth] sign-up delivery failed");
       }
     });
   }

@@ -6,6 +6,7 @@ import type { AuthorizationFailure } from "@/lib/auth/session";
 export type ApiErrorCode =
   | "unauthorized"
   | "forbidden"
+  | "upload_not_allowed"
   | "mfa_required"
   | "bad_request"
   | "recaptcha_failed"

@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
   const auth = await authorize();
   if (!auth.ok) return authFailure(auth.reason);
   const { ctx } = auth;
+  if (ctx.role !== "admin" && !ctx.canUpload) return apiError("upload_not_allowed", 403);
   const meta = await requestMeta();
 
   if (!(await rateLimit("uploadConfirmUser", ctx.userId)).success) return apiError("rate_limited", 429);

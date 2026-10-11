@@ -32,6 +32,7 @@ const ERROR_KEYS = [
   "intent_invalid",
   "invalid_category",
   "invalid_owner",
+  "upload_not_allowed",
   "network",
   "generic",
 ] as const;

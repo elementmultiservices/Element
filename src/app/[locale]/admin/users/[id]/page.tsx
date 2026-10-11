@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { FileText, Upload } from "lucide-react";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { z } from "zod";
-import { RoleBadge, UserStatusBadge } from "@/components/admin/badges";
+import { RoleBadge, UploadAccessBadge, UserStatusBadge } from "@/components/admin/badges";
 import { QuotaMeter } from "@/components/files/quota-meter";
 import { FormAlert } from "@/components/forms/form-alert";
 import { PageHeader } from "@/components/layout/page-header";
@@ -14,7 +14,7 @@ import { getUser, searchAudit } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/seo";
 import { createClient } from "@/lib/supabase/server";
-import { AccountActions, QuotaForm } from "./user-controls";
+import { AccountActions, QuotaForm, UploadAccessControl } from "./user-controls";
 
 const MB = 1024 * 1024;
 
@@ -85,6 +85,7 @@ export default async function AdminUserPage({ params }: PageProps<"/[locale]/adm
       <div className="mb-6 flex flex-wrap gap-2">
         <RoleBadge role={user.role} />
         <UserStatusBadge isActive={user.isActive} invitationPending={user.invitationPending} />
+        {user.role === "user" ? <UploadAccessBadge canUpload={user.canUpload} /> : null}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -120,6 +121,19 @@ export default async function AdminUserPage({ params }: PageProps<"/[locale]/adm
           </div>
         </Section>
       </div>
+
+      {user.role === "user" ? (
+        <div className="mt-6">
+          <Section title={t("Admin.users.upload.heading")}>
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                {user.canUpload ? t("Admin.users.upload.allowedBody") : t("Admin.users.upload.notAllowedBody")}
+              </p>
+              <UploadAccessControl userId={user.id} canUpload={user.canUpload} />
+            </div>
+          </Section>
+        </div>
+      ) : null}
 
       <div className="mt-6">
         <Section title={t("Admin.users.detail.actionsHeading")}>

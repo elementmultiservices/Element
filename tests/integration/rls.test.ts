@@ -101,13 +101,13 @@ describe("files: users only see their own, non-trashed files", () => {
 });
 
 describe("profiles: privileges cannot be self-assigned", () => {
-  it("a user cannot change their own role, status or quota", async () => {
-    for (const patch of [{ role: "admin" as const }, { is_active: false }, { storage_quota_bytes: 10 ** 12 }]) {
+  it("a user cannot change their own role, status, quota or upload access", async () => {
+    for (const patch of [{ role: "admin" as const }, { is_active: false }, { storage_quota_bytes: 10 ** 12 }, { can_upload: false }]) {
       const { error } = await clientA.from("profiles").update(patch).eq("id", userA.id);
       expect(error).not.toBeNull();
     }
-    const { data } = await serviceClient().from("profiles").select("role, is_active").eq("id", userA.id).single();
-    expect(data).toEqual({ role: "user", is_active: true });
+    const { data } = await serviceClient().from("profiles").select("role, is_active, can_upload").eq("id", userA.id).single();
+    expect(data).toEqual({ role: "user", is_active: true, can_upload: true });
   });
 
   it("a user can only read their own profile and not their quota", async () => {
@@ -150,6 +150,52 @@ describe("admin functions and tables", () => {
     await elevateWithMfa(adminClient);
     const { data } = await adminClient.from("files").select("id").in("id", [fileA.id, fileB.id]);
     expect(data).toHaveLength(2);
+  });
+});
+
+describe("upload access pre-authorization", () => {
+  it("regular users cannot read or create pre-authorizations", async () => {
+    const { data } = await clientA.from("upload_grants").select("email").limit(1);
+    expect(data ?? []).toEqual([]);
+    const { error } = await clientA.from("upload_grants").insert({ email: "self-grant@test.local", granted_by: userA.id });
+    expect(error).not.toBeNull();
+  });
+
+  it("is applied only once the address is verified, and consumed", async () => {
+    const service = serviceClient();
+    const email = `e2e-grant-${Date.now()}@test.local`;
+    await service.from("upload_grants").insert({ email });
+
+    const { data: created } = await service.auth.admin.createUser({ email, password: "Grant-test-1234", email_confirm: false });
+    const id = created.user!.id;
+    try {
+      const before = await service.from("profiles").select("can_upload").eq("id", id).single();
+      expect(before.data?.can_upload).toBe(false);
+
+      await service.auth.admin.updateUserById(id, { email_confirm: true });
+      const after = await service.from("profiles").select("can_upload").eq("id", id).single();
+      expect(after.data?.can_upload).toBe(true);
+      const { data: left } = await service.from("upload_grants").select("email").eq("email", email);
+      expect(left).toEqual([]);
+    } finally {
+      await service.auth.admin.deleteUser(id);
+    }
+  });
+
+  it("accounts without a grant start without upload access", async () => {
+    const service = serviceClient();
+    const { data: created } = await service.auth.admin.createUser({
+      email: `e2e-nogrant-${Date.now()}@test.local`,
+      password: "Grant-test-1234",
+      email_confirm: true,
+    });
+    const id = created.user!.id;
+    try {
+      const { data } = await service.from("profiles").select("can_upload").eq("id", id).single();
+      expect(data?.can_upload).toBe(false);
+    } finally {
+      await service.auth.admin.deleteUser(id);
+    }
   });
 });
 

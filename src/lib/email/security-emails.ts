@@ -7,7 +7,10 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { ActionEmail } from "./templates/action-email";
 import { sendEmail } from "./send";
 
-type Notice = { kind: "recoveryUsed"; userId: string } | { kind: "roleChanged"; userId: string; role: "user" | "admin" };
+type Notice =
+  | { kind: "recoveryUsed"; userId: string }
+  | { kind: "roleChanged"; userId: string; role: "user" | "admin" }
+  | { kind: "uploadGranted"; userId: string };
 
 /**
  * Security notifications sent to the account owner, in their language, when
@@ -27,7 +30,10 @@ export async function sendSecurityNotice(notice: Notice): Promise<void> {
   const name = profile.full_name.trim();
   const base = serverEnv().NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
   const k = notice.kind;
-  const body = notice.kind === "roleChanged" ? t(notice.role === "admin" ? "roleChanged.bodyAdmin" : "roleChanged.bodyUser") : t("recoveryUsed.body");
+  const body =
+    notice.kind === "roleChanged"
+      ? t(notice.role === "admin" ? "roleChanged.bodyAdmin" : "roleChanged.bodyUser")
+      : t(`${notice.kind}.body`);
 
   const react = createElement(ActionEmail, {
     locale,

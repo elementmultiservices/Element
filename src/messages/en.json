@@ -35,7 +35,9 @@
       "adminPostEdit": "Edit post",
       "adminPostPreview": "Post preview",
       "adminPostCategories": "Blog categories",
-      "adminMessages": "Contact messages"
+      "adminMessages": "Contact messages",
+      "signUp": "Create an account",
+      "adminUploadAccess": "Authorize document uploads"
     },
     "descriptions": {
       "about": "Who we are and how Element protects the documents of organizations and their clients.",
@@ -153,10 +155,32 @@
       "submit": "Sign in",
       "submitting": "Signing in…",
       "forgot": "Forgot your password?",
-      "closedRegistration": "Accounts are created by the administrator. If you need access, please contact us.",
       "sessionEnded": "Your session has ended. Please sign in again.",
       "passwordUpdated": "Your password has been updated. Please sign in.",
-      "mfaReset": "Two-step verification was reset with a recovery code. Sign in again; administrators must set up a new authenticator app."
+      "mfaReset": "Two-step verification was reset with a recovery code. Sign in again; administrators must set up a new authenticator app.",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create an account",
+      "oauthFailed": "We could not sign you in with Google. Please try again."
+    },
+    "signUp": {
+      "title": "Create an account",
+      "subtitle": "Sign up with Google or with your email address.",
+      "fullName": "Full name",
+      "email": "Email address",
+      "consent": "I accept the",
+      "terms": "Terms of use",
+      "and": "and the",
+      "dataPolicy": "Personal data processing policy",
+      "passwordNote": "We will email you a link to confirm your address and set your password.",
+      "submit": "Create account",
+      "submitting": "Sending…",
+      "success": "Check your email. If the address can be registered, you will receive a link within a few minutes to confirm it and set your password. The link is valid for 24 hours and can be used only once.",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "google": {
+      "continue": "Continue with Google",
+      "or": "or"
     },
     "reset": {
       "title": "Reset password",
@@ -257,7 +281,8 @@
     "coverInvalid": "The image must be a JPG, PNG or WebP file of up to 4 MB.",
     "recoveryInvalid": "The recovery code is incorrect or has already been used.",
     "formExpired": "The form expired. Reload the page and try again.",
-    "roleChangeUnavailable": "The role can only be changed for active accounts that have completed their invitation."
+    "roleChangeUnavailable": "The role can only be changed for active accounts that have completed their invitation.",
+    "uploadGrantAdmin": "This address belongs to an administrator account; administrators do not need this authorization."
   },
   "NotFound": {
     "code": "Error 404",
@@ -355,6 +380,38 @@
       "body": "Thank you for contacting Element. Your message was received with reference {reference}, and our team will reply to this address as soon as possible.",
       "cta": "Visit Element",
       "ignore": "If you did not write to us, you can ignore this email; you will not receive further messages."
+    },
+    "signUp": {
+      "subject": "Confirm your email to create your account",
+      "preview": "Confirm your email to finish creating your Element account.",
+      "heading": "Confirm your email address",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "body": "We received a request to create an Element account with this email address. To confirm it and set your password, use the button below.",
+      "cta": "Confirm and set password",
+      "expiry": "This link is valid for 24 hours and can be used only once.",
+      "ignore": "If you did not request an account, you can ignore this message; no account will be activated."
+    },
+    "accountExists": {
+      "subject": "You already have an Element account",
+      "preview": "We received a sign-up request for an email that already has an account.",
+      "heading": "You already have an account",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "body": "Someone tried to create an Element account with this email address, but you already have one. You can sign in with your password or with Google.",
+      "cta": "Sign in",
+      "expiry": "If you forgot your password, you can reset it from the sign-in page.",
+      "ignore": "If this was not you, you can ignore this message; your account has not changed."
+    },
+    "uploadGranted": {
+      "subject": "Your account can upload documents",
+      "preview": "An administrator authorized your account to upload documents.",
+      "heading": "You can now upload documents",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "body": "An administrator has authorized your Element account to upload documents. You can now do so from your dashboard.",
+      "cta": "Sign in",
+      "ignore": "If you were not expecting this change, please contact the administrator."
     }
   },
   "Files": {
@@ -457,8 +514,10 @@
       "invalid_category": "The selected category is not available.",
       "network": "The connection was interrupted during the upload. Please try again.",
       "generic": "The file could not be uploaded. Please try again in a few minutes.",
-      "invalid_owner": "The selected user cannot receive files."
-    }
+      "invalid_owner": "The selected user cannot receive files.",
+      "upload_not_allowed": "Your account is not authorized to upload documents. Please contact the administrator."
+    },
+    "notAllowed": "Your account is not yet authorized to upload documents. An administrator must enable it; meanwhile, you can view the documents shared with you."
   },
   "Profile": {
     "description": "Manage your personal details, language, password and security.",
@@ -569,7 +628,7 @@
     "statuses": {
       "active": "Active",
       "inactive": "Inactive",
-      "pending": "Invitation pending"
+      "pending": "Pending confirmation"
     },
     "overview": {
       "description": "General status of the platform.",
@@ -587,7 +646,7 @@
       "viewAll": "View all"
     },
     "users": {
-      "description": "Accounts with access to the platform. Registration is closed: users join only by invitation.",
+      "description": "Accounts registered on the platform. Anyone can create an account, but only authorized accounts can upload documents.",
       "invite": {
         "description": "The person will receive an email, in the selected language, with a link to set their password. The link expires in 24 hours.",
         "name": "Full name",
@@ -597,7 +656,7 @@
         "submit": "Send invitation",
         "submitting": "Sending…",
         "success": "The invitation was sent to {email}.",
-        "roleNote": "Invited accounts always have the user role.",
+        "roleNote": "Invited accounts have the user role and are authorized to upload documents.",
         "another": "Invite another user",
         "viewUser": "View user"
       },
@@ -612,7 +671,8 @@
         "files": "Files",
         "storage": "Storage",
         "lastSignIn": "Last sign-in",
-        "created": "Created"
+        "created": "Created",
+        "upload": "Document upload"
       },
       "empty": "There are no users matching the filters.",
       "noName": "(no name)",
@@ -665,7 +725,42 @@
         "stepUpCode": "Your verification code",
         "roleChanged": "The role was changed. The user was notified by email."
       },
-      "inviteCta": "Invite user"
+      "inviteCta": "Invite user",
+      "upload": {
+        "allowed": "Can upload",
+        "notAllowed": "Not authorized",
+        "filter": "Document upload",
+        "manageCta": "Authorize emails",
+        "heading": "Document upload",
+        "allowedBody": "This account is authorized to upload documents.",
+        "notAllowedBody": "This account can sign in and view its documents, but cannot upload files until you authorize it.",
+        "grant": "Authorize uploads",
+        "grantTitle": "Authorize document uploads?",
+        "grantBody": "The user will be able to upload documents to their account and will receive a notification email.",
+        "granted": "The account is now authorized to upload documents.",
+        "revoke": "Remove authorization",
+        "revokeTitle": "Remove the authorization to upload documents?",
+        "revokeBody": "The user will no longer be able to upload documents. Files already uploaded are kept.",
+        "revoked": "The authorization to upload documents was removed.",
+        "pageTitle": "Authorize document uploads",
+        "pageDescription": "Authorize an email address to upload documents. If it already has an account, access applies immediately; if it has not signed up yet, it applies automatically when the account is created and the address confirmed (or on first Google sign-in).",
+        "emailLabel": "Email address",
+        "emailHint": "It can be a registered user or someone who will sign up later.",
+        "authorize": "Authorize",
+        "authorizing": "Authorizing…",
+        "grantedExisting": "{email} already had an account and is now authorized to upload documents.",
+        "grantedPending": "{email} is pre-authorized: they will be able to upload documents as soon as they create their account.",
+        "existingHint": "You can also authorize registered accounts from their user page.",
+        "existingLink": "View users without authorization",
+        "pendingHeading": "Pre-authorized emails awaiting sign-up",
+        "pendingEmpty": "There are no pending pre-authorized emails.",
+        "grantedBy": "Authorized by",
+        "grantedAt": "Date",
+        "remove": "Remove",
+        "removeTitle": "Remove the pre-authorization?",
+        "removeBody": "{email} will no longer be authorized automatically when signing up.",
+        "removed": "The pre-authorization was removed."
+      }
     },
     "files": {
       "description": "All files on the platform. Files moved to the trash can be restored for 30 days.",
@@ -787,6 +882,7 @@
         "email": "Email",
         "role": "Role",
         "status": "Status",
+        "upload": "Can upload documents",
         "language": "Language",
         "files": "Active files",
         "usedBytes": "Storage used (bytes)",
@@ -1169,7 +1265,7 @@
         {
           "heading": "1. Access",
           "body": [
-            "Accounts are created exclusively by invitation from the organization. Credentials are personal and non-transferable; the user must keep them confidential and enable two-step verification when available."
+            "Anyone can create an account; the organization decides which accounts may upload documents. Credentials are personal and non-transferable; the user must keep them confidential and enable two-step verification when available."
           ]
         },
         {

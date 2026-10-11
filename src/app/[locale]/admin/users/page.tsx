@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Download, UserPlus } from "lucide-react";
+import { Download, KeyRound, UserPlus } from "lucide-react";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
-import { RoleBadge, UserStatusBadge } from "@/components/admin/badges";
+import { RoleBadge, UploadAccessBadge, UserStatusBadge } from "@/components/admin/badges";
 import { PageHeader } from "@/components/layout/page-header";
 import { Pagination, searchString, SortTh, TableShell, Th } from "@/components/tables/table-kit";
 import { Button } from "@/components/ui/button";
@@ -49,6 +49,12 @@ export default async function AdminUsersPage({ params, searchParams }: PageProps
                 {t("Admin.common.export")}
               </a>
             </Button>
+            <Button asChild variant="outline">
+              <Link href="/admin/users/access">
+                <KeyRound aria-hidden="true" />
+                {t("Admin.users.upload.manageCta")}
+              </Link>
+            </Button>
             <Button asChild>
               <Link href="/admin/users/invite">
                 <UserPlus aria-hidden="true" />
@@ -62,7 +68,7 @@ export default async function AdminUsersPage({ params, searchParams }: PageProps
       <form method="get" role="search" className="mb-4 rounded-lg border bg-card p-4">
         <input type="hidden" name="sort" value={filters.sort} />
         <input type="hidden" name="dir" value={filters.dir} />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <div className="space-y-1.5 sm:col-span-2">
             <Label htmlFor="users-q">{t("Admin.users.searchLabel")}</Label>
             <Input id="users-q" name="q" type="search" maxLength={100} defaultValue={filters.q ?? ""} placeholder={t("Admin.users.searchPlaceholder")} className="h-10" />
@@ -82,6 +88,14 @@ export default async function AdminUsersPage({ params, searchParams }: PageProps
               <option value="">{t("Admin.common.all")}</option>
               <option value="user">{t("Panel.roles.user")}</option>
               <option value="admin">{t("Panel.roles.admin")}</option>
+            </NativeSelect>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="users-upload">{t("Admin.users.upload.filter")}</Label>
+            <NativeSelect id="users-upload" name="upload" defaultValue={filters.upload ?? ""}>
+              <option value="">{t("Admin.common.all")}</option>
+              <option value="yes">{t("Admin.users.upload.allowed")}</option>
+              <option value="no">{t("Admin.users.upload.notAllowed")}</option>
             </NativeSelect>
           </div>
         </div>
@@ -108,6 +122,7 @@ export default async function AdminUsersPage({ params, searchParams }: PageProps
               <SortTh column="email" label={t("Admin.users.table.email")} params={filters} basePath={basePath} />
               <Th>{t("Admin.users.table.role")}</Th>
               <Th>{t("Admin.users.table.status")}</Th>
+              <Th>{t("Admin.users.table.upload")}</Th>
               <SortTh column="used_bytes" label={t("Admin.users.table.storage")} params={filters} basePath={basePath} className="text-right" />
               <SortTh column="last_sign_in_at" label={t("Admin.users.table.lastSignIn")} params={filters} basePath={basePath} />
               <SortTh column="created_at" label={t("Admin.users.table.created")} params={filters} basePath={basePath} />
@@ -130,6 +145,7 @@ export default async function AdminUsersPage({ params, searchParams }: PageProps
                 <td className="px-3 py-2.5">
                   <UserStatusBadge isActive={u.isActive} invitationPending={u.invitationPending} />
                 </td>
+                <td className="px-3 py-2.5">{u.role === "user" ? <UploadAccessBadge canUpload={u.canUpload} /> : null}</td>
                 <td className="px-3 py-2.5 text-right whitespace-nowrap text-muted-foreground tabular-nums">
                   {formatBytes(u.usedBytes, locale)} / {formatBytes(u.quotaBytes, locale)}
                 </td>

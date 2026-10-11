@@ -13,14 +13,14 @@ import { rateLimit } from "@/lib/security/rate-limit";
 import { requestMeta } from "@/lib/security/request-meta";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { idSchema, inviteUserSchema, quotaSchema, roleChangeSchema } from "@/lib/validation/admin";
+import { idSchema, inviteUserSchema, quotaSchema, roleChangeSchema, uploadGrantSchema } from "@/lib/validation/admin";
 
 const MB = 1024 * 1024;
 const BAN_FOREVER = "876000h"; // ~100 years
 
 type Result = FormState<never>;
 
-async function guard(limit: "adminActionUser" | "adminInviteUser" | "adminEmailUser" = "adminActionUser"): Promise<
+async function guard(limit: "adminActionUser" | "adminInviteUser" | "adminEmailUser" | "adminGrantUser" = "adminActionUser"): Promise<
   { ok: true; session: SessionContext } | { ok: false; result: Result }
 > {
   const session = await requireAdmin();
@@ -71,8 +71,12 @@ export async function inviteUserAction(_prev: InviteState, formData: FormData): 
     return { status: "error", error: "generic" };
   }
 
-  const { error: quotaError } = await admin.from("profiles").update({ storage_quota_bytes: quotaMb * MB }).eq("id", link.userId);
-  if (quotaError) console.error(`[admin] invite quota update failed: ${quotaError.code}`);
+  // Invited accounts are authorized to upload from the start.
+  const { error: quotaError } = await admin
+    .from("profiles")
+    .update({ storage_quota_bytes: quotaMb * MB, can_upload: true })
+    .eq("id", link.userId);
+  if (quotaError) console.error(`[admin] invite profile update failed: ${quotaError.code}`);
 
   await audit(
     { actorId: g.session.userId, action: "user.invited", targetType: "user", targetId: link.userId, metadata: { locale, quota_mb: quotaMb } },
@@ -178,6 +182,98 @@ export async function forcePasswordResetAction(_prev: Result, formData: FormData
   if (!url) return { status: "error", error: "deliveryFailed" };
   const sent = await sendAuthLinkEmail({ kind: "passwordForced", to: user.email, locale: user.locale, name: user.fullName, url });
   return sent ? { status: "success" } : { status: "error", error: "deliveryFailed" };
+}
+
+// ---------------------------------------------------------------------------
+// Upload access. Accounts register by themselves but can only upload once an
+// administrator authorizes them, either directly (existing account) or by
+// pre-authorizing an address that is applied when it is verified at sign-up.
+// ---------------------------------------------------------------------------
+async function setUploadAccess(formData: FormData, allowed: boolean): Promise<Result> {
+  const g = await guard("adminGrantUser");
+  if (!g.ok) return g.result;
+  const id = parseId(formData);
+  if (!id) return { status: "error", error: "notFound" };
+  return applyUploadAccess(g.session.userId, id, allowed);
+}
+
+async function applyUploadAccess(adminId: string, id: string, allowed: boolean): Promise<Result> {
+  const supabase = await createClient();
+  const user = await getUser(supabase, id);
+  if (!user || user.role !== "user") return { status: "error", error: "notFound" };
+  if (user.canUpload === allowed) return { status: "success" };
+
+  const { error } = await supabase.from("profiles").update({ can_upload: allowed }).eq("id", id);
+  if (error) return { status: "error", error: profileErrorKey(error.message) };
+
+  await audit({ actorId: adminId, action: allowed ? "user.upload.granted" : "user.upload.revoked", targetType: "user", targetId: id });
+  if (allowed && user.isActive && !user.invitationPending) {
+    after(async () => {
+      try {
+        await sendSecurityNotice({ kind: "uploadGranted", userId: id });
+      } catch {
+        console.error("[admin] upload access notice failed");
+      }
+    });
+  }
+  return { status: "success" };
+}
+
+export async function grantUploadAction(_prev: Result, formData: FormData): Promise<Result> {
+  return setUploadAccess(formData, true);
+}
+
+export async function revokeUploadAction(_prev: Result, formData: FormData): Promise<Result> {
+  return setUploadAccess(formData, false);
+}
+
+export type UploadGrantField = "email";
+/** "granted": the address already had an account; "pending": applied when it signs up. */
+export type UploadGrantState = FormState<UploadGrantField> & { outcome?: "granted" | "pending"; email?: string };
+
+export async function preauthorizeUploadAction(_prev: UploadGrantState, formData: FormData): Promise<UploadGrantState> {
+  const g = await guard("adminGrantUser");
+  if (!g.ok) return g.result;
+
+  const parsed = uploadGrantSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) return { status: "error", fieldErrors: fieldErrorsFrom<UploadGrantField>(parsed.error) };
+  const { email } = parsed.data;
+
+  const { data: userId } = await createAdminClient().rpc("auth_user_id_by_email", { p_email: email });
+  if (userId) {
+    const result = await applyUploadAccess(g.session.userId, userId, true);
+    if (result.status === "error" && result.error === "notFound") return { status: "error", error: "uploadGrantAdmin" };
+    return result.status === "success" ? { status: "success", outcome: "granted", email } : result;
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("upload_grants").insert({ email, granted_by: g.session.userId });
+  if (error && error.code !== "23505") {
+    console.error(`[admin] upload pre-authorization failed: ${error.code}`);
+    return { status: "error", error: "generic" };
+  }
+  if (!error) {
+    await audit({ actorId: g.session.userId, action: "user.upload.preauthorized", metadata: { email } });
+  }
+  return { status: "success", outcome: "pending", email };
+}
+
+export async function removePreauthorizationAction(_prev: Result, formData: FormData): Promise<Result> {
+  const g = await guard("adminGrantUser");
+  if (!g.ok) return g.result;
+  const parsed = uploadGrantSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) return { status: "error", error: "notFound" };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("upload_grants").delete().eq("email", parsed.data.email).select("email");
+  if (error) {
+    console.error(`[admin] upload pre-authorization removal failed: ${error.code}`);
+    return { status: "error", error: "generic" };
+  }
+  if (!data?.length) return { status: "error", error: "notFound" };
+
+  await audit({ actorId: g.session.userId, action: "user.upload.preauthorization_removed", metadata: { email: parsed.data.email } });
+  return { status: "success" };
 }
 
 // ---------------------------------------------------------------------------

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { AuthDivider, GoogleButton } from "@/components/auth/google-button";
 import { AuthCard } from "@/components/layout/auth-card";
+import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
 import { SignInForm } from "./sign-in-form";
@@ -16,13 +18,25 @@ export default async function SignInPage({ params, searchParams }: PageProps<"/[
   const { reason } = await searchParams;
   const t = await getTranslations("Auth.signIn");
 
-  const notices = { session_ended: "sessionEnded", password_updated: "passwordUpdated", mfa_reset: "mfaReset" } as const;
+  const notices = {
+    session_ended: "sessionEnded",
+    password_updated: "passwordUpdated",
+    mfa_reset: "mfaReset",
+    oauth_failed: "oauthFailed",
+  } as const;
   const notice = typeof reason === "string" && Object.hasOwn(notices, reason) ? notices[reason as keyof typeof notices] : undefined;
 
   return (
     <AuthCard title={t("title")} subtitle={t("subtitle")}>
+      <GoogleButton />
+      <AuthDivider />
       <SignInForm notice={notice} />
-      <p className="mt-6 border-t pt-4 text-sm text-muted-foreground">{t("closedRegistration")}</p>
+      <p className="mt-6 border-t pt-4 text-sm text-muted-foreground">
+        {t("noAccount")}{" "}
+        <Link href="/sign-up" className="font-medium text-link hover:underline">
+          {t("createAccount")}
+        </Link>
+      </p>
     </AuthCard>
   );
 }

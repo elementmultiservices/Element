@@ -174,8 +174,10 @@ enable_refresh_token_rotation = true
 # Allows refresh tokens to be reused after expiry, up to the specified interval in seconds.
 # Requires enable_refresh_token_rotation = true.
 refresh_token_reuse_interval = 10
-# Registration is closed: users are created only by the admin (invitation via the Admin API).
-enable_signup = false
+# Open registration, required for first-time Google sign-in. Email sign-ups go
+# through the app (Admin API verification link, password set afterwards); new
+# accounts cannot upload until an admin authorizes them (profiles.can_upload).
+enable_signup = true
 # Allow/disallow anonymous sign-ins to your project.
 enable_anonymous_sign_ins = false
 # Allow/disallow testing manual linking of accounts
@@ -220,13 +222,13 @@ web3 = 30
 
 [auth.email]
 # Keeps the email/password provider ENABLED (false would disable sign-in entirely).
-# Public sign-up is closed by the global [auth] enable_signup = false above.
 enable_signup = true
 # If enabled, a user will be required to confirm any email change on both the old, and new email
 # addresses. If disabled, only the new email is required to confirm.
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
-enable_confirmations = false
+# Keep it enabled in every hosted project (Authentication > Sign In / Providers > Email > Confirm email).
+enable_confirmations = true
 # If enabled, users will need to reauthenticate or have logged in recently to change their password.
 secure_password_change = false
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
@@ -336,6 +338,17 @@ url = ""
 # If enabled, the nonce check will be skipped. Required for local sign in with Google auth.
 skip_nonce_check = false
 # If enabled, it will allow the user to successfully authenticate when the provider does not return an email address.
+email_optional = false
+
+# "Continue with Google". Set SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID / _SECRET (Google Cloud OAuth
+# client) and set enabled = true to try it locally. In hosted projects, configure it in the dashboard.
+[auth.external.google]
+enabled = false
+client_id = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
+redirect_uri = ""
+url = ""
+skip_nonce_check = true
 email_optional = false
 
 # Allow Solana wallet holders to sign in to your project via the Sign in with Solana (SIWS, EIP-4361) standard.

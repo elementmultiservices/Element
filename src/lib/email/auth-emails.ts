@@ -5,9 +5,9 @@ import type { AppLocale } from "@/i18n/routing";
 import { ActionEmail } from "./templates/action-email";
 import { sendEmail } from "./send";
 
-type AuthEmailKind = "passwordReset" | "invitation" | "passwordForced";
+type AuthEmailKind = "passwordReset" | "invitation" | "passwordForced" | "signUp" | "accountExists";
 
-/** Sends a localized auth-link email (reset, invitation, forced reset) in the recipient's language. */
+/** Sends a localized auth-link email (reset, invitation, forced reset, sign-up) in the recipient's language. */
 export async function sendAuthLinkEmail(input: {
   kind: AuthEmailKind;
   to: string;

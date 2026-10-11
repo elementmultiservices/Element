@@ -191,17 +191,37 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "created_at": string,"full_name": string,"id": string,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number
+                    "can_upload": boolean,"created_at": string,"full_name": string,"id": string,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"full_name"?: string,"id": string,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
+                    "can_upload"?: boolean,"created_at"?: string,"full_name"?: string,"id": string,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
                   }
                   Update: {
-                    "created_at"?: string,"full_name"?: string,"id"?: string,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
+                    "can_upload"?: boolean,"created_at"?: string,"full_name"?: string,"id"?: string,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
                   }
                   Relationships: [
                     
+                  ]
+                },"upload_grants": {
+                  Row: {
+                    "created_at": string,"email": string,"granted_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"email": string,"granted_by"?: string | null
+                  }
+                  Update: {
+                    "created_at"?: string,"email"?: string,"granted_by"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "upload_grants_granted_by_fkey"
+      columns: ["granted_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"upload_intents": {
                   Row: {
@@ -247,8 +267,8 @@ isOneToOne: false
             }[]
                            },
 "admin_list_users":
-{ Args: { "p_dir"?: string,"p_id"?: string,"p_limit"?: number,"p_offset"?: number,"p_role"?: string,"p_search"?: string,"p_sort"?: string,"p_status"?: string }; Returns: {
-              "created_at": string,"email": string,"file_count": number,"full_name": string,"has_mfa": boolean,"id": string,"invitation_pending": boolean,"is_active": boolean,"last_sign_in_at": string,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number,"total_count": number,"used_bytes": number
+{ Args: { "p_dir"?: string,"p_id"?: string,"p_limit"?: number,"p_offset"?: number,"p_role"?: string,"p_search"?: string,"p_sort"?: string,"p_status"?: string,"p_upload"?: string }; Returns: {
+              "can_upload": boolean,"created_at": string,"email": string,"file_count": number,"full_name": string,"has_mfa": boolean,"id": string,"invitation_pending": boolean,"is_active": boolean,"last_sign_in_at": string,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number,"total_count": number,"used_bytes": number
             }[]
                            },
 "admin_overview":
@@ -334,7 +354,7 @@ isOneToOne: false
                            },
 "session_context":
 { Args: Record<PropertyKey, never>; Returns: {
-              "full_name": string,"has_verified_mfa": boolean,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"session_valid": boolean
+              "can_upload": boolean,"full_name": string,"has_verified_mfa": boolean,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"session_valid": boolean
             }[]
                            },
 "storage_usage":

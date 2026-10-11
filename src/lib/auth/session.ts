@@ -19,6 +19,8 @@ export type SessionContext = {
   fullName: string;
   hasVerifiedMfa: boolean;
   aal: "aal1" | "aal2";
+  /** Granted by an administrator; admins always upload on behalf of users. */
+  canUpload: boolean;
 };
 
 /**
@@ -48,6 +50,7 @@ export const getSessionContext = cache(async (): Promise<SessionContext | null> 
     fullName: ctx.full_name,
     hasVerifiedMfa: ctx.has_verified_mfa,
     aal: claims.aal === "aal2" ? "aal2" : "aal1",
+    canUpload: ctx.can_upload,
   };
 });
 

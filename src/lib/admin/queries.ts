@@ -48,6 +48,7 @@ export type AdminUserRow = {
   lastSignInAt: string | null;
   invitationPending: boolean;
   hasMfa: boolean;
+  canUpload: boolean;
 };
 
 type UserRpcRow = {
@@ -64,6 +65,7 @@ type UserRpcRow = {
   last_sign_in_at: string | null;
   invitation_pending: boolean;
   has_mfa: boolean;
+  can_upload: boolean;
   total_count: number;
 };
 
@@ -82,6 +84,7 @@ function toUser(r: UserRpcRow): AdminUserRow {
     lastSignInAt: r.last_sign_in_at,
     invitationPending: r.invitation_pending,
     hasMfa: r.has_mfa,
+    canUpload: r.can_upload,
   };
 }
 
@@ -95,6 +98,7 @@ export async function listUsers(
     p_search: params.q ?? undefined,
     p_status: params.status ?? undefined,
     p_role: params.role ?? undefined,
+    p_upload: params.upload ?? undefined,
     p_sort: params.sort,
     p_dir: params.dir,
     p_limit: limit,
@@ -110,6 +114,19 @@ export async function getUser(supabase: ServerSupabaseClient, id: string): Promi
   if (error) fail("admin_list_users(id)", error.code);
   const row = (data ?? [])[0] as UserRpcRow | undefined;
   return row ? toUser(row) : null;
+}
+
+export type UploadGrantRow = { email: string; grantedBy: string | null; createdAt: string };
+
+/** Addresses pre-authorized to upload that have no verified account yet. */
+export async function listUploadGrants(supabase: ServerSupabaseClient): Promise<UploadGrantRow[]> {
+  const { data, error } = await supabase
+    .from("upload_grants")
+    .select("email, granted_by, created_at")
+    .order("created_at", { ascending: false })
+    .limit(1000);
+  if (error) fail("upload_grants", error.code);
+  return (data ?? []).map((r) => ({ email: r.email, grantedBy: r.granted_by, createdAt: r.created_at }));
 }
 
 export type UserLabel = { id: string; fullName: string; email: string };

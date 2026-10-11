@@ -106,12 +106,13 @@ Use **separate projects** for development/preview and production, each with its 
    Use only one of the two methods. If you use the SQL editor and later switch to the CLI, mark the
    migrations as applied with `npx supabase migration repair --status applied <version>…`.
 3. **Push the auth configuration** in `supabase/config.toml` (`npx supabase config push`), or set it in the dashboard:
-   - Sign-ups **disabled** (Authentication → Sign In / Providers → "Allow new users to sign up" off). Keep the **Email provider enabled**.
+   - Sign-ups **enabled** ("Allow new users to sign up" on; needed for first-time Google sign-in) and **Confirm email on**. Keep the **Email provider enabled**.
+   - **Google provider** enabled with an OAuth client from Google Cloud (authorized redirect URI: `https://<project-ref>.supabase.co/auth/v1/callback`).
    - Minimum password length **12**, requirement "lowercase, uppercase and digits".
    - Email OTP expiration **86400 s** (24 h).
    - MFA → TOTP **enabled**.
    - JWT expiry 900 s.
-   - Site URL = your production URL; add it to the redirect allow list.
+   - Site URL = your production URL; add `https://<domain>/**` (and the `www` variant if used) to the redirect allow list. The Google callback is `/api/auth/callback`.
    - **Leaked password protection** (HaveIBeenPwned) requires the **Pro plan**. The project currently uses the Free plan, so turn this on when you upgrade. It is listed in the go-live checklist.
 4. **Deploy the purge function and set its secret**:
    ```bash
@@ -220,8 +221,19 @@ scripts/create-admin.ts
   browser Supabase client. Idle timeout is 30 min for admins and 8 h for users.
 - **Sign-in:** reCAPTCHA, per-IP rate limit, per-account lockout (5 failures → 15 min), the same
   response and padded timing for every failure, and full audit trail.
-- **Invitation and reset links** are single-use, expire after 24 h, and are only consumed by an
+- **Invitation, sign-up and reset links** are single-use, expire after 24 h, and are only consumed by an
   explicit POST, so email link scanners cannot burn them.
+- **Self-service sign-up** (`/sign-up`): name and email only. The account is created unverified
+  through the Admin API and the password is chosen only after the emailed link is confirmed, so
+  nobody can pre-register an address they do not control. The response is identical for new and
+  existing addresses (an existing owner gets an "account exists" email instead). **Google
+  sign-in** uses OAuth with PKCE (`/api/auth/google` → `/api/auth/callback`) and applies the same
+  activity, MFA and audit rules as a password sign-in.
+- **Upload access** (`profiles.can_upload`): anyone can register and view the documents shared
+  with them, but only accounts authorized by an admin can upload. Admins authorize a registered
+  account, or pre-authorize an address (`upload_grants`) that is applied by a trigger when that
+  address is verified. Users cannot change the flag themselves (trigger), and both upload
+  endpoints re-check it.
 - **`audit_logs` is append-only**, enforced by a trigger even for the service role.
 - **Revocation is immediate.** `session_context()` and the RLS helpers also require the token's
   session to still exist, so deactivating an account, forcing a password reset or "signing out
@@ -236,8 +248,10 @@ scripts/create-admin.ts
 
 ### Administration
 
-- **Users:** list, search, filters, invitation (always with the `user` role; administrators are
-  created only with `npm run admin:create`), resend invitation while it is pending,
+- **Users:** list, search, filters, invitation (always with the `user` role and upload access;
+  administrators are created only with `npm run admin:create`), resend invitation while it is pending,
+  upload authorization (grant/revoke per account, and pre-authorized emails at
+  `/admin/users/access`),
   activate/deactivate (bans the auth user and revokes every session), force password reset
   (the current password becomes unusable, sessions are revoked and a recovery link is
   emailed), storage quota, files and recent activity.

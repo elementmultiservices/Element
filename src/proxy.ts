@@ -24,7 +24,7 @@ function classify(path: string): Area {
   if (/^\/dashboard(\/|$)/.test(path)) return "dashboard";
   if (/^\/admin(\/|$)/.test(path)) return "admin";
   if (/^\/(mfa|update-password)(\/|$)/.test(path)) return "session";
-  if (/^\/(sign-in|reset-password)(\/|$)/.test(path)) return "guest";
+  if (/^\/(sign-in|sign-up|reset-password)(\/|$)/.test(path)) return "guest";
   return "public";
 }
 
@@ -111,6 +111,10 @@ export async function proxy(request: NextRequest) {
 async function handle(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
   const isApi = pathname.startsWith("/api/");
+
+  // The Google sign-in handlers establish the session themselves; a stale
+  // session without an activity cookie must not be rejected on the way in.
+  if (pathname.startsWith("/api/auth/")) return NextResponse.next({ request });
 
   // 1. Locale ---------------------------------------------------------------
   let locale: AppLocale = defaultLocale;

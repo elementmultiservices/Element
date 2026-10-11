@@ -8,7 +8,7 @@ import { SubmitButton } from "@/components/forms/submit-button";
 import { useProtectedAction } from "@/hooks/use-protected-action";
 import { Link } from "@/i18n/navigation";
 
-export function SignInForm({ notice }: { notice?: "sessionEnded" | "passwordUpdated" | "mfaReset" }) {
+export function SignInForm({ notice }: { notice?: "sessionEnded" | "passwordUpdated" | "mfaReset" | "oauthFailed" }) {
   const t = useTranslations("Auth");
   const tv = useTranslations("Validation");
   const te = useTranslations("Errors");
@@ -17,7 +17,7 @@ export function SignInForm({ notice }: { notice?: "sessionEnded" | "passwordUpda
 
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-5">
-      {notice && state.status === "idle" ? <FormAlert variant="info">{t(`signIn.${notice}`)}</FormAlert> : null}
+      {notice && state.status === "idle" ? <FormAlert variant={notice === "oauthFailed" ? "error" : "info"}>{t(`signIn.${notice}`)}</FormAlert> : null}
       {state.error ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
       <FormField
         name="email"

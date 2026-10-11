@@ -26,7 +26,7 @@ export type PanelVariant = "user" | "admin";
 
 type Item = { href: string; icon: LucideIcon; label: string; exact?: boolean };
 
-function useItems(variant: PanelVariant): Item[] {
+function useItems(variant: PanelVariant, canUpload: boolean): Item[] {
   const t = useTranslations("Panel");
   if (variant === "admin") {
     return [
@@ -43,15 +43,15 @@ function useItems(variant: PanelVariant): Item[] {
   }
   return [
     { href: "/dashboard", icon: FileText, label: t("user.files"), exact: true },
-    { href: "/dashboard/upload", icon: Upload, label: t("user.upload") },
+    ...(canUpload ? [{ href: "/dashboard/upload", icon: Upload, label: t("user.upload") }] : []),
     { href: "/dashboard/profile", icon: UserRound, label: t("user.profile") },
   ];
 }
 
-function NavList({ variant, onNavigate }: { variant: PanelVariant; onNavigate?: () => void }) {
+function NavList({ variant, canUpload, onNavigate }: { variant: PanelVariant; canUpload: boolean; onNavigate?: () => void }) {
   const t = useTranslations("Panel");
   const pathname = usePathname();
-  const items = useItems(variant);
+  const items = useItems(variant, canUpload);
 
   return (
     <nav aria-label={variant === "admin" ? t("adminNavigation") : t("userNavigation")}>
@@ -84,7 +84,7 @@ function NavList({ variant, onNavigate }: { variant: PanelVariant; onNavigate?: 
 }
 
 /** Fixed sidebar on large screens. */
-export function PanelSidebar({ variant, footer }: { variant: PanelVariant; footer: React.ReactNode }) {
+export function PanelSidebar({ variant, canUpload, footer }: { variant: PanelVariant; canUpload: boolean; footer: React.ReactNode }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-primary lg:flex">
       <div className="flex h-16 items-center px-5">
@@ -93,7 +93,7 @@ export function PanelSidebar({ variant, footer }: { variant: PanelVariant; foote
         </Link>
       </div>
       <div className="flex-1 overflow-y-auto px-3 py-4">
-        <NavList variant={variant} />
+        <NavList variant={variant} canUpload={canUpload} />
       </div>
       <div className="border-t border-primary-foreground/15 p-4">{footer}</div>
     </aside>
@@ -101,7 +101,7 @@ export function PanelSidebar({ variant, footer }: { variant: PanelVariant; foote
 }
 
 /** Off-canvas navigation for small screens. */
-export function PanelMobileNav({ variant, footer }: { variant: PanelVariant; footer: React.ReactNode }) {
+export function PanelMobileNav({ variant, canUpload, footer }: { variant: PanelVariant; canUpload: boolean; footer: React.ReactNode }) {
   const t = useTranslations("Common");
   const [open, setOpen] = useState(false);
   return (
@@ -117,7 +117,7 @@ export function PanelMobileNav({ variant, footer }: { variant: PanelVariant; foo
           <Wordmark inverted />
         </SheetTitle>
         <div className="px-3 py-4">
-          <NavList variant={variant} onNavigate={() => setOpen(false)} />
+          <NavList variant={variant} canUpload={canUpload} onNavigate={() => setOpen(false)} />
         </div>
         <div className="mt-auto border-t border-primary-foreground/15 p-4">{footer}</div>
       </SheetContent>

@@ -32,11 +32,11 @@ export async function PanelShell({
 
   return (
     <div className="min-h-screen bg-surface">
-      <PanelSidebar variant={variant} footer={footer} />
+      <PanelSidebar variant={variant} canUpload={session.canUpload} footer={footer} />
       <div className="lg:pl-64">
         <header className="sticky top-0 z-20 flex h-16 items-center justify-between gap-3 border-b bg-background px-4 sm:px-6">
           <div className="flex items-center gap-2">
-            <PanelMobileNav variant={variant} footer={footer} />
+            <PanelMobileNav variant={variant} canUpload={session.canUpload} footer={footer} />
             <span className="text-sm font-semibold text-primary">
               {variant === "admin" ? t("adminTitle") : t("dashboardTitle")}
             </span>

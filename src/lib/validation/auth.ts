@@ -23,6 +23,13 @@ export const signInSchema = z.object({
 
 export const passwordResetRequestSchema = z.object({ email: emailSchema });
 
+/** Self-service sign-up. The password is chosen after the address is verified. */
+export const signUpSchema = z.object({
+  fullName: z.string({ error: "required" }).trim().min(2, { error: "required" }).max(120, { error: "tooLong" }),
+  email: emailSchema,
+  consent: z.literal("on", { error: "consentRequired" }),
+});
+
 export const updatePasswordSchema = z
   .object({
     password: newPasswordSchema,

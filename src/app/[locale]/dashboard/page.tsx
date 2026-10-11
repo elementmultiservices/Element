@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { FileText, SearchX, Upload } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { FileFilters } from "@/components/files/file-filters";
+import { FormAlert } from "@/components/forms/form-alert";
 import { FilesTable } from "@/components/files/files-table";
 import { PageHeader } from "@/components/layout/page-header";
 import { EmptyState } from "@/components/states/empty-state";
@@ -40,15 +41,18 @@ export default async function DashboardPage({ params, searchParams }: PageProps<
         description={t("Files.description")}
         breadcrumbs={[{ label: t("Panel.dashboardTitle"), href: "/dashboard" }, { label: t("Panel.user.files") }]}
         actions={
-          <Button asChild>
-            <Link href="/dashboard/upload">
-              <Upload aria-hidden="true" />
-              {t("Files.uploadCta")}
-            </Link>
-          </Button>
+          session.canUpload ? (
+            <Button asChild>
+              <Link href="/dashboard/upload">
+                <Upload aria-hidden="true" />
+                {t("Files.uploadCta")}
+              </Link>
+            </Button>
+          ) : null
         }
       />
       <div className="min-w-0 space-y-4">
+        {session.canUpload ? null : <FormAlert variant="info">{t("Upload.notAllowed")}</FormAlert>}
         <div className="min-w-0 space-y-4">
           <FileFilters params={filters} categories={categories} basePath="/dashboard" />
           {list.total === 0 ? (
@@ -60,9 +64,11 @@ export default async function DashboardPage({ params, searchParams }: PageProps<
                 title={t("Files.empty.title")}
                 body={t("Files.empty.body")}
                 action={
-                  <Button asChild size="sm">
-                    <Link href="/dashboard/upload">{t("Files.uploadCta")}</Link>
-                  </Button>
+                  session.canUpload ? (
+                    <Button asChild size="sm">
+                      <Link href="/dashboard/upload">{t("Files.uploadCta")}</Link>
+                    </Button>
+                  ) : undefined
                 }
               />
             )

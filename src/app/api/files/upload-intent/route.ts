@@ -61,6 +61,8 @@ export async function POST(request: NextRequest) {
     ownerId = owner.id;
   } else if (input.ownerId && input.ownerId !== ctx.userId) {
     return apiError("forbidden", 403);
+  } else if (!ctx.canUpload) {
+    return apiError("upload_not_allowed", 403);
   }
 
   if (input.categoryId) {

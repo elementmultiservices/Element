@@ -14,7 +14,8 @@ the person deploying, and the open items reviewed again after each major change.
 
 ## Supabase Auth
 
-- [ ] Public sign-ups are **disabled**, and the Email provider is **enabled**.
+- [ ] Sign-ups are **enabled**, **Confirm email** is on and the Email provider is **enabled**. New accounts cannot upload until an administrator authorizes them.
+- [ ] The Google provider is enabled with an OAuth client whose only authorized redirect URI is the project's `/auth/v1/callback`.
 - [ ] Minimum password length 12, with lowercase, uppercase and digits required.
 - [ ] **Leaked password protection** enabled. This requires the **Pro plan**; until you upgrade, record it as an accepted risk.
 - [ ] Email OTP expiry is 86400 s (24 h). JWT expiry is 900 s.

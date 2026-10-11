@@ -12,6 +12,7 @@ export const userListParamsSchema = z.object({
   q: text(100),
   status: z.enum(["active", "inactive", "pending"]).optional().catch(undefined),
   role: z.enum(["user", "admin"]).optional().catch(undefined),
+  upload: z.enum(["yes", "no"]).optional().catch(undefined),
   sort: z.enum(["created_at", "full_name", "email", "last_sign_in_at", "used_bytes"]).default("created_at").catch("created_at"),
   dir,
   page,
@@ -73,6 +74,8 @@ export const inviteUserSchema = z.object({
 export const quotaSchema = z.object({ userId: z.uuid(), quotaMb });
 
 export const idSchema = z.object({ id: z.uuid() });
+
+export const uploadGrantSchema = z.object({ email: emailSchema });
 
 export const roleChangeSchema = z.object({
   id: z.uuid(),

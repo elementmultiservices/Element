@@ -35,7 +35,9 @@
       "adminPostEdit": "Editar publicación",
       "adminPostPreview": "Vista previa de la publicación",
       "adminPostCategories": "Categorías del blog",
-      "adminMessages": "Mensajes de contacto"
+      "adminMessages": "Mensajes de contacto",
+      "signUp": "Crear una cuenta",
+      "adminUploadAccess": "Autorizar subida de documentos"
     },
     "descriptions": {
       "about": "Quiénes somos y cómo Element protege los documentos de las organizaciones y sus clientes.",
@@ -153,10 +155,32 @@
       "submit": "Iniciar sesión",
       "submitting": "Iniciando sesión…",
       "forgot": "¿Olvidó su contraseña?",
-      "closedRegistration": "Las cuentas son creadas por el administrador. Si necesita acceso, por favor contáctenos.",
       "sessionEnded": "Su sesión ha finalizado. Por favor, inicie sesión nuevamente.",
       "passwordUpdated": "Su contraseña fue actualizada. Por favor, inicie sesión.",
-      "mfaReset": "La verificación en dos pasos se restableció con un código de recuperación. Inicie sesión nuevamente; los administradores deberán configurar una nueva aplicación de autenticación."
+      "mfaReset": "La verificación en dos pasos se restableció con un código de recuperación. Inicie sesión nuevamente; los administradores deberán configurar una nueva aplicación de autenticación.",
+      "noAccount": "¿No tiene una cuenta?",
+      "createAccount": "Crear una cuenta",
+      "oauthFailed": "No fue posible iniciar sesión con Google. Por favor, intente nuevamente."
+    },
+    "signUp": {
+      "title": "Crear una cuenta",
+      "subtitle": "Regístrese con Google o con su correo electrónico.",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "consent": "Acepto los",
+      "terms": "Términos de uso",
+      "and": "y la",
+      "dataPolicy": "Política de tratamiento de datos personales",
+      "passwordNote": "Le enviaremos un enlace para confirmar su correo y definir su contraseña.",
+      "submit": "Crear cuenta",
+      "submitting": "Enviando…",
+      "success": "Revise su correo electrónico. Si la dirección puede registrarse, recibirá en unos minutos un enlace para confirmarla y definir su contraseña. El enlace es válido por 24 horas y solo puede usarse una vez.",
+      "haveAccount": "¿Ya tiene una cuenta?",
+      "signIn": "Iniciar sesión"
+    },
+    "google": {
+      "continue": "Continuar con Google",
+      "or": "o"
     },
     "reset": {
       "title": "Restablecer contraseña",
@@ -257,7 +281,8 @@
     "coverInvalid": "La imagen debe ser un archivo JPG, PNG o WebP de hasta 4 MB.",
     "recoveryInvalid": "El código de recuperación es incorrecto o ya fue utilizado.",
     "formExpired": "El formulario venció. Recargue la página e intente nuevamente.",
-    "roleChangeUnavailable": "El rol solo puede cambiarse en cuentas activas que hayan completado su invitación."
+    "roleChangeUnavailable": "El rol solo puede cambiarse en cuentas activas que hayan completado su invitación.",
+    "uploadGrantAdmin": "Este correo pertenece a una cuenta de administrador; los administradores no necesitan esta autorización."
   },
   "NotFound": {
     "code": "Error 404",
@@ -355,6 +380,38 @@
       "body": "Gracias por comunicarse con Element. Su mensaje fue recibido con la referencia {reference} y nuestro equipo le responderá a esta dirección a la mayor brevedad.",
       "cta": "Visitar Element",
       "ignore": "Si usted no nos escribió, puede ignorar este correo; no recibirá más mensajes."
+    },
+    "signUp": {
+      "subject": "Confirme su correo para crear su cuenta",
+      "preview": "Confirme su correo para terminar de crear su cuenta en Element.",
+      "heading": "Confirme su correo electrónico",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "body": "Recibimos una solicitud para crear una cuenta en Element con este correo. Para confirmarlo y definir su contraseña, use el siguiente botón.",
+      "cta": "Confirmar y crear contraseña",
+      "expiry": "Este enlace es válido por 24 horas y solo puede usarse una vez.",
+      "ignore": "Si usted no solicitó crear una cuenta, puede ignorar este mensaje; no se activará ninguna cuenta."
+    },
+    "accountExists": {
+      "subject": "Ya tiene una cuenta en Element",
+      "preview": "Recibimos una solicitud de registro con un correo que ya tiene cuenta.",
+      "heading": "Ya tiene una cuenta",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "body": "Alguien intentó crear una cuenta en Element con este correo, pero usted ya tiene una. Puede iniciar sesión con su contraseña o con Google.",
+      "cta": "Iniciar sesión",
+      "expiry": "Si olvidó su contraseña, puede restablecerla desde la página de inicio de sesión.",
+      "ignore": "Si no fue usted, puede ignorar este mensaje; su cuenta no cambió."
+    },
+    "uploadGranted": {
+      "subject": "Su cuenta puede subir documentos",
+      "preview": "Un administrador autorizó su cuenta para subir documentos.",
+      "heading": "Ya puede subir documentos",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "body": "Un administrador autorizó su cuenta de Element para subir documentos. Ya puede hacerlo desde su panel.",
+      "cta": "Iniciar sesión",
+      "ignore": "Si no esperaba este cambio, comuníquese con el administrador."
     }
   },
   "Files": {
@@ -457,8 +514,10 @@
       "invalid_category": "La categoría seleccionada no está disponible.",
       "network": "La conexión se interrumpió durante la carga. Por favor, intente nuevamente.",
       "generic": "No fue posible cargar el archivo. Por favor, intente nuevamente en unos minutos.",
-      "invalid_owner": "El usuario seleccionado no puede recibir archivos."
-    }
+      "invalid_owner": "El usuario seleccionado no puede recibir archivos.",
+      "upload_not_allowed": "Su cuenta no está autorizada para subir documentos. Comuníquese con el administrador."
+    },
+    "notAllowed": "Su cuenta aún no está autorizada para subir documentos. Un administrador debe habilitarla; mientras tanto, puede ver los documentos que le compartan."
   },
   "Profile": {
     "description": "Administre sus datos personales, idioma, contraseña y seguridad.",
@@ -569,7 +628,7 @@
     "statuses": {
       "active": "Activa",
       "inactive": "Inactiva",
-      "pending": "Invitación pendiente"
+      "pending": "Pendiente de confirmación"
     },
     "overview": {
       "description": "Estado general de la plataforma.",
@@ -587,7 +646,7 @@
       "viewAll": "Ver todo"
     },
     "users": {
-      "description": "Cuentas con acceso a la plataforma. El registro está cerrado: los usuarios ingresan solo por invitación.",
+      "description": "Cuentas registradas en la plataforma. Cualquier persona puede crear su cuenta, pero solo las autorizadas pueden subir documentos.",
       "invite": {
         "description": "La persona recibirá un correo, en el idioma seleccionado, con un enlace para definir su contraseña. El enlace vence en 24 horas.",
         "name": "Nombre completo",
@@ -597,7 +656,7 @@
         "submit": "Enviar invitación",
         "submitting": "Enviando…",
         "success": "La invitación fue enviada a {email}.",
-        "roleNote": "Las cuentas invitadas siempre tienen el rol de usuario.",
+        "roleNote": "Las cuentas invitadas tienen el rol de usuario y quedan autorizadas para subir documentos.",
         "another": "Invitar a otro usuario",
         "viewUser": "Ver usuario"
       },
@@ -612,7 +671,8 @@
         "files": "Archivos",
         "storage": "Almacenamiento",
         "lastSignIn": "Último inicio de sesión",
-        "created": "Creación"
+        "created": "Creación",
+        "upload": "Subida de documentos"
       },
       "empty": "No hay usuarios que coincidan con los filtros.",
       "noName": "(sin nombre)",
@@ -665,7 +725,42 @@
         "stepUpCode": "Su código de verificación",
         "roleChanged": "El rol fue cambiado. Se notificó al usuario por correo."
       },
-      "inviteCta": "Invitar usuario"
+      "inviteCta": "Invitar usuario",
+      "upload": {
+        "allowed": "Puede subir",
+        "notAllowed": "Sin autorización",
+        "filter": "Subida de documentos",
+        "manageCta": "Autorizar correos",
+        "heading": "Subida de documentos",
+        "allowedBody": "Esta cuenta está autorizada para subir documentos.",
+        "notAllowedBody": "Esta cuenta puede iniciar sesión y ver sus documentos, pero no puede subir archivos hasta que la autorice.",
+        "grant": "Autorizar subida",
+        "grantTitle": "¿Autorizar la subida de documentos?",
+        "grantBody": "El usuario podrá subir documentos a su cuenta y recibirá un correo de aviso.",
+        "granted": "La cuenta fue autorizada para subir documentos.",
+        "revoke": "Quitar autorización",
+        "revokeTitle": "¿Quitar la autorización para subir documentos?",
+        "revokeBody": "El usuario ya no podrá subir documentos. Los archivos que ya subió se conservan.",
+        "revoked": "Se quitó la autorización para subir documentos.",
+        "pageTitle": "Autorizar subida de documentos",
+        "pageDescription": "Autorice un correo para subir documentos. Si ya tiene cuenta, el permiso se aplica de inmediato; si aún no se ha registrado, se aplicará automáticamente cuando cree su cuenta y confirme el correo (o entre con Google).",
+        "emailLabel": "Correo electrónico",
+        "emailHint": "Puede ser un usuario ya registrado o alguien que se registrará más adelante.",
+        "authorize": "Autorizar",
+        "authorizing": "Autorizando…",
+        "grantedExisting": "{email} ya tenía cuenta y quedó autorizado(a) para subir documentos.",
+        "grantedPending": "{email} quedó pre-autorizado(a): podrá subir documentos en cuanto cree su cuenta.",
+        "existingHint": "También puede autorizar cuentas ya registradas desde su ficha de usuario.",
+        "existingLink": "Ver usuarios sin autorización",
+        "pendingHeading": "Correos pre-autorizados pendientes de registro",
+        "pendingEmpty": "No hay correos pre-autorizados pendientes.",
+        "grantedBy": "Autorizado por",
+        "grantedAt": "Fecha",
+        "remove": "Quitar",
+        "removeTitle": "¿Quitar la pre-autorización?",
+        "removeBody": "{email} ya no quedará autorizado(a) automáticamente al registrarse.",
+        "removed": "Se quitó la pre-autorización."
+      }
     },
     "files": {
       "description": "Todos los archivos de la plataforma. Los archivos enviados a la papelera pueden restaurarse durante 30 días.",
@@ -787,6 +882,7 @@
         "email": "Correo electrónico",
         "role": "Rol",
         "status": "Estado",
+        "upload": "Puede subir documentos",
         "language": "Idioma",
         "files": "Archivos activos",
         "usedBytes": "Almacenamiento utilizado (bytes)",
@@ -1169,7 +1265,7 @@
         {
           "heading": "1. Acceso",
           "body": [
-            "Las cuentas se crean exclusivamente por invitación de la organización. Las credenciales son personales e intransferibles; el usuario debe mantenerlas en reserva y activar la verificación en dos pasos cuando esté disponible."
+            "Cualquier persona puede crear una cuenta; la organización decide qué cuentas pueden subir documentos. Las credenciales son personales e intransferibles; el usuario debe mantenerlas en reserva y activar la verificación en dos pasos cuando esté disponible."
           ]
         },
         {
