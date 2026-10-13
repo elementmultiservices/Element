@@ -25,6 +25,9 @@ export type EditorPost = {
   publishedAt: string | null;
   categoryId: string | null;
   coverUrl: string | null;
+  kind: "article" | "update";
+  isFeatured: boolean;
+  sourceUrl: string | null;
   translations: Partial<Record<AppLocale, { title: string; slug: string; excerpt: string; content: string }>>;
 };
 
@@ -94,7 +97,7 @@ export function PostEditor({ post, categories }: { post: EditorPost | null; cate
         {state.status === "error" && state.error ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
         {state.fieldErrors?.translations ? <FormAlert variant="error">{tv(state.fieldErrors.translations)}</FormAlert> : null}
 
-        <section aria-labelledby="post-settings" className="rounded-lg border bg-card p-6">
+        <section aria-labelledby="post-settings" className="rounded-[24px] border border-azure-50 bg-white p-6">
           <h2 id="post-settings" className="text-lg">
             {t("editor.settings")}
           </h2>
@@ -137,9 +140,52 @@ export function PostEditor({ post, categories }: { post: EditorPost | null; cate
               </NativeSelect>
             </div>
           </div>
+
+          <div className="mt-6 grid gap-5 border-t border-azure-50 pt-6 md:grid-cols-3">
+            <fieldset className="space-y-2">
+              <legend className="text-sm font-medium text-ink">{t("editor.kind")}</legend>
+              <div className="flex flex-wrap gap-2">
+                {(["article", "update"] as const).map((k) => (
+                  <label
+                    key={k}
+                    className="flex cursor-pointer items-center gap-2 rounded-full bg-azure-25 px-4 py-2 text-sm text-ink has-checked:bg-electric has-checked:text-white"
+                  >
+                    <input type="radio" name="kind" value={k} defaultChecked={(post?.kind ?? "article") === k} className="sr-only" />
+                    {t(`editor.kinds.${k}`)}
+                  </label>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">{t("editor.kindHint")}</p>
+            </fieldset>
+            <div className="space-y-2">
+              <span className="text-sm font-medium text-ink">{t("editor.featured")}</span>
+              <label className="flex cursor-pointer items-center gap-3 rounded-2xl bg-azure-25 px-4 py-2.5 text-sm text-ink">
+                <input type="checkbox" name="featured" defaultChecked={post?.isFeatured ?? false} className="size-4 accent-[var(--brand-electric)]" />
+                {t("editor.featuredLabel")}
+              </label>
+              <p className="text-xs text-muted-foreground">{t("editor.featuredHint")}</p>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="post-source">{t("editor.sourceUrl")}</Label>
+              <Input
+                id="post-source"
+                name="sourceUrl"
+                type="url"
+                placeholder="https://www.irs.gov/…"
+                defaultValue={post?.sourceUrl ?? ""}
+                maxLength={1000}
+                aria-invalid={fe("sourceUrl") ? true : undefined}
+                aria-describedby="post-source-hint post-source-error"
+              />
+              <p id="post-source-hint" className="text-xs text-muted-foreground">
+                {t("editor.sourceUrlHint")}
+              </p>
+              <FieldError id="post-source-error" message={fe("sourceUrl")} />
+            </div>
+          </div>
         </section>
 
-        <section aria-labelledby="post-content" className="rounded-lg border bg-card">
+        <section aria-labelledby="post-content" className="rounded-[24px] border border-azure-50 bg-white">
           <div className="px-6 pt-6">
             <h2 id="post-content" className="text-lg">
               {t("editor.languagesHeading")}
@@ -166,7 +212,7 @@ export function PostEditor({ post, categories }: { post: EditorPost | null; cate
                   onKeyDown={onTabKey}
                   className={cn(
                     "-mb-px flex items-center gap-2 border-b-2 px-4 py-2.5 text-sm font-medium",
-                    active === l ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground",
+                    active === l ? "border-electric text-electric" : "border-transparent text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {tc(`languages.${l}`)}
@@ -314,7 +360,7 @@ function CoverManager({ postId, initialUrl }: { postId: string; initialUrl: stri
   }
 
   return (
-    <section aria-labelledby="post-cover" className="rounded-lg border bg-card p-6">
+    <section aria-labelledby="post-cover" className="rounded-[24px] border border-azure-50 bg-white p-6">
       <h2 id="post-cover" className="text-lg">
         {t("coverHeading")}
       </h2>
@@ -326,7 +372,7 @@ function CoverManager({ postId, initialUrl }: { postId: string; initialUrl: stri
       ) : null}
       <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center">
         {url ? (
-          <div className="relative aspect-[16/9] w-full max-w-xs overflow-hidden rounded-md border bg-surface">
+          <div className="relative aspect-[16/9] w-full max-w-xs overflow-hidden rounded-2xl border border-azure-50 bg-mist">
             <NextImage src={url} alt={t("coverAlt")} fill unoptimized className="object-cover" />
           </div>
         ) : null}

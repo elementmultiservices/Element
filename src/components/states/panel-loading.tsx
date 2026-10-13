@@ -7,7 +7,12 @@ export function PanelLoading() {
         <Skeleton className="h-4 w-40" />
         <Skeleton className="h-8 w-64" />
       </div>
-      <Skeleton className="h-64 w-full" />
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Skeleton className="h-28 rounded-[24px]" />
+        <Skeleton className="h-28 rounded-[24px]" />
+        <Skeleton className="h-28 rounded-[24px]" />
+      </div>
+      <Skeleton className="h-72 w-full rounded-[24px]" />
     </div>
   );
 }

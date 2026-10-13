@@ -86,3 +86,55 @@ export const roleChangeSchema = z.object({
 const categoryName = z.string({ error: "required" }).trim().min(1, { error: "required" }).max(80, { error: "tooLong" });
 export const categoryCreateSchema = z.object({ nameEn: categoryName, nameEs: categoryName });
 export const categoryRenameSchema = z.object({ id: z.uuid(), nameEn: categoryName, nameEs: categoryName });
+
+// ---------------------------------------------------------------------------
+// Business details (site_settings)
+// ---------------------------------------------------------------------------
+const httpsUrl = z
+  .string()
+  .trim()
+  .max(1000, { error: "tooLong" })
+  .refine((v) => v === "" || /^https:\/\/[^\s]+$/.test(v), { error: "urlInvalid" });
+
+/** Multi-line text: trims each line and drops empty ones. */
+const multiline = z
+  .string()
+  .max(1000, { error: "tooLong" })
+  .transform((v) =>
+    v
+      .split(/\r?\n/)
+      .map((l) => l.trim())
+      .filter(Boolean)
+      .join("\n"),
+  );
+
+export const siteSettingsSchema = z.object({
+  phone: z
+    .string()
+    .trim()
+    .max(40, { error: "tooLong" })
+    .refine((v) => v === "" || v.replace(/\D/g, "").length >= 7, { error: "phoneInvalid" }),
+  whatsapp: z
+    .string()
+    .transform((v) => v.replace(/\D/g, ""))
+    .refine((v) => v === "" || (v.length >= 7 && v.length <= 15), { error: "phoneInvalid" }),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .max(254, { error: "tooLong" })
+    .refine((v) => v === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), { error: "emailInvalid" }),
+  address: z.string().trim().max(300, { error: "tooLong" }),
+  mapsUrl: httpsUrl,
+  bookingUrl: httpsUrl,
+  hoursRegularEs: multiline,
+  hoursRegularEn: multiline,
+  hoursSeasonEs: multiline,
+  hoursSeasonEn: multiline,
+  announcementEnabled: z.literal("on").optional().transform((v) => v === "on"),
+  announcementLabelEs: z.string().trim().max(40, { error: "tooLong" }),
+  announcementLabelEn: z.string().trim().max(40, { error: "tooLong" }),
+  announcementTextEs: z.string().trim().max(200, { error: "tooLong" }),
+  announcementTextEn: z.string().trim().max(200, { error: "tooLong" }),
+});
+export type SiteSettingsField = keyof z.input<typeof siteSettingsSchema>;

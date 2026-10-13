@@ -183,7 +183,7 @@ export function UploadForm({
 
   if (phase === "done") {
     return (
-      <div className="space-y-4 rounded-lg border bg-card p-6">
+      <div className="space-y-4 rounded-[24px] border border-azure-50 bg-white p-6">
         <FormAlert variant="success">{t("status.done")}</FormAlert>
         <div className="flex flex-wrap gap-2">
           <Button type="button" onClick={reset}>
@@ -207,7 +207,7 @@ export function UploadForm({
           : "";
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-5 rounded-lg border bg-card p-6">
+    <form onSubmit={onSubmit} noValidate className="space-y-5 rounded-[24px] border border-azure-50 bg-white p-6">
       {error ? <FormAlert variant="error">{t(`errors.${error}`, { max: maxLabel })}</FormAlert> : null}
 
       <div
@@ -218,7 +218,7 @@ export function UploadForm({
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
         className={cn(
-          "flex flex-col items-center rounded-md border-2 border-dashed px-6 py-10 text-center transition-colors",
+          "flex flex-col items-center rounded-[20px] border-2 border-dashed border-azure-100 bg-mist px-6 py-10 text-center transition-colors",
           dragging ? "border-ring bg-info-bg" : "border-input bg-surface",
         )}
       >
@@ -314,9 +314,9 @@ export function UploadForm({
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={Math.round(progress * 100)}
-            className="h-2 overflow-hidden rounded-full bg-secondary"
+            className="h-2.5 overflow-hidden rounded-full bg-azure-50"
           >
-            <div className="h-full rounded-full bg-primary transition-[width]" style={{ width: `${Math.round(progress * 100)}%` }} />
+            <div className="h-full rounded-full bg-electric transition-[width]" style={{ width: `${Math.round(progress * 100)}%` }} />
           </div>
         </div>
       ) : null}

@@ -139,7 +139,7 @@ export function MfaControls({ enabled, isAdmin }: { enabled: boolean; isAdmin: b
       {isAdmin ? (
         <p className="text-sm text-muted-foreground">{t("requiredForAdmins")}</p>
       ) : enabled ? (
-        <form onSubmit={onSubmit} noValidate className="space-y-4 rounded-md border bg-surface p-4">
+        <form onSubmit={onSubmit} noValidate className="space-y-4 rounded-2xl border border-azure-50 bg-mist p-4">
           <div>
             <h3 className="text-sm font-semibold">{t("disableHeading")}</h3>
             <p className="mt-1 text-sm text-muted-foreground">{t("disableHint")}</p>
@@ -199,7 +199,7 @@ export function RecoveryCodesSection({ remaining }: { remaining: number }) {
   }
 
   return (
-    <div className="space-y-4 rounded-md border bg-surface p-4">
+    <div className="space-y-4 rounded-2xl border border-azure-50 bg-mist p-4">
       <div>
         <h3 className="text-sm font-semibold">{t("heading")}</h3>
         <p className={remaining > 0 ? "mt-1 text-sm text-muted-foreground" : "mt-1 text-sm text-warning"}>

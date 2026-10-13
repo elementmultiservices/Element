@@ -31,7 +31,7 @@ export function PreauthorizeForm() {
   const result = state as UploadGrantState;
 
   return (
-    <form key={formKey} onSubmit={onSubmit} noValidate className="space-y-4 rounded-lg border bg-card p-6">
+    <form key={formKey} onSubmit={onSubmit} noValidate className="space-y-4 rounded-[24px] border border-azure-50 bg-white p-6">
       {state.status === "error" && state.error ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
       {state.status === "success" && result.outcome ? (
         <FormAlert variant="success">

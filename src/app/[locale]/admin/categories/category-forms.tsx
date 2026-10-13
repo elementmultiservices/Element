@@ -73,7 +73,7 @@ export function CategoryRowActions({
 
   if (editing) {
     return (
-      <form onSubmit={onSubmit} noValidate className="space-y-3 rounded-md border bg-surface p-3 text-left" aria-label={t("renameTitle")}>
+      <form onSubmit={onSubmit} noValidate className="space-y-3 rounded-2xl border border-azure-50 bg-mist p-3 text-left" aria-label={t("renameTitle")}>
         {state.status === "error" && state.error ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
         <input type="hidden" name="id" value={id} />
         <div className="grid gap-3 sm:grid-cols-2">

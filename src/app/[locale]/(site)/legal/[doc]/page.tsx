@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, FileText } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { PageHero } from "@/components/marketing/page-hero";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 const DOCS = {
   privacy: "privacy",
@@ -42,69 +44,83 @@ export default async function LegalPage({ params }: PageProps<"/[locale]/legal/[
 
   const sections = t.raw(`${key}.sections`) as Section[];
   const rows = key === "cookies" ? (t.raw("cookies.rows") as CookieRow[]) : [];
+  const th = "px-4 py-3 text-left font-mono text-[11px] font-medium tracking-[0.08em] whitespace-nowrap text-graphite uppercase";
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <div role="note" className="flex gap-3 rounded-md border border-warning/40 bg-warning-bg px-4 py-3 text-sm text-warning">
-        <AlertTriangle aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
-        <p className="font-medium">{t("reviewBanner")}</p>
-      </div>
-      <h1 className="mt-8 text-3xl sm:text-4xl">{t(`${key}.title`)}</h1>
-      <p className="mt-2 text-sm text-muted-foreground">{t("lastUpdated", { date: t("updatedDate") })}</p>
-      <div className="prose-element mt-8">
-        <p>{t(`${key}.intro`)}</p>
-        {sections.map((section) => (
-          <section key={section.heading}>
-            <h2>{section.heading}</h2>
-            {section.body.map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
-            ))}
-          </section>
-        ))}
-      </div>
+    <>
+      <PageHero eyebrow={tf("legalHeading")} title={t(`${key}.title`)} body={t("lastUpdated", { date: t("updatedDate") })} />
 
-      {rows.length > 0 ? (
-        <section className="mt-10">
-          <h2 className="text-xl">{t("cookies.tableHeading")}</h2>
-          <div className="relative mt-4 overflow-x-auto rounded-lg border">
-            <table className="w-full min-w-[560px] text-sm">
-              <thead className="border-b bg-surface">
-                <tr>
-                  <th scope="col" className="px-3 py-2 text-left font-semibold">{t("cookieTable.name")}</th>
-                  <th scope="col" className="px-3 py-2 text-left font-semibold">{t("cookieTable.purpose")}</th>
-                  <th scope="col" className="px-3 py-2 text-left font-semibold">{t("cookieTable.duration")}</th>
-                  <th scope="col" className="px-3 py-2 text-left font-semibold">{t("cookieTable.type")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {rows.map((row) => (
-                  <tr key={row.name} className="align-top">
-                    <td className="px-3 py-2 font-mono text-xs">{row.name}</td>
-                    <td className="px-3 py-2">{row.purpose}</td>
-                    <td className="px-3 py-2 text-muted-foreground">{row.duration}</td>
-                    <td className="px-3 py-2 text-muted-foreground">{row.type}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      <div className="mx-auto grid max-w-[1240px] gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[260px_1fr] lg:gap-16 lg:py-20">
+        <nav aria-label={t("otherDocuments")} className="lg:sticky lg:top-32 lg:self-start">
+          <h2 className="font-mono text-xs font-normal tracking-[0.1em] text-graphite uppercase">{t("otherDocuments")}</h2>
+          <ul className="mt-4 flex flex-wrap gap-2 lg:flex-col">
+            {(Object.keys(DOCS) as DocSlug[]).map((d) => {
+              const active = d === doc;
+              return (
+                <li key={d}>
+                  <Link
+                    href={`/legal/${d}`}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors",
+                      active ? "bg-ink text-white" : "bg-azure-25 text-ink hover:bg-azure-50",
+                    )}
+                  >
+                    <FileText aria-hidden="true" className={cn("size-4 shrink-0", active ? "text-azure-300" : "text-cobalt")} />
+                    {tf(DOCS[d])}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <div className="min-w-0 max-w-3xl">
+          <div role="note" className="flex gap-3 rounded-2xl border border-warning/30 bg-warning-bg px-4 py-3 text-sm text-warning">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+            <p className="font-medium">{t("reviewBanner")}</p>
           </div>
-        </section>
-      ) : null}
-
-      <nav aria-label={t("otherDocuments")} className="mt-12 border-t pt-6">
-        <h2 className="text-sm font-semibold">{t("otherDocuments")}</h2>
-        <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          {(Object.keys(DOCS) as DocSlug[])
-            .filter((d) => d !== doc)
-            .map((d) => (
-              <li key={d}>
-                <Link href={`/legal/${d}`} className="text-link hover:underline">
-                  {tf(DOCS[d])}
-                </Link>
-              </li>
+          <div className="prose-element mt-8">
+            <p className="text-lg text-graphite">{t(`${key}.intro`)}</p>
+            {sections.map((section) => (
+              <section key={section.heading}>
+                <h2>{section.heading}</h2>
+                {section.body.map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </section>
             ))}
-        </ul>
-      </nav>
-    </div>
+          </div>
+
+          {rows.length > 0 ? (
+            <section className="mt-12">
+              <h2 className="text-2xl font-semibold text-ink">{t("cookies.tableHeading")}</h2>
+              <div className="relative mt-5 overflow-x-auto rounded-[20px] border border-azure-50 bg-white">
+                <table className="w-full min-w-[560px] text-sm">
+                  <thead className="border-b border-azure-50 bg-mist">
+                    <tr>
+                      <th scope="col" className={th}>{t("cookieTable.name")}</th>
+                      <th scope="col" className={th}>{t("cookieTable.purpose")}</th>
+                      <th scope="col" className={th}>{t("cookieTable.duration")}</th>
+                      <th scope="col" className={th}>{t("cookieTable.type")}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-azure-50">
+                    {rows.map((row) => (
+                      <tr key={row.name} className="align-top">
+                        <td className="px-4 py-3.5 font-mono text-xs text-ink">{row.name}</td>
+                        <td className="px-4 py-3.5 text-ink">{row.purpose}</td>
+                        <td className="px-4 py-3.5 text-graphite">{row.duration}</td>
+                        <td className="px-4 py-3.5 text-graphite">{row.type}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          ) : null}
+        </div>
+      </div>
+    </>
   );
 }

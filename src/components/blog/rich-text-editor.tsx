@@ -63,8 +63,8 @@ function ToolButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "inline-flex size-8 items-center justify-center rounded-sm text-foreground hover:bg-accent disabled:opacity-40",
-        active && "bg-accent text-primary",
+        "inline-flex size-8 items-center justify-center rounded-lg text-ink hover:bg-azure-50 disabled:opacity-40",
+        active && "bg-electric text-white hover:bg-electric-hover",
       )}
     >
       <Icon aria-hidden="true" className="size-4" />
@@ -106,7 +106,7 @@ function Toolbar({ editor, linkPrompt }: { editor: Editor; linkPrompt: string })
   }
 
   return (
-    <div role="toolbar" aria-label={t("label")} className="flex flex-wrap items-center gap-0.5 border-b bg-surface p-1">
+    <div role="toolbar" aria-label={t("label")} className="flex flex-wrap items-center gap-1 border-b border-azure-50 bg-mist p-2">
       <ToolButton icon={Pilcrow} label={label("paragraph")} active={s.paragraph} onClick={() => chain().setParagraph().run()} />
       <ToolButton icon={Heading2} label={label("heading2")} active={s.h2} onClick={() => chain().toggleHeading({ level: 2 }).run()} />
       <ToolButton icon={Heading3} label={label("heading3")} active={s.h3} onClick={() => chain().toggleHeading({ level: 3 }).run()} />
@@ -181,7 +181,7 @@ export function RichTextEditor({
   });
 
   return (
-    <div className={cn("overflow-hidden rounded-md border bg-background focus-within:ring-2 focus-within:ring-ring", invalid && "border-destructive")}>
+    <div className={cn("overflow-hidden rounded-[20px] border border-azure-100 bg-white focus-within:border-electric focus-within:ring-[3px] focus-within:ring-electric/15", invalid && "border-destructive")}>
       {editor ? <Toolbar editor={editor} linkPrompt={t("linkPrompt")} /> : <div className="h-10 border-b bg-surface" />}
       <EditorContent editor={editor} />
       <input type="hidden" name={name} value={html} />

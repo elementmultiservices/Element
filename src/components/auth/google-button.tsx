@@ -7,7 +7,7 @@ export async function GoogleButton() {
   return (
     <a
       href={`/api/auth/google?locale=${locale}`}
-      className="inline-flex h-10 w-full items-center justify-center gap-2.5 rounded-md border bg-background px-4 text-sm font-medium shadow-xs hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      className="inline-flex h-10 w-full items-center justify-center gap-2.5 rounded-full border border-azure-100 bg-white px-4 text-sm font-semibold text-ink hover:bg-azure-25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
     >
       <svg aria-hidden="true" viewBox="0 0 48 48" className="size-4">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />

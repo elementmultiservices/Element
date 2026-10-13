@@ -7,9 +7,24 @@
  */
 :root {
   /* Brand */
-  --brand-primary: #0b2545;          /* navy */
-  --brand-primary-hover: #12345e;
-  --brand-accent: #1d5b8f;           /* muted blue, used sparingly (links, focus) */
+  --brand-ink: #050d29;              /* Medianoche: text, dark surfaces */
+  --brand-navy: #13295a;             /* Marino */
+  --brand-royal: #2b56b3;            /* Azul 700 */
+  --brand-cobalt: #3167db;           /* icons, links */
+  --brand-electric: #1b83f4;         /* primary calls to action */
+  --brand-electric-hover: #0f6fdb;
+  --brand-sky: #53a0f8;              /* Cielo */
+  --brand-azure-300: #79bcf9;
+  --brand-azure-200: #a1d3fb;
+  --brand-azure-100: #c5e3fb;
+  --brand-azure-50: #ddeefd;
+  --brand-azure-25: #f0f7ff;
+  --brand-mist: #f7fbff;             /* Niebla */
+  --brand-graphite: #4a5778;         /* Grafito: secondary text */
+
+  --brand-primary: var(--brand-ink);
+  --brand-primary-hover: var(--brand-navy);
+  --brand-accent: var(--brand-cobalt);
 
   /* Neutrals */
   --neutral-0: #ffffff;
@@ -33,19 +48,19 @@
 
   /* Semantic tokens consumed by components (shadcn/ui contract) */
   --background: var(--neutral-0);
-  --foreground: var(--neutral-900);
+  --foreground: var(--brand-ink);
   --card: var(--neutral-0);
-  --card-foreground: var(--neutral-900);
+  --card-foreground: var(--brand-ink);
   --popover: var(--neutral-0);
-  --popover-foreground: var(--neutral-900);
+  --popover-foreground: var(--brand-ink);
   --primary: var(--brand-primary);
   --primary-hover: var(--brand-primary-hover);
   --primary-foreground: var(--neutral-0);
-  --secondary: var(--neutral-100);
-  --secondary-foreground: var(--neutral-900);
-  --muted: var(--neutral-50);
-  --muted-foreground: var(--neutral-500);
-  --accent: var(--neutral-100);
+  --secondary: var(--brand-azure-25);
+  --secondary-foreground: var(--brand-ink);
+  --muted: var(--brand-mist);
+  --muted-foreground: var(--brand-graphite);
+  --accent: var(--brand-azure-25);
   --accent-foreground: var(--brand-primary);
   --link: var(--brand-accent);
   --destructive: var(--status-error);
@@ -53,16 +68,32 @@
   --success: var(--status-success);
   --warning: var(--status-warning);
   --info: var(--status-info);
-  --border: var(--neutral-200);
-  --input: var(--neutral-300);
-  --ring: var(--brand-accent);
-  --surface: var(--neutral-50);
+  --border: var(--brand-azure-50);
+  --input: var(--brand-azure-100);
+  --ring: var(--brand-electric);
+  --surface: var(--brand-mist);
 
-  --radius: 0.25rem;
+  --radius: 0.75rem;
 }
 
 @theme inline {
-  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --color-ink: var(--brand-ink);
+  --color-navy: var(--brand-navy);
+  --color-royal: var(--brand-royal);
+  --color-cobalt: var(--brand-cobalt);
+  --color-electric: var(--brand-electric);
+  --color-electric-hover: var(--brand-electric-hover);
+  --color-sky: var(--brand-sky);
+  --color-azure-300: var(--brand-azure-300);
+  --color-azure-200: var(--brand-azure-200);
+  --color-azure-100: var(--brand-azure-100);
+  --color-azure-50: var(--brand-azure-50);
+  --color-azure-25: var(--brand-azure-25);
+  --color-mist: var(--brand-mist);
+  --color-graphite: var(--brand-graphite);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -106,6 +137,12 @@
   }
   html {
     -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   body {
     @apply bg-background text-foreground antialiased;
@@ -129,6 +166,93 @@
   }
 }
 
+/*
+ * Motion. Everything below only runs for visitors without a reduced-motion
+ * preference; otherwise the content renders in its final state.
+ *   .motion-enter / .motion-enter-scale  entrance on load (stagger with --d)
+ *   .reveal                              fade up as it scrolls into view (stagger with --i)
+ * Scroll-driven effects degrade to static content where unsupported.
+ */
+@keyframes enter-up {
+  from { opacity: 0; transform: translateY(24px); }
+}
+@keyframes enter-scale {
+  from { opacity: 0; transform: translateY(32px) scale(0.96); }
+}
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(40px); }
+}
+@keyframes float {
+  50% { transform: translateY(-10px); }
+}
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+}
+@keyframes grow-y {
+  from { transform: scaleY(0.15); }
+}
+@keyframes pulse-ring {
+  from { box-shadow: 0 0 0 0 rgb(27 131 244 / 0.35); }
+  to { box-shadow: 0 0 0 22px rgb(27 131 244 / 0); }
+}
+@keyframes ticker {
+  to { transform: translateX(-25%); }
+}
+@keyframes header-raise {
+  to { box-shadow: 0 10px 30px rgb(5 13 41 / 0.07); background-color: rgb(255 255 255 / 0.96); }
+}
+
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    .motion-enter {
+      animation: enter-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--d, 0) * 110ms);
+    }
+    .motion-enter-scale {
+      animation: enter-scale 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--d, 0) * 110ms);
+    }
+    .motion-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    .motion-grow-x {
+      transform-origin: left;
+      animation: grow-x 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--d, 0) * 110ms);
+    }
+    .motion-pulse {
+      animation: pulse-ring 2.4s ease-out infinite;
+    }
+    .ticker-track {
+      animation: ticker 40s linear infinite;
+    }
+    .ticker:hover .ticker-track,
+    .ticker:focus-within .ticker-track,
+    .ticker[data-paused="true"] .ticker-track {
+      animation-play-state: paused;
+    }
+
+    @supports (animation-timeline: view()) {
+      .reveal {
+        animation: reveal-up linear both;
+        animation-timeline: view();
+        animation-range: entry calc(var(--i, 0) * 6%) cover calc(20% + var(--i, 0) * 6%);
+      }
+      .reveal-grow-y > * {
+        transform-origin: bottom;
+        animation: grow-y linear both;
+        animation-timeline: view();
+        animation-range: entry 30% cover 45%;
+      }
+      .header-raise {
+        animation: header-raise linear both;
+        animation-timeline: scroll();
+        animation-range: 0 140px;
+      }
+    }
+  }
+}
+
 /* Long-form content (blog posts, legal pages). Content is sanitized HTML. */
 @layer components {
   .prose-element {
@@ -142,20 +266,26 @@
   }
   .prose-element h2 {
     margin-top: 2em;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+    letter-spacing: -0.01em;
+    color: var(--brand-ink);
   }
   .prose-element h3 {
     margin-top: 1.6em;
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+    color: var(--brand-ink);
   }
   .prose-element h4 {
     margin-top: 1.4em;
     font-size: 1.075rem;
   }
   .prose-element a {
-    color: var(--link);
+    color: var(--brand-electric);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+  .prose-element li::marker {
+    color: var(--brand-electric);
   }
   .prose-element ul {
     list-style: disc;
@@ -169,10 +299,11 @@
     margin-top: 0.35em;
   }
   .prose-element blockquote {
-    border-left: 3px solid var(--border);
-    padding-left: 1em;
-    color: var(--muted-foreground);
-    font-style: italic;
+    border-left: 3px solid var(--brand-electric);
+    border-radius: 0 1rem 1rem 0;
+    background: var(--brand-azure-25);
+    padding: 1em 1.25em;
+    color: var(--brand-navy);
   }
   .prose-element hr {
     border-color: var(--border);

@@ -49,6 +49,9 @@ export default async function EditPostPage({ params }: PageProps<"/[locale]/admi
             publishedAt: post.publishedAt,
             categoryId: post.categoryId,
             coverUrl: coverUrl(post.coverPath),
+            kind: post.kind,
+            isFeatured: post.isFeatured,
+            sourceUrl: post.sourceUrl,
             translations: post.translations,
           }}
           categories={categories.map((c) => ({ id: c.id, label: locale === "es" ? c.nameEs : c.nameEn }))}

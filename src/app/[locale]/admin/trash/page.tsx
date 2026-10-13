@@ -45,7 +45,7 @@ export default async function AdminTrashPage({ params, searchParams }: PageProps
         breadcrumbs={[{ label: t("Panel.adminTitle"), href: "/admin" }, { label: t("Panel.admin.trash") }]}
       />
 
-      <form method="get" role="search" className="mb-4 rounded-lg border bg-card p-4">
+      <form method="get" role="search" className="mb-4 rounded-[24px] border border-azure-50 bg-white p-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label htmlFor="trash-q">{t("Files.filters.search")}</Label>
@@ -76,7 +76,7 @@ export default async function AdminTrashPage({ params, searchParams }: PageProps
       </form>
 
       {list.total === 0 ? (
-        <p className="rounded-lg border border-dashed bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.trash.empty")}</p>
+        <p className="rounded-[24px] border border-dashed border-azure-100 bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.trash.empty")}</p>
       ) : (
         <TableShell
           caption={t("Admin.trash.table.caption")}
@@ -95,31 +95,31 @@ export default async function AdminTrashPage({ params, searchParams }: PageProps
               </Th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-azure-50">
             {list.rows.map((f) => {
               const name = sanitizeDisplayName(f.originalName);
               const deletedAt = f.deletedAt ?? f.createdAt;
               return (
-                <tr key={f.id} className="hover:bg-surface/60">
-                  <td className="max-w-64 truncate px-3 py-2.5 font-medium" title={name}>
+                <tr key={f.id} className="transition-colors hover:bg-azure-25/60">
+                  <td className="max-w-64 truncate px-4 py-3.5 font-medium" title={name}>
                     {name}
                   </td>
-                  <td className="max-w-48 truncate px-3 py-2.5">
+                  <td className="max-w-48 truncate px-4 py-3.5">
                     <Link href={`/admin/users/${f.ownerId}`} className="text-link hover:underline">
                       {userDisplayName(labels.get(f.ownerId), unknown)}
                     </Link>
                   </td>
-                  <td className="px-3 py-2.5 text-right whitespace-nowrap text-muted-foreground tabular-nums">{formatBytes(f.sizeBytes, locale)}</td>
-                  <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+                  <td className="px-4 py-3.5 text-right whitespace-nowrap text-muted-foreground tabular-nums">{formatBytes(f.sizeBytes, locale)}</td>
+                  <td className="px-4 py-3.5 whitespace-nowrap text-muted-foreground">
                     <time dateTime={deletedAt}>{format.dateTime(new Date(deletedAt), "short")}</time>
                   </td>
-                  <td className="hidden max-w-48 truncate px-3 py-2.5 text-muted-foreground lg:table-cell">
+                  <td className="hidden max-w-48 truncate px-4 py-3.5 text-muted-foreground lg:table-cell">
                     {userDisplayName(f.deletedBy ? labels.get(f.deletedBy) : undefined, unknown)}
                   </td>
-                  <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-muted-foreground">
                     <time dateTime={purgeDate(deletedAt).toISOString()}>{format.dateTime(purgeDate(deletedAt), "short")}</time>
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-3.5">
                     <TrashRowActions id={f.id} name={name} />
                   </td>
                 </tr>

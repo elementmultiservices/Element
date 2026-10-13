@@ -5,6 +5,17 @@ import { createPublicClient } from "@/lib/supabase/public";
 import type { ServerSupabaseClient } from "@/lib/supabase/server";
 
 export const BLOG_PAGE_SIZE = 9;
+
+export type PostKind = "article" | "update";
+export const POST_KINDS = ["article", "update"] as const;
+
+/**
+ * PostgREST codes for "function / column / table does not exist": the blog
+ * migration 20261013000100 has not been applied yet, so the original functions
+ * are used and the new fields take their defaults.
+ */
+const NOT_MIGRATED = new Set(["PGRST202", "PGRST204", "PGRST205", "42883", "42703", "42P01"]);
+export const isNotMigrated = (code: string | undefined) => !!code && NOT_MIGRATED.has(code);
 export const COVER_BUCKET = "blog-covers";
 
 export function coverUrl(path: string | null): string | null {
@@ -23,20 +34,42 @@ export type PostSummary = {
   coverPath: string | null;
   publishedAt: string;
   category: { name: string; slug: string } | null;
+  kind: PostKind;
+  isFeatured: boolean;
+  readingMinutes: number | null;
+};
+
+type FeedRow = {
+  post_id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  cover_path: string | null;
+  published_at: string;
+  category_name: string | null;
+  category_slug: string | null;
+  kind?: PostKind;
+  is_featured?: boolean;
+  reading_minutes?: number;
+  total_count: number;
 };
 
 export async function listPublishedPosts(
   locale: AppLocale,
-  options: { category?: string; page?: number; limit?: number } = {},
+  options: { category?: string; kind?: PostKind; page?: number; limit?: number } = {},
 ): Promise<{ posts: PostSummary[]; total: number; pageCount: number; page: number }> {
   const limit = options.limit ?? BLOG_PAGE_SIZE;
   const page = Math.max(1, options.page ?? 1);
-  const { data, error } = await createPublicClient().rpc("blog_list", {
-    p_locale: locale,
-    p_category: options.category ?? undefined,
-    p_limit: limit,
-    p_offset: (page - 1) * limit,
-  });
+  const client = createPublicClient();
+  const args = { p_locale: locale, p_category: options.category ?? undefined, p_limit: limit, p_offset: (page - 1) * limit };
+  let { data, error } = (await client.rpc("blog_feed", { ...args, p_kind: options.kind ?? undefined })) as {
+    data: FeedRow[] | null;
+    error: { code: string } | null;
+  };
+  if (error && isNotMigrated(error.code)) {
+    // Before the migration there are no updates, only articles.
+    ({ data, error } = options.kind === "update" ? { data: [], error: null } : await client.rpc("blog_list", args));
+  }
   if (error) throw new Error(`[blog] list failed: ${error.code}`);
   const rows = data ?? [];
   const total = rows[0]?.total_count ?? 0;
@@ -52,6 +85,9 @@ export async function listPublishedPosts(
       coverPath: r.cover_path,
       publishedAt: r.published_at,
       category: r.category_name && r.category_slug ? { name: r.category_name, slug: r.category_slug } : null,
+      kind: r.kind ?? "article",
+      isFeatured: r.is_featured ?? false,
+      readingMinutes: r.reading_minutes ?? null,
     })),
   };
 }
@@ -67,10 +103,33 @@ export type PublicPost = {
   updatedAt: string;
   category: { name: string; slug: string } | null;
   slugs: Partial<Record<AppLocale, string>>;
+  kind: PostKind;
+  sourceUrl: string | null;
+  readingMinutes: number | null;
+};
+
+type ArticleRow = {
+  post_id: string;
+  title: string | null;
+  slug: string | null;
+  excerpt: string | null;
+  content: string | null;
+  cover_path: string | null;
+  published_at: string;
+  updated_at: string;
+  category_name: string | null;
+  category_slug: string | null;
+  slugs: unknown;
+  kind?: PostKind;
+  source_url?: string | null;
+  reading_minutes?: number;
 };
 
 export async function getPublishedPost(locale: AppLocale, slug: string): Promise<PublicPost | null> {
-  const { data, error } = await createPublicClient().rpc("blog_post", { p_locale: locale, p_slug: slug }).maybeSingle();
+  const client = createPublicClient();
+  const args = { p_locale: locale, p_slug: slug };
+  let { data, error } = (await client.rpc("blog_article", args).maybeSingle()) as { data: ArticleRow | null; error: { code: string } | null };
+  if (error && isNotMigrated(error.code)) ({ data, error } = await client.rpc("blog_post", args).maybeSingle());
   if (error) throw new Error(`[blog] post failed: ${error.code}`);
   if (!data) return null;
   const slugs = (data.slugs ?? {}) as Partial<Record<AppLocale, string>>;
@@ -85,6 +144,9 @@ export async function getPublishedPost(locale: AppLocale, slug: string): Promise
     updatedAt: data.updated_at,
     category: data.category_name && data.category_slug ? { name: data.category_name, slug: data.category_slug } : null,
     slugs,
+    kind: data.kind ?? "article",
+    sourceUrl: data.source_url ?? null,
+    readingMinutes: data.reading_minutes ?? null,
   };
 }
 
@@ -115,11 +177,25 @@ export type AdminPost = {
   coverPath: string | null;
   createdAt: string;
   updatedAt: string;
+  kind: PostKind;
+  isFeatured: boolean;
+  sourceUrl: string | null;
   translations: Partial<Record<AppLocale, AdminTranslation>>;
 };
 
-const ADMIN_POST_COLUMNS =
-  "id, status, published_at, category_id, cover_path, created_at, updated_at, post_translations(locale, title, slug, excerpt, content)" as const;
+const ADMIN_POST_COLUMNS_V1 =
+  "id, status, published_at, category_id, cover_path, created_at, updated_at, post_translations(locale, title, slug, excerpt, content)";
+const ADMIN_POST_COLUMNS_V2 = `${ADMIN_POST_COLUMNS_V1}, kind, is_featured, source_url`;
+
+/** Whether posts already has the kind/featured/source columns (checked once; migrations only go forward). */
+let hasPostExtras = false;
+export async function postsHaveExtras(supabase: ServerSupabaseClient): Promise<boolean> {
+  if (hasPostExtras) return true;
+  const { error } = await supabase.from("posts").select("kind").limit(1);
+  hasPostExtras = !error;
+  return hasPostExtras;
+}
+const adminColumns = async (supabase: ServerSupabaseClient) => ((await postsHaveExtras(supabase)) ? ADMIN_POST_COLUMNS_V2 : ADMIN_POST_COLUMNS_V1);
 
 type AdminPostRow = {
   id: string;
@@ -129,6 +205,9 @@ type AdminPostRow = {
   cover_path: string | null;
   created_at: string;
   updated_at: string;
+  kind?: PostKind;
+  is_featured?: boolean;
+  source_url?: string | null;
   post_translations: { locale: AppLocale; title: string; slug: string; excerpt: string; content: string }[];
 };
 
@@ -143,6 +222,9 @@ function toAdminPost(r: AdminPostRow): AdminPost {
     coverPath: r.cover_path,
     createdAt: r.created_at,
     updatedAt: r.updated_at,
+    kind: r.kind ?? "article",
+    isFeatured: r.is_featured ?? false,
+    sourceUrl: r.source_url ?? null,
     translations,
   };
 }
@@ -158,7 +240,7 @@ export async function listAdminPosts(
   params: { status?: PostStatus; q?: string; page: number },
   pageSize = 25,
 ): Promise<{ rows: AdminPost[]; total: number; page: number; pageCount: number }> {
-  let query = supabase.from("posts").select(ADMIN_POST_COLUMNS, { count: "exact" });
+  let query = supabase.from("posts").select(await adminColumns(supabase), { count: "exact" });
   if (params.status) query = query.eq("status", params.status);
   if (params.q) {
     const pattern = `%${params.q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
@@ -175,13 +257,13 @@ export async function listAdminPosts(
   if (error && error.code !== "PGRST103") throw new Error(`[blog] admin list failed: ${error.code}`);
   const total = count ?? 0;
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
-  return { rows: ((data ?? []) as AdminPostRow[]).map(toAdminPost), total, page: Math.min(params.page, pageCount), pageCount };
+  return { rows: ((data ?? []) as unknown as AdminPostRow[]).map(toAdminPost), total, page: Math.min(params.page, pageCount), pageCount };
 }
 
 export async function getAdminPost(supabase: ServerSupabaseClient, id: string): Promise<AdminPost | null> {
-  const { data, error } = await supabase.from("posts").select(ADMIN_POST_COLUMNS).eq("id", id).maybeSingle();
+  const { data, error } = await supabase.from("posts").select(await adminColumns(supabase)).eq("id", id).maybeSingle();
   if (error) throw new Error(`[blog] admin get failed: ${error.code}`);
-  return data ? toAdminPost(data as AdminPostRow) : null;
+  return data ? toAdminPost(data as unknown as AdminPostRow) : null;
 }
 
 export type AdminPostCategory = { id: string; nameEn: string; nameEs: string; slugEn: string; slugEs: string; postCount: number };

@@ -46,7 +46,7 @@ export function RecoveryCodesPanel({ codes, onContinue, continueLabel }: { codes
       </div>
       <p className="text-sm text-muted-foreground">{t("codesBody")}</p>
       <FormAlert variant="info">{t("codesWarning")}</FormAlert>
-      <ul aria-label={t("codesListLabel")} className="grid grid-cols-2 gap-2 rounded-md border bg-surface p-4 font-mono text-sm" data-testid="recovery-codes">
+      <ul aria-label={t("codesListLabel")} className="grid grid-cols-2 gap-2 rounded-2xl border border-azure-50 bg-mist p-4 font-mono text-sm" data-testid="recovery-codes">
         {codes.map((code) => (
           <li key={code} className="tracking-wider">
             {code}

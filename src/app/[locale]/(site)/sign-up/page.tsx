@@ -22,9 +22,9 @@ export default async function SignUpPage({ params }: PageProps<"/[locale]/sign-u
       <GoogleButton />
       <AuthDivider />
       <SignUpForm />
-      <p className="mt-6 border-t pt-4 text-sm text-muted-foreground">
+      <p className="mt-8 border-t border-azure-50 pt-5 text-sm text-graphite">
         {t("haveAccount")}{" "}
-        <Link href="/sign-in" className="font-medium text-link hover:underline">
+        <Link href="/sign-in" className="font-semibold text-electric hover:underline">
           {t("signIn")}
         </Link>
       </p>

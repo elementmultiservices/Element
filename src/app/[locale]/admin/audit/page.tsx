@@ -69,7 +69,7 @@ export default async function AdminAuditPage({ params, searchParams }: PageProps
         }
       />
 
-      <form method="get" role="search" className="mb-4 rounded-lg border bg-card p-4">
+      <form method="get" role="search" className="mb-4 rounded-[24px] border border-azure-50 bg-white p-4">
         {filters.subject ? <input type="hidden" name="subject" value={filters.subject} /> : null}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <div className="space-y-1.5 sm:col-span-2 lg:col-span-1">
@@ -111,7 +111,7 @@ export default async function AdminAuditPage({ params, searchParams }: PageProps
       </form>
 
       {list.total === 0 ? (
-        <p className="rounded-lg border border-dashed bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.audit.empty")}</p>
+        <p className="rounded-[24px] border border-dashed border-azure-100 bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.audit.empty")}</p>
       ) : (
         <TableShell
           caption={t("Admin.audit.table.caption")}
@@ -127,16 +127,16 @@ export default async function AdminAuditPage({ params, searchParams }: PageProps
               <Th className="hidden xl:table-cell">{t("Admin.audit.table.details")}</Th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-azure-50">
             {list.rows.map((a) => (
-              <tr key={a.id} className="align-top hover:bg-surface/60">
-                <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+              <tr key={a.id} className="align-top transition-colors hover:bg-azure-25/60">
+                <td className="px-4 py-3.5 whitespace-nowrap text-muted-foreground">
                   <time dateTime={a.createdAt}>{format.dateTime(new Date(a.createdAt), "long")}</time>
                 </td>
-                <td className="px-3 py-2.5">
-                  <code className="text-xs font-semibold text-primary">{a.action}</code>
+                <td className="px-4 py-3.5">
+                  <code className="rounded-md bg-azure-25 px-1.5 py-0.5 font-mono text-xs font-medium text-navy">{a.action}</code>
                 </td>
-                <td className="max-w-48 px-3 py-2.5">
+                <td className="max-w-48 px-4 py-3.5">
                   {a.actorId ? (
                     <Link href={`/admin/users/${a.actorId}`} className="block truncate text-link hover:underline" title={a.actorEmail ?? undefined}>
                       {a.actorName?.trim() || a.actorEmail || t("Admin.common.unknownUser")}
@@ -145,7 +145,7 @@ export default async function AdminAuditPage({ params, searchParams }: PageProps
                     <span className="text-muted-foreground">{t("Admin.common.system")}</span>
                   )}
                 </td>
-                <td className="max-w-56 px-3 py-2.5">
+                <td className="max-w-56 px-4 py-3.5">
                   {a.targetType ? (
                     <>
                       <span className="text-xs text-muted-foreground">{a.targetType}</span>
@@ -161,11 +161,11 @@ export default async function AdminAuditPage({ params, searchParams }: PageProps
                     </>
                   ) : null}
                 </td>
-                <td className="hidden px-3 py-2.5 lg:table-cell">
+                <td className="hidden px-4 py-3.5 lg:table-cell">
                   <p className="font-mono text-xs">{a.ip ?? "—"}</p>
                   <p className="text-xs text-muted-foreground">{describeUserAgent(a.userAgent) ?? ""}</p>
                 </td>
-                <td className="hidden px-3 py-2.5 xl:table-cell">
+                <td className="hidden px-4 py-3.5 xl:table-cell">
                   <MetadataList value={a.metadata} />
                 </td>
               </tr>

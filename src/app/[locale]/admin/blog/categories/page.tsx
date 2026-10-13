@@ -32,7 +32,7 @@ export default async function PostCategoriesPage({ params }: PageProps<"/[locale
           { label: t("Panel.admin.blogCategories") },
         ]}
       />
-      <section aria-labelledby="new-post-category" className="mb-6 rounded-lg border bg-card p-6">
+      <section aria-labelledby="new-post-category" className="mb-6 rounded-[24px] border border-azure-50 bg-white p-6">
         <h2 id="new-post-category" className="mb-4 text-lg">
           {t("Admin.postCategories.createHeading")}
         </h2>
@@ -41,9 +41,9 @@ export default async function PostCategoriesPage({ params }: PageProps<"/[locale
         </div>
       </section>
       {categories.length === 0 ? (
-        <p className="rounded-lg border border-dashed bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.postCategories.empty")}</p>
+        <p className="rounded-[24px] border border-dashed border-azure-100 bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.postCategories.empty")}</p>
       ) : (
-        <section aria-label={t("Admin.postCategories.table.caption")} className="rounded-lg border bg-card">
+        <section aria-label={t("Admin.postCategories.table.caption")} className="rounded-[24px] border border-azure-50 bg-white">
           <ul className="divide-y">
             {categories.map((c) => (
               <PostCategoryRow

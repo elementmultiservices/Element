@@ -31,9 +31,9 @@ export default async function SignInPage({ params, searchParams }: PageProps<"/[
       <GoogleButton />
       <AuthDivider />
       <SignInForm notice={notice} />
-      <p className="mt-6 border-t pt-4 text-sm text-muted-foreground">
+      <p className="mt-8 border-t border-azure-50 pt-5 text-sm text-graphite">
         {t("noAccount")}{" "}
-        <Link href="/sign-up" className="font-medium text-link hover:underline">
+        <Link href="/sign-up" className="font-semibold text-electric hover:underline">
           {t("createAccount")}
         </Link>
       </p>

@@ -10,6 +10,7 @@ import {
   Menu,
   Newspaper,
   ScrollText,
+  Store,
   Trash2,
   Upload,
   UserRound,
@@ -37,6 +38,7 @@ function useItems(variant: PanelVariant, canUpload: boolean): Item[] {
       { href: "/admin/categories", icon: FolderTree, label: t("admin.categories") },
       { href: "/admin/blog", icon: Newspaper, label: t("admin.blog") },
       { href: "/admin/messages", icon: Mail, label: t("admin.messages") },
+      { href: "/admin/settings", icon: Store, label: t("admin.settings") },
       { href: "/admin/audit", icon: ScrollText, label: t("admin.audit") },
       { href: "/admin/profile", icon: UserRound, label: t("admin.profile") },
     ];
@@ -55,7 +57,7 @@ function NavList({ variant, canUpload, onNavigate }: { variant: PanelVariant; ca
 
   return (
     <nav aria-label={variant === "admin" ? t("adminNavigation") : t("userNavigation")}>
-      <ul className="space-y-0.5">
+      <ul className="space-y-1">
         {items.map((item) => {
           const active = item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`);
           const Icon = item.icon;
@@ -66,10 +68,10 @@ function NavList({ variant, canUpload, onNavigate }: { variant: PanelVariant; ca
                 onClick={onNavigate}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium",
+                  "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors",
                   active
-                    ? "bg-primary-foreground/12 text-primary-foreground"
-                    : "text-primary-foreground/75 hover:bg-primary-foreground/8 hover:text-primary-foreground",
+                    ? "bg-electric text-white shadow-[0_8px_20px_rgba(27,131,244,0.35)]"
+                    : "text-azure-100 hover:bg-white/8 hover:text-white",
                 )}
               >
                 <Icon aria-hidden="true" className="size-4 shrink-0" />
@@ -86,16 +88,17 @@ function NavList({ variant, canUpload, onNavigate }: { variant: PanelVariant; ca
 /** Fixed sidebar on large screens. */
 export function PanelSidebar({ variant, canUpload, footer }: { variant: PanelVariant; canUpload: boolean; footer: React.ReactNode }) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-primary lg:flex">
-      <div className="flex h-16 items-center px-5">
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col overflow-hidden bg-[linear-gradient(180deg,#050D29_0%,#0B1A44_100%)] lg:flex">
+      <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-16 size-64 rounded-full bg-royal/30 blur-3xl" />
+      <div className="relative flex h-[72px] items-center px-6">
         <Link href="/" className="rounded-sm">
           <Wordmark inverted />
         </Link>
       </div>
-      <div className="flex-1 overflow-y-auto px-3 py-4">
+      <div className="relative flex-1 overflow-y-auto px-4 py-4">
         <NavList variant={variant} canUpload={canUpload} />
       </div>
-      <div className="border-t border-primary-foreground/15 p-4">{footer}</div>
+      <div className="relative border-t border-white/10 p-4">{footer}</div>
     </aside>
   );
 }
@@ -107,19 +110,19 @@ export function PanelMobileNav({ variant, canUpload, footer }: { variant: PanelV
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="lg:hidden">
+        <Button variant="ghost" size="icon" className="text-ink lg:hidden">
           <Menu aria-hidden="true" />
           <span className="sr-only">{t("openMenu")}</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" closeLabel={t("close")} className="w-72 border-none bg-primary text-primary-foreground">
+      <SheetContent side="left" closeLabel={t("close")} className="w-72 border-none bg-[linear-gradient(180deg,#050D29_0%,#0B1A44_100%)] text-white">
         <SheetTitle className="px-5 pt-5">
           <Wordmark inverted />
         </SheetTitle>
-        <div className="px-3 py-4">
+        <div className="px-4 py-4">
           <NavList variant={variant} canUpload={canUpload} onNavigate={() => setOpen(false)} />
         </div>
-        <div className="mt-auto border-t border-primary-foreground/15 p-4">{footer}</div>
+        <div className="mt-auto border-t border-white/10 p-4">{footer}</div>
       </SheetContent>
     </Sheet>
   );

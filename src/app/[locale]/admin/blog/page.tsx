@@ -75,7 +75,7 @@ export default async function AdminBlogPage({ params, searchParams }: PageProps<
         }
       />
 
-      <form method="get" role="search" className="mb-4 rounded-lg border bg-card p-4">
+      <form method="get" role="search" className="mb-4 rounded-[24px] border border-azure-50 bg-white p-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="space-y-1.5 sm:col-span-2">
             <Label htmlFor="blog-q">{t("Admin.blog.searchLabel")}</Label>
@@ -104,7 +104,7 @@ export default async function AdminBlogPage({ params, searchParams }: PageProps<
       </form>
 
       {list.total === 0 ? (
-        <p className="rounded-lg border border-dashed bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.blog.empty")}</p>
+        <p className="rounded-[24px] border border-dashed border-azure-100 bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.blog.empty")}</p>
       ) : (
         <TableShell
           caption={t("Admin.blog.table.caption")}
@@ -123,23 +123,29 @@ export default async function AdminBlogPage({ params, searchParams }: PageProps<
               </Th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-azure-50">
             {list.rows.map((p) => {
               const title = p.translations[locale]?.title ?? p.translations.en?.title ?? p.translations.es?.title ?? t("Admin.blog.untitled");
               const status = effectiveStatus(p);
               return (
-                <tr key={p.id} className="hover:bg-surface/60">
-                  <td className="max-w-72 px-3 py-2.5">
-                    <Link href={`/admin/blog/${p.id}`} className="block truncate font-medium text-link hover:underline" title={title}>
+                <tr key={p.id} className="transition-colors hover:bg-azure-25/60">
+                  <td className="max-w-72 px-4 py-3.5">
+                    <Link href={`/admin/blog/${p.id}`} className="block truncate font-medium text-ink hover:text-electric" title={title}>
                       {title}
                     </Link>
+                    <span className="mt-1 flex flex-wrap gap-1.5">
+                      <span className="rounded-full bg-azure-25 px-2 py-0.5 text-[11px] font-medium text-navy">{t(`Admin.blog.editor.kinds.${p.kind}`)}</span>
+                      {p.isFeatured ? (
+                        <span className="rounded-full bg-electric px-2 py-0.5 text-[11px] font-semibold text-white">{t("Admin.blog.featuredBadge")}</span>
+                      ) : null}
+                    </span>
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-3.5">
                     <Badge variant="outline" className={cn("font-normal", STATUS_STYLES[status])}>
                       {t(`Admin.blog.statuses.${status}`)}
                     </Badge>
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-3.5">
                     <div className="flex gap-1">
                       {locales.map((l) => {
                         const has = !!p.translations[l];
@@ -159,16 +165,16 @@ export default async function AdminBlogPage({ params, searchParams }: PageProps<
                       })}
                     </div>
                   </td>
-                  <td className="hidden px-3 py-2.5 text-muted-foreground lg:table-cell">
+                  <td className="hidden px-4 py-3.5 text-muted-foreground lg:table-cell">
                     {p.categoryId ? (categoryName.get(p.categoryId) ?? "—") : "—"}
                   </td>
-                  <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-muted-foreground">
                     {p.publishedAt ? <time dateTime={p.publishedAt}>{format.dateTime(new Date(p.publishedAt), "long")}</time> : "—"}
                   </td>
-                  <td className="hidden px-3 py-2.5 whitespace-nowrap text-muted-foreground xl:table-cell">
+                  <td className="hidden px-4 py-3.5 whitespace-nowrap text-muted-foreground xl:table-cell">
                     <time dateTime={p.updatedAt}>{format.dateTime(new Date(p.updatedAt), "short")}</time>
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-3.5">
                     <div className="flex justify-end gap-1">
                       <Button asChild variant="ghost" size="sm">
                         <Link href={`/admin/blog/${p.id}`}>{t("Admin.blog.edit")}</Link>

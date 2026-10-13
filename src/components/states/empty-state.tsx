@@ -15,9 +15,11 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col items-center rounded-md border border-dashed bg-surface px-6 py-12 text-center", className)}>
-      <Icon aria-hidden="true" className="mb-3 size-8 text-muted-foreground" />
-      <h2 className="text-base font-semibold">{title}</h2>
+    <div className={cn("flex flex-col items-center rounded-[24px] border border-dashed border-azure-100 bg-white px-6 py-14 text-center", className)}>
+      <span className="mb-4 flex size-14 items-center justify-center rounded-full bg-azure-25">
+        <Icon aria-hidden="true" className="size-6 text-electric" />
+      </span>
+      <h2 className="text-lg font-semibold text-ink">{title}</h2>
       <p className="mt-1 max-w-md text-sm text-muted-foreground">{body}</p>
       {action ? <div className="mt-5">{action}</div> : null}
     </div>

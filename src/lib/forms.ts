@@ -31,6 +31,8 @@ const validationKeys = new Set<string>([
   "translationRequired",
   "scheduleFuture",
   "dateRequired",
+  "phoneInvalid",
+  "urlInvalid",
 ] satisfies ValidationKey[]);
 
 /** Maps Zod issues (whose messages are translation keys) to the first error per field. */

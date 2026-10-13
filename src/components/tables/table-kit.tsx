@@ -34,7 +34,7 @@ export function searchString(params: ListParams, overrides: ListParams = {}): st
 
 export function TableShell({ caption, children, footer }: { caption: string; children: React.ReactNode; footer?: React.ReactNode }) {
   return (
-    <div className="rounded-lg border bg-card">
+    <div className="overflow-hidden rounded-[20px] border border-azure-50 bg-white">
       {/* `relative` keeps sr-only descendants from widening the page on mobile. */}
       <div className="relative overflow-x-auto">
         <table className="w-full min-w-[720px] text-sm">
@@ -49,7 +49,7 @@ export function TableShell({ caption, children, footer }: { caption: string; chi
 
 export function Th({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
-    <th scope="col" className={cn("px-3 py-2.5 text-left font-semibold whitespace-nowrap", className)}>
+    <th scope="col" className={cn("px-4 py-3 text-left font-mono text-[11px] font-medium tracking-[0.08em] whitespace-nowrap text-graphite uppercase", className)}>
       {children}
     </th>
   );
@@ -75,14 +75,14 @@ export function SortTh({
     <th
       scope="col"
       aria-sort={active ? (params.dir === "asc" ? "ascending" : "descending") : "none"}
-      className={cn("px-3 py-2.5 text-left font-semibold whitespace-nowrap", className)}
+      className={cn("px-4 py-3 text-left font-mono text-[11px] font-medium tracking-[0.08em] whitespace-nowrap text-graphite uppercase", className)}
     >
       <Link
         href={{ pathname: basePath, query: queryFor(params, { sort: column, dir: nextDir, page: 1 }) }}
-        className="inline-flex items-center gap-1 rounded-sm hover:text-primary"
+        className="inline-flex items-center gap-1 rounded-sm hover:text-electric"
       >
         {label}
-        <Icon aria-hidden="true" className={cn("size-3.5", active ? "text-primary" : "text-muted-foreground")} />
+        <Icon aria-hidden="true" className={cn("size-3.5", active ? "text-electric" : "text-graphite/60")} />
       </Link>
     </th>
   );
@@ -106,11 +106,11 @@ export async function Pagination({
   const t = await getTranslations("Admin.pagination");
   const first = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const last = Math.min(page * pageSize, total);
-  const linkClass = "rounded-md border px-3 py-1.5 hover:bg-accent";
-  const disabledClass = "rounded-md border px-3 py-1.5 text-muted-foreground opacity-50";
+  const linkClass = "rounded-full border border-azure-100 px-4 py-1.5 font-medium text-ink hover:bg-azure-25";
+  const disabledClass = "rounded-full border border-azure-50 px-4 py-1.5 text-muted-foreground opacity-50";
 
   return (
-    <nav aria-label={t("label")} className="flex flex-col gap-2 border-t px-3 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+    <nav aria-label={t("label")} className="flex flex-col gap-2 border-t border-azure-50 bg-mist/60 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
       <p className="text-muted-foreground">{t("summary", { from: first, to: last, total })}</p>
       <div className="flex items-center gap-2">
         <span className="text-muted-foreground">{t("page", { page, pages: pageCount })}</span>

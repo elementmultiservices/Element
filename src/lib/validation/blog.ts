@@ -33,6 +33,14 @@ export const postMetaSchema = z.object({
   status: z.enum(POST_STATUSES, { error: "invalid" }),
   publishedAt: z.union([z.literal(""), localDateTime]).optional(),
   categoryId: z.union([z.literal(""), z.uuid({ error: "invalid" })]).optional(),
+  kind: z.enum(["article", "update"], { error: "invalid" }).default("article"),
+  featured: z.literal("on").optional().transform((v) => v === "on"),
+  sourceUrl: z
+    .string()
+    .trim()
+    .max(1000, { error: "tooLong" })
+    .refine((v) => v === "" || /^https:\/\/[^\s]+$/.test(v), { error: "urlInvalid" })
+    .default(""),
 });
 
 export const postCategorySchema = z.object({
@@ -41,6 +49,20 @@ export const postCategorySchema = z.object({
   nameEs: z.string().trim().min(1, { error: "required" }).max(80, { error: "tooLong" }),
   slugEn: slug,
   slugEs: slug,
+});
+
+export const CONTACT_NEEDS = ["personal", "business", "itin", "company", "payroll", "documents", "other"] as const;
+
+/** Optional fields of the short "question before your visit" form; folded into subject/message. */
+export const contactExtrasSchema = z.object({
+  phone: z
+    .string()
+    .trim()
+    .max(40, { error: "tooLong" })
+    .regex(/^[+()\d\s.-]{7,}$/, { error: "phoneInvalid" })
+    .optional(),
+  need: z.enum(CONTACT_NEEDS).optional(),
+  preferredLanguage: z.enum(["es", "en"]).optional(),
 });
 
 export const contactSchema = z.object({

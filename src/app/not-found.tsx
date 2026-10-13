@@ -4,9 +4,9 @@
 export default function RootNotFound() {
   return (
     <html lang="en">
-      <body style={{ fontFamily: "system-ui, sans-serif", padding: "3rem 1.5rem", color: "#111827" }}>
-        <p style={{ color: "#0b2545", fontWeight: 500, letterSpacing: "0.04em" }}>Element</p>
-        <h1 style={{ color: "#0b2545" }}>404</h1>
+      <body style={{ fontFamily: "system-ui, sans-serif", padding: "3rem 1.5rem", color: "#050d29", background: "#f7fbff" }}>
+        <p style={{ color: "#1b83f4", fontWeight: 600 }}>Element</p>
+        <h1 style={{ color: "#050d29" }}>404</h1>
         <p>
           <a href="/en">English</a> · <a href="/es" lang="es">Español</a>
         </p>

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/admin/us
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-lg border bg-card p-6">
+    <section className="rounded-[24px] border border-azure-50 bg-white p-6">
       <h2 className="text-lg">{title}</h2>
       <div className="mt-4">{children}</div>
     </section>
@@ -160,7 +160,7 @@ export default async function AdminUserPage({ params }: PageProps<"/[locale]/adm
                 {activity.rows.map((a) => (
                   <li key={a.id} className="flex flex-col gap-1 px-4 py-2.5 sm:flex-row sm:items-center sm:justify-between">
                     <div className="min-w-0">
-                      <code className="text-xs font-semibold text-primary">{a.action}</code>
+                      <code className="rounded-md bg-azure-25 px-1.5 py-0.5 font-mono text-xs font-medium text-navy">{a.action}</code>
                       <p className="truncate text-xs text-muted-foreground">
                         {a.actorEmail ?? t("Admin.common.system")}
                         {a.targetLabel ? ` → ${a.targetLabel}` : ""}

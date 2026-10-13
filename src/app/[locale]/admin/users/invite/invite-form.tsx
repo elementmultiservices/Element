@@ -29,7 +29,7 @@ export function InviteForm() {
 
   if (state.status === "success" && invite.invitedId && state !== dismissed) {
     return (
-      <div className="space-y-4 rounded-lg border bg-card p-6">
+      <div className="space-y-4 rounded-[24px] border border-azure-50 bg-white p-6">
         <FormAlert variant="success">{t("success", { email: invite.invitedEmail ?? "" })}</FormAlert>
         <div className="flex flex-wrap gap-2">
           <Button asChild>
@@ -47,7 +47,7 @@ export function InviteForm() {
   }
 
   return (
-    <form key={formKey} onSubmit={onSubmit} noValidate className="space-y-5 rounded-lg border bg-card p-6">
+    <form key={formKey} onSubmit={onSubmit} noValidate className="space-y-5 rounded-[24px] border border-azure-50 bg-white p-6">
       {state.status === "error" && state.error ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
       <FormAlert variant="info">{t("roleNote")}</FormAlert>
       <div className="grid gap-5 md:grid-cols-2">

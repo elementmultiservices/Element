@@ -63,6 +63,8 @@ export default async function PostPreviewPage({ params, searchParams }: PageProp
               coverPath: post.coverPath,
               publishedAt: post.publishedAt ?? post.updatedAt,
               category: category ? { name: lang === "es" ? category.nameEs : category.nameEn, slug: lang === "es" ? category.slugEs : category.slugEn } : null,
+              kind: post.kind,
+              sourceUrl: post.sourceUrl,
             }}
           />
         </div>

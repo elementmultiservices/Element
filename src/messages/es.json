@@ -1,9 +1,9 @@
 {
   "Metadata": {
     "siteName": "Element",
-    "description": "Element es una plataforma segura de gestión documental para organizaciones y sus clientes.",
+    "description": "Element Multiservices: impuestos, ITIN, negocios y documentos en Nueva York. En español y en inglés, todo el año, con el precio claro desde el principio.",
     "pages": {
-      "home": "Gestión documental segura",
+      "home": "Impuestos, ITIN y documentos en Nueva York",
       "signIn": "Iniciar sesión",
       "resetPassword": "Restablecer contraseña",
       "updatePassword": "Definir contraseña",
@@ -37,13 +37,20 @@
       "adminPostCategories": "Categorías del blog",
       "adminMessages": "Mensajes de contacto",
       "signUp": "Crear una cuenta",
-      "adminUploadAccess": "Autorizar subida de documentos"
+      "adminUploadAccess": "Autorizar subida de documentos",
+      "services": "Servicios",
+      "location": "Ubicación",
+      "faq": "Preguntas frecuentes",
+      "adminSettings": "Datos del negocio"
     },
     "descriptions": {
-      "about": "Quiénes somos y cómo Element protege los documentos de las organizaciones y sus clientes.",
-      "blog": "Noticias, guías y anuncios de Element.",
+      "about": "Quiénes somos: Element Multiservices, impuestos, ITIN, negocios y documentos en Nueva York, en español y en inglés.",
+      "blog": "Lo que cambia en los impuestos de EE. UU. y cómo te afecta, explicado en español y sin enredos.",
       "contact": "Comuníquese con el equipo de Element.",
-      "legal": "Información legal sobre el uso de Element."
+      "legal": "Información legal sobre el uso de Element.",
+      "services": "Impuestos, negocios, documentos y protección para tu familia, con el mismo equipo y el precio claro desde el inicio.",
+      "location": "Visítanos en Nueva York o haz tu trámite a distancia. Dirección, horarios y cómo llegar.",
+      "faq": "Respuestas claras sobre reembolsos, documentos, precios, ITIN, el IRS y nuestros servicios."
     }
   },
   "Common": {
@@ -64,55 +71,340 @@
     "required": "Obligatorio",
     "optional": "Opcional",
     "home": "Inicio",
-    "userMenu": "Menú de la cuenta"
+    "userMenu": "Menú de la cuenta",
+    "learnMore": "Ver más"
   },
   "Nav": {
     "main": "Navegación principal",
     "home": "Inicio",
     "about": "Quiénes somos",
     "blog": "Blog",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "services": "Servicios",
+    "location": "Ubicación",
+    "faq": "FAQ",
+    "faqLong": "Preguntas",
+    "book": "Agenda tu cita",
+    "bookShort": "Agendar",
+    "myFiles": "Mi Archivo",
+    "call": "Llamar",
+    "whatsapp": "WhatsApp"
   },
   "Footer": {
-    "tagline": "Gestión documental segura para organizaciones y sus clientes.",
+    "tagline": "Cada elemento en su lugar.",
     "contactHeading": "Contacto",
-    "address": "Calle 00 # 00-00, Ciudad, País",
-    "phone": "+00 000 000 0000",
-    "email": "contacto@example.com",
-    "hours": "Lunes a viernes, 8:00 a. m. – 5:00 p. m.",
     "legalHeading": "Información legal",
     "privacy": "Política de privacidad",
     "dataPolicy": "Política de tratamiento de datos personales",
     "terms": "Términos de uso",
     "cookies": "Aviso de cookies",
     "siteHeading": "Sitio",
-    "rights": "© {year} Element. Todos los derechos reservados.",
-    "placeholderNotice": "Los datos de contacto son provisionales y están pendientes de confirmación."
+    "rights": "© {year} Element Multiservices LLC",
+    "placeholderNotice": "Los datos de contacto son provisionales y están pendientes de confirmación.",
+    "servicesHeading": "Servicios",
+    "elementHeading": "Element",
+    "disclaimer": "Element Multiservices prepara declaraciones de impuestos y documentos. No somos un bufete de abogados y no damos asesoría legal. Te entregamos por escrito el precio de nuestros servicios antes de empezar.",
+    "immigrationNotice": "[Aviso legal obligatorio de servicios de asistencia migratoria del Estado de Nueva York: texto exacto validado por un abogado.]",
+    "services": {
+      "taxes": "Impuestos",
+      "itin": "ITIN",
+      "business": "Negocios",
+      "documents": "Documentos"
+    }
   },
   "Home": {
-    "eyebrow": "Plataforma de gestión documental",
-    "title": "Sus documentos, gestionados con seguridad y orden",
-    "body": "Element ofrece un espacio privado y controlado para recibir, almacenar y consultar sus documentos, con acceso limitado a las personas autorizadas.",
-    "primaryCta": "Iniciar sesión",
-    "secondaryCta": "Contáctenos",
-    "featuresHeading": "Por qué Element",
-    "features": {
-      "security": {
-        "title": "Acceso controlado",
-        "body": "Cada persona ve únicamente los documentos que le corresponden. Todas las acciones quedan registradas."
-      },
-      "privacy": {
-        "title": "Almacenamiento privado",
-        "body": "Los archivos se guardan en un almacenamiento privado y se descargan solo mediante enlaces temporales."
-      },
-      "support": {
-        "title": "Acompañamiento institucional",
-        "body": "Las cuentas las crea y administra nuestro equipo; no hay registro abierto."
+    "announcement": {
+      "cta": "Agenda tu cita"
+    },
+    "hero": {
+      "badge": "Impuestos · ITIN · Negocios · Documentos",
+      "titleStart": "Tus impuestos y tus papeles,",
+      "titleAccent": "en orden.",
+      "body": "Preparamos tu declaración, tu ITIN y los documentos de tu negocio en un solo lugar. En español y en inglés, todo el año, y con el precio claro desde el principio.",
+      "book": "Agenda tu cita",
+      "whatsapp": "Escríbenos por WhatsApp",
+      "bullets": {
+        "price": "El precio, antes de empezar",
+        "yearRound": "Abiertos todo el año",
+        "language": "Hablamos tu idioma"
       }
     },
-    "latestHeading": "Lo más reciente del blog",
-    "latestEmpty": "Aún no hay publicaciones.",
-    "viewAllPosts": "Ver todas las publicaciones"
+    "mockup": {
+      "label": "Ejemplo de cómo se ve Mi Archivo",
+      "toast": "W-2 recibido",
+      "greeting": "Hola, María",
+      "title": "Mi Archivo",
+      "returnLabel": "DECLARACIÓN 2026 · 1040",
+      "returnStatus": "Presentada y aceptada",
+      "steps": {
+        "received": "Recibido",
+        "review": "Revisión",
+        "filed": "Presentado"
+      },
+      "foldersHeading": "Tus carpetas",
+      "folders": {
+        "taxes": "Impuestos 2026",
+        "itin": "ITIN y documentos",
+        "business": "Mi negocio"
+      },
+      "files": "{count, plural, one {# archivo} other {# archivos}}"
+    },
+    "trust": {
+      "label": "Credenciales",
+      "irs": "[Agente Certificador del IRS]",
+      "notary": "[Notary Public · NY]",
+      "afsp": "[Programa AFSP del IRS]",
+      "languages": "Español · English",
+      "yearRound": "Abiertos los 12 meses",
+      "pause": "Pausar el desplazamiento",
+      "play": "Reanudar el desplazamiento"
+    },
+    "quick": {
+      "eyebrow": "Acceso rápido",
+      "title": "¿Qué necesitas resolver hoy?",
+      "body": "Elige tu trámite y te decimos qué traer, cuánto cuesta y cuánto tarda.",
+      "items": {
+        "personal": {
+          "title": "Declarar mis impuestos",
+          "body": "Con W-2 o 1099, federal y estatal, año actual o atrasados."
+        },
+        "business": {
+          "title": "Impuestos de mi negocio",
+          "body": "Sociedades y corporaciones: 1065, 1120 y 1120-S."
+        },
+        "selfEmployed": {
+          "title": "Trabajo por mi cuenta",
+          "body": "Schedule C, autoempleo y pagos estimados."
+        },
+        "itin": {
+          "title": "Sacar o renovar mi ITIN",
+          "body": "Declara aunque no tengas Seguro Social."
+        },
+        "company": {
+          "title": "Abrir mi empresa",
+          "body": "LLC, S-Corp, C-Corp o sociedad."
+        },
+        "payroll": {
+          "title": "Nómina y contabilidad",
+          "body": "Paga a tu equipo y ten tus números al día."
+        },
+        "documents": {
+          "title": "Traducir o notarizar",
+          "body": "Documentos listos para presentar, en el momento."
+        }
+      },
+      "all": {
+        "eyebrow": "14 SERVICIOS",
+        "title": "Ver todo lo que hacemos por ti",
+        "body": "Seguros de vida, crédito, sales tax y más"
+      }
+    },
+    "why": {
+      "eyebrow": "Por qué Element",
+      "title": "Todo lo que necesitas, en un solo lugar.",
+      "body": "Dejas de ir de oficina en oficina. Un mismo equipo se encarga de tus impuestos, tus trámites y tus documentos.",
+      "estimate": {
+        "eyebrow": "01 · TRANSPARENCIA",
+        "title": "Conoce tu estimado totalmente GRATIS",
+        "body": "Te decimos el resultado de tus impuestos y cuál es el valor de tu reembolso, sin compromiso.",
+        "priceLabel": "Declaración personal",
+        "price": "desde $75"
+      },
+      "yearRound": {
+        "eyebrow": "02 · TODO EL AÑO",
+        "title": "Disponibilidad 12 meses",
+        "body": "Extensiones, cartas del IRS, nómina y trámites, los 12 meses del año."
+      },
+      "language": {
+        "eyebrow": "03 · EN TU IDIOMA",
+        "title": "Una conversación real.",
+        "body": "Todo el proceso en español o en inglés. No un formulario traducido: una persona que te explica."
+      }
+    },
+    "vault": {
+      "badge": "Mi Archivo",
+      "title": "Tus papeles, en orden. Protegidos. A un clic.",
+      "body": "Todo lo que compartes con Element queda guardado en tu archivo digital: ordenado por año y por trámite, protegido con acceso personal y listo para descargar desde tu teléfono.",
+      "features": {
+        "organized": {
+          "title": "Ordenado",
+          "body": "Cada documento en su carpeta, por año y servicio."
+        },
+        "protected": {
+          "title": "Protegido",
+          "body": "Solo tú y tu preparador asignado pueden verlos."
+        },
+        "handy": {
+          "title": "A la mano",
+          "body": "Desde cualquier dispositivo, a cualquier hora."
+        },
+        "easy": {
+          "title": "Fácil",
+          "body": "Si sabes enviar una foto por WhatsApp, sabes usarlo."
+        }
+      },
+      "chips": {
+        "access": "Acceso personal",
+        "encrypted": "Archivos cifrados",
+        "twoStep": "Verificación en dos pasos"
+      },
+      "learn": "Conoce Mi Archivo",
+      "enter": "Entrar a Mi Archivo",
+      "mock": {
+        "label": "Ejemplo de la lista de documentos en Mi Archivo",
+        "search": "Buscar “W-2 2024”",
+        "business": "Negocio",
+        "return": "Declaración 1040",
+        "w2": "W-2",
+        "employer": "Empleador",
+        "accepted": "Aceptada ✓",
+        "received": "Recibido ✓",
+        "missing": "Falta subirlo"
+      }
+    },
+    "stats": {
+      "label": "Element en números",
+      "returns": "Declaraciones preparadas",
+      "years": "Años en Nueva York",
+      "services": "Servicios en un lugar",
+      "months": "Meses abiertos"
+    },
+    "steps": {
+      "eyebrow": "Cómo funciona",
+      "title": "Tres pasos y listo.",
+      "items": {
+        "book": {
+          "title": "Agenda",
+          "body": "Elige día y hora en línea, o escríbenos por WhatsApp. Te respondemos en tu idioma."
+        },
+        "docs": {
+          "title": "Trae o sube tus papeles",
+          "body": "Te enviamos la lista exacta de lo que necesitas. Tráelos o súbelos a Mi Archivo."
+        },
+        "file": {
+          "title": "Revisamos y presentamos",
+          "body": "Te explicamos el resultado antes de enviar nada y te quedas con una copia de todo."
+        }
+      }
+    },
+    "services": {
+      "eyebrow": "Servicios",
+      "title": "Catorce servicios. Un solo lugar.",
+      "viewAll": "Ver todos los servicios",
+      "groups": {
+        "taxes": {
+          "title": "Impuestos",
+          "items": {
+            "personal": "Personales (W-2, 1099)",
+            "business": "Negocio (1065, 1120, 1120-S)",
+            "selfEmployed": "Autoempleo (Sch C, SE)",
+            "estimated": "Impuestos estimados",
+            "salesTax": "Sales tax",
+            "itin": "ITIN"
+          }
+        },
+        "business": {
+          "title": "Negocios",
+          "items": {
+            "registration": "Registro de empresas",
+            "entities": "LLC, S-Corp, C-Corp, sociedades",
+            "payroll": "Nómina",
+            "bookkeeping": "Contabilidad"
+          }
+        },
+        "documents": {
+          "title": "Documentos",
+          "items": {
+            "translations": "Traducciones",
+            "immigration": "Inmigración (formularios)",
+            "notary": "Notary Public"
+          }
+        },
+        "protection": {
+          "title": "Protección y crédito",
+          "items": {
+            "lifeInsurance": "Seguros de vida",
+            "credit": "Reparación de crédito"
+          }
+        }
+      }
+    },
+    "location": {
+      "eyebrow": "Ubicación",
+      "titleStart": "Visítanos en",
+      "titleAccent": "Bronx, Nueva York.",
+      "directions": "Cómo llegar",
+      "mapPin": "Element Multiservice"
+    },
+    "testimonials": {
+      "eyebrow": "Testimonios",
+      "title": "Lo que dicen nuestros clientes.",
+      "body": "Reseñas reales de Google, publicadas con permiso de cada cliente.",
+      "items": {
+        "a": {
+          "quote": "Excelente servicio y atención al detalle. Element logró optimizar la declaración de mi negocio y me ahorró miles de dólares que no sabía que podía deducir.",
+          "name": "Carlos Mendoza",
+          "place": "Bronx, NY"
+        },
+        "b": {
+          "quote": "Llevo dos años haciendo mis impuestos con Element y la tranquilidad que te dan no tiene precio. Resuelven todas tus dudas de forma clara y rápida.",
+          "name": "Elena Gómez",
+          "place": "Queens, NY"
+        },
+        "c": {
+          "quote": "Como profesional independiente, el tema de los taxes siempre me estresaba. El equipo de Element hizo que todo el proceso fuera sencillo, transparente y superprofesional.",
+          "name": "Javier Ortiz",
+          "place": "Bronx, NY"
+        },
+        "d": {
+          "quote": "Se tomaron el tiempo para revisar minuciosamente mi caso y asegurar que todo cumpliera con las normativas del IRS sin complicaciones.",
+          "name": "Mariana Ríos",
+          "place": "New Jersey"
+        }
+      }
+    },
+    "blog": {
+      "eyebrow": "Blog · Al Día",
+      "title": "Noticias de impuestos, en claro.",
+      "body": "Lo que cambia en los impuestos de EE. UU., explicado en español y sin enredos.",
+      "viewAll": "Ver todas las noticias",
+      "empty": "Pronto publicaremos las primeras noticias."
+    },
+    "faq": {
+      "eyebrow": "Preguntas frecuentes",
+      "title": "Preguntas que nos hacen siempre.",
+      "body": "¿No ves la tuya? Escríbenos por WhatsApp y te respondemos el mismo día hábil.",
+      "items": {
+        "noSsn": {
+          "q": "¿Puedo declarar impuestos si no tengo Seguro Social?",
+          "a": "Sí. Con un ITIN puedes declarar. Te ayudamos a sacarlo o renovarlo y verificamos tus documentos aquí mismo."
+        },
+        "pastYears": {
+          "q": "No declaré años anteriores. ¿Todavía puedo hacerlo?",
+          "a": "Sí. Preparamos y presentamos declaraciones atrasadas. Te decimos qué documentos necesitas de cada año y revisamos contigo el resultado antes de enviar nada."
+        },
+        "cost": {
+          "q": "¿Cuánto voy a pagar?",
+          "a": "Depende de tu caso. Te damos el precio por escrito antes de empezar, sin sorpresas. La declaración personal empieza desde $75."
+        },
+        "secure": {
+          "q": "¿Mis documentos están seguros?",
+          "a": "Sí. Tus documentos se guardan en Mi Archivo, con acceso personal y verificación en dos pasos. Solo tú y tu preparador asignado pueden verlos."
+        },
+        "afterApril": {
+          "q": "¿Atienden después de abril?",
+          "a": "Sí. Abrimos los 12 meses del año: extensiones, cartas del IRS, nómina, ITIN y todos los demás trámites."
+        }
+      },
+      "viewAll": "Ver todas las preguntas"
+    },
+    "finalCta": {
+      "titleStart": "Pon tus impuestos",
+      "titleAccent": "en orden hoy.",
+      "body": "Agenda en un minuto o escríbenos. Te respondemos en español o en inglés.",
+      "badgeFiled": "1040 presentado ✓",
+      "badgeItin": "ITIN renovado ✓"
+    }
   },
   "Panel": {
     "userNavigation": "Navegación del panel",
@@ -135,7 +427,8 @@
       "messages": "Mensajes de contacto",
       "audit": "Registro de auditoría",
       "profile": "Mi perfil",
-      "blogCategories": "Categorías del blog"
+      "blogCategories": "Categorías del blog",
+      "settings": "Datos del negocio"
     },
     "roles": {
       "user": "Usuario",
@@ -258,7 +551,9 @@
     "contentRequired": "El contenido es obligatorio.",
     "translationRequired": "Complete al menos un idioma (título y contenido).",
     "scheduleFuture": "La fecha programada debe ser futura.",
-    "dateRequired": "Indique la fecha y la hora de publicación."
+    "dateRequired": "Indique la fecha y la hora de publicación.",
+    "phoneInvalid": "Escribe un número de teléfono válido.",
+    "urlInvalid": "Escriba un enlace completo que empiece por https://."
   },
   "Errors": {
     "generic": "Ocurrió un error. Por favor, intente nuevamente en unos minutos.",
@@ -282,7 +577,8 @@
     "recoveryInvalid": "El código de recuperación es incorrecto o ya fue utilizado.",
     "formExpired": "El formulario venció. Recargue la página e intente nuevamente.",
     "roleChangeUnavailable": "El rol solo puede cambiarse en cuentas activas que hayan completado su invitación.",
-    "uploadGrantAdmin": "Este correo pertenece a una cuenta de administrador; los administradores no necesitan esta autorización."
+    "uploadGrantAdmin": "Este correo pertenece a una cuenta de administrador; los administradores no necesitan esta autorización.",
+    "migrationPending": "Falta aplicar la actualización de la base de datos (migración 20261013000100). Ejecútela en el editor SQL de Supabase y vuelva a intentarlo."
   },
   "NotFound": {
     "code": "Error 404",
@@ -996,11 +1292,23 @@
           "rule": "Separador",
           "undo": "Deshacer",
           "redo": "Rehacer"
-        }
+        },
+        "kind": "Tipo",
+        "kinds": {
+          "article": "Artículo",
+          "update": "Actualización"
+        },
+        "kindHint": "Las actualizaciones son avisos cortos (horarios, novedades) y se pueden filtrar en el blog.",
+        "featured": "Destacar",
+        "featuredLabel": "Mostrar como destacado",
+        "featuredHint": "Aparece en grande al inicio del blog. Solo puede haber uno: al destacar este, el anterior deja de estarlo.",
+        "sourceUrl": "Fuente oficial",
+        "sourceUrlHint": "Opcional. Enlace a la fuente (IRS, Estado de Nueva York…). Se muestra al final del artículo."
       },
       "previewBanner": "Vista previa: así se verá la publicación en {language}. Estado: {status}.",
       "previewMissing": "Aún no hay traducción en este idioma.",
-      "backToEditor": "Volver al editor"
+      "backToEditor": "Volver al editor",
+      "featuredBadge": "Destacado"
     },
     "postCategories": {
       "description": "Categorías para filtrar el blog. Cada una tiene un nombre y una dirección en cada idioma.",
@@ -1061,35 +1369,86 @@
       "reopened": "El mensaje fue reabierto.",
       "reply": "Responder por correo",
       "empty": "No hay mensajes que coincidan con los filtros."
+    },
+    "settings": {
+      "title": "Datos del negocio",
+      "description": "Teléfono, WhatsApp, ubicación, horarios y el aviso superior. Los cambios se ven en todo el sitio al guardar.",
+      "migrationNotice": "Se muestran los valores predeterminados porque falta aplicar la migración 20261013000100 en la base de datos. Podrá guardar cambios cuando esté aplicada.",
+      "save": "Guardar cambios",
+      "saving": "Guardando…",
+      "saved": "Los datos del negocio fueron actualizados.",
+      "sections": {
+        "contact": {
+          "title": "Contacto",
+          "hint": "Se usan en los botones de llamar y de WhatsApp, el pie de página y las páginas de contacto."
+        },
+        "location": {
+          "title": "Ubicación",
+          "hint": "Dirección de la oficina y el enlace que abre el botón «Cómo llegar»."
+        },
+        "hours": {
+          "title": "Horarios",
+          "hint": "Una línea por renglón, por ejemplo «Lun – Vie · 10:00 a. m. – 6:00 p. m.». Escriba cada horario en español y en inglés."
+        },
+        "booking": {
+          "title": "Agenda",
+          "hint": "Página externa para reservar citas. Si la deja vacía, los botones «Agenda tu cita» llevan al formulario de contacto."
+        },
+        "announcement": {
+          "title": "Aviso superior",
+          "hint": "La franja azul oscura que aparece arriba de todas las páginas públicas."
+        }
+      },
+      "fields": {
+        "phone": "Teléfono (como se muestra)",
+        "whatsapp": "Número de WhatsApp",
+        "email": "Correo electrónico",
+        "address": "Dirección",
+        "mapsUrl": "Enlace de Google Maps",
+        "bookingUrl": "Enlace para agendar",
+        "hoursRegularEs": "Horario regular",
+        "hoursRegularEn": "Horario regular",
+        "hoursSeasonEs": "Horario de temporada (ene – abr)",
+        "hoursSeasonEn": "Horario de temporada (ene – abr)",
+        "announcementEnabled": "Mostrar el aviso superior",
+        "announcementLabelEs": "Etiqueta (español)",
+        "announcementLabelEn": "Etiqueta (inglés)",
+        "announcementTextEs": "Texto (español)",
+        "announcementTextEn": "Texto (inglés)"
+      },
+      "hints": {
+        "whatsapp": "Con código de país, solo números. Ejemplo: 19178900892.",
+        "mapsUrl": "En Google Maps, use «Compartir» y copie el enlace.",
+        "bookingUrl": "Por ejemplo, su página de Calendly o Google Calendar."
+      }
     }
   },
   "About": {
     "eyebrow": "Quiénes somos",
-    "title": "Un canal seguro y ordenado para sus documentos",
-    "intro": "Element es una plataforma de gestión documental diseñada para organizaciones que necesitan compartir información con sus clientes de manera controlada, trazable y privada.",
+    "title": "Un mismo equipo para tus impuestos, tu negocio y tus papeles.",
+    "intro": "Element Multiservices es una oficina en Nueva York que prepara declaraciones de impuestos, tramita ITIN, ayuda a abrir y llevar negocios, y prepara traducciones y documentos. Atendemos en español y en inglés, todo el año, y te damos el precio por escrito antes de empezar.",
     "sections": {
       "mission": {
         "title": "Nuestra misión",
-        "body": "Ofrecer un espacio confiable en el que cada persona accede únicamente a los documentos que le corresponden, con reglas claras y un registro completo de cada acción."
+        "body": "Que nadie tenga que ir de oficina en oficina ni firmar algo que no entiende. Resolvemos tus trámites en un solo lugar y te explicamos cada paso en palabras claras."
       },
       "approach": {
         "title": "Cómo trabajamos",
-        "body": "Las cuentas las crea y administra la organización. Cada archivo se verifica antes de almacenarse, las descargas usan enlaces temporales y los administradores trabajan con verificación en dos pasos."
+        "body": "Revisamos tu caso, te decimos qué traer, cuánto cuesta y cuánto tarda, y no empezamos hasta que estés de acuerdo. Tus documentos quedan guardados en Mi Archivo para que los tengas siempre a la mano."
       },
       "commitment": {
         "title": "Nuestro compromiso",
-        "body": "Tratamos los datos personales conforme a la Ley 1581 de 2012 y sus decretos reglamentarios, y aplicamos medidas de seguridad acordes con la sensibilidad de la información que gestionamos."
+        "body": "Tu información es confidencial: solo tú y tu preparador asignado pueden verla. Preparamos impuestos y documentos; no somos un bufete de abogados y no damos asesoría legal."
       }
     },
-    "valuesHeading": "Principios",
+    "valuesHeading": "Lo que puedes esperar de nosotros",
     "values": {
-      "confidentiality": "Confidencialidad: el acceso se limita a las personas autorizadas.",
-      "traceability": "Trazabilidad: las acciones relevantes quedan registradas y no pueden alterarse.",
-      "availability": "Disponibilidad: los documentos están siempre al alcance de quien los necesita.",
-      "service": "Servicio: atención clara y oportuna a cada solicitud."
+      "confidentiality": "Precio claro: te lo damos por escrito antes de empezar, sin sorpresas.",
+      "traceability": "Tu idioma: todo el proceso en español o en inglés, con una persona que te explica.",
+      "availability": "Todo el año: extensiones, cartas del IRS, nómina y trámites, también después de abril.",
+      "service": "Respuesta rápida: te contestamos el mismo día hábil por WhatsApp o por teléfono."
     },
-    "contactCta": "Contáctenos",
-    "placeholderNotice": "Texto institucional pendiente de aprobación definitiva."
+    "contactCta": "Escríbenos por WhatsApp"
   },
   "Blog": {
     "title": "Blog",
@@ -1109,7 +1468,33 @@
       "previous": "Publicaciones más recientes",
       "next": "Publicaciones anteriores",
       "page": "Página {page} de {pages}"
-    }
+    },
+    "eyebrow": "BLOG DE ELEMENT",
+    "heroTitleStart": "Noticias de impuestos,",
+    "heroTitleAccent": "en claro.",
+    "heroBody": "Lo que cambia en los impuestos de EE. UU. y cómo te afecta, explicado en español y sin enredos.",
+    "featured": "DESTACADO",
+    "latest": "Lo más reciente",
+    "latestNote": "Cada artículo cita su fuente oficial",
+    "readArticle": "Leer artículo",
+    "readArticleAbout": "Leer artículo: {title}",
+    "viewMore": "Ver más noticias",
+    "helpCard": {
+      "title": "¿Tienes una pregunta rápida?",
+      "body": "Revisa las respuestas a las dudas más comunes sobre reembolsos, ITIN y el IRS.",
+      "cta": "Ir a preguntas frecuentes"
+    },
+    "cta": {
+      "title": "¿Tienes dudas sobre tu caso?",
+      "body": "Las noticias son generales. Tu situación es única: revisémosla juntos."
+    },
+    "updatesFilter": "Actualizaciones",
+    "kinds": {
+      "article": "Artículo",
+      "update": "Actualización"
+    },
+    "minutes": "{count} min de lectura",
+    "source": "Fuente oficial"
   },
   "Contact": {
     "title": "Contacto",
@@ -1128,7 +1513,26 @@
     "successTitle": "Mensaje enviado",
     "success": "Gracias por escribirnos. Le responderemos al correo electrónico que nos indicó.",
     "sendAnother": "Enviar otro mensaje",
-    "honeypot": "Deje este campo vacío"
+    "honeypot": "Deje este campo vacío",
+    "namePlaceholder": "Tu nombre",
+    "emailPlaceholder": "tu@correo.com",
+    "phone": "Teléfono o WhatsApp",
+    "phonePlaceholder": "(XXX) XXX-XXXX",
+    "need": "¿Qué necesitas?",
+    "needs": {
+      "personal": "Declaración personal",
+      "business": "Impuestos de mi negocio",
+      "itin": "ITIN",
+      "company": "Abrir mi empresa",
+      "payroll": "Nómina y contabilidad",
+      "documents": "Traducciones, notaría o inmigración",
+      "other": "Otra consulta"
+    },
+    "shortMessage": "Mensaje",
+    "messagePlaceholder": "Cuéntanos tu caso en dos líneas",
+    "preferredLanguage": "Idioma preferido",
+    "composedPhone": "Teléfono o WhatsApp: {phone}",
+    "composedLanguage": "Idioma preferido: {language}"
   },
   "CookieNotice": {
     "label": "Aviso de cookies",
@@ -1357,5 +1761,471 @@
         }
       ]
     }
+  },
+  "ServicesPage": {
+    "eyebrow": "Servicios",
+    "titleStart": "Catorce servicios.",
+    "titleEnd": "Un solo lugar.",
+    "body": "Impuestos, negocios, documentos y protección para tu familia, con el mismo equipo, en tu idioma y con el precio claro desde el inicio.",
+    "search": {
+      "label": "Buscar un servicio",
+      "placeholder": "Ej.: “mi W-2”, “abrir una LLC”, “renovar ITIN”",
+      "submit": "Buscar",
+      "clear": "Limpiar búsqueda",
+      "empty": "No encontramos un servicio con “{query}”. Escríbenos y te orientamos.",
+      "results": "{count, plural, =0 {Sin resultados} one {# servicio encontrado} other {# servicios encontrados}}"
+    },
+    "filters": {
+      "label": "Filtrar por categoría",
+      "all": "Todos"
+    },
+    "groups": {
+      "taxes": {
+        "eyebrow": "01 · IMPUESTOS",
+        "title": "Impuestos sin misterio.",
+        "tab": "Impuestos",
+        "body": "Personales o de negocio, del año actual o atrasados. Te decimos cuánto cuesta antes de empezar."
+      },
+      "business": {
+        "eyebrow": "02 · NEGOCIOS",
+        "title": "Tu negocio, al día todo el año.",
+        "tab": "Negocios",
+        "body": "Desde el registro hasta la nómina de cada mes. Menos llamadas, menos errores, cero fechas olvidadas."
+      },
+      "documents": {
+        "eyebrow": "03 · DOCUMENTOS",
+        "title": "Tus papeles, listos para presentar.",
+        "tab": "Documentos",
+        "body": "Sin ir a otra oficina, en tu idioma y con copia en Mi Archivo."
+      },
+      "protection": {
+        "eyebrow": "04 · PROTECCIÓN Y CRÉDITO",
+        "title": "Cuida a tu familia y tu historial.",
+        "tab": "Protección y crédito",
+        "body": "Información clara y sin promesas imposibles."
+      }
+    },
+    "items": {
+      "personal": {
+        "tag": "W-2 · 1099",
+        "title": "Declaración personal",
+        "lead": "Tu declaración bien hecha, explicada y sin sorpresas en el precio.",
+        "body": "Formulario 1040 federal y estatal, créditos por hijos y por ingreso del trabajo, años atrasados y enmiendas.",
+        "cta": "Agenda tu declaración",
+        "keywords": "w2 w-2 1099 1040 reembolso personal atrasados enmienda"
+      },
+      "businessReturn": {
+        "tag": "1065 · 1120 · 1120-S",
+        "title": "Declaración de negocio",
+        "lead": "Los impuestos de tu empresa a tiempo, sin multas por fechas.",
+        "body": "Sociedades (1065), corporaciones C (1120) y S (1120-S), formularios K-1 para los socios y declaraciones estatales.",
+        "cta": "Agenda tu declaración",
+        "keywords": "empresa corporación sociedad k-1 llc"
+      },
+      "selfEmployed": {
+        "tag": "SCH C · SE",
+        "title": "Autoempleo",
+        "lead": "Trabajas por tu cuenta: paga lo justo y deduce lo que te corresponde.",
+        "body": "Schedule C con ingresos y gastos, impuesto de autoempleo (Schedule SE) y orden de tus gastos deducibles.",
+        "cta": "Agenda tu cita",
+        "keywords": "independiente cuenta propia 1099 schedule c uber gastos"
+      },
+      "estimated": {
+        "tag": "1040-ES",
+        "title": "Impuestos estimados",
+        "lead": "Paga por trimestre y llega a abril sin deudas ni multas.",
+        "body": "Cálculo de tus pagos federales y estatales y recordatorios antes de cada fecha.",
+        "cta": "Calcula tus pagos",
+        "keywords": "trimestral pagos estimados"
+      },
+      "salesTax": {
+        "tag": "NY SALES TAX",
+        "title": "Sales tax",
+        "lead": "Cobra, reporta y paga el impuesto de ventas sin atrasos.",
+        "body": "Registro para cobrar sales tax en Nueva York, declaraciones periódicas y revisión de ventas exentas.",
+        "cta": "Ponte al día",
+        "keywords": "impuesto de ventas tienda"
+      },
+      "itin": {
+        "tag": "W-7",
+        "title": "ITIN",
+        "lead": "Declara aunque no tengas Seguro Social.",
+        "body": "Solicitudes nuevas y renovaciones con el Formulario W-7, para ti, tu cónyuge y tus dependientes.",
+        "cta": "Empieza tu ITIN",
+        "keywords": "itin w7 renovar seguro social ssn"
+      },
+      "registration": {
+        "tag": "LLC · S · C · SOCIEDAD",
+        "title": "Registro de empresas",
+        "lead": "Abre tu negocio con la estructura que te conviene en impuestos desde el día uno.",
+        "body": "Registro en el Estado de Nueva York, número EIN, elección de corporación S (Formulario 2553) y tus primeras obligaciones.",
+        "cta": "Abre tu empresa",
+        "keywords": "llc abrir empresa ein corporación negocio"
+      },
+      "payroll": {
+        "tag": "941 · NYS-45",
+        "title": "Nómina",
+        "lead": "Paga a tu equipo a tiempo y cumple con cada formulario sin pensar en fechas.",
+        "body": "Cálculo de pagos, W-2 y 1099-NEC, declaraciones trimestrales federales y de Nueva York.",
+        "cta": "Organiza tu nómina",
+        "keywords": "payroll empleados w2 1099-nec"
+      },
+      "bookkeeping": {
+        "tag": "MENSUAL",
+        "title": "Contabilidad",
+        "lead": "Tus números al día cada mes, para decidir con datos y no con intuición.",
+        "body": "Registro de ingresos y gastos, conciliación bancaria, estado de resultados, balance y libros listos para tu declaración.",
+        "cta": "Habla con un contador",
+        "keywords": "contador libros bookkeeping"
+      },
+      "translations": {
+        "tag": "ES ↔ EN",
+        "title": "Traducciones",
+        "lead": "Tus documentos en inglés o en español, listos para presentar.",
+        "body": "Actas de nacimiento y matrimonio, diplomas, licencias, contratos y documentos de soporte.",
+        "cta": "Pide tu traducción",
+        "keywords": "traducir acta certificado"
+      },
+      "immigration": {
+        "tag": "FORMULARIOS",
+        "title": "Inmigración",
+        "lead": "Llenamos tus formularios contigo, paso a paso, en tu idioma.",
+        "body": "Preparación de formularios y traducción de documentos de soporte.",
+        "note": "No somos abogados: no damos asesoría legal ni representación ante las autoridades migratorias.",
+        "cta": "Agenda tu cita",
+        "keywords": "uscis formularios migratorio"
+      },
+      "notary": {
+        "tag": "NY",
+        "title": "Notary Public",
+        "lead": "Notariza tus documentos en el momento.",
+        "body": "Poderes, declaraciones juradas y documentos de negocio. Trae tu identificación con foto y el documento sin firmar.",
+        "cta": "Agenda tu cita",
+        "keywords": "notario notarizar poder"
+      },
+      "lifeInsurance": {
+        "tag": "VIDA",
+        "title": "Seguros de vida",
+        "lead": "Protege a tu familia con un plan que puedas pagar.",
+        "body": "Orientación y cotización de pólizas de vida con un agente licenciado en Nueva York. [Licencia DFS n.º XXXX]",
+        "cta": "Cotiza tu seguro",
+        "keywords": "seguro vida familia"
+      },
+      "credit": {
+        "tag": "CRÉDITO",
+        "title": "Reparación de crédito",
+        "lead": "Entiende tu reporte de crédito y corrige lo que está mal.",
+        "body": "Revisión de tus reportes de las tres agencias, disputa de errores y un plan para mejorar tus hábitos de crédito. La información correcta y reciente no se puede eliminar, y te lo decimos desde el principio.",
+        "cta": "Revisa tu crédito",
+        "keywords": "credito score reporte"
+      }
+    },
+    "dates": {
+      "label": "FECHAS CLAVE · AÑO CALENDARIO",
+      "items": {
+        "mar": {
+          "date": "15 mar",
+          "text": "Sociedades y corporaciones S"
+        },
+        "apr": {
+          "date": "15 abr",
+          "text": "Personas y corporaciones C"
+        },
+        "oct": {
+          "date": "15 oct",
+          "text": "Fin de la extensión personal"
+        },
+        "est": {
+          "date": "abr · jun · sep · ene",
+          "text": "Pagos estimados (día 15)"
+        }
+      }
+    },
+    "bring": {
+      "title": "Qué traer a tu cita",
+      "items": {
+        "id": "Identificación con foto",
+        "ssn": "Seguro Social o ITIN de cada persona",
+        "forms": "W-2, 1099 y 1095-A",
+        "prior": "Tu declaración del año pasado",
+        "bank": "Cuenta y ruta para el depósito"
+      },
+      "upload": "O súbelo antes a Mi Archivo"
+    },
+    "cta": {
+      "title": "¿No sabes cuál necesitas?",
+      "body": "Cuéntanos tu caso en dos líneas y te decimos qué servicio te corresponde, cuánto cuesta y qué traer."
+    }
+  },
+  "LocationPage": {
+    "eyebrow": "Ubicación",
+    "titleStart": "Visítanos en",
+    "titleAccent": "New York.",
+    "body": "Una oficina, el mismo equipo todo el año. Y si no puedes venir, lo hacemos a distancia.",
+    "office": "Oficina principal",
+    "openAllYear": "Abierto todo el año",
+    "address": "Dirección",
+    "phone": "Teléfono y WhatsApp",
+    "email": "Correo",
+    "regular": {
+      "label": "HORARIO REGULAR"
+    },
+    "season": {
+      "label": "TEMPORADA · ENE – ABR"
+    },
+    "directions": "Cómo llegar",
+    "call": "Llamar",
+    "station": "Estación [Nombre] · [X] min a pie",
+    "getting": {
+      "eyebrow": "Cómo llegar",
+      "title": "Fácil de encontrar.",
+      "items": {
+        "train": {
+          "title": "En tren",
+          "body": "Línea [X] hasta la estación [Nombre]. Camina [X] minutos."
+        },
+        "bus": {
+          "title": "En bus",
+          "body": "Rutas [BX…] con parada en [Calle]."
+        },
+        "car": {
+          "title": "En carro",
+          "body": "Estacionamiento en la calle o en [estacionamiento cercano]."
+        },
+        "landmark": {
+          "title": "Referencia",
+          "body": "Estamos [frente a / al lado de] [lugar conocido del barrio]."
+        }
+      }
+    },
+    "expect": {
+      "eyebrow": "Qué esperar",
+      "title": "Tu primera visita, sin sorpresas.",
+      "body": "[Oficina en primer piso / con rampa]. Si necesitas ayuda especial, avísanos al agendar.",
+      "steps": {
+        "welcome": {
+          "title": "Te recibimos",
+          "body": "Con cita, te atendemos a tu hora. Sin cita, te damos el próximo espacio libre."
+        },
+        "review": {
+          "title": "Revisamos tus papeles",
+          "body": "Si falta algo, te decimos qué y lo puedes subir después a Mi Archivo."
+        },
+        "price": {
+          "title": "Te damos el precio",
+          "body": "Lo firmas antes de que empecemos."
+        },
+        "leave": {
+          "title": "Te vas con todo",
+          "body": "Copia de tu declaración y tus documentos guardados en Mi Archivo."
+        }
+      }
+    },
+    "remote": {
+      "badge": "También a distancia",
+      "title": "¿No puedes venir? Lo hacemos sin que salgas de casa.",
+      "body": "Sube tus documentos a Mi Archivo, te llamamos para revisar todo y firmas de forma electrónica. Atendemos a clientes en todo el Estado de Nueva York.",
+      "cta": "Empieza a distancia"
+    },
+    "form": {
+      "title": "¿Tienes una pregunta antes de venir?",
+      "note": "Te respondemos el mismo día hábil. No envíes documentos por este formulario; súbelos a Mi Archivo."
+    }
+  },
+  "FaqPage": {
+    "badge": "Centro de ayuda · {count} preguntas",
+    "titleStart": "Resolvemos tus dudas.",
+    "titleAccent": "En tu idioma.",
+    "body": "Las preguntas que más nos hacen sobre impuestos, ITIN, tu negocio y Mi Archivo, respondidas en palabras claras. Si la tuya no está, escríbenos.",
+    "aside": {
+      "title": "¿No encuentras tu respuesta?",
+      "body": "Escríbenos y te respondemos el mismo día hábil, en español o en inglés."
+    },
+    "count": "{count, plural, one {# pregunta} other {# preguntas}}",
+    "groups": {
+      "refunds": {
+        "title": "Reembolsos",
+        "items": {
+          "timing": {
+            "q": "¿Cuánto tarda en llegar mi reembolso?",
+            "a": "Una vez que el IRS acepta tu declaración, la mayoría de los reembolsos se emiten en menos de 21 días si declaraste de forma electrónica y elegiste depósito directo. Si declaraste en papel o pediste cheque, puede tardar de 6 a 8 semanas o más. Los reembolsos estatales tienen sus propios plazos."
+          },
+          "status": {
+            "q": "¿Dónde puedo verificar el estatus de mi reembolso?",
+            "a": "Puedes verificarlo 24 horas después de que el IRS acepte tu declaración electrónica (unas 4 semanas si fue en papel). Necesitarás tu número de Seguro Social o ITIN, tu estado civil para efectos de impuestos y la cantidad exacta del reembolso.",
+            "federal": "Verifica tu reembolso federal",
+            "state": "Verifica tu reembolso del Estado de Nueva York",
+            "after": "Si te cuesta encontrar la información, contáctanos y con gusto te ayudamos a verificar tu estatus."
+          },
+          "delay": {
+            "q": "¿Por qué mi reembolso está tardando más de lo normal?",
+            "a": "Las causas más comunes son errores en la declaración, información que no coincide con los registros del IRS, reclamar el Crédito por Ingreso del Trabajo (EITC) o el Crédito Tributario Adicional por Hijos (ACTC), deudas pendientes (manutención, impuestos atrasados, préstamos estudiantiles) o una revisión por robo de identidad. Si el IRS te envía una carta, tráenosla y te ayudamos a responder."
+          }
+        }
+      },
+      "documents": {
+        "title": "Documentos y requisitos",
+        "items": {
+          "bring": {
+            "q": "¿Qué documentos necesito traer?",
+            "a": "Para comenzar tu declaración, trae lo siguiente:",
+            "list": {
+              "id": {
+                "label": "Identificación",
+                "text": "licencia de conducir, ID estatal o pasaporte vigente."
+              },
+              "ssn": {
+                "label": "Número de Seguro Social o ITIN",
+                "text": "tuyo, de tu cónyuge y de cada dependiente."
+              },
+              "income": {
+                "label": "Comprobantes de ingresos",
+                "text": "formularios W-2, 1099 (NEC, MISC, K, INT, DIV, R), SSA-1099 (Seguro Social) y 1099-G (desempleo)."
+              },
+              "selfEmployed": {
+                "label": "Si trabajas por cuenta propia",
+                "text": "registro de ingresos y gastos del negocio, estados de cuenta bancarios, recibos y millaje."
+              },
+              "deductions": {
+                "label": "Gastos y deducciones",
+                "text": "formularios 1098 (intereses hipotecarios), 1098-T (matrícula universitaria), 1098-E (préstamos estudiantiles) y gastos de cuidado de niños (con el nombre y el número de identificación del proveedor)."
+              },
+              "health": {
+                "label": "Seguro médico",
+                "text": "formulario 1095-A si tienes seguro a través del Mercado (Marketplace)."
+              },
+              "prior": {
+                "label": "Declaración del año anterior",
+                "text": "si la tienes."
+              },
+              "bank": {
+                "label": "Datos bancarios",
+                "text": "número de ruta y de cuenta para recibir tu reembolso por depósito directo."
+              },
+              "letters": {
+                "label": "Cartas del IRS o del estado",
+                "text": "incluido tu PIN de Protección de Identidad (IP PIN), si tienes uno."
+              }
+            }
+          },
+          "noForms": {
+            "q": "¿Puedo declarar si no tengo un W-2 o un 1099?",
+            "a": "Sí. Si recibiste ingresos durante el año, puedes y debes declararlos aunque no tengas W-2 o 1099. Necesitarás pruebas de tus ingresos y gastos, como estados de cuenta bancarios que muestren los depósitos, cheques cancelados, recibos de pago o facturas."
+          },
+          "noSsn": {
+            "q": "¿Puedo declarar si no tengo número de Seguro Social?",
+            "a": "Sí. Puedes declarar con un Número de Identificación Personal del Contribuyente (ITIN). Si aún no lo tienes, te ayudamos a solicitarlo junto con tu declaración (formulario W-7)."
+          }
+        }
+      },
+      "pricing": {
+        "title": "Precios y estimados",
+        "items": {
+          "estimate": {
+            "q": "¿Cuánto cuesta un estimado?",
+            "a": "Nada. Ofrecemos estimados gratuitos y sin compromiso. Solo pagas cuando decidas seguir adelante con tu declaración."
+          },
+          "fees": {
+            "q": "¿Cuánto cobran por preparar mi declaración?",
+            "a": "Nuestras tarifas comienzan desde $75. El precio final depende de la complejidad de tu declaración y de los formularios que se necesiten (por ejemplo, ingresos por cuenta propia, propiedades de alquiler o varios estados). Te damos el precio antes de comenzar, sin sorpresas."
+          },
+          "payment": {
+            "q": "¿Qué métodos de pago aceptan?",
+            "a": "Aceptamos [MÉTODOS DE PAGO: efectivo, tarjeta de débito/crédito, Zelle, etc.]."
+          }
+        }
+      },
+      "mustFile": {
+        "title": "¿Tengo que declarar?",
+        "items": {
+          "benefits": {
+            "q": "Solo recibí Seguro Social (SSA-1099) o desempleo (1099-G). ¿Tengo que declarar?",
+            "a": "Depende de tus ingresos totales. El desempleo (1099-G) es ingreso tributable y casi siempre debe reportarse. El Seguro Social muchas veces no es tributable si es tu único ingreso, pero puede serlo si tienes otros ingresos. Trae tus formularios y te decimos sin costo si estás obligado a declarar, para evitar multas e intereses del IRS."
+          },
+          "noWork": {
+            "q": "No trabajé el año pasado. ¿Tengo que declarar?",
+            "a": "Si no tuviste ingresos, normalmente no estás obligado a declarar. Aun así, puede convenirte hacerlo si tienes hijos u otros dependientes, ya que podrías calificar para créditos reembolsables. Consúltanos y lo revisamos contigo."
+          },
+          "selfEmployed": {
+            "q": "Trabajo por mi cuenta (independiente). ¿Tengo que declarar?",
+            "a": "Sí, si tus ganancias netas del trabajo por cuenta propia fueron de $400 o más. Además, podrías tener que pagar impuestos estimados durante el año para evitar multas. Te ayudamos a organizar tus ingresos y gastos para pagar solo lo que corresponde."
+          }
+        }
+      },
+      "irs": {
+        "title": "Años anteriores, correcciones y el IRS",
+        "items": {
+          "pastYears": {
+            "q": "¿Puedo declarar años anteriores?",
+            "a": "Sí. Cada año se declara por separado, con los formularios de ese año; no se pueden combinar varios años en una sola declaración. Ten en cuenta que, por lo general, solo puedes reclamar un reembolso dentro de los 3 años siguientes a la fecha límite original de esa declaración."
+          },
+          "amend": {
+            "q": "Cometí un error o me faltó un formulario. ¿Puedo corregir mi declaración?",
+            "a": "Sí. Podemos preparar una declaración enmendada (formulario 1040-X) para corregir ingresos, dependientes, deducciones o créditos."
+          },
+          "owe": {
+            "q": "Debo impuestos y no puedo pagar todo. ¿Qué hago?",
+            "a": "Declara a tiempo de todas formas: la multa por no declarar es mucho mayor que la multa por no pagar. El IRS ofrece planes de pago a plazos y te ayudamos a solicitarlos."
+          },
+          "letter": {
+            "q": "Recibí una carta del IRS o del estado. ¿Me pueden ayudar?",
+            "a": "Sí. No la ignores. Tráenos la carta lo antes posible: la revisamos, te explicamos qué significa y te ayudamos a responder dentro del plazo indicado."
+          }
+        }
+      },
+      "services": {
+        "title": "Nuestros servicios",
+        "items": {
+          "deadline": {
+            "q": "¿Cuál es la fecha límite para declarar? ¿Puedo pedir una extensión?",
+            "a": "La fecha límite normal es el 15 de abril. Podemos solicitar una extensión de 6 meses para presentar la declaración, pero la extensión no te da más tiempo para pagar: si debes impuestos, tienes que pagarlos antes del 15 de abril para evitar multas e intereses."
+          },
+          "remote": {
+            "q": "¿Tengo que ir en persona o puedo hacerlo a distancia?",
+            "a": "Como prefieras. Te atendemos en nuestra oficina, o puedes subir tus documentos de forma segura a Mi Archivo y firmar electrónicamente."
+          },
+          "secure": {
+            "q": "¿Mi información está segura?",
+            "a": "Sí. Tu información es confidencial y se maneja de forma segura. Solo se usa para preparar tu declaración y nunca se comparte sin tu autorización."
+          },
+          "business": {
+            "q": "¿Preparan impuestos de negocios?",
+            "a": "Sí. Además de declaraciones personales, preparamos impuestos para negocios (LLC, corporaciones S y C, sociedades), ayudamos a formar empresas y ofrecemos asesoría para organizar tus ingresos y gastos."
+          },
+          "yearRound": {
+            "q": "¿Están abiertos solo durante la temporada de impuestos?",
+            "a": "No. Estamos disponibles todo el año para declaraciones atrasadas, enmiendas, cartas del IRS, planificación y servicios a negocios. Consulta nuestros horarios en la página de Ubicación."
+          }
+        }
+      }
+    },
+    "cta": {
+      "title": "¿Tu pregunta no está aquí?",
+      "body": "Cada caso es distinto. Cuéntanos el tuyo y te decimos qué hacer, cuánto cuesta y qué traer.",
+      "whatsapp": {
+        "title": "Escríbenos por WhatsApp",
+        "body": "Te respondemos el mismo día hábil.",
+        "action": "Escribir"
+      },
+      "call": {
+        "title": "Llámanos",
+        "action": "Llamar"
+      },
+      "visit": {
+        "title": "Visítanos",
+        "action": "Cómo llegar"
+      }
+    },
+    "disclaimer": "La información de esta página es general y no reemplaza la revisión de tu caso."
+  },
+  "AuthPanel": {
+    "badge": "Mi Archivo",
+    "title": "Tus papeles, en orden. Protegidos. A un clic.",
+    "points": {
+      "organized": "Ordenados por año y por trámite",
+      "protected": "Solo tú y tu preparador asignado pueden verlos",
+      "twoStep": "Verificación en dos pasos"
+    },
+    "toast": "W-2 recibido"
   }
 }

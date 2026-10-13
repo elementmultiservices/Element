@@ -16,7 +16,7 @@ export function FormAlert({ variant, children, className }: { variant: Variant; 
   return (
     <div
       role={variant === "error" ? "alert" : "status"}
-      className={cn("flex gap-2.5 rounded-md border px-3.5 py-3 text-sm leading-relaxed", styles[variant], className)}
+      className={cn("flex gap-2.5 rounded-2xl border px-4 py-3 text-sm leading-relaxed", styles[variant], className)}
     >
       <Icon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
       <div>{children}</div>

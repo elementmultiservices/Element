@@ -34,7 +34,7 @@ function eventKey(action: string): EventKey {
 
 function Section({ id, title, description, children }: { id: string; title: string; description?: string; children: React.ReactNode }) {
   return (
-    <section aria-labelledby={id} className="rounded-lg border bg-card p-6">
+    <section aria-labelledby={id} className="rounded-[24px] border border-azure-50 bg-white p-6">
       <h2 id={id} className="text-lg">
         {title}
       </h2>
@@ -132,20 +132,20 @@ export async function ProfileView({ session }: { session: SessionContext }) {
                     <th scope="col" className="px-3 py-2 text-left font-semibold">{t("Profile.activity.device")}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-azure-50">
                   {activity.map((row) => {
                     const key = eventKey(row.action);
                     const failed = key === "sign_in_failure" || key === "sign_in_locked" || key === "mfa_failed";
                     return (
                       <tr key={row.id}>
-                        <td className="px-3 py-2 whitespace-nowrap text-muted-foreground">
+                        <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
                           <time dateTime={row.created_at}>{format.dateTime(new Date(row.created_at), "long")}</time>
                         </td>
-                        <td className={failed ? "px-3 py-2 font-medium text-destructive" : "px-3 py-2"}>
+                        <td className={failed ? "px-4 py-3 font-medium text-destructive" : "px-3 py-2"}>
                           {t(`Profile.activity.events.${key}`)}
                         </td>
-                        <td className="px-3 py-2 font-mono text-xs text-muted-foreground">{String(row.ip ?? t("Profile.activity.unknown"))}</td>
-                        <td className="px-3 py-2 text-muted-foreground">{describeUserAgent(row.user_agent) ?? t("Profile.activity.unknown")}</td>
+                        <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{String(row.ip ?? t("Profile.activity.unknown"))}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{describeUserAgent(row.user_agent) ?? t("Profile.activity.unknown")}</td>
                       </tr>
                     );
                   })}

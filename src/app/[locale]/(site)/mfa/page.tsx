@@ -32,7 +32,7 @@ export default async function MfaPage({ params }: PageProps<"/[locale]/mfa">) {
         </FormAlert>
       ) : null}
       <MfaFlow mode={mode} home={homePathFor(session.role)} />
-      <form action={signOutAction} className="mt-6 border-t pt-4">
+      <form action={signOutAction} className="mt-8 border-t border-azure-50 pt-5">
         <button type="submit" className="text-sm text-link hover:underline">
           {t("useAnotherAccount")}
         </button>

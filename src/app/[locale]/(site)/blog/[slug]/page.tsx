@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Article } from "@/components/blog/article";
+import { CtaPanel } from "@/components/marketing/cta-panel";
+import { SmartLink } from "@/components/marketing/smart-link";
+import { Button } from "@/components/ui/button";
+import { getSiteContact } from "@/lib/site-settings";
 import { Link, redirect } from "@/i18n/navigation";
 import { locales, toLocale, type AppLocale } from "@/i18n/routing";
 import { coverUrl, getPublishedPost } from "@/lib/blog/queries";
@@ -47,6 +51,8 @@ export default async function BlogPostPage({ params }: PageProps<"/[locale]/blog
   if (post.slug !== slug) return redirect({ href: `/blog/${post.slug}`, locale });
 
   const t = await getTranslations();
+
+  const contact = await getSiteContact();
   const others = locales.filter((l) => l !== locale && post.slugs[l]);
 
   return (
@@ -59,19 +65,27 @@ export default async function BlogPostPage({ params }: PageProps<"/[locale]/blog
           coverPath: post.coverPath,
           publishedAt: post.publishedAt,
           category: post.category,
+          kind: post.kind,
+          sourceUrl: post.sourceUrl,
+          readingMinutes: post.readingMinutes,
         }}
       />
       {others.length > 0 ? (
         <aside className="mx-auto max-w-3xl px-4 pb-12 sm:px-6">
           {others.map((l) => (
-            <p key={l} className="rounded-md border bg-surface px-4 py-3 text-sm text-muted-foreground">
-              <Link href={`/blog/${post.slugs[l]}`} locale={l} className="text-link hover:underline">
+            <p key={l} className="rounded-2xl border border-azure-50 bg-mist px-5 py-4 text-sm text-graphite">
+              <Link href={`/blog/${post.slugs[l]}`} locale={l} className="font-semibold text-electric hover:underline">
                 {t("Blog.otherLanguage", { language: t(`Common.languages.${l}`) })}
               </Link>
             </p>
           ))}
         </aside>
       ) : null}
+      <CtaPanel id="post-cta" tone="light" title={t("Blog.cta.title")} body={t("Blog.cta.body")}>
+        <Button asChild variant="brand" size="pill-lg">
+          <SmartLink href={contact.bookingHref}>{t("Nav.book")}</SmartLink>
+        </Button>
+      </CtaPanel>
     </>
   );
 }

@@ -43,11 +43,11 @@ function SortHeader({
     <th
       scope="col"
       aria-sort={active ? (params.dir === "asc" ? "ascending" : "descending") : "none"}
-      className={cn("px-3 py-2.5 text-left font-semibold", className)}
+      className={cn("px-4 py-3 text-left font-mono text-[11px] font-medium tracking-[0.08em] whitespace-nowrap text-graphite uppercase", className)}
     >
       <Link
         href={{ pathname: basePath, query: toQuery(params, { sort: column, dir: nextDir, page: 1 }) }}
-        className="inline-flex items-center gap-1 rounded-sm hover:text-primary"
+        className="inline-flex items-center gap-1 rounded-sm hover:text-electric"
       >
         {label}
         <Icon aria-hidden="true" className={cn("size-3.5", active ? "text-primary" : "text-muted-foreground")} />
@@ -77,7 +77,7 @@ export async function FilesTable({
   const last = Math.min(page * PAGE_SIZE, total);
 
   return (
-    <div className="rounded-lg border bg-card">
+    <div className="overflow-hidden rounded-[20px] border border-azure-50 bg-white">
       <div className="relative overflow-x-auto">
         <table className="w-full min-w-[640px] text-sm">
           <caption className="sr-only">{t("table.caption")}</caption>
@@ -100,14 +100,14 @@ export async function FilesTable({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-azure-50">
             {rows.map((row) => {
               const name = sanitizeDisplayName(row.originalName);
               const kind = kindFromMime(row.mimeType);
               const byAdmin = row.uploadedBy !== row.ownerId;
               return (
-                <tr key={row.id} className="hover:bg-surface/60">
-                  <td className="max-w-xs px-3 py-2.5">
+                <tr key={row.id} className="transition-colors hover:bg-azure-25/60">
+                  <td className="max-w-xs px-4 py-3.5">
                     <p className="truncate font-medium text-foreground" title={name}>
                       {name}
                     </p>
@@ -117,17 +117,17 @@ export async function FilesTable({
                       </p>
                     ) : null}
                   </td>
-                  <td className="hidden px-3 py-2.5 text-muted-foreground md:table-cell">
+                  <td className="hidden px-4 py-3.5 text-muted-foreground md:table-cell">
                     {row.category ? (locale === "es" ? row.category.nameEs : row.category.nameEn) : t("table.noCategory")}
                   </td>
-                  <td className="px-3 py-2.5 text-muted-foreground">{kind ? FILE_TYPES[kind].label : "—"}</td>
-                  <td className="px-3 py-2.5 text-right whitespace-nowrap text-muted-foreground tabular-nums">
+                  <td className="px-4 py-3.5 text-muted-foreground">{kind ? FILE_TYPES[kind].label : "—"}</td>
+                  <td className="px-4 py-3.5 text-right whitespace-nowrap text-muted-foreground tabular-nums">
                     {formatBytes(row.sizeBytes, locale)}
                   </td>
-                  <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-muted-foreground">
                     <time dateTime={row.createdAt}>{format.dateTime(new Date(row.createdAt), "short")}</time>
                   </td>
-                  <td className="hidden px-3 py-2.5 lg:table-cell">
+                  <td className="hidden px-4 py-3.5 lg:table-cell">
                     <Badge
                       variant="outline"
                       className={cn("font-normal", byAdmin ? "border-info/30 bg-info-bg text-info" : "text-muted-foreground")}
@@ -135,11 +135,11 @@ export async function FilesTable({
                       {byAdmin ? t("source.admin") : t("source.self")}
                     </Badge>
                   </td>
-                  <td className="px-3 py-2.5 text-right">
+                  <td className="px-4 py-3.5 text-right">
                     {/* Plain anchor: the route checks permissions and redirects to a 60 s signed URL. */}
                     <a
                       href={`/api/files/${row.id}/download`}
-                      className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium text-link hover:bg-accent"
+                      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"
                       aria-label={t("table.downloadLabel", { name })}
                       rel="noopener"
                     >
@@ -160,24 +160,24 @@ export async function FilesTable({
           {page > 1 ? (
             <Link
               href={{ pathname: basePath, query: toQuery(params, { page: page - 1 }) }}
-              className="rounded-md border px-3 py-1.5 hover:bg-accent"
+              className="rounded-full border border-azure-100 px-4 py-1.5 font-medium text-ink hover:bg-azure-25"
             >
               {t("pagination.previous")}
             </Link>
           ) : (
-            <span aria-disabled="true" className="rounded-md border px-3 py-1.5 text-muted-foreground opacity-50">
+            <span aria-disabled="true" className="rounded-full border border-azure-50 px-4 py-1.5 text-muted-foreground opacity-50">
               {t("pagination.previous")}
             </span>
           )}
           {page < pageCount ? (
             <Link
               href={{ pathname: basePath, query: toQuery(params, { page: page + 1 }) }}
-              className="rounded-md border px-3 py-1.5 hover:bg-accent"
+              className="rounded-full border border-azure-100 px-4 py-1.5 font-medium text-ink hover:bg-azure-25"
             >
               {t("pagination.next")}
             </Link>
           ) : (
-            <span aria-disabled="true" className="rounded-md border px-3 py-1.5 text-muted-foreground opacity-50">
+            <span aria-disabled="true" className="rounded-full border border-azure-50 px-4 py-1.5 text-muted-foreground opacity-50">
               {t("pagination.next")}
             </span>
           )}

@@ -1,9 +1,9 @@
 {
   "Metadata": {
     "siteName": "Element",
-    "description": "Element is a secure document management platform for organizations and their clients.",
+    "description": "Element Multiservices: taxes, ITIN, business and documents in New York. In English and Spanish, all year long, with a clear price from the start.",
     "pages": {
-      "home": "Secure document management",
+      "home": "Taxes, ITIN and documents in New York",
       "signIn": "Sign in",
       "resetPassword": "Reset password",
       "updatePassword": "Set password",
@@ -37,13 +37,20 @@
       "adminPostCategories": "Blog categories",
       "adminMessages": "Contact messages",
       "signUp": "Create an account",
-      "adminUploadAccess": "Authorize document uploads"
+      "adminUploadAccess": "Authorize document uploads",
+      "services": "Services",
+      "location": "Location",
+      "faq": "Frequently asked questions",
+      "adminSettings": "Business details"
     },
     "descriptions": {
-      "about": "Who we are and how Element protects the documents of organizations and their clients.",
-      "blog": "News, guides and announcements from Element.",
+      "about": "About Element Multiservices: taxes, ITIN, business and documents in New York, in English and Spanish.",
+      "blog": "What's changing in U.S. taxes and how it affects you, explained plainly.",
       "contact": "Get in touch with the Element team.",
-      "legal": "Legal information about the use of Element."
+      "legal": "Legal information about the use of Element.",
+      "services": "Taxes, business, documents and protection for your family, with the same team and a clear price from the start.",
+      "location": "Visit us in New York or get it done remotely. Address, hours and directions.",
+      "faq": "Clear answers about refunds, documents, pricing, ITIN, the IRS and our services."
     }
   },
   "Common": {
@@ -64,55 +71,340 @@
     "required": "Required",
     "optional": "Optional",
     "home": "Home",
-    "userMenu": "Account menu"
+    "userMenu": "Account menu",
+    "learnMore": "Learn more"
   },
   "Nav": {
     "main": "Main navigation",
     "home": "Home",
     "about": "About us",
     "blog": "Blog",
-    "contact": "Contact"
+    "contact": "Contact",
+    "services": "Services",
+    "location": "Location",
+    "faq": "FAQ",
+    "faqLong": "Questions",
+    "book": "Book an appointment",
+    "bookShort": "Book",
+    "myFiles": "My Files",
+    "call": "Call",
+    "whatsapp": "WhatsApp"
   },
   "Footer": {
-    "tagline": "Secure document management for organizations and their clients.",
+    "tagline": "Every element in its place.",
     "contactHeading": "Contact",
-    "address": "Street 00 # 00-00, City, Country",
-    "phone": "+00 000 000 0000",
-    "email": "contact@example.com",
-    "hours": "Monday to Friday, 8:00 a.m. – 5:00 p.m.",
     "legalHeading": "Legal",
     "privacy": "Privacy policy",
     "dataPolicy": "Personal data processing policy",
     "terms": "Terms of use",
     "cookies": "Cookie notice",
     "siteHeading": "Site",
-    "rights": "© {year} Element. All rights reserved.",
-    "placeholderNotice": "Contact details are placeholders pending confirmation."
+    "rights": "© {year} Element Multiservices LLC",
+    "placeholderNotice": "Contact details are placeholders pending confirmation.",
+    "servicesHeading": "Services",
+    "elementHeading": "Element",
+    "disclaimer": "Element Multiservices prepares tax returns and documents. We are not a law firm and do not give legal advice. We give you the price of our services in writing before we start.",
+    "immigrationNotice": "[Mandatory New York State immigrant assistance services notice: exact text validated by an attorney.]",
+    "services": {
+      "taxes": "Taxes",
+      "itin": "ITIN",
+      "business": "Business",
+      "documents": "Documents"
+    }
   },
   "Home": {
-    "eyebrow": "Document management platform",
-    "title": "Your documents, managed with security and order",
-    "body": "Element provides a private, controlled space to receive, store and consult your documents, with access limited to authorized people.",
-    "primaryCta": "Sign in",
-    "secondaryCta": "Contact us",
-    "featuresHeading": "Why Element",
-    "features": {
-      "security": {
-        "title": "Controlled access",
-        "body": "Each person sees only the documents that belong to them. Every action is recorded."
-      },
-      "privacy": {
-        "title": "Private storage",
-        "body": "Files are stored in private storage and downloaded only through temporary links."
-      },
-      "support": {
-        "title": "Institutional support",
-        "body": "Accounts are created and managed by our team; there is no open registration."
+    "announcement": {
+      "cta": "Book an appointment"
+    },
+    "hero": {
+      "badge": "Taxes · ITIN · Business · Documents",
+      "titleStart": "Your taxes and your paperwork,",
+      "titleAccent": "in order.",
+      "body": "We prepare your tax return, your ITIN and your business documents in one place. In English and Spanish, all year long, with a clear price from the start.",
+      "book": "Book an appointment",
+      "whatsapp": "Message us on WhatsApp",
+      "bullets": {
+        "price": "The price, before we start",
+        "yearRound": "Open all year",
+        "language": "We speak your language"
       }
     },
-    "latestHeading": "Latest from the blog",
-    "latestEmpty": "There are no published posts yet.",
-    "viewAllPosts": "View all posts"
+    "mockup": {
+      "label": "Example of what My Files looks like",
+      "toast": "W-2 received",
+      "greeting": "Hi, María",
+      "title": "My Files",
+      "returnLabel": "2026 RETURN · 1040",
+      "returnStatus": "Filed and accepted",
+      "steps": {
+        "received": "Received",
+        "review": "Review",
+        "filed": "Filed"
+      },
+      "foldersHeading": "Your folders",
+      "folders": {
+        "taxes": "Taxes 2026",
+        "itin": "ITIN and documents",
+        "business": "My business"
+      },
+      "files": "{count, plural, one {# file} other {# files}}"
+    },
+    "trust": {
+      "label": "Credentials",
+      "irs": "[IRS Certifying Acceptance Agent]",
+      "notary": "[Notary Public · NY]",
+      "afsp": "[IRS AFSP Program]",
+      "languages": "English · Español",
+      "yearRound": "Open 12 months a year",
+      "pause": "Pause scrolling",
+      "play": "Resume scrolling"
+    },
+    "quick": {
+      "eyebrow": "Quick access",
+      "title": "What do you need to get done today?",
+      "body": "Choose your service and we'll tell you what to bring, how much it costs and how long it takes.",
+      "items": {
+        "personal": {
+          "title": "File my taxes",
+          "body": "With a W-2 or 1099, federal and state, current or past years."
+        },
+        "business": {
+          "title": "My business taxes",
+          "body": "Partnerships and corporations: 1065, 1120 and 1120-S."
+        },
+        "selfEmployed": {
+          "title": "I'm self-employed",
+          "body": "Schedule C, self-employment tax and estimated payments."
+        },
+        "itin": {
+          "title": "Get or renew my ITIN",
+          "body": "File even if you don't have a Social Security number."
+        },
+        "company": {
+          "title": "Start my company",
+          "body": "LLC, S-Corp, C-Corp or partnership."
+        },
+        "payroll": {
+          "title": "Payroll and bookkeeping",
+          "body": "Pay your team and keep your numbers up to date."
+        },
+        "documents": {
+          "title": "Translate or notarize",
+          "body": "Documents ready to submit, on the spot."
+        }
+      },
+      "all": {
+        "eyebrow": "14 SERVICES",
+        "title": "See everything we do for you",
+        "body": "Life insurance, credit, sales tax and more"
+      }
+    },
+    "why": {
+      "eyebrow": "Why Element",
+      "title": "Everything you need, in one place.",
+      "body": "No more going from office to office. One team takes care of your taxes, your paperwork and your documents.",
+      "estimate": {
+        "eyebrow": "01 · TRANSPARENCY",
+        "title": "Get your estimate completely FREE",
+        "body": "We tell you the result of your taxes and the amount of your refund, with no commitment.",
+        "priceLabel": "Personal tax return",
+        "price": "from $75"
+      },
+      "yearRound": {
+        "eyebrow": "02 · ALL YEAR",
+        "title": "Available 12 months a year",
+        "body": "Extensions, IRS letters, payroll and paperwork, every month of the year."
+      },
+      "language": {
+        "eyebrow": "03 · IN YOUR LANGUAGE",
+        "title": "A real conversation.",
+        "body": "The whole process in English or Spanish. Not a translated form: a person who explains it to you."
+      }
+    },
+    "vault": {
+      "badge": "My Files",
+      "title": "Your paperwork, in order. Protected. One click away.",
+      "body": "Everything you share with Element is kept in your digital file: organized by year and by service, protected with personal access and ready to download from your phone.",
+      "features": {
+        "organized": {
+          "title": "Organized",
+          "body": "Every document in its folder, by year and service."
+        },
+        "protected": {
+          "title": "Protected",
+          "body": "Only you and your assigned preparer can see them."
+        },
+        "handy": {
+          "title": "At hand",
+          "body": "From any device, at any time."
+        },
+        "easy": {
+          "title": "Easy",
+          "body": "If you can send a photo on WhatsApp, you can use it."
+        }
+      },
+      "chips": {
+        "access": "Personal access",
+        "encrypted": "Encrypted files",
+        "twoStep": "Two-step verification"
+      },
+      "learn": "Learn about My Files",
+      "enter": "Go to My Files",
+      "mock": {
+        "label": "Example of the document list in My Files",
+        "search": "Search “W-2 2024”",
+        "business": "Business",
+        "return": "1040 return",
+        "w2": "W-2",
+        "employer": "Employer",
+        "accepted": "Accepted ✓",
+        "received": "Received ✓",
+        "missing": "Not uploaded yet"
+      }
+    },
+    "stats": {
+      "label": "Element in numbers",
+      "returns": "Returns prepared",
+      "years": "Years in New York",
+      "services": "Services in one place",
+      "months": "Months open"
+    },
+    "steps": {
+      "eyebrow": "How it works",
+      "title": "Three steps and you're done.",
+      "items": {
+        "book": {
+          "title": "Book",
+          "body": "Pick a day and time online, or message us on WhatsApp. We answer in your language."
+        },
+        "docs": {
+          "title": "Bring or upload your paperwork",
+          "body": "We send you the exact list of what you need. Bring it in or upload it to My Files."
+        },
+        "file": {
+          "title": "We review and file",
+          "body": "We explain the result before sending anything, and you keep a copy of everything."
+        }
+      }
+    },
+    "services": {
+      "eyebrow": "Services",
+      "title": "Fourteen services. One place.",
+      "viewAll": "See all services",
+      "groups": {
+        "taxes": {
+          "title": "Taxes",
+          "items": {
+            "personal": "Personal (W-2, 1099)",
+            "business": "Business (1065, 1120, 1120-S)",
+            "selfEmployed": "Self-employment (Sch C, SE)",
+            "estimated": "Estimated taxes",
+            "salesTax": "Sales tax",
+            "itin": "ITIN"
+          }
+        },
+        "business": {
+          "title": "Business",
+          "items": {
+            "registration": "Company registration",
+            "entities": "LLC, S-Corp, C-Corp, partnerships",
+            "payroll": "Payroll",
+            "bookkeeping": "Bookkeeping"
+          }
+        },
+        "documents": {
+          "title": "Documents",
+          "items": {
+            "translations": "Translations",
+            "immigration": "Immigration (forms)",
+            "notary": "Notary Public"
+          }
+        },
+        "protection": {
+          "title": "Protection and credit",
+          "items": {
+            "lifeInsurance": "Life insurance",
+            "credit": "Credit repair"
+          }
+        }
+      }
+    },
+    "location": {
+      "eyebrow": "Location",
+      "titleStart": "Visit us in the",
+      "titleAccent": "Bronx, New York.",
+      "directions": "Get directions",
+      "mapPin": "Element Multiservice"
+    },
+    "testimonials": {
+      "eyebrow": "Testimonials",
+      "title": "What our clients say.",
+      "body": "Real Google reviews, published with each client's permission.",
+      "items": {
+        "a": {
+          "quote": "Excellent service and attention to detail. Element optimized my business tax return and saved me thousands of dollars I didn't know I could deduct.",
+          "name": "Carlos Mendoza",
+          "place": "Bronx, NY"
+        },
+        "b": {
+          "quote": "I've been doing my taxes with Element for two years and the peace of mind they give you is priceless. They answer all your questions clearly and quickly.",
+          "name": "Elena Gómez",
+          "place": "Queens, NY"
+        },
+        "c": {
+          "quote": "As a freelancer, taxes always stressed me out. The Element team made the whole process simple, transparent and super professional.",
+          "name": "Javier Ortiz",
+          "place": "Bronx, NY"
+        },
+        "d": {
+          "quote": "They took the time to review my case thoroughly and made sure everything complied with IRS rules, with no complications.",
+          "name": "Mariana Ríos",
+          "place": "New Jersey"
+        }
+      }
+    },
+    "blog": {
+      "eyebrow": "Blog · Up to Date",
+      "title": "Tax news, made clear.",
+      "body": "What's changing in U.S. taxes, explained plainly.",
+      "viewAll": "See all news",
+      "empty": "Our first news posts are coming soon."
+    },
+    "faq": {
+      "eyebrow": "Frequently asked questions",
+      "title": "Questions we always get.",
+      "body": "Don't see yours? Message us on WhatsApp and we'll answer the same business day.",
+      "items": {
+        "noSsn": {
+          "q": "Can I file taxes if I don't have a Social Security number?",
+          "a": "Yes. With an ITIN you can file. We help you get or renew it and verify your documents right here."
+        },
+        "pastYears": {
+          "q": "I didn't file in previous years. Can I still do it?",
+          "a": "Yes. We prepare and file past-due returns. We tell you which documents you need for each year and go over the result with you before sending anything."
+        },
+        "cost": {
+          "q": "How much will I pay?",
+          "a": "It depends on your case. We give you the price in writing before we start, with no surprises. Personal tax returns start at $75."
+        },
+        "secure": {
+          "q": "Are my documents safe?",
+          "a": "Yes. Your documents are kept in My Files, with personal access and two-step verification. Only you and your assigned preparer can see them."
+        },
+        "afterApril": {
+          "q": "Are you open after April?",
+          "a": "Yes. We're open 12 months a year: extensions, IRS letters, payroll, ITIN and everything else."
+        }
+      },
+      "viewAll": "See all questions"
+    },
+    "finalCta": {
+      "titleStart": "Get your taxes",
+      "titleAccent": "in order today.",
+      "body": "Book in a minute or message us. We answer in English or Spanish.",
+      "badgeFiled": "1040 filed ✓",
+      "badgeItin": "ITIN renewed ✓"
+    }
   },
   "Panel": {
     "userNavigation": "Dashboard navigation",
@@ -135,7 +427,8 @@
       "messages": "Contact messages",
       "audit": "Audit log",
       "profile": "My profile",
-      "blogCategories": "Blog categories"
+      "blogCategories": "Blog categories",
+      "settings": "Business details"
     },
     "roles": {
       "user": "User",
@@ -258,7 +551,9 @@
     "contentRequired": "The content is required.",
     "translationRequired": "Complete at least one language (title and content).",
     "scheduleFuture": "The scheduled date must be in the future.",
-    "dateRequired": "Indicate the publication date and time."
+    "dateRequired": "Indicate the publication date and time.",
+    "phoneInvalid": "Enter a valid phone number.",
+    "urlInvalid": "Enter a full link starting with https://."
   },
   "Errors": {
     "generic": "Something went wrong. Please try again in a few minutes.",
@@ -282,7 +577,8 @@
     "recoveryInvalid": "The recovery code is incorrect or has already been used.",
     "formExpired": "The form expired. Reload the page and try again.",
     "roleChangeUnavailable": "The role can only be changed for active accounts that have completed their invitation.",
-    "uploadGrantAdmin": "This address belongs to an administrator account; administrators do not need this authorization."
+    "uploadGrantAdmin": "This address belongs to an administrator account; administrators do not need this authorization.",
+    "migrationPending": "The database update (migration 20261013000100) has not been applied yet. Run it in the Supabase SQL editor and try again."
   },
   "NotFound": {
     "code": "Error 404",
@@ -996,11 +1292,23 @@
           "rule": "Divider",
           "undo": "Undo",
           "redo": "Redo"
-        }
+        },
+        "kind": "Type",
+        "kinds": {
+          "article": "Article",
+          "update": "Update"
+        },
+        "kindHint": "Updates are short notices (hours, news) and can be filtered on the blog.",
+        "featured": "Feature",
+        "featuredLabel": "Show as featured",
+        "featuredHint": "Shown large at the top of the blog. Only one at a time: featuring this one un-features the previous post.",
+        "sourceUrl": "Official source",
+        "sourceUrlHint": "Optional. Link to the source (IRS, New York State…). Shown at the end of the article."
       },
       "previewBanner": "Preview — this is how the post will look in {language}. Status: {status}.",
       "previewMissing": "There is no translation in this language yet.",
-      "backToEditor": "Back to the editor"
+      "backToEditor": "Back to the editor",
+      "featuredBadge": "Featured"
     },
     "postCategories": {
       "description": "Categories used to filter the blog. Each one has a name and an address in each language.",
@@ -1061,35 +1369,86 @@
       "reopened": "The message was reopened.",
       "reply": "Reply by email",
       "empty": "There are no messages matching the filters."
+    },
+    "settings": {
+      "title": "Business details",
+      "description": "Phone, WhatsApp, location, hours and the top announcement. Changes appear across the site as soon as you save.",
+      "migrationNotice": "Default values are shown because migration 20261013000100 has not been applied to the database yet. You can save changes once it is applied.",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "The business details were updated.",
+      "sections": {
+        "contact": {
+          "title": "Contact",
+          "hint": "Used by the call and WhatsApp buttons, the footer and the contact pages."
+        },
+        "location": {
+          "title": "Location",
+          "hint": "The office address and the link opened by the “Get directions” button."
+        },
+        "hours": {
+          "title": "Hours",
+          "hint": "One entry per line, for example “Mon – Fri · 10:00 a.m. – 6:00 p.m.”. Enter each schedule in Spanish and English."
+        },
+        "booking": {
+          "title": "Booking",
+          "hint": "External page for booking appointments. If left empty, the “Book an appointment” buttons go to the contact form."
+        },
+        "announcement": {
+          "title": "Top announcement",
+          "hint": "The dark blue strip shown above every public page."
+        }
+      },
+      "fields": {
+        "phone": "Phone (as displayed)",
+        "whatsapp": "WhatsApp number",
+        "email": "Email",
+        "address": "Address",
+        "mapsUrl": "Google Maps link",
+        "bookingUrl": "Booking link",
+        "hoursRegularEs": "Regular hours",
+        "hoursRegularEn": "Regular hours",
+        "hoursSeasonEs": "Tax season hours (Jan – Apr)",
+        "hoursSeasonEn": "Tax season hours (Jan – Apr)",
+        "announcementEnabled": "Show the top announcement",
+        "announcementLabelEs": "Label (Spanish)",
+        "announcementLabelEn": "Label (English)",
+        "announcementTextEs": "Text (Spanish)",
+        "announcementTextEn": "Text (English)"
+      },
+      "hints": {
+        "whatsapp": "With country code, digits only. Example: 19178900892.",
+        "mapsUrl": "In Google Maps, use “Share” and copy the link.",
+        "bookingUrl": "For example, your Calendly or Google Calendar page."
+      }
     }
   },
   "About": {
     "eyebrow": "About us",
-    "title": "A secure, orderly channel for your documents",
-    "intro": "Element is a document management platform designed for organizations that need to share information with their clients in a controlled, traceable and private way.",
+    "title": "One team for your taxes, your business and your paperwork.",
+    "intro": "Element Multiservices is a New York office that prepares tax returns, handles ITIN applications, helps you start and run a business, and prepares translations and documents. We work in English and Spanish, all year long, and give you the price in writing before we start.",
     "sections": {
       "mission": {
         "title": "Our mission",
-        "body": "To provide a reliable space in which each person accesses only the documents that concern them, with clear rules and a complete record of every action."
+        "body": "No one should have to go from office to office or sign something they don't understand. We handle your paperwork in one place and explain every step in plain words."
       },
       "approach": {
         "title": "How we work",
-        "body": "Accounts are created and managed by the organization. Every file is verified before it is stored, downloads use temporary links, and administrators work with two-step verification."
+        "body": "We review your case, tell you what to bring, how much it costs and how long it takes, and we don't start until you agree. Your documents are kept in My Files so you always have them at hand."
       },
       "commitment": {
         "title": "Our commitment",
-        "body": "We process personal data in accordance with Colombian Law 1581 of 2012 and its regulations, and we apply security measures appropriate to the sensitivity of the information we manage."
+        "body": "Your information is confidential: only you and your assigned preparer can see it. We prepare taxes and documents; we are not a law firm and do not give legal advice."
       }
     },
-    "valuesHeading": "Principles",
+    "valuesHeading": "What you can expect from us",
     "values": {
-      "confidentiality": "Confidentiality: access is limited to authorized people.",
-      "traceability": "Traceability: relevant actions are recorded and cannot be altered.",
-      "availability": "Availability: documents are always within reach of those who need them.",
-      "service": "Service: clear and timely attention to each request."
+      "confidentiality": "A clear price: we give it to you in writing before we start, with no surprises.",
+      "traceability": "Your language: the whole process in English or Spanish, with a person who explains it.",
+      "availability": "All year: extensions, IRS letters, payroll and paperwork, after April too.",
+      "service": "Quick answers: we reply the same business day on WhatsApp or by phone."
     },
-    "contactCta": "Contact us",
-    "placeholderNotice": "Institutional text pending final approval."
+    "contactCta": "Message us on WhatsApp"
   },
   "Blog": {
     "title": "Blog",
@@ -1109,7 +1468,33 @@
       "previous": "Newer posts",
       "next": "Older posts",
       "page": "Page {page} of {pages}"
-    }
+    },
+    "eyebrow": "ELEMENT BLOG",
+    "heroTitleStart": "Tax news,",
+    "heroTitleAccent": "made clear.",
+    "heroBody": "What's changing in U.S. taxes and how it affects you, explained plainly.",
+    "featured": "FEATURED",
+    "latest": "Latest",
+    "latestNote": "Every article cites its official source",
+    "readArticle": "Read article",
+    "readArticleAbout": "Read article: {title}",
+    "viewMore": "See more news",
+    "helpCard": {
+      "title": "Have a quick question?",
+      "body": "Check the answers to the most common questions about refunds, ITIN and the IRS.",
+      "cta": "Go to FAQ"
+    },
+    "cta": {
+      "title": "Questions about your case?",
+      "body": "The news is general. Your situation is unique: let's review it together."
+    },
+    "updatesFilter": "Updates",
+    "kinds": {
+      "article": "Article",
+      "update": "Update"
+    },
+    "minutes": "{count} min read",
+    "source": "Official source"
   },
   "Contact": {
     "title": "Contact",
@@ -1128,7 +1513,26 @@
     "successTitle": "Message sent",
     "success": "Thank you for writing to us. We will reply to the email address you provided.",
     "sendAnother": "Send another message",
-    "honeypot": "Leave this field empty"
+    "honeypot": "Leave this field empty",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@email.com",
+    "phone": "Phone or WhatsApp",
+    "phonePlaceholder": "(XXX) XXX-XXXX",
+    "need": "What do you need?",
+    "needs": {
+      "personal": "Personal tax return",
+      "business": "My business taxes",
+      "itin": "ITIN",
+      "company": "Start my company",
+      "payroll": "Payroll and bookkeeping",
+      "documents": "Translations, notary or immigration",
+      "other": "Other question"
+    },
+    "shortMessage": "Message",
+    "messagePlaceholder": "Tell us about your case in two lines",
+    "preferredLanguage": "Preferred language",
+    "composedPhone": "Phone or WhatsApp: {phone}",
+    "composedLanguage": "Preferred language: {language}"
   },
   "CookieNotice": {
     "label": "Cookie notice",
@@ -1357,5 +1761,471 @@
         }
       ]
     }
+  },
+  "ServicesPage": {
+    "eyebrow": "Services",
+    "titleStart": "Fourteen services.",
+    "titleEnd": "One place.",
+    "body": "Taxes, business, documents and protection for your family, with the same team, in your language and with a clear price from the start.",
+    "search": {
+      "label": "Search for a service",
+      "placeholder": "E.g. “my W-2”, “open an LLC”, “renew ITIN”",
+      "submit": "Search",
+      "clear": "Clear search",
+      "empty": "We couldn't find a service matching “{query}”. Message us and we'll point you in the right direction.",
+      "results": "{count, plural, =0 {No results} one {# service found} other {# services found}}"
+    },
+    "filters": {
+      "label": "Filter by category",
+      "all": "All"
+    },
+    "groups": {
+      "taxes": {
+        "eyebrow": "01 · TAXES",
+        "title": "Taxes, demystified.",
+        "tab": "Taxes",
+        "body": "Personal or business, this year or past years. We tell you the price before we start."
+      },
+      "business": {
+        "eyebrow": "02 · BUSINESS",
+        "title": "Your business, up to date all year.",
+        "tab": "Business",
+        "body": "From registration to every month's payroll. Fewer calls, fewer mistakes, no missed deadlines."
+      },
+      "documents": {
+        "eyebrow": "03 · DOCUMENTS",
+        "title": "Your paperwork, ready to submit.",
+        "tab": "Documents",
+        "body": "No trip to another office, in your language and with a copy in My Files."
+      },
+      "protection": {
+        "eyebrow": "04 · PROTECTION AND CREDIT",
+        "title": "Protect your family and your record.",
+        "tab": "Protection and credit",
+        "body": "Clear information and no impossible promises."
+      }
+    },
+    "items": {
+      "personal": {
+        "tag": "W-2 · 1099",
+        "title": "Personal tax return",
+        "lead": "Your return done right, explained, with no surprises on the price.",
+        "body": "Federal and state Form 1040, child and earned income credits, past-due years and amendments.",
+        "cta": "Book your tax return",
+        "keywords": "w2 w-2 1099 1040 refund personal past due amendment"
+      },
+      "businessReturn": {
+        "tag": "1065 · 1120 · 1120-S",
+        "title": "Business tax return",
+        "lead": "Your company's taxes on time, with no late-filing penalties.",
+        "body": "Partnerships (1065), C corporations (1120) and S corporations (1120-S), K-1 forms for partners and state returns.",
+        "cta": "Book your tax return",
+        "keywords": "company corporation partnership k-1 llc"
+      },
+      "selfEmployed": {
+        "tag": "SCH C · SE",
+        "title": "Self-employment",
+        "lead": "You work for yourself: pay what's fair and deduct what you're owed.",
+        "body": "Schedule C with income and expenses, self-employment tax (Schedule SE) and your deductible expenses in order.",
+        "cta": "Book an appointment",
+        "keywords": "freelancer independent contractor 1099 schedule c uber expenses"
+      },
+      "estimated": {
+        "tag": "1040-ES",
+        "title": "Estimated taxes",
+        "lead": "Pay each quarter and reach April with no debt or penalties.",
+        "body": "Calculation of your federal and state payments and reminders before each deadline.",
+        "cta": "Calculate your payments",
+        "keywords": "quarterly estimated payments"
+      },
+      "salesTax": {
+        "tag": "NY SALES TAX",
+        "title": "Sales tax",
+        "lead": "Collect, report and pay sales tax without falling behind.",
+        "body": "Registration to collect sales tax in New York, periodic returns and review of exempt sales.",
+        "cta": "Get up to date",
+        "keywords": "sales tax store retail"
+      },
+      "itin": {
+        "tag": "W-7",
+        "title": "ITIN",
+        "lead": "File even if you don't have a Social Security number.",
+        "body": "New applications and renewals with Form W-7, for you, your spouse and your dependents.",
+        "cta": "Start your ITIN",
+        "keywords": "itin w7 renew social security ssn"
+      },
+      "registration": {
+        "tag": "LLC · S · C · PARTNERSHIP",
+        "title": "Company registration",
+        "lead": "Start your business with the structure that works best for your taxes from day one.",
+        "body": "New York State registration, EIN, S corporation election (Form 2553) and your first obligations.",
+        "cta": "Start your company",
+        "keywords": "llc open company ein corporation business"
+      },
+      "payroll": {
+        "tag": "941 · NYS-45",
+        "title": "Payroll",
+        "lead": "Pay your team on time and file every form without worrying about dates.",
+        "body": "Pay calculations, W-2 and 1099-NEC, federal and New York quarterly returns.",
+        "cta": "Set up your payroll",
+        "keywords": "payroll employees w2 1099-nec"
+      },
+      "bookkeeping": {
+        "tag": "MONTHLY",
+        "title": "Bookkeeping",
+        "lead": "Your numbers up to date every month, so you decide with data, not gut feeling.",
+        "body": "Income and expense records, bank reconciliation, income statement, balance sheet and books ready for your return.",
+        "cta": "Talk to an accountant",
+        "keywords": "accountant books bookkeeping"
+      },
+      "translations": {
+        "tag": "ES ↔ EN",
+        "title": "Translations",
+        "lead": "Your documents in English or Spanish, ready to submit.",
+        "body": "Birth and marriage certificates, diplomas, licenses, contracts and supporting documents.",
+        "cta": "Request a translation",
+        "keywords": "translate certificate"
+      },
+      "immigration": {
+        "tag": "FORMS",
+        "title": "Immigration",
+        "lead": "We fill out your forms with you, step by step, in your language.",
+        "body": "Form preparation and translation of supporting documents.",
+        "note": "We are not attorneys: we do not give legal advice or representation before immigration authorities.",
+        "cta": "Book an appointment",
+        "keywords": "uscis forms immigration"
+      },
+      "notary": {
+        "tag": "NY",
+        "title": "Notary Public",
+        "lead": "Get your documents notarized on the spot.",
+        "body": "Powers of attorney, affidavits and business documents. Bring a photo ID and the unsigned document.",
+        "cta": "Book an appointment",
+        "keywords": "notary notarize power of attorney"
+      },
+      "lifeInsurance": {
+        "tag": "LIFE",
+        "title": "Life insurance",
+        "lead": "Protect your family with a plan you can afford.",
+        "body": "Guidance and quotes for life insurance policies with a licensed New York agent. [DFS license no. XXXX]",
+        "cta": "Get a quote",
+        "keywords": "life insurance family"
+      },
+      "credit": {
+        "tag": "CREDIT",
+        "title": "Credit repair",
+        "lead": "Understand your credit report and fix what's wrong.",
+        "body": "Review of your reports from all three bureaus, dispute of errors and a plan to improve your credit habits. Accurate, recent information can't be removed, and we tell you so from the start.",
+        "cta": "Check your credit",
+        "keywords": "credit score report"
+      }
+    },
+    "dates": {
+      "label": "KEY DATES · CALENDAR YEAR",
+      "items": {
+        "mar": {
+          "date": "Mar 15",
+          "text": "Partnerships and S corporations"
+        },
+        "apr": {
+          "date": "Apr 15",
+          "text": "Individuals and C corporations"
+        },
+        "oct": {
+          "date": "Oct 15",
+          "text": "Personal extension ends"
+        },
+        "est": {
+          "date": "Apr · Jun · Sep · Jan",
+          "text": "Estimated payments (the 15th)"
+        }
+      }
+    },
+    "bring": {
+      "title": "What to bring to your appointment",
+      "items": {
+        "id": "Photo ID",
+        "ssn": "Social Security number or ITIN for each person",
+        "forms": "W-2, 1099 and 1095-A",
+        "prior": "Last year's tax return",
+        "bank": "Account and routing number for direct deposit"
+      },
+      "upload": "Or upload it ahead of time to My Files"
+    },
+    "cta": {
+      "title": "Not sure which one you need?",
+      "body": "Tell us about your case in two lines and we'll tell you which service fits, how much it costs and what to bring."
+    }
+  },
+  "LocationPage": {
+    "eyebrow": "Location",
+    "titleStart": "Visit us in",
+    "titleAccent": "New York.",
+    "body": "One office, the same team all year long. And if you can't come in, we do it remotely.",
+    "office": "Main office",
+    "openAllYear": "Open all year",
+    "address": "Address",
+    "phone": "Phone and WhatsApp",
+    "email": "Email",
+    "regular": {
+      "label": "REGULAR HOURS"
+    },
+    "season": {
+      "label": "TAX SEASON · JAN – APR"
+    },
+    "directions": "Get directions",
+    "call": "Call",
+    "station": "[Name] station · [X] min walk",
+    "getting": {
+      "eyebrow": "Getting here",
+      "title": "Easy to find.",
+      "items": {
+        "train": {
+          "title": "By train",
+          "body": "Line [X] to [Name] station. Walk [X] minutes."
+        },
+        "bus": {
+          "title": "By bus",
+          "body": "Routes [BX…] stopping at [Street]."
+        },
+        "car": {
+          "title": "By car",
+          "body": "Street parking or at [nearby parking lot]."
+        },
+        "landmark": {
+          "title": "Landmark",
+          "body": "We're [across from / next to] [well-known neighborhood place]."
+        }
+      }
+    },
+    "expect": {
+      "eyebrow": "What to expect",
+      "title": "Your first visit, no surprises.",
+      "body": "[Ground-floor office / with ramp]. If you need special assistance, let us know when you book.",
+      "steps": {
+        "welcome": {
+          "title": "We welcome you",
+          "body": "With an appointment, we see you at your time. Without one, we give you the next open slot."
+        },
+        "review": {
+          "title": "We review your paperwork",
+          "body": "If something is missing, we tell you what and you can upload it later to My Files."
+        },
+        "price": {
+          "title": "We give you the price",
+          "body": "You sign it before we start."
+        },
+        "leave": {
+          "title": "You leave with everything",
+          "body": "A copy of your return and your documents saved in My Files."
+        }
+      }
+    },
+    "remote": {
+      "badge": "Remote too",
+      "title": "Can't come in? We do it without you leaving home.",
+      "body": "Upload your documents to My Files, we call you to review everything and you sign electronically. We serve clients throughout New York State.",
+      "cta": "Start remotely"
+    },
+    "form": {
+      "title": "Have a question before you come in?",
+      "note": "We answer the same business day. Don't send documents through this form; upload them to My Files."
+    }
+  },
+  "FaqPage": {
+    "badge": "Help center · {count} questions",
+    "titleStart": "We answer your questions.",
+    "titleAccent": "In your language.",
+    "body": "The questions we get most about taxes, ITIN, your business and My Files, answered in plain words. If yours isn't here, message us.",
+    "aside": {
+      "title": "Can't find your answer?",
+      "body": "Message us and we'll answer the same business day, in English or Spanish."
+    },
+    "count": "{count, plural, one {# question} other {# questions}}",
+    "groups": {
+      "refunds": {
+        "title": "Refunds",
+        "items": {
+          "timing": {
+            "q": "How long does it take to get my refund?",
+            "a": "Once the IRS accepts your return, most refunds are issued in less than 21 days if you filed electronically and chose direct deposit. If you filed on paper or asked for a check, it can take 6 to 8 weeks or more. State refunds have their own timelines."
+          },
+          "status": {
+            "q": "Where can I check the status of my refund?",
+            "a": "You can check it 24 hours after the IRS accepts your e-filed return (about 4 weeks if you filed on paper). You'll need your Social Security number or ITIN, your filing status and the exact refund amount.",
+            "federal": "Check your federal refund",
+            "state": "Check your New York State refund",
+            "after": "If you have trouble finding the information, contact us and we'll gladly help you check your status."
+          },
+          "delay": {
+            "q": "Why is my refund taking longer than usual?",
+            "a": "The most common causes are errors on the return, information that doesn't match IRS records, claiming the Earned Income Tax Credit (EITC) or the Additional Child Tax Credit (ACTC), outstanding debts (child support, back taxes, student loans) or an identity theft review. If the IRS sends you a letter, bring it to us and we'll help you respond."
+          }
+        }
+      },
+      "documents": {
+        "title": "Documents and requirements",
+        "items": {
+          "bring": {
+            "q": "What documents do I need to bring?",
+            "a": "To start your return, bring the following:",
+            "list": {
+              "id": {
+                "label": "Identification",
+                "text": "a valid driver's license, state ID or passport."
+              },
+              "ssn": {
+                "label": "Social Security number or ITIN",
+                "text": "yours, your spouse's and each dependent's."
+              },
+              "income": {
+                "label": "Proof of income",
+                "text": "Forms W-2, 1099 (NEC, MISC, K, INT, DIV, R), SSA-1099 (Social Security) and 1099-G (unemployment)."
+              },
+              "selfEmployed": {
+                "label": "If you're self-employed",
+                "text": "business income and expense records, bank statements, receipts and mileage."
+              },
+              "deductions": {
+                "label": "Expenses and deductions",
+                "text": "Forms 1098 (mortgage interest), 1098-T (tuition), 1098-E (student loans) and childcare expenses (with the provider's name and ID number)."
+              },
+              "health": {
+                "label": "Health insurance",
+                "text": "Form 1095-A if you have coverage through the Marketplace."
+              },
+              "prior": {
+                "label": "Last year's tax return",
+                "text": "if you have it."
+              },
+              "bank": {
+                "label": "Bank details",
+                "text": "routing and account number to receive your refund by direct deposit."
+              },
+              "letters": {
+                "label": "IRS or state letters",
+                "text": "including your Identity Protection PIN (IP PIN), if you have one."
+              }
+            }
+          },
+          "noForms": {
+            "q": "Can I file if I don't have a W-2 or a 1099?",
+            "a": "Yes. If you received income during the year, you can and should report it even without a W-2 or 1099. You'll need proof of your income and expenses, such as bank statements showing deposits, canceled checks, pay stubs or invoices."
+          },
+          "noSsn": {
+            "q": "Can I file if I don't have a Social Security number?",
+            "a": "Yes. You can file with an Individual Taxpayer Identification Number (ITIN). If you don't have one yet, we help you apply for it along with your return (Form W-7)."
+          }
+        }
+      },
+      "pricing": {
+        "title": "Pricing and estimates",
+        "items": {
+          "estimate": {
+            "q": "How much does an estimate cost?",
+            "a": "Nothing. We offer free estimates with no commitment. You only pay when you decide to go ahead with your return."
+          },
+          "fees": {
+            "q": "How much do you charge to prepare my return?",
+            "a": "Our fees start at $75. The final price depends on how complex your return is and which forms are needed (for example, self-employment income, rental properties or multiple states). We give you the price before we start, with no surprises."
+          },
+          "payment": {
+            "q": "What payment methods do you accept?",
+            "a": "We accept [PAYMENT METHODS: cash, debit/credit card, Zelle, etc.]."
+          }
+        }
+      },
+      "mustFile": {
+        "title": "Do I have to file?",
+        "items": {
+          "benefits": {
+            "q": "I only received Social Security (SSA-1099) or unemployment (1099-G). Do I have to file?",
+            "a": "It depends on your total income. Unemployment (1099-G) is taxable income and almost always has to be reported. Social Security is often not taxable if it's your only income, but it can be if you have other income. Bring your forms and we'll tell you at no cost whether you're required to file, so you avoid IRS penalties and interest."
+          },
+          "noWork": {
+            "q": "I didn't work last year. Do I have to file?",
+            "a": "If you had no income, you're usually not required to file. Even so, it may be worth it if you have children or other dependents, since you could qualify for refundable credits. Ask us and we'll review it with you."
+          },
+          "selfEmployed": {
+            "q": "I'm self-employed (freelance). Do I have to file?",
+            "a": "Yes, if your net self-employment earnings were $400 or more. You may also need to pay estimated taxes during the year to avoid penalties. We help you organize your income and expenses so you only pay what you owe."
+          }
+        }
+      },
+      "irs": {
+        "title": "Past years, corrections and the IRS",
+        "items": {
+          "pastYears": {
+            "q": "Can I file for past years?",
+            "a": "Yes. Each year is filed separately, with that year's forms; several years can't be combined into one return. Keep in mind that you can generally only claim a refund within 3 years of that return's original due date."
+          },
+          "amend": {
+            "q": "I made a mistake or was missing a form. Can I correct my return?",
+            "a": "Yes. We can prepare an amended return (Form 1040-X) to correct income, dependents, deductions or credits."
+          },
+          "owe": {
+            "q": "I owe taxes and can't pay it all. What do I do?",
+            "a": "File on time anyway: the penalty for not filing is much larger than the penalty for not paying. The IRS offers installment plans and we help you apply."
+          },
+          "letter": {
+            "q": "I received a letter from the IRS or the state. Can you help?",
+            "a": "Yes. Don't ignore it. Bring us the letter as soon as possible: we review it, explain what it means and help you respond within the stated deadline."
+          }
+        }
+      },
+      "services": {
+        "title": "Our services",
+        "items": {
+          "deadline": {
+            "q": "What's the filing deadline? Can I request an extension?",
+            "a": "The usual deadline is April 15. We can request a 6-month extension to file your return, but the extension doesn't give you more time to pay: if you owe taxes, you have to pay them by April 15 to avoid penalties and interest."
+          },
+          "remote": {
+            "q": "Do I have to come in person or can I do it remotely?",
+            "a": "Whichever you prefer. We see you at our office, or you can securely upload your documents to My Files and sign electronically."
+          },
+          "secure": {
+            "q": "Is my information safe?",
+            "a": "Yes. Your information is confidential and handled securely. It's only used to prepare your return and is never shared without your permission."
+          },
+          "business": {
+            "q": "Do you prepare business taxes?",
+            "a": "Yes. Besides personal returns, we prepare business taxes (LLCs, S and C corporations, partnerships), help you form companies and offer guidance to organize your income and expenses."
+          },
+          "yearRound": {
+            "q": "Are you only open during tax season?",
+            "a": "No. We're available all year for past-due returns, amendments, IRS letters, planning and business services. See our hours on the Location page."
+          }
+        }
+      }
+    },
+    "cta": {
+      "title": "Your question isn't here?",
+      "body": "Every case is different. Tell us yours and we'll tell you what to do, how much it costs and what to bring.",
+      "whatsapp": {
+        "title": "Message us on WhatsApp",
+        "body": "We answer the same business day.",
+        "action": "Message"
+      },
+      "call": {
+        "title": "Call us",
+        "action": "Call"
+      },
+      "visit": {
+        "title": "Visit us",
+        "action": "Get directions"
+      }
+    },
+    "disclaimer": "The information on this page is general and does not replace a review of your case."
+  },
+  "AuthPanel": {
+    "badge": "My Files",
+    "title": "Your paperwork, in order. Protected. One click away.",
+    "points": {
+      "organized": "Organized by year and by service",
+      "protected": "Only you and your assigned preparer can see them",
+      "twoStep": "Two-step verification"
+    },
+    "toast": "W-2 received"
   }
 }

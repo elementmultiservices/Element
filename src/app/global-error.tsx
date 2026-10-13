@@ -20,15 +20,15 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
 
   return (
     <html lang={locale}>
-      <body style={{ fontFamily: "system-ui, sans-serif", margin: 0, color: "#111827", background: "#f6f7f9" }}>
+      <body style={{ fontFamily: "system-ui, sans-serif", margin: 0, color: "#050d29", background: "#f7fbff" }}>
         <main style={{ maxWidth: 560, margin: "0 auto", padding: "4rem 1.5rem" }}>
-          <p style={{ color: "#0b2545", fontWeight: 500, letterSpacing: "0.04em", fontSize: 20 }}>Element</p>
-          <h1 style={{ color: "#0b2545", fontSize: 24 }}>{m.title}</h1>
+          <p style={{ color: "#1b83f4", fontWeight: 600, fontSize: 20 }}>Element</p>
+          <h1 style={{ color: "#050d29", fontSize: 32, letterSpacing: "-0.02em" }}>{m.title}</h1>
           <p style={{ lineHeight: 1.6 }}>{m.body}</p>
           <button
             type="button"
             onClick={reset}
-            style={{ background: "#0b2545", color: "#fff", border: 0, borderRadius: 4, padding: "10px 18px", cursor: "pointer" }}
+            style={{ background: "#1b83f4", color: "#fff", border: 0, borderRadius: 999, padding: "12px 24px", fontWeight: 600, cursor: "pointer" }}
           >
             {m.retry}
           </button>

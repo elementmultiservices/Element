@@ -64,7 +64,7 @@ export default async function AdminFilesPage({ params, searchParams }: PageProps
         }
       />
 
-      <form method="get" role="search" className="mb-4 rounded-lg border bg-card p-4">
+      <form method="get" role="search" className="mb-4 rounded-[24px] border border-azure-50 bg-white p-4">
         <input type="hidden" name="sort" value={filters.sort} />
         <input type="hidden" name="dir" value={filters.dir} />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -127,7 +127,7 @@ export default async function AdminFilesPage({ params, searchParams }: PageProps
       </form>
 
       {list.total === 0 ? (
-        <p className="rounded-lg border border-dashed bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.files.empty")}</p>
+        <p className="rounded-[24px] border border-dashed border-azure-100 bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.files.empty")}</p>
       ) : (
         <TableShell
           caption={t("Admin.files.table.caption")}
@@ -147,14 +147,14 @@ export default async function AdminFilesPage({ params, searchParams }: PageProps
               </Th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-azure-50">
             {list.rows.map((f) => {
               const name = sanitizeDisplayName(f.originalName);
               const kind = kindFromMime(f.mimeType);
               const byAdmin = f.uploadedBy !== f.ownerId;
               return (
-                <tr key={f.id} className="hover:bg-surface/60">
-                  <td className="max-w-64 px-3 py-2.5">
+                <tr key={f.id} className="transition-colors hover:bg-azure-25/60">
+                  <td className="max-w-64 px-4 py-3.5">
                     <p className="truncate font-medium" title={name}>
                       {name}
                     </p>
@@ -164,29 +164,29 @@ export default async function AdminFilesPage({ params, searchParams }: PageProps
                       </p>
                     ) : null}
                   </td>
-                  <td className="max-w-48 px-3 py-2.5">
+                  <td className="max-w-48 px-4 py-3.5">
                     <Link href={`/admin/users/${f.ownerId}`} className="block truncate text-link hover:underline">
                       {userDisplayName(labels.get(f.ownerId), unknown)}
                     </Link>
                   </td>
-                  <td className="hidden px-3 py-2.5 text-muted-foreground xl:table-cell">
+                  <td className="hidden px-4 py-3.5 text-muted-foreground xl:table-cell">
                     {f.category ? (locale === "es" ? f.category.nameEs : f.category.nameEn) : t("Files.table.noCategory")}
                   </td>
-                  <td className="px-3 py-2.5 text-muted-foreground">{kind ? FILE_TYPES[kind].label : "—"}</td>
-                  <td className="px-3 py-2.5 text-right whitespace-nowrap text-muted-foreground tabular-nums">{formatBytes(f.sizeBytes, locale)}</td>
-                  <td className="px-3 py-2.5 whitespace-nowrap text-muted-foreground">
+                  <td className="px-4 py-3.5 text-muted-foreground">{kind ? FILE_TYPES[kind].label : "—"}</td>
+                  <td className="px-4 py-3.5 text-right whitespace-nowrap text-muted-foreground tabular-nums">{formatBytes(f.sizeBytes, locale)}</td>
+                  <td className="px-4 py-3.5 whitespace-nowrap text-muted-foreground">
                     <time dateTime={f.createdAt}>{format.dateTime(new Date(f.createdAt), "short")}</time>
                   </td>
-                  <td className="hidden px-3 py-2.5 lg:table-cell">
+                  <td className="hidden px-4 py-3.5 lg:table-cell">
                     <Badge variant="outline" className={cn("font-normal", byAdmin ? "border-info/30 bg-info-bg text-info" : "text-muted-foreground")}>
                       {byAdmin ? t("Admin.files.byAdmin") : t("Admin.files.byOwner")}
                     </Badge>
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-3.5">
                     <div className="flex items-center justify-end gap-1">
                       <a
                         href={`/api/files/${f.id}/download`}
-                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium text-link hover:bg-accent"
+                        className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"
                         aria-label={t("Files.table.downloadLabel", { name })}
                       >
                         <Download aria-hidden="true" className="size-4" />

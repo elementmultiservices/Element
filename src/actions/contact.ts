@@ -1,7 +1,7 @@
 "use server";
 
 import { after } from "next/server";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { toLocale } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/auth/session";
@@ -15,9 +15,11 @@ import { requestMeta } from "@/lib/security/request-meta";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { idSchema } from "@/lib/validation/admin";
-import { contactSchema } from "@/lib/validation/blog";
+import { contactExtrasSchema, contactSchema } from "@/lib/validation/blog";
 
-export type ContactField = "name" | "email" | "subject" | "message" | "consent";
+export type ContactField = "name" | "email" | "subject" | "message" | "consent" | "phone" | "need" | "preferredLanguage";
+
+const optional = (value: FormDataEntryValue | null) => (typeof value === "string" && value.trim() !== "" ? value : undefined);
 
 /** reCAPTCHA score required to send the acknowledgement (stricter than accepting the message). */
 const ACK_MIN_SCORE = 0.7;
@@ -47,11 +49,28 @@ export async function submitContactAction(_prev: FormState<ContactField>, formDa
   if (timing === "expired") return { status: "error", error: "formExpired" };
   if (timing !== "ok") return { status: "success" };
 
+  // The short form on the location page sends phone/need/language instead of a
+  // subject; they are folded into the subject and message so storage is unchanged.
+  const extras = contactExtrasSchema.safeParse({
+    phone: optional(formData.get("phone")),
+    need: optional(formData.get("need")),
+    preferredLanguage: optional(formData.get("preferredLanguage")),
+  });
+  if (!extras.success) return { status: "error", fieldErrors: fieldErrorsFrom<ContactField>(extras.error) };
+  const { phone, need, preferredLanguage } = extras.data;
+  const tc = await getTranslations({ locale, namespace: "Contact" });
+  const tl = await getTranslations({ locale, namespace: "Common.languages" });
+  const rawMessage = formData.get("message");
+  const preface = [
+    phone ? tc("composedPhone", { phone }) : null,
+    preferredLanguage ? tc("composedLanguage", { language: tl(preferredLanguage) }) : null,
+  ].filter(Boolean);
+
   const parsed = contactSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
-    subject: formData.get("subject"),
-    message: formData.get("message"),
+    subject: need ? tc(`needs.${need}`) : formData.get("subject"),
+    message: preface.length && typeof rawMessage === "string" ? `${preface.join("\n")}\n\n${rawMessage.trim()}` : rawMessage,
     consent: formData.get("consent"),
   });
   if (!parsed.success) return { status: "error", fieldErrors: fieldErrorsFrom<ContactField>(parsed.error) };

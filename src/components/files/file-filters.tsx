@@ -22,7 +22,7 @@ export async function FileFilters({
   const locale = await getLocale();
 
   return (
-    <form method="get" role="search" aria-label={t("heading")} className="rounded-lg border bg-card p-4">
+    <form method="get" role="search" aria-label={t("heading")} className="rounded-[24px] border border-azure-50 bg-white p-4">
       <input type="hidden" name="sort" value={params.sort} />
       <input type="hidden" name="dir" value={params.dir} />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

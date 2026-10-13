@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { StatusView } from "@/components/states/status-view";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
@@ -9,19 +10,14 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
   const t = useTranslations("ErrorPage");
   return (
     <main id="main-content" className="flex flex-1 items-center">
-      <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6">
-        <h1 className="text-3xl">{t("title")}</h1>
-        <p className="mt-4 text-muted-foreground">{t("body")}</p>
-        {error.digest ? <p className="mt-2 text-xs text-muted-foreground">{t("reference", { digest: error.digest })}</p> : null}
-        <div className="mt-8 flex justify-center gap-3">
-          <Button type="button" onClick={reset}>
-            {t("retry")}
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/">{t("backHome")}</Link>
-          </Button>
-        </div>
-      </div>
+      <StatusView title={t("title")} body={t("body")} code={error.digest ? t("reference", { digest: error.digest }) : undefined} className="w-full">
+        <Button type="button" variant="brand" size="pill-lg" onClick={reset}>
+          {t("retry")}
+        </Button>
+        <Button asChild variant="outline-brand" size="pill-lg">
+          <Link href="/">{t("backHome")}</Link>
+        </Button>
+      </StatusView>
     </main>
   );
 }

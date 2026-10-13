@@ -18,19 +18,19 @@ export async function PageHeader({
 }) {
   const t = await getTranslations("Panel");
   return (
-    <div className="mb-6 space-y-3">
+    <div className="mb-8 space-y-3">
       <nav aria-label={t("breadcrumb")}>
-        <ol className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
+        <ol className="flex flex-wrap items-center gap-1 font-mono text-xs tracking-[0.04em] text-graphite">
           {breadcrumbs.map((crumb, index) => {
             const last = index === breadcrumbs.length - 1;
             return (
               <li key={`${crumb.label}-${index}`} className="flex items-center gap-1">
                 {crumb.href && !last ? (
-                  <Link href={crumb.href} className="hover:text-primary hover:underline">
+                  <Link href={crumb.href} className="hover:text-electric">
                     {crumb.label}
                   </Link>
                 ) : (
-                  <span aria-current={last ? "page" : undefined} className={last ? "text-foreground" : undefined}>
+                  <span aria-current={last ? "page" : undefined} className={last ? "text-electric" : undefined}>
                     {crumb.label}
                   </span>
                 )}
@@ -42,8 +42,8 @@ export async function PageHeader({
       </nav>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl">{title}</h1>
-          {description ? <p className="mt-1 text-sm text-muted-foreground">{description}</p> : null}
+          <h1 className="text-[30px] leading-tight font-semibold tracking-[-0.02em] text-ink sm:text-4xl">{title}</h1>
+          {description ? <p className="mt-2 max-w-2xl text-[15px] text-graphite">{description}</p> : null}
         </div>
         {actions ? <div className="flex flex-wrap gap-2 sm:shrink-0 sm:justify-end">{actions}</div> : null}
       </div>

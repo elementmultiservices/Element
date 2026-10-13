@@ -4,7 +4,7 @@ import type { AppLocale } from "@/i18n/routing";
 import { locales } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/auth/session";
-import { COVER_BUCKET } from "@/lib/blog/queries";
+import { COVER_BUCKET, isNotMigrated } from "@/lib/blog/queries";
 import { plainText, sanitizePostHtml } from "@/lib/blog/sanitize";
 import { slugify } from "@/lib/blog/slug";
 import type { FormState, ValidationKey } from "@/lib/forms";
@@ -16,7 +16,7 @@ import { idSchema } from "@/lib/validation/admin";
 import { postCategorySchema, postMetaSchema, translationInputSchema, type TranslationInput } from "@/lib/validation/blog";
 
 type TranslationField = "title" | "slug" | "excerpt" | "content";
-export type PostField = `${AppLocale}.${TranslationField}` | "status" | "publishedAt" | "categoryId" | "translations";
+export type PostField = `${AppLocale}.${TranslationField}` | "status" | "publishedAt" | "categoryId" | "kind" | "featured" | "sourceUrl" | "translations";
 export type PostState = FormState<PostField> & { postId?: string };
 
 const UNIQUE_VIOLATION = "23505";
@@ -42,6 +42,9 @@ export async function savePostAction(_prev: PostState, formData: FormData): Prom
     status: str(formData, "status"),
     publishedAt: str(formData, "publishedAt"),
     categoryId: str(formData, "categoryId"),
+    kind: str(formData, "kind") || undefined,
+    featured: formData.get("featured") ?? undefined,
+    sourceUrl: str(formData, "sourceUrl"),
   });
   if (!meta.success) {
     Object.assign(fieldErrors, fieldErrorsFrom<PostField>(meta.error));
@@ -79,7 +82,7 @@ export async function savePostAction(_prev: PostState, formData: FormData): Prom
   }
 
   // Publication date rules (Bogotá time is applied by the schema).
-  const { status, publishedAt, categoryId, id } = meta.data;
+  const { status, publishedAt, categoryId, id, kind, featured, sourceUrl } = meta.data;
   let publishAt: Date | null = publishedAt instanceof Date ? publishedAt : null;
   if (status === "scheduled") {
     if (!publishAt) fieldErrors.publishedAt = "dateRequired";
@@ -94,13 +97,24 @@ export async function savePostAction(_prev: PostState, formData: FormData): Prom
   const before = id ? (await supabase.from("posts").select("status").eq("id", id).maybeSingle()).data : null;
   if (id && !before) return { status: "error", error: "notFound" };
 
-  const { data: postId, error } = await supabase.rpc("admin_save_post", {
+  const base = {
     p_id: id ?? undefined,
     p_status: status,
     p_published_at: publishAt ? publishAt.toISOString() : undefined,
     p_category_id: categoryId ? categoryId : undefined,
     p_translations: translations,
+  };
+  let { data: postId, error } = await supabase.rpc("admin_save_post_v2", {
+    ...base,
+    p_kind: kind,
+    p_featured: featured,
+    p_source_url: sourceUrl || undefined,
   });
+  if (error && isNotMigrated(error.code)) {
+    // Migration pending: plain articles can still be saved with the original function.
+    if (kind !== "article" || featured || sourceUrl) return { status: "error", error: "migrationPending" };
+    ({ data: postId, error } = await supabase.rpc("admin_save_post", base));
+  }
 
   if (error || !postId) {
     if (error?.code === UNIQUE_VIOLATION) {
@@ -125,7 +139,7 @@ export async function savePostAction(_prev: PostState, formData: FormData): Prom
     action: !id ? "post.created" : before?.status !== "published" && status === "published" ? "post.published" : "post.updated",
     targetType: "post",
     targetId: postId,
-    metadata: { status, locales: Object.keys(translations), title },
+    metadata: { status, kind, featured, locales: Object.keys(translations), title },
   });
   return { status: "success", postId };
 }

@@ -1,15 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans } from "next/font/google";
+import { Geist_Mono, Instrument_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { publicEnv } from "@/lib/public-env";
 
-const plex = IBM_Plex_Sans({
+const instrument = Instrument_Sans({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-plex",
+  variable: "--font-instrument",
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-geist-mono",
   display: "swap",
 });
 
@@ -31,7 +36,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0b2545",
+  themeColor: "#050d29",
   width: "device-width",
   initialScale: 1,
 };
@@ -43,7 +48,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const t = await getTranslations({ locale, namespace: "Common" });
 
   return (
-    <html lang={locale} className={plex.variable}>
+    <html lang={locale} className={`${instrument.variable} ${geistMono.variable}`}>
       <body className="flex min-h-screen flex-col">
         <a
           href="#main-content"

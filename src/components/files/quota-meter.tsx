@@ -22,7 +22,7 @@ export async function QuotaMeter({
   const quota = formatBytes(usage.quotaBytes, locale);
 
   return (
-    <section aria-labelledby="quota-heading" className={cn(!bare && "rounded-lg border bg-card p-4", className)}>
+    <section aria-labelledby="quota-heading" className={cn(!bare && "rounded-[24px] border border-azure-50 bg-white p-4", className)}>
       <div className="flex items-baseline justify-between gap-3">
         <h2 id="quota-heading" className={bare ? "sr-only" : "text-sm font-semibold"}>
           {t("title")}
@@ -36,10 +36,10 @@ export async function QuotaMeter({
         aria-valuemax={usage.quotaBytes}
         aria-valuenow={usage.usedBytes}
         aria-valuetext={t("usage", { used, quota })}
-        className="mt-3 h-2 overflow-hidden rounded-full bg-secondary"
+        className="mt-3 h-2.5 overflow-hidden rounded-full bg-azure-50"
       >
         <div
-          className={cn("h-full rounded-full", level === "ok" ? "bg-primary" : level === "near" ? "bg-warning" : "bg-destructive")}
+          className={cn("h-full rounded-full", level === "ok" ? "bg-[linear-gradient(90deg,#3167DB,#1B83F4)]" : level === "near" ? "bg-warning" : "bg-destructive")}
           style={{ width: `${Math.max(ratio * 100, ratio > 0 ? 1 : 0)}%` }}
         />
       </div>

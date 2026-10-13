@@ -67,7 +67,7 @@ export default async function AdminMessagesPage({ params, searchParams }: PagePr
         breadcrumbs={[{ label: t("Panel.adminTitle"), href: "/admin" }, { label: t("Panel.admin.messages") }]}
       />
 
-      <form method="get" role="search" className="mb-4 rounded-lg border bg-card p-4">
+      <form method="get" role="search" className="mb-4 rounded-[24px] border border-azure-50 bg-white p-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="space-y-1.5 sm:col-span-2">
             <Label htmlFor="msg-q">{t("Admin.messages.filters.search")}</Label>
@@ -93,9 +93,9 @@ export default async function AdminMessagesPage({ params, searchParams }: PagePr
       </form>
 
       {rows.length === 0 ? (
-        <p className="rounded-lg border border-dashed bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.messages.empty")}</p>
+        <p className="rounded-[24px] border border-dashed border-azure-100 bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.messages.empty")}</p>
       ) : (
-        <section aria-label={t("Admin.messages.table.caption")} className="rounded-lg border bg-card">
+        <section aria-label={t("Admin.messages.table.caption")} className="rounded-[24px] border border-azure-50 bg-white">
           <ul className="divide-y">
             {rows.map((m) => (
               <li key={m.id} className="p-4">
@@ -109,7 +109,7 @@ export default async function AdminMessagesPage({ params, searchParams }: PagePr
                       >
                         {m.is_handled ? t("Admin.messages.handled") : t("Admin.messages.pending")}
                       </Badge>
-                      <span className="rounded-sm border px-1.5 text-xs text-muted-foreground uppercase">{m.locale}</span>
+                      <span className="rounded-full bg-azure-25 px-2 py-0.5 font-mono text-[11px] text-navy uppercase">{m.locale}</span>
                     </div>
                     <p className="mt-1 text-sm break-all text-muted-foreground">
                       {m.name} · {m.email}
@@ -136,7 +136,7 @@ export default async function AdminMessagesPage({ params, searchParams }: PagePr
                 </div>
                 <details className="mt-3 group">
                   <summary className="cursor-pointer text-sm text-link hover:underline">{t("Admin.messages.showMessage")}</summary>
-                  <p className="mt-2 rounded-md border bg-surface p-3 text-sm whitespace-pre-wrap break-words">{m.message}</p>
+                  <p className="mt-2 rounded-2xl border border-azure-50 bg-mist p-3 text-sm whitespace-pre-wrap break-words">{m.message}</p>
                 </details>
               </li>
             ))}
