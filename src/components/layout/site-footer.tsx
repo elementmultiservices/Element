@@ -33,11 +33,6 @@ export async function SiteFooter() {
         <div>
           <h2 className={headingClass}>{t("Footer.elementHeading")}</h2>
           <ul className="mt-4 space-y-2.5 text-[15px]">
-            <li>
-              <Link href="/dashboard" className={linkClass}>
-                {t("Nav.myFiles")}
-              </Link>
-            </li>
             {footerSiteNav.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className={linkClass}>

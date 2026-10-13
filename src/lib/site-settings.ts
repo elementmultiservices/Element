@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { getLocale } from "next-intl/server";
 import { toLocale } from "@/i18n/routing";
-import { lines, phoneHrefFor, whatsappHrefFor } from "@/lib/business";
+import { CONTACT_FALLBACK, lines, phoneHrefFor, whatsappHrefFor } from "@/lib/business";
 import type { Database } from "@/lib/supabase/database.types";
 import { createPublicClient } from "@/lib/supabase/public";
 
@@ -71,8 +71,8 @@ export const getSiteContact = cache(async (): Promise<SiteContact> => {
     whatsappHref: whatsappHrefFor(s.whatsapp),
     email: s.email,
     address: s.address,
-    mapsHref: s.maps_url || "/contact",
-    bookingHref: s.booking_url || "/contact",
+    mapsHref: s.maps_url || CONTACT_FALLBACK,
+    bookingHref: s.booking_url || CONTACT_FALLBACK,
     hoursRegular: lines(locale === "es" ? s.hours_regular_es : s.hours_regular_en),
     hoursSeason: lines(locale === "es" ? s.hours_season_es : s.hours_season_en),
     announcement:

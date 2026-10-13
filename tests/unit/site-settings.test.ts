@@ -26,9 +26,9 @@ describe("business links", () => {
     expect(whatsappHrefFor("+1 917-890-0892")).toBe("https://wa.me/19178900892");
   });
 
-  it("falls back to the contact page when a number is missing", () => {
-    expect(phoneHrefFor("")).toBe("/contact");
-    expect(whatsappHrefFor("12")).toBe("/contact");
+  it("falls back to the question form when a number is missing", () => {
+    expect(phoneHrefFor("")).toBe("/location#contact-form");
+    expect(whatsappHrefFor("12")).toBe("/location#contact-form");
   });
 
   it("splits multi-line hours into trimmed, non-empty lines", () => {

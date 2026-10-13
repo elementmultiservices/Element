@@ -9,8 +9,6 @@ export const footerSiteNav = [
   { href: "/location", key: "location" },
   { href: "/blog", key: "blog" },
   { href: "/faq", key: "faqLong" },
-  { href: "/about", key: "about" },
-  { href: "/contact", key: "contact" },
 ] as const;
 
 export const footerServicesNav = ["taxes", "itin", "business", "documents"] as const;

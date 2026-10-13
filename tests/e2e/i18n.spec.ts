@@ -11,7 +11,7 @@ import { newContext, signIn, signInAdmin } from "./helpers";
 const NAMESPACES = Object.keys(en).join("|");
 const RAW_KEY = new RegExp(`\\b(?:${NAMESPACES})\\.[A-Za-z]+(?:\\.[A-Za-z]+)*\\b`);
 
-const PUBLIC_PATHS = ["", "/services", "/location", "/faq", "/about", "/blog", "/contact", "/sign-in", "/reset-password", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies", "/does-not-exist"];
+const PUBLIC_PATHS = ["", "/services", "/location", "/faq", "/blog", "/sign-in", "/reset-password", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies", "/does-not-exist"];
 const USER_PATHS = ["/dashboard", "/dashboard/upload", "/dashboard/profile"];
 const ADMIN_PATHS = [
   "/admin",
@@ -79,12 +79,4 @@ test("admin panel renders in English and Spanish", async ({ browser }) => {
   const page = await (await newContext(browser)).newPage();
   await signInAdmin(page, admin);
   await checkPages(page, ADMIN_PATHS);
-});
-
-test("Spanish copy uses the formal register", async ({ browser }) => {
-  const page = await (await newContext(browser)).newPage();
-  await page.goto("/es/contact");
-  const text = await page.locator("main").innerText();
-  expect(text).toMatch(/Envíenos/);
-  expect(text).not.toMatch(/\b(envíanos|escríbenos|tú)\b/i);
 });

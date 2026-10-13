@@ -12,12 +12,14 @@ function sessionSecret(): string {
   return line?.slice("SESSION_SECRET=".length) ?? "";
 }
 
+// The question form lives on the location page (the contact page was removed).
+const FORM_PAGE = "/en/location";
+
 async function fillForm(page: Page, email: string) {
-  await page.fill("#field-name", "Contact Tester");
-  await page.fill("#field-email", email);
-  await page.fill("#field-subject", "Question about the service");
-  await page.fill("#field-message", "I would like more information about Element.");
-  await page.check("#field-consent");
+  await page.fill("#visit-name", "Contact Tester");
+  await page.fill("#visit-email", email);
+  await page.fill("#visit-message", "I would like more information about Element.");
+  await page.check("#visit-consent");
 }
 
 async function stored(email: string) {
@@ -37,7 +39,7 @@ test.afterAll(async () => {
 test("submissions faster than a human are silently dropped (time trap)", async ({ browser }) => {
   const page = await (await newContext(browser)).newPage();
   const email = `e2e-contact-fast-${randomUUID().slice(0, 6)}@example.com`;
-  await page.goto("/en/contact");
+  await page.goto(FORM_PAGE);
   await fillForm(page, email);
   await page.getByRole("button", { name: "Send message" }).click();
   await expect(page.getByText("Message sent")).toBeVisible();
@@ -47,7 +49,7 @@ test("submissions faster than a human are silently dropped (time trap)", async (
 test("forged or expired form tokens are refused", async ({ browser }) => {
   const page = await (await newContext(browser)).newPage();
   const email = `e2e-contact-forged-${randomUUID().slice(0, 6)}@example.com`;
-  await page.goto("/en/contact");
+  await page.goto(FORM_PAGE);
   await page.waitForTimeout(3500);
   await fillForm(page, email);
   await page.evaluate(() => {
@@ -63,7 +65,7 @@ test("forged or expired form tokens are refused", async ({ browser }) => {
     .setIssuedAt(Math.floor(Date.now() / 1000) - 3 * 3600)
     .setExpirationTime(Math.floor(Date.now() / 1000) - 3600)
     .sign(new TextEncoder().encode(sessionSecret()));
-  await page.goto("/en/contact");
+  await page.goto(FORM_PAGE);
   await page.waitForTimeout(3500);
   await fillForm(page, email);
   await page.evaluate((token) => {
@@ -79,7 +81,7 @@ test("the sender gets at most one acknowledgement per day", async ({ browser }) 
   const email = `e2e-contact-ack-${randomUUID().slice(0, 6)}@example.com`;
 
   for (let i = 0; i < 2; i++) {
-    await page.goto("/en/contact");
+    await page.goto(FORM_PAGE);
     await page.waitForTimeout(3500);
     await fillForm(page, email);
     await page.getByRole("button", { name: "Send message" }).click();

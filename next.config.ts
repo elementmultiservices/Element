@@ -28,6 +28,13 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [],
   },
+  // Pages that were removed: keep old links working.
+  async redirects() {
+    return [
+      { source: "/:locale(en|es)/about", destination: "/:locale", permanent: true },
+      { source: "/:locale(en|es)/contact", destination: "/:locale/location#contact-form", permanent: true },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

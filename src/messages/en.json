@@ -23,9 +23,7 @@
       "adminTrash": "Trash",
       "adminCategories": "File categories",
       "adminAudit": "Audit log",
-      "about": "About us",
       "blog": "Blog",
-      "contact": "Contact",
       "privacy": "Privacy policy",
       "dataPolicy": "Personal data processing policy",
       "terms": "Terms of use",
@@ -44,9 +42,7 @@
       "adminSettings": "Business details"
     },
     "descriptions": {
-      "about": "About Element Multiservices: taxes, ITIN, business and documents in New York, in English and Spanish.",
       "blog": "What's changing in U.S. taxes and how it affects you, explained plainly.",
-      "contact": "Get in touch with the Element team.",
       "legal": "Legal information about the use of Element.",
       "services": "Taxes, business, documents and protection for your family, with the same team and a clear price from the start.",
       "location": "Visit us in New York or get it done remotely. Address, hours and directions.",
@@ -1423,33 +1419,6 @@
       }
     }
   },
-  "About": {
-    "eyebrow": "About us",
-    "title": "One team for your taxes, your business and your paperwork.",
-    "intro": "Element Multiservices is a New York office that prepares tax returns, handles ITIN applications, helps you start and run a business, and prepares translations and documents. We work in English and Spanish, all year long, and give you the price in writing before we start.",
-    "sections": {
-      "mission": {
-        "title": "Our mission",
-        "body": "No one should have to go from office to office or sign something they don't understand. We handle your paperwork in one place and explain every step in plain words."
-      },
-      "approach": {
-        "title": "How we work",
-        "body": "We review your case, tell you what to bring, how much it costs and how long it takes, and we don't start until you agree. Your documents are kept in My Files so you always have them at hand."
-      },
-      "commitment": {
-        "title": "Our commitment",
-        "body": "Your information is confidential: only you and your assigned preparer can see it. We prepare taxes and documents; we are not a law firm and do not give legal advice."
-      }
-    },
-    "valuesHeading": "What you can expect from us",
-    "values": {
-      "confidentiality": "A clear price: we give it to you in writing before we start, with no surprises.",
-      "traceability": "Your language: the whole process in English or Spanish, with a person who explains it.",
-      "availability": "All year: extensions, IRS letters, payroll and paperwork, after April too.",
-      "service": "Quick answers: we reply the same business day on WhatsApp or by phone."
-    },
-    "contactCta": "Message us on WhatsApp"
-  },
   "Blog": {
     "title": "Blog",
     "description": "News, guides and announcements from Element.",
@@ -1494,18 +1463,20 @@
       "update": "Update"
     },
     "minutes": "{count} min read",
-    "source": "Official source"
+    "source": "Official source",
+    "aboutPost": "About this article",
+    "published": "Published",
+    "readingTime": "Reading time",
+    "keepReading": "Keep reading",
+    "latestShort": "Latest",
+    "sidebarCta": {
+      "title": "Questions about your case?",
+      "body": "We review your situation and tell you what to do, how much it costs and what to bring."
+    }
   },
   "Contact": {
-    "title": "Contact",
-    "description": "Send us your question or request and we will reply as soon as possible.",
-    "detailsHeading": "Contact details",
-    "formHeading": "Send us a message",
     "name": "Full name",
     "email": "Email address",
-    "subject": "Subject",
-    "message": "Message",
-    "messageHint": "Between 10 and 5,000 characters. Do not include passwords or sensitive information.",
     "consent": "I authorize the processing of my personal data to handle this request, in accordance with the",
     "consentLink": "personal data processing policy",
     "submit": "Send message",

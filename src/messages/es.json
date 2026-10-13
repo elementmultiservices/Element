@@ -23,9 +23,7 @@
       "adminTrash": "Papelera",
       "adminCategories": "Categorías de archivos",
       "adminAudit": "Registro de auditoría",
-      "about": "Quiénes somos",
       "blog": "Blog",
-      "contact": "Contacto",
       "privacy": "Política de privacidad",
       "dataPolicy": "Política de tratamiento de datos personales",
       "terms": "Términos de uso",
@@ -44,9 +42,7 @@
       "adminSettings": "Datos del negocio"
     },
     "descriptions": {
-      "about": "Quiénes somos: Element Multiservices, impuestos, ITIN, negocios y documentos en Nueva York, en español y en inglés.",
       "blog": "Lo que cambia en los impuestos de EE. UU. y cómo te afecta, explicado en español y sin enredos.",
-      "contact": "Comuníquese con el equipo de Element.",
       "legal": "Información legal sobre el uso de Element.",
       "services": "Impuestos, negocios, documentos y protección para tu familia, con el mismo equipo y el precio claro desde el inicio.",
       "location": "Visítanos en Nueva York o haz tu trámite a distancia. Dirección, horarios y cómo llegar.",
@@ -1423,33 +1419,6 @@
       }
     }
   },
-  "About": {
-    "eyebrow": "Quiénes somos",
-    "title": "Un mismo equipo para tus impuestos, tu negocio y tus papeles.",
-    "intro": "Element Multiservices es una oficina en Nueva York que prepara declaraciones de impuestos, tramita ITIN, ayuda a abrir y llevar negocios, y prepara traducciones y documentos. Atendemos en español y en inglés, todo el año, y te damos el precio por escrito antes de empezar.",
-    "sections": {
-      "mission": {
-        "title": "Nuestra misión",
-        "body": "Que nadie tenga que ir de oficina en oficina ni firmar algo que no entiende. Resolvemos tus trámites en un solo lugar y te explicamos cada paso en palabras claras."
-      },
-      "approach": {
-        "title": "Cómo trabajamos",
-        "body": "Revisamos tu caso, te decimos qué traer, cuánto cuesta y cuánto tarda, y no empezamos hasta que estés de acuerdo. Tus documentos quedan guardados en Mi Archivo para que los tengas siempre a la mano."
-      },
-      "commitment": {
-        "title": "Nuestro compromiso",
-        "body": "Tu información es confidencial: solo tú y tu preparador asignado pueden verla. Preparamos impuestos y documentos; no somos un bufete de abogados y no damos asesoría legal."
-      }
-    },
-    "valuesHeading": "Lo que puedes esperar de nosotros",
-    "values": {
-      "confidentiality": "Precio claro: te lo damos por escrito antes de empezar, sin sorpresas.",
-      "traceability": "Tu idioma: todo el proceso en español o en inglés, con una persona que te explica.",
-      "availability": "Todo el año: extensiones, cartas del IRS, nómina y trámites, también después de abril.",
-      "service": "Respuesta rápida: te contestamos el mismo día hábil por WhatsApp o por teléfono."
-    },
-    "contactCta": "Escríbenos por WhatsApp"
-  },
   "Blog": {
     "title": "Blog",
     "description": "Noticias, guías y anuncios de Element.",
@@ -1494,18 +1463,20 @@
       "update": "Actualización"
     },
     "minutes": "{count} min de lectura",
-    "source": "Fuente oficial"
+    "source": "Fuente oficial",
+    "aboutPost": "Sobre este artículo",
+    "published": "Publicado",
+    "readingTime": "Lectura",
+    "keepReading": "Sigue leyendo",
+    "latestShort": "Lo más reciente",
+    "sidebarCta": {
+      "title": "¿Tienes dudas sobre tu caso?",
+      "body": "Revisamos tu situación y te decimos qué hacer, cuánto cuesta y qué traer."
+    }
   },
   "Contact": {
-    "title": "Contacto",
-    "description": "Envíenos su consulta o solicitud y le responderemos a la mayor brevedad.",
-    "detailsHeading": "Datos de contacto",
-    "formHeading": "Envíenos un mensaje",
     "name": "Nombre completo",
     "email": "Correo electrónico",
-    "subject": "Asunto",
-    "message": "Mensaje",
-    "messageHint": "Entre 10 y 5.000 caracteres. No incluya contraseñas ni información sensible.",
     "consent": "Autorizo el tratamiento de mis datos personales para atender esta solicitud, de acuerdo con la",
     "consentLink": "política de tratamiento de datos personales",
     "submit": "Enviar mensaje",

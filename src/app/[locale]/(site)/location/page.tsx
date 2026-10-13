@@ -187,7 +187,7 @@ export default async function LocationPage({ params }: PageProps<"/[locale]/loca
               <Link href="/sign-up">{t("remote.cta")}</Link>
             </Button>
           </div>
-          <div style={stagger(1)} className="reveal flex flex-col gap-6 rounded-[28px] border border-azure-50 bg-white p-6 sm:p-10 lg:rounded-[36px]">
+          <div id="contact-form" style={stagger(1)} className="reveal flex scroll-mt-28 flex-col gap-6 rounded-[28px] border border-azure-50 bg-white p-6 sm:p-10 lg:rounded-[36px]">
             <h2 className="text-2xl leading-tight font-semibold text-ink sm:text-[28px]">{t("form.title")}</h2>
             <VisitQuestionForm formToken={formToken} />
             <p className="text-xs leading-relaxed text-graphite">{t("form.note")}</p>
