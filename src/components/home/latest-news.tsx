@@ -2,6 +2,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { PostCover } from "@/components/blog/post-card";
+import { NewsletterCard } from "@/components/newsletter/newsletter-card";
 import { type PostSummary } from "@/lib/blog/queries";
 import { stagger } from "@/components/marketing/motion";
 import { container, SectionIntro } from "@/components/marketing/section-intro";
@@ -18,7 +19,10 @@ export async function LatestNews({ posts }: { posts: PostSummary[] }) {
     <section aria-labelledby="news-title" className={`${container} flex flex-col gap-10 py-16 lg:py-24`}>
       <SectionIntro id="news-title" align="center" eyebrow={t("eyebrow")} title={t("title")} body={t("body")} />
       {!featured ? (
-        <p className="text-center text-graphite">{t("empty")}</p>
+        <div className="mx-auto flex w-full max-w-[560px] flex-col gap-6">
+          <p className="text-center text-graphite">{t("empty")}</p>
+          <NewsletterCard source="home" className="reveal" />
+        </div>
       ) : (
         <div className="grid gap-4 lg:grid-cols-[1.25fr_1fr]">
           <article className="reveal group relative flex flex-col overflow-hidden rounded-[28px] border border-azure-50 bg-white transition-shadow duration-300 hover:shadow-[0_24px_48px_rgba(5,13,41,0.08)]">
@@ -51,6 +55,7 @@ export async function LatestNews({ posts }: { posts: PostSummary[] }) {
                 </div>
               </article>
             ))}
+            <NewsletterCard source="home" className="reveal" />
             <Link
               href="/blog"
               className="mt-auto inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-azure-100 px-7 text-[17px] font-semibold text-ink transition-colors hover:bg-azure-25"

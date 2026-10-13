@@ -11,7 +11,7 @@ import { useRecaptcha } from "./use-recaptcha";
  */
 export function useProtectedAction<Field extends string>(
   action: (prev: FormState<Field>, formData: FormData) => Promise<FormState<Field>>,
-  options: { recaptchaAction?: string; onSuccess?: (state: FormState<Field>) => void } = {},
+  options: { recaptchaAction?: string; lazyRecaptcha?: boolean; onSuccess?: (state: FormState<Field>) => void } = {},
 ) {
   const onSuccessRef = useRef(options.onSuccess);
   useEffect(() => {
@@ -32,7 +32,7 @@ export function useProtectedAction<Field extends string>(
     { status: "idle" } as FormState<Field>,
   );
   const [preparing, setPreparing] = useState(false);
-  const getToken = useRecaptcha();
+  const getToken = useRecaptcha({ lazy: options.lazyRecaptcha });
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

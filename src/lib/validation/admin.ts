@@ -39,7 +39,7 @@ export const trashListParamsSchema = z.object({
 });
 export type TrashListParams = z.infer<typeof trashListParamsSchema>;
 
-export const AUDIT_GROUPS = ["auth", "user", "file", "category", "post", "contact", "admin"] as const;
+export const AUDIT_GROUPS = ["auth", "user", "file", "category", "post", "contact", "newsletter", "admin"] as const;
 export type AuditGroup = (typeof AUDIT_GROUPS)[number];
 
 export const auditListParamsSchema = z.object({

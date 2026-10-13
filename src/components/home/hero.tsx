@@ -36,9 +36,10 @@ export async function Hero() {
           <h1
             id="hero-title"
             style={delay(1)}
-            className="motion-enter text-[44px] leading-[0.98] font-semibold tracking-[-0.03em] text-ink sm:text-6xl lg:text-[80px]"
+            className="motion-enter text-[clamp(36px,11.5vw,44px)] leading-[0.98] font-semibold tracking-[-0.03em] text-ink sm:text-6xl lg:text-[clamp(56px,5vw,72px)]"
           >
-            {t("hero.titleStart")} <span className="text-electric">{t("hero.titleAccent")}</span>
+            {/* Three lines in both languages: the start splits evenly over two, the accent takes the third. */}
+            <span className="block text-balance">{t("hero.titleStart")}</span> <span className="block text-electric">{t("hero.titleAccent")}</span>
           </h1>
           <p style={delay(2)} className="motion-enter max-w-[540px] text-lg leading-relaxed text-graphite lg:text-xl lg:leading-[30px]">
             {t("hero.body")}

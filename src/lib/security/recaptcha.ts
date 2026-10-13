@@ -2,7 +2,7 @@ import "server-only";
 import { z } from "zod";
 import { isProduction, serverEnv } from "@/lib/env";
 
-export type RecaptchaAction = "sign_in" | "sign_up" | "password_reset" | "upload" | "contact";
+export type RecaptchaAction = "sign_in" | "sign_up" | "password_reset" | "upload" | "contact" | "newsletter";
 
 const responseSchema = z.object({
   success: z.boolean(),

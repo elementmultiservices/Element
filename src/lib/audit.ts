@@ -58,7 +58,11 @@ export type AuditAction =
   | "contact.handled"
   | "contact.reopened"
   | "admin.bootstrap"
-  | "admin.settings_updated";
+  | "admin.settings_updated"
+  | "newsletter.subscribed"
+  | "newsletter.unsubscribed"
+  | "newsletter.removed"
+  | "newsletter.sent";
 
 export type AuditEntry = {
   actorId: string | null;

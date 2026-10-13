@@ -39,7 +39,9 @@
       "services": "Servicios",
       "location": "Ubicación",
       "faq": "Preguntas frecuentes",
-      "adminSettings": "Datos del negocio"
+      "adminSettings": "Datos del negocio",
+      "adminSubscribers": "Suscriptores",
+      "unsubscribe": "Darte de baja"
     },
     "descriptions": {
       "blog": "Lo que cambia en los impuestos de EE. UU. y cómo te afecta, explicado en español y sin enredos.",
@@ -424,7 +426,8 @@
       "audit": "Registro de auditoría",
       "profile": "Mi perfil",
       "blogCategories": "Categorías del blog",
-      "settings": "Datos del negocio"
+      "settings": "Datos del negocio",
+      "subscribers": "Suscriptores"
     },
     "roles": {
       "user": "Usuario",
@@ -574,7 +577,9 @@
     "formExpired": "El formulario venció. Recargue la página e intente nuevamente.",
     "roleChangeUnavailable": "El rol solo puede cambiarse en cuentas activas que hayan completado su invitación.",
     "uploadGrantAdmin": "Este correo pertenece a una cuenta de administrador; los administradores no necesitan esta autorización.",
-    "migrationPending": "Falta aplicar la actualización de la base de datos (migración 20261013000100). Ejecútela en el editor SQL de Supabase y vuelva a intentarlo."
+    "migrationPending": "Falta aplicar la actualización de la base de datos (migración 20261013000100). Ejecútela en el editor SQL de Supabase y vuelva a intentarlo.",
+    "notPublished": "La publicación debe estar publicada para enviarla a los suscriptores.",
+    "noSubscribers": "Todavía no hay suscriptores activos."
   },
   "NotFound": {
     "code": "Error 404",
@@ -1145,7 +1150,8 @@
         "category": "Categorías",
         "post": "Blog",
         "contact": "Contacto",
-        "admin": "Administración"
+        "admin": "Administración",
+        "newsletter": "Newsletter"
       },
       "actor": "Realizada por",
       "actorPlaceholder": "Nombre o correo",
@@ -1207,6 +1213,13 @@
         "ip": "Dirección IP",
         "userAgent": "Agente de usuario",
         "details": "Detalles"
+      },
+      "subscribers": {
+        "email": "Correo",
+        "language": "Idioma",
+        "source": "Origen",
+        "created": "Fecha de suscripción",
+        "unsubscribed": "Fecha de baja"
       }
     },
     "blog": {
@@ -1304,7 +1317,23 @@
       "previewBanner": "Vista previa: así se verá la publicación en {language}. Estado: {status}.",
       "previewMissing": "Aún no hay traducción en este idioma.",
       "backToEditor": "Volver al editor",
-      "featuredBadge": "Destacado"
+      "featuredBadge": "Destacado",
+      "newsletter": {
+        "title": "Enviar a suscriptores",
+        "notReady": "Aplique la migración del newsletter (20261014000100) para poder enviar noticias por correo.",
+        "publishFirst": "Cuando la publicación esté publicada, podrá enviarla por correo a los suscriptores.",
+        "noSubscribers": "Todavía no hay suscriptores activos.",
+        "ready": "{count, plural, one {Se enviará a # suscriptor activo, en su idioma.} other {Se enviará a # suscriptores activos, cada uno en su idioma.}}",
+        "sentOn": "Enviada el {date} a {count, plural, one {# persona} other {# personas}}",
+        "failed": "{count, plural, one {# falló} other {# fallaron}}",
+        "send": "Enviar a suscriptores",
+        "sendAgain": "Enviar de nuevo",
+        "confirmTitle": "¿Enviar esta noticia por correo?",
+        "confirmAgainTitle": "Esta noticia ya se envió. ¿Enviarla de nuevo?",
+        "confirmBody": "{count, plural, one {# persona recibirá} other {# personas recibirán}} un correo con el título, el resumen y un enlace al artículo. No se puede cancelar una vez enviado.",
+        "confirm": "{count, plural, one {Enviar a # persona} other {Enviar a # personas}}",
+        "sent": "La noticia fue enviada a los suscriptores."
+      }
     },
     "postCategories": {
       "description": "Categorías para filtrar el blog. Cada una tiene un nombre y una dirección en cada idioma.",
@@ -1417,6 +1446,42 @@
         "mapsUrl": "En Google Maps, use «Compartir» y copie el enlace.",
         "bookingUrl": "Por ejemplo, su página de Calendly o Google Calendar."
       }
+    },
+    "subscribers": {
+      "title": "Suscriptores",
+      "description": "Personas que se registraron para recibir las noticias del blog por correo.",
+      "migrationNotice": "Falta aplicar la migración 20261014000100 (newsletter) en la base de datos. Cuando esté aplicada, aquí aparecerán los suscriptores.",
+      "export": "Exportar CSV",
+      "sendFromBlog": "Enviar una noticia",
+      "activeCount": "Suscriptores activos",
+      "howTo": "Para enviar una noticia, ábrala en Blog: una vez publicada aparece la opción «Enviar a suscriptores».",
+      "unsubscribeInfo": "Cada correo incluye un enlace para darse de baja; quienes lo usan quedan marcados como «Dados de baja» y no reciben más envíos.",
+      "search": "Buscar por correo",
+      "status": "Estado",
+      "statuses": {
+        "active": "Activos",
+        "unsubscribed": "Dados de baja",
+        "all": "Todos"
+      },
+      "sources": {
+        "footer": "Pie de página",
+        "home": "Inicio",
+        "blog": "Blog",
+        "admin": "Administración"
+      },
+      "table": {
+        "email": "Correo",
+        "language": "Idioma",
+        "source": "Origen",
+        "date": "Fecha",
+        "status": "Estado"
+      },
+      "emptyTitle": "Aún no hay suscriptores",
+      "emptyBody": "Las personas que se registren en el pie de página, la página de inicio o el blog aparecerán aquí.",
+      "remove": "Eliminar",
+      "removeTitle": "Eliminar suscriptor",
+      "removeBody": "Se eliminará {email} de la lista. Esta acción no se puede deshacer.",
+      "removed": "El suscriptor fue eliminado."
     }
   },
   "Blog": {
@@ -1448,11 +1513,6 @@
     "readArticle": "Leer artículo",
     "readArticleAbout": "Leer artículo: {title}",
     "viewMore": "Ver más noticias",
-    "helpCard": {
-      "title": "¿Tienes una pregunta rápida?",
-      "body": "Revisa las respuestas a las dudas más comunes sobre reembolsos, ITIN y el IRS.",
-      "cta": "Ir a preguntas frecuentes"
-    },
     "cta": {
       "title": "¿Tienes dudas sobre tu caso?",
       "body": "Las noticias son generales. Tu situación es única: revisémosla juntos."
@@ -1878,7 +1938,7 @@
         "tag": "VIDA",
         "title": "Seguros de vida",
         "lead": "Protege a tu familia con un plan que puedas pagar.",
-        "body": "Orientación y cotización de pólizas de vida con un agente licenciado en Nueva York. [Licencia DFS n.º XXXX]",
+        "body": "Orientación y cotización de pólizas de vida con un agente licenciado en Nueva York.",
         "cta": "Cotiza tu seguro",
         "keywords": "seguro vida familia"
       },
@@ -2198,5 +2258,39 @@
       "twoStep": "Verificación en dos pasos"
     },
     "toast": "W-2 recibido"
+  },
+  "Newsletter": {
+    "form": {
+      "label": "Tu correo electrónico",
+      "placeholder": "Tu correo",
+      "submit": "Suscribirme",
+      "success": "¡Listo! Te escribiremos cuando publiquemos noticias nuevas.",
+      "note": "Sin spam. Puedes darte de baja cuando quieras.",
+      "privacy": "Política de privacidad",
+      "honeypot": "Deja este campo vacío"
+    },
+    "card": {
+      "title": "Recibe las noticias en tu correo",
+      "body": "Te avisamos cuando cambie algo en los impuestos que te afecte, en español y sin enredos."
+    },
+    "footer": {
+      "title": "Noticias de impuestos, en tu correo.",
+      "body": "Cambios en la ley, fechas clave y novedades de Element. Sin spam."
+    },
+    "unsubscribe": {
+      "title": "Darte de baja",
+      "body": "Confirma y dejaremos de enviarte las noticias de Element a este correo.",
+      "confirm": "Confirmar baja",
+      "working": "Procesando…",
+      "done": "Listo. Ya no recibirás nuestras noticias. Puedes volver a suscribirte cuando quieras.",
+      "home": "Ir al inicio"
+    },
+    "email": {
+      "eyebrowArticle": "Noticias de Element",
+      "eyebrowUpdate": "Actualización de Element",
+      "cta": "Leer el artículo",
+      "reason": "Recibes este correo porque te suscribiste a las noticias de Element.",
+      "unsubscribe": "Darte de baja"
+    }
   }
 }

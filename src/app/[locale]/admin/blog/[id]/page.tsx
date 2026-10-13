@@ -8,6 +8,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { coverUrl, getAdminPost, listPostCategories } from "@/lib/blog/queries";
 import { pageMetadata } from "@/lib/seo";
 import { createClient } from "@/lib/supabase/server";
+import { NewsletterPanel } from "../newsletter-panel";
 import { DeletePostButton } from "../post-actions";
 import { PostEditor } from "../post-editor";
 
@@ -41,7 +42,8 @@ export default async function EditPostPage({ params }: PageProps<"/[locale]/admi
         ]}
         actions={<DeletePostButton id={post.id} onDeletedHref="/admin/blog" />}
       />
-      <div className="max-w-5xl">
+      <div className="max-w-5xl space-y-6">
+        <NewsletterPanel post={post} supabase={supabase} />
         <PostEditor
           post={{
             id: post.id,

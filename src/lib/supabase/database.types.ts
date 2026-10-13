@@ -129,6 +129,45 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"newsletter_sends": {
+                  Row: {
+                    "created_at": string,"failed": number,"id": string,"post_id": string | null,"recipients": number,"sent_by": string | null,"title": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "title": string,"created_at"?: string,"failed"?: number,"id"?: string,"post_id"?: string | null,"recipients"?: number,"sent_by"?: string | null
+                  }
+                  Update: {
+                    "created_at"?: string,"failed"?: number,"id"?: string,"post_id"?: string | null,"recipients"?: number,"sent_by"?: string | null,"title"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "newsletter_sends_post_id_fkey"
+      columns: ["post_id"]
+isOneToOne: false
+      referencedRelation: "posts"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "newsletter_sends_sent_by_fkey"
+      columns: ["sent_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"newsletter_subscribers": {
+                  Row: {
+                    "created_at": string,"email": string,"id": string,"locale": Database["public"]['Enums']["app_locale"],"source": string,"unsubscribe_token": string,"unsubscribed_at": string | null,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "email": string,"created_at"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"source"?: string,"unsubscribe_token"?: string,"unsubscribed_at"?: string | null,"updated_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"email"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"source"?: string,"unsubscribe_token"?: string,"unsubscribed_at"?: string | null,"updated_at"?: string
+                  }
+                  Relationships: [
+                  ]
                 },"post_categories": {
                   Row: {
                     "created_at": string,"id": string,"name_en": string,"name_es": string,"slug_en": string,"slug_es": string

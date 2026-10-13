@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { z } from "zod";
 import { PostCard, PostCover } from "@/components/blog/post-card";
 import { CtaPanel } from "@/components/marketing/cta-panel";
+import { NewsletterCard } from "@/components/newsletter/newsletter-card";
 import { delay, stagger } from "@/components/marketing/motion";
 import { SmartLink } from "@/components/marketing/smart-link";
 import { Button } from "@/components/ui/button";
@@ -159,20 +160,7 @@ export default async function BlogPage({ params, searchParams }: PageProps<"/[lo
                 </div>
               </article>
             ))}
-            <div
-              style={delay(7)}
-              className="motion-enter relative mt-auto flex flex-col gap-4 overflow-hidden rounded-[28px] bg-[linear-gradient(150deg,#050D29_0%,#13295A_60%,#2B56B3_100%)] p-7 text-white"
-            >
-              <span aria-hidden="true" className="motion-float absolute -right-16 -bottom-20 size-56 rounded-full bg-sky/25 blur-3xl" />
-              <h2 className="relative text-2xl leading-tight font-semibold text-white">{t("helpCard.title")}</h2>
-              <p className="relative text-[15px] text-azure-100">{t("helpCard.body")}</p>
-              <Button asChild size="pill" className="relative self-start bg-white text-ink hover:bg-azure-25">
-                <Link href="/faq">
-                  {t("helpCard.cta")}
-                  <ArrowRight aria-hidden="true" />
-                </Link>
-              </Button>
-            </div>
+            <NewsletterCard source="blog" className="motion-enter mt-auto" />
           </div>
         </section>
       ) : null}
@@ -193,6 +181,12 @@ export default async function BlogPage({ params, searchParams }: PageProps<"/[lo
             ))}
           </ul>
         </section>
+      ) : null}
+
+      {!magazine ? (
+        <div className="mx-auto max-w-[1240px] px-4 pt-12 sm:px-6">
+          <NewsletterCard source="blog" className="reveal mx-auto max-w-[640px]" />
+        </div>
       ) : null}
 
       {list.pageCount > 1 ? (

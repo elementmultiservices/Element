@@ -29,27 +29,36 @@ function waitForGrecaptcha(timeoutMs = 10_000): Promise<Grecaptcha> {
   });
 }
 
+/** Adds the reCAPTCHA v3 script once (no-op without a site key). */
+export function loadRecaptcha(): void {
+  const siteKey = publicEnv.recaptchaSiteKey;
+  if (!siteKey || document.getElementById(SCRIPT_ID)) return;
+  const script = document.createElement("script");
+  script.id = SCRIPT_ID;
+  script.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(siteKey)}`;
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+}
+
 /**
  * Loads reCAPTCHA v3 once and returns a function that produces a token for a
  * given action. The token is verified on the server. Without a site key
- * (local development) it returns an empty string.
+ * (local development) it returns an empty string. With `lazy`, the script is
+ * only loaded when a token is first requested (or loadRecaptcha() is called),
+ * for small forms present on every page.
  */
-export function useRecaptcha(): (action: string) => Promise<string> {
+export function useRecaptcha({ lazy = false }: { lazy?: boolean } = {}): (action: string) => Promise<string> {
   const siteKey = publicEnv.recaptchaSiteKey;
 
   useEffect(() => {
-    if (!siteKey || document.getElementById(SCRIPT_ID)) return;
-    const script = document.createElement("script");
-    script.id = SCRIPT_ID;
-    script.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(siteKey)}`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-  }, [siteKey]);
+    if (!lazy) loadRecaptcha();
+  }, [lazy]);
 
   return useCallback(
     async (action: string) => {
       if (!siteKey) return "";
+      loadRecaptcha();
       try {
         const g = await waitForGrecaptcha();
         return await g.execute(siteKey, { action });

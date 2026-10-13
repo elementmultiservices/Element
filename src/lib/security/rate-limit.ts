@@ -38,6 +38,10 @@ export const LIMITS = {
   contactEmail: { tokens: 3, window: "1 h" },
   contactAckRecipient: { tokens: 1, window: "1 d" },
   contactAckGlobal: { tokens: 200, window: "1 d" },
+  newsletterIp: { tokens: 10, window: "1 h" },
+  newsletterEmail: { tokens: 3, window: "1 h" },
+  newsletterUnsubscribeIp: { tokens: 30, window: "10 m" },
+  newsletterSendUser: { tokens: 10, window: "1 h" },
   coverUploadUser: { tokens: 30, window: "10 m" },
 } as const satisfies Record<string, LimitConfig>;
 

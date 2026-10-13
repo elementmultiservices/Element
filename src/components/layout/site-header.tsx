@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { getSessionContext, homePathFor } from "@/lib/auth/session";
 import { getSiteContact } from "@/lib/site-settings";
+import { cn } from "@/lib/utils";
 import { HeaderNav } from "./header-nav";
 import { LanguageSwitcher } from "./language-switcher";
 import { MobileNav } from "./mobile-nav";
@@ -20,7 +21,37 @@ export async function SiteHeader() {
   return (
     <>
       {contact.announcement ? (
-        <div className="bg-ink px-4 py-2.5 text-sm sm:px-6">
+        // Mobile: one line that scrolls continuously (pauses on touch/focus); the whole strip is the link.
+        <SmartLink
+          href={contact.bookingHref}
+          className="ticker block overflow-hidden bg-ink py-2.5 text-sm focus-visible:outline-offset-[-2px] sm:hidden"
+        >
+          {/* Four identical rows; the track moves by exactly one row (-25%) per loop. */}
+          <span className="ticker-track flex w-max [animation-duration:28s] motion-reduce:w-auto motion-reduce:justify-center">
+            {[0, 1, 2, 3].map((row) => (
+              <span
+                key={row}
+                aria-hidden={row > 0 || undefined}
+                className={cn(
+                  "flex shrink-0 items-center gap-x-3 gap-y-1 pr-12 whitespace-nowrap motion-reduce:w-full motion-reduce:shrink motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:px-4 motion-reduce:text-center motion-reduce:whitespace-normal",
+                  row > 0 && "motion-reduce:hidden",
+                )}
+              >
+                {contact.announcement!.label ? (
+                  <span className="font-mono text-xs tracking-[0.08em] text-azure-300">{contact.announcement!.label}</span>
+                ) : null}
+                <span className="text-azure-50">{contact.announcement!.text}</span>
+                <span className="inline-flex items-center gap-1 font-semibold text-white">
+                  {t("Home.announcement.cta")}
+                  <ArrowRight aria-hidden="true" className="size-3.5" />
+                </span>
+              </span>
+            ))}
+          </span>
+        </SmartLink>
+      ) : null}
+      {contact.announcement ? (
+        <div className="hidden bg-ink px-4 py-2.5 text-sm sm:block sm:px-6">
           <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-center gap-x-4 gap-y-1 text-center">
             {contact.announcement.label ? (
               <span className="font-mono text-xs tracking-[0.08em] text-azure-300">{contact.announcement.label}</span>

@@ -9,10 +9,12 @@ import { FILE_TYPES, kindFromMime, sanitizeDisplayName } from "@/lib/files/rules
 import { toLocale } from "@/i18n/routing";
 import { rateLimit } from "@/lib/security/rate-limit";
 import { createClient } from "@/lib/supabase/server";
+import { listSubscribers, SUBSCRIBER_STATUSES } from "@/lib/newsletter/queries";
+import { z } from "zod";
 import { adminFileListParamsSchema, auditListParamsSchema, userListParamsSchema } from "@/lib/validation/admin";
 
 const MAX_ROWS = 50_000;
-const KINDS = ["users", "files", "audit"] as const;
+const KINDS = ["users", "files", "audit", "subscribers"] as const;
 type Kind = (typeof KINDS)[number];
 
 /**
@@ -90,6 +92,17 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/a
         f.createdAt,
       ];
     });
+  } else if (kind === "subscribers") {
+    const p = z
+      .object({
+        q: z.string().trim().max(100).optional().catch(undefined),
+        status: z.enum([...SUBSCRIBER_STATUSES, "all"]).default("active").catch("active"),
+      })
+      .parse(search);
+    filters = { q: p.q, status: p.status };
+    const { rows: subs } = await listSubscribers(supabase, { q: p.q, status: p.status === "all" ? undefined : p.status, page: 1 }, MAX_ROWS);
+    headers = [t("csv.subscribers.email"), t("csv.subscribers.language"), t("csv.subscribers.source"), t("csv.subscribers.created"), t("csv.subscribers.unsubscribed")];
+    rows = subs.map((s) => [s.email, s.locale, s.source, s.createdAt, s.unsubscribedAt ?? ""]);
   } else {
     const p = { ...auditListParamsSchema.parse(search), page: 1 };
     filters = { q: p.q, action: p.action, actor: p.actor, subject: p.subject, from: p.from, to: p.to };

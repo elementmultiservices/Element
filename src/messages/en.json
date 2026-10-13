@@ -39,7 +39,9 @@
       "services": "Services",
       "location": "Location",
       "faq": "Frequently asked questions",
-      "adminSettings": "Business details"
+      "adminSettings": "Business details",
+      "adminSubscribers": "Subscribers",
+      "unsubscribe": "Unsubscribe"
     },
     "descriptions": {
       "blog": "What's changing in U.S. taxes and how it affects you, explained plainly.",
@@ -424,7 +426,8 @@
       "audit": "Audit log",
       "profile": "My profile",
       "blogCategories": "Blog categories",
-      "settings": "Business details"
+      "settings": "Business details",
+      "subscribers": "Subscribers"
     },
     "roles": {
       "user": "User",
@@ -574,7 +577,9 @@
     "formExpired": "The form expired. Reload the page and try again.",
     "roleChangeUnavailable": "The role can only be changed for active accounts that have completed their invitation.",
     "uploadGrantAdmin": "This address belongs to an administrator account; administrators do not need this authorization.",
-    "migrationPending": "The database update (migration 20261013000100) has not been applied yet. Run it in the Supabase SQL editor and try again."
+    "migrationPending": "The database update (migration 20261013000100) has not been applied yet. Run it in the Supabase SQL editor and try again.",
+    "notPublished": "The post must be published before it can be sent to subscribers.",
+    "noSubscribers": "There are no active subscribers yet."
   },
   "NotFound": {
     "code": "Error 404",
@@ -1145,7 +1150,8 @@
         "category": "Categories",
         "post": "Blog",
         "contact": "Contact",
-        "admin": "Administration"
+        "admin": "Administration",
+        "newsletter": "Newsletter"
       },
       "actor": "Performed by",
       "actorPlaceholder": "Name or email",
@@ -1207,6 +1213,13 @@
         "ip": "IP address",
         "userAgent": "User agent",
         "details": "Details"
+      },
+      "subscribers": {
+        "email": "Email",
+        "language": "Language",
+        "source": "Source",
+        "created": "Subscribed on",
+        "unsubscribed": "Unsubscribed on"
       }
     },
     "blog": {
@@ -1304,7 +1317,23 @@
       "previewBanner": "Preview — this is how the post will look in {language}. Status: {status}.",
       "previewMissing": "There is no translation in this language yet.",
       "backToEditor": "Back to the editor",
-      "featuredBadge": "Featured"
+      "featuredBadge": "Featured",
+      "newsletter": {
+        "title": "Send to subscribers",
+        "notReady": "Apply the newsletter migration (20261014000100) to send posts by email.",
+        "publishFirst": "Once this post is published, you can email it to subscribers.",
+        "noSubscribers": "There are no active subscribers yet.",
+        "ready": "{count, plural, one {It will be sent to # active subscriber, in their language.} other {It will be sent to # active subscribers, each in their language.}}",
+        "sentOn": "Sent on {date} to {count, plural, one {# person} other {# people}}",
+        "failed": "{count, plural, one {# failed} other {# failed}}",
+        "send": "Send to subscribers",
+        "sendAgain": "Send again",
+        "confirmTitle": "Email this post?",
+        "confirmAgainTitle": "This post was already sent. Send it again?",
+        "confirmBody": "{count, plural, one {# person will receive} other {# people will receive}} an email with the title, the summary and a link to the article. It can't be cancelled once sent.",
+        "confirm": "{count, plural, one {Send to # person} other {Send to # people}}",
+        "sent": "The post was sent to subscribers."
+      }
     },
     "postCategories": {
       "description": "Categories used to filter the blog. Each one has a name and an address in each language.",
@@ -1417,6 +1446,42 @@
         "mapsUrl": "In Google Maps, use “Share” and copy the link.",
         "bookingUrl": "For example, your Calendly or Google Calendar page."
       }
+    },
+    "subscribers": {
+      "title": "Subscribers",
+      "description": "People who signed up to receive the blog news by email.",
+      "migrationNotice": "Migration 20261014000100 (newsletter) has not been applied to the database yet. Once it is, subscribers will appear here.",
+      "export": "Export CSV",
+      "sendFromBlog": "Send a post",
+      "activeCount": "Active subscribers",
+      "howTo": "To send a post, open it in Blog: once it is published, the “Send to subscribers” option appears.",
+      "unsubscribeInfo": "Every email includes an unsubscribe link; people who use it are marked “Unsubscribed” and receive no further emails.",
+      "search": "Search by email",
+      "status": "Status",
+      "statuses": {
+        "active": "Active",
+        "unsubscribed": "Unsubscribed",
+        "all": "All"
+      },
+      "sources": {
+        "footer": "Footer",
+        "home": "Home page",
+        "blog": "Blog",
+        "admin": "Administration"
+      },
+      "table": {
+        "email": "Email",
+        "language": "Language",
+        "source": "Source",
+        "date": "Date",
+        "status": "Status"
+      },
+      "emptyTitle": "No subscribers yet",
+      "emptyBody": "People who sign up in the footer, on the home page or on the blog will appear here.",
+      "remove": "Remove",
+      "removeTitle": "Remove subscriber",
+      "removeBody": "{email} will be removed from the list. This cannot be undone.",
+      "removed": "The subscriber was removed."
     }
   },
   "Blog": {
@@ -1448,11 +1513,6 @@
     "readArticle": "Read article",
     "readArticleAbout": "Read article: {title}",
     "viewMore": "See more news",
-    "helpCard": {
-      "title": "Have a quick question?",
-      "body": "Check the answers to the most common questions about refunds, ITIN and the IRS.",
-      "cta": "Go to FAQ"
-    },
     "cta": {
       "title": "Questions about your case?",
       "body": "The news is general. Your situation is unique: let's review it together."
@@ -1878,7 +1938,7 @@
         "tag": "LIFE",
         "title": "Life insurance",
         "lead": "Protect your family with a plan you can afford.",
-        "body": "Guidance and quotes for life insurance policies with a licensed New York agent. [DFS license no. XXXX]",
+        "body": "Guidance and quotes for life insurance policies with a licensed New York agent.",
         "cta": "Get a quote",
         "keywords": "life insurance family"
       },
@@ -2198,5 +2258,39 @@
       "twoStep": "Two-step verification"
     },
     "toast": "W-2 received"
+  },
+  "Newsletter": {
+    "form": {
+      "label": "Your email address",
+      "placeholder": "Your email",
+      "submit": "Subscribe",
+      "success": "Done! We'll email you when we publish new posts.",
+      "note": "No spam. Unsubscribe anytime.",
+      "privacy": "Privacy policy",
+      "honeypot": "Leave this field empty"
+    },
+    "card": {
+      "title": "Get the news in your inbox",
+      "body": "We let you know when something changes in taxes that affects you, explained plainly."
+    },
+    "footer": {
+      "title": "Tax news, in your inbox.",
+      "body": "Law changes, key dates and news from Element. No spam."
+    },
+    "unsubscribe": {
+      "title": "Unsubscribe",
+      "body": "Confirm and we'll stop sending Element news to this email address.",
+      "confirm": "Confirm unsubscribe",
+      "working": "Working…",
+      "done": "Done. You won't receive our news anymore. You can subscribe again anytime.",
+      "home": "Go to the home page"
+    },
+    "email": {
+      "eyebrowArticle": "Element news",
+      "eyebrowUpdate": "Element update",
+      "cta": "Read the article",
+      "reason": "You're receiving this email because you subscribed to Element news.",
+      "unsubscribe": "Unsubscribe"
+    }
   }
 }

@@ -20,15 +20,15 @@ export type ActionEmailProps = {
 };
 
 const colors = {
-  primary: "#0b2545",
-  accent: "#1d5b8f",
-  text: "#111827",
-  muted: "#5b6573",
-  border: "#dde1e7",
-  surface: "#f6f7f9",
+  primary: "#050d29",
+  accent: "#1b83f4",
+  text: "#050d29",
+  muted: "#4a5778",
+  border: "#ddeefd",
+  surface: "#f7fbff",
 };
 
-const font = "'IBM Plex Sans', 'Segoe UI', Helvetica, Arial, sans-serif";
+const font = "'Instrument Sans', 'Segoe UI', Helvetica, Arial, sans-serif";
 
 export function ActionEmail(props: ActionEmailProps) {
   return (
@@ -50,8 +50,8 @@ export function ActionEmail(props: ActionEmailProps) {
               <Button
                 href={props.ctaUrl}
                 style={{
-                  backgroundColor: colors.primary,
-                  borderRadius: 4,
+                  backgroundColor: colors.accent,
+                  borderRadius: 999,
                   color: "#ffffff",
                   fontSize: 15,
                   fontWeight: 500,
