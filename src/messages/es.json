@@ -738,6 +738,8 @@
       "actions": "Acciones",
       "download": "Descargar",
       "downloadLabel": "Descargar {name}",
+      "preview": "Ver",
+      "previewLabel": "Ver {name} (se abre en una pestaña nueva)",
       "noCategory": "Sin categoría"
     },
     "source": {

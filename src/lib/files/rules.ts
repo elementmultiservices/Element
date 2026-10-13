@@ -40,6 +40,13 @@ const DANGEROUS_SEGMENTS = new Set([
   "dotm", "xltm", "potm", "ppsm", "zip", "rar", "7z", "gz", "tar",
 ]);
 
+/** Types the browser renders by itself; Office documents can only be downloaded. */
+const PREVIEWABLE: ReadonlySet<string> = new Set([FILE_TYPES.pdf.mime, FILE_TYPES.jpg.mime, FILE_TYPES.png.mime]);
+
+export function isPreviewable(mime: string): boolean {
+  return PREVIEWABLE.has(mime);
+}
+
 export function kindFromMime(mime: string): FileKind | null {
   for (const kind of FILE_KINDS) if (FILE_TYPES[kind].mime === mime) return kind;
   return null;

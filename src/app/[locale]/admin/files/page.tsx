@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Download, Upload } from "lucide-react";
+import { Download, Eye, Upload } from "lucide-react";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { Pagination, searchString, SortTh, TableShell, Th } from "@/components/tables/table-kit";
@@ -12,7 +12,7 @@ import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { ADMIN_PAGE_SIZE, listAdminFiles, listCategories, userDisplayName, userLabels, userOptions } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/auth/session";
-import { FILE_KINDS, FILE_TYPES, kindFromMime, sanitizeDisplayName } from "@/lib/files/rules";
+import { FILE_KINDS, FILE_TYPES, isPreviewable, kindFromMime, sanitizeDisplayName } from "@/lib/files/rules";
 import { formatBytes } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
 import { createClient } from "@/lib/supabase/server";
@@ -184,6 +184,17 @@ export default async function AdminFilesPage({ params, searchParams }: PageProps
                   </td>
                   <td className="px-4 py-3.5">
                     <div className="flex items-center justify-end gap-1">
+                      {isPreviewable(f.mimeType) ? (
+                        <a
+                          href={`/api/files/${f.id}/preview`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"
+                          aria-label={t("Files.table.previewLabel", { name })}
+                        >
+                          <Eye aria-hidden="true" className="size-4" />
+                        </a>
+                      ) : null}
                       <a
                         href={`/api/files/${f.id}/download`}
                         className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"

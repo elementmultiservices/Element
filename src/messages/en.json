@@ -738,6 +738,8 @@
       "actions": "Actions",
       "download": "Download",
       "downloadLabel": "Download {name}",
+      "preview": "Preview",
+      "previewLabel": "Preview {name} (opens in a new tab)",
       "noCategory": "No category"
     },
     "source": {

@@ -15,6 +15,7 @@ export type ApiErrorCode =
   | "invalid_name"
   | "double_extension"
   | "type_not_allowed"
+  | "not_previewable"
   | "too_large"
   | "empty_file"
   | "quota_exceeded"

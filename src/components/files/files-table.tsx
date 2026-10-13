@@ -1,10 +1,10 @@
-import { ArrowDown, ArrowUp, ArrowUpDown, Download } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Download, Eye } from "lucide-react";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
 import { formatBytes } from "@/lib/format";
 import { PAGE_SIZE, type FileRow } from "@/lib/files/queries";
-import { FILE_TYPES, kindFromMime, sanitizeDisplayName } from "@/lib/files/rules";
+import { FILE_TYPES, isPreviewable, kindFromMime, sanitizeDisplayName } from "@/lib/files/rules";
 import { cn } from "@/lib/utils";
 import type { FileListParams, FileSort } from "@/lib/validation/files";
 
@@ -135,17 +135,31 @@ export async function FilesTable({
                       {byAdmin ? t("source.admin") : t("source.self")}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3.5 text-right">
-                    {/* Plain anchor: the route checks permissions and redirects to a 60 s signed URL. */}
-                    <a
-                      href={`/api/files/${row.id}/download`}
-                      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"
-                      aria-label={t("table.downloadLabel", { name })}
-                      rel="noopener"
-                    >
-                      <Download aria-hidden="true" className="size-4" />
-                      <span className="hidden sm:inline">{t("table.download")}</span>
-                    </a>
+                  <td className="px-4 py-3.5">
+                    {/* Plain anchors: the routes check permissions and redirect to a 60 s signed URL. */}
+                    <div className="flex items-center justify-end gap-1">
+                      {isPreviewable(row.mimeType) ? (
+                        <a
+                          href={`/api/files/${row.id}/preview`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"
+                          aria-label={t("table.previewLabel", { name })}
+                        >
+                          <Eye aria-hidden="true" className="size-4" />
+                          <span className="hidden sm:inline">{t("table.preview")}</span>
+                        </a>
+                      ) : null}
+                      <a
+                        href={`/api/files/${row.id}/download`}
+                        className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"
+                        aria-label={t("table.downloadLabel", { name })}
+                        rel="noopener"
+                      >
+                        <Download aria-hidden="true" className="size-4" />
+                        <span className="hidden sm:inline">{t("table.download")}</span>
+                      </a>
+                    </div>
                   </td>
                 </tr>
               );

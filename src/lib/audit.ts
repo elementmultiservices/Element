@@ -26,6 +26,7 @@ export type AuditAction =
   | "file.uploaded"
   | "file.upload_rejected"
   | "file.downloaded"
+  | "file.previewed"
   | "file.trashed"
   | "file.restored"
   | "file.deleted_permanently"
