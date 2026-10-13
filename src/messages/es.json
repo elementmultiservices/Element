@@ -740,6 +740,9 @@
       "downloadLabel": "Descargar {name}",
       "preview": "Ver",
       "previewLabel": "Ver {name} (se abre en una pestaña nueva)",
+      "previewUnavailable": "La vista previa no está disponible para este tipo de archivo",
+      "details": "Detalles",
+      "detailsLabel": "Ver detalles de {name}",
       "noCategory": "Sin categoría"
     },
     "source": {

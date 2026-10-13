@@ -2,6 +2,7 @@ import { ArrowDown, ArrowUp, ArrowUpDown, Download, Eye } from "lucide-react";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/i18n/navigation";
+import { FileDetailsToggle } from "./file-details-toggle";
 import { formatBytes } from "@/lib/format";
 import { PAGE_SIZE, type FileRow } from "@/lib/files/queries";
 import { FILE_TYPES, isPreviewable, kindFromMime, sanitizeDisplayName } from "@/lib/files/rules";
@@ -78,8 +79,73 @@ export async function FilesTable({
 
   return (
     <div className="overflow-hidden rounded-[20px] border border-azure-50 bg-white">
-      <div className="relative overflow-x-auto">
-        <table className="w-full min-w-[640px] text-sm">
+      {/* Mobile: one card per file (name, description and three actions), no sideways scrolling. */}
+      <ul aria-label={t("table.caption")} className="divide-y divide-azure-50 sm:hidden">
+        {rows.map((row) => {
+          const name = sanitizeDisplayName(row.originalName);
+          const kind = kindFromMime(row.mimeType);
+          const byAdmin = row.uploadedBy !== row.ownerId;
+          const action = "inline-flex min-w-0 items-center justify-center gap-1 rounded-full border px-2 py-2 text-[13px] font-semibold whitespace-nowrap";
+          const details: [string, string][] = [
+            [t("table.category"), row.category ? (locale === "es" ? row.category.nameEs : row.category.nameEn) : t("table.noCategory")],
+            [t("table.type"), kind ? FILE_TYPES[kind].label : "—"],
+            [t("table.size"), formatBytes(row.sizeBytes, locale)],
+            [t("table.uploaded"), format.dateTime(new Date(row.createdAt), "short")],
+            [t("table.source"), byAdmin ? t("source.admin") : t("source.self")],
+          ];
+          return (
+            <li key={row.id} className="px-4 py-4">
+              <p className="font-medium break-words text-foreground">{name}</p>
+              {row.description ? <p className="mt-0.5 text-xs break-words text-muted-foreground">{row.description}</p> : null}
+              <FileDetailsToggle
+                label={t("table.details")}
+                ariaLabel={t("table.detailsLabel", { name })}
+                actions={
+                  <>
+                    {isPreviewable(row.mimeType) ? (
+                      <a
+                        href={`/api/files/${row.id}/preview`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(action, "border-azure-100 text-electric hover:bg-azure-25")}
+                        aria-label={t("table.previewLabel", { name })}
+                      >
+                        <Eye aria-hidden="true" className="size-4" />
+                        <span className="max-[339px]:sr-only">{t("table.preview")}</span>
+                      </a>
+                    ) : (
+                      <span aria-disabled="true" title={t("table.previewUnavailable")} className={cn(action, "border-azure-50 text-muted-foreground opacity-50")}>
+                        <Eye aria-hidden="true" className="size-4" />
+                        <span className="max-[339px]:sr-only">{t("table.preview")}</span>
+                      </span>
+                    )}
+                    <a
+                      href={`/api/files/${row.id}/download`}
+                      className={cn(action, "border-electric bg-electric text-white hover:bg-electric/90")}
+                      aria-label={t("table.downloadLabel", { name })}
+                      rel="noopener"
+                    >
+                      <Download aria-hidden="true" className="size-4" />
+                      <span className="max-[339px]:sr-only">{t("table.download")}</span>
+                    </a>
+                  </>
+                }
+              >
+                <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
+                  {details.map(([term, value]) => (
+                    <div key={term} className="contents">
+                      <dt className="text-muted-foreground">{term}</dt>
+                      <dd className="text-right font-medium text-foreground">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </FileDetailsToggle>
+            </li>
+          );
+        })}
+      </ul>
+      <div className="relative hidden overflow-x-auto sm:block">
+        <table className="w-full text-sm">
           <caption className="sr-only">{t("table.caption")}</caption>
           <thead className="border-b bg-surface text-foreground">
             <tr>
@@ -92,7 +158,7 @@ export async function FilesTable({
               </th>
               <SortHeader column="size_bytes" label={t("table.size")} params={params} basePath={basePath} className="text-right" />
               <SortHeader column="created_at" label={t("table.uploaded")} params={params} basePath={basePath} />
-              <th scope="col" className="hidden px-3 py-2.5 text-left font-semibold lg:table-cell">
+              <th scope="col" className="hidden px-3 py-2.5 text-left font-semibold xl:table-cell">
                 {t("table.source")}
               </th>
               <th scope="col" className="px-3 py-2.5 text-right font-semibold">
@@ -107,7 +173,7 @@ export async function FilesTable({
               const byAdmin = row.uploadedBy !== row.ownerId;
               return (
                 <tr key={row.id} className="transition-colors hover:bg-azure-25/60">
-                  <td className="max-w-xs px-4 py-3.5">
+                  <td className="w-full max-w-0 px-4 py-3.5">
                     <p className="truncate font-medium text-foreground" title={name}>
                       {name}
                     </p>
@@ -117,7 +183,7 @@ export async function FilesTable({
                       </p>
                     ) : null}
                   </td>
-                  <td className="hidden px-4 py-3.5 text-muted-foreground md:table-cell">
+                  <td className="hidden px-4 py-3.5 whitespace-nowrap text-muted-foreground md:table-cell">
                     {row.category ? (locale === "es" ? row.category.nameEs : row.category.nameEn) : t("table.noCategory")}
                   </td>
                   <td className="px-4 py-3.5 text-muted-foreground">{kind ? FILE_TYPES[kind].label : "—"}</td>
@@ -127,7 +193,7 @@ export async function FilesTable({
                   <td className="px-4 py-3.5 whitespace-nowrap text-muted-foreground">
                     <time dateTime={row.createdAt}>{format.dateTime(new Date(row.createdAt), "short")}</time>
                   </td>
-                  <td className="hidden px-4 py-3.5 lg:table-cell">
+                  <td className="hidden px-4 py-3.5 xl:table-cell">
                     <Badge
                       variant="outline"
                       className={cn("font-normal", byAdmin ? "border-info/30 bg-info-bg text-info" : "text-muted-foreground")}
@@ -143,21 +209,21 @@ export async function FilesTable({
                           href={`/api/files/${row.id}/preview`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"
+                          className="inline-flex size-9 items-center justify-center rounded-full text-electric hover:bg-azure-25"
                           aria-label={t("table.previewLabel", { name })}
+                          title={t("table.preview")}
                         >
                           <Eye aria-hidden="true" className="size-4" />
-                          <span className="hidden sm:inline">{t("table.preview")}</span>
                         </a>
                       ) : null}
                       <a
                         href={`/api/files/${row.id}/download`}
-                        className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-electric hover:bg-azure-25"
+                        className="inline-flex size-9 items-center justify-center rounded-full text-electric hover:bg-azure-25"
                         aria-label={t("table.downloadLabel", { name })}
+                        title={t("table.download")}
                         rel="noopener"
                       >
                         <Download aria-hidden="true" className="size-4" />
-                        <span className="hidden sm:inline">{t("table.download")}</span>
                       </a>
                     </div>
                   </td>
