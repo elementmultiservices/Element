@@ -11,7 +11,7 @@ import { generateInviteLink, generateRecoveryLink } from "@/lib/auth/links";
 import { consumeRecoveryCode, issueRecoveryCodes, resetMfaFactors } from "@/lib/auth/recovery-codes";
 import { getSessionContext, homePathFor, requireSession } from "@/lib/auth/session";
 import { sendAuthLinkEmail } from "@/lib/email/auth-emails";
-import { sendSecurityNotice } from "@/lib/email/security-emails";
+import { notifyUploadGrantOnVerification, sendSecurityNotice } from "@/lib/email/security-emails";
 import { serverEnv } from "@/lib/env";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
 import { hashIdentifier } from "@/lib/security/hash";
@@ -283,6 +283,17 @@ export async function confirmLinkAction(_prev: FormState, formData: FormData): P
     { actorId: data.user.id, action: "auth.link.verified", targetType: "user", targetId: data.user.id, metadata: { type: parsed.data.type } },
     meta,
   );
+  // An invite link is the first verification of the address (admin invitation or self sign-up).
+  if (parsed.data.type === "invite") {
+    const userId = data.user.id;
+    after(async () => {
+      try {
+        await notifyUploadGrantOnVerification(userId, meta);
+      } catch {
+        console.error("[auth] upload grant notice failed");
+      }
+    });
+  }
   return redirect({ href: "/update-password", locale });
 }
 
@@ -307,6 +318,8 @@ export async function updatePasswordAction(
   if (!(await rateLimit("passwordUpdateUser", session.userId)).success) return { status: "error", error: "rateLimited" };
 
   const supabase = await createClient();
+  // The first password of an invited or self-registered account is not a change worth notifying.
+  const { data: hadPassword } = await supabase.rpc("my_has_password");
   const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
   if (error) {
     if (error.code === "same_password") return { status: "error", error: "samePassword" };
@@ -318,6 +331,15 @@ export async function updatePasswordAction(
   // Other sessions are revoked after a password change.
   await supabase.auth.signOut({ scope: "others" });
   await audit({ actorId: session.userId, action: "auth.password.updated", targetType: "user", targetId: session.userId }, meta);
+  if (hadPassword === true) {
+    after(async () => {
+      try {
+        await sendSecurityNotice({ kind: "passwordChanged", userId: session.userId, created: false });
+      } catch {
+        console.error("[auth] password notice failed");
+      }
+    });
+  }
 
   const mfaRequired = session.role === "admin" || session.hasVerifiedMfa;
   const href = mfaRequired && session.aal !== "aal2" ? "/mfa" : homePathFor(session.role);

@@ -165,6 +165,8 @@ export async function forcePasswordResetAction(_prev: Result, formData: FormData
   const supabase = await createClient();
   const user = await getUser(supabase, id);
   if (!user) return { status: "error", error: "notFound" };
+  // A deactivated account is banned: the emailed link could not be used.
+  if (!user.isActive) return { status: "error", error: "userInactive" };
 
   const admin = createAdminClient();
   const unusable = `${randomBytes(48).toString("base64url")}Aa1`;

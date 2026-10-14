@@ -42,6 +42,7 @@ export type AuditAction =
   | "user.upload.revoked"
   | "user.upload.preauthorized"
   | "user.upload.preauthorization_removed"
+  | "user.upload.grant_notified"
   | "category.created"
   | "category.renamed"
   | "category.archived"

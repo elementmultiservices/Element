@@ -578,7 +578,8 @@
     "migrationPending": "Falta aplicar la actualización de la base de datos (migración 20261013000100). Ejecútela en el editor SQL de Supabase y vuelva a intentarlo.",
     "notPublished": "La publicación debe estar publicada para enviarla a los suscriptores.",
     "noSubscribers": "Todavía no hay suscriptores activos.",
-    "codeInvalid": "El código es incorrecto o ya venció. Solicite uno nuevo si es necesario."
+    "codeInvalid": "El código es incorrecto o ya venció. Solicite uno nuevo si es necesario.",
+    "userInactive": "Esta cuenta está desactivada. Actívela antes de forzar el cambio de contraseña."
   },
   "NotFound": {
     "code": "Error 404",
@@ -718,6 +719,17 @@
       "body": "Un administrador autorizó su cuenta de Element para subir documentos. Ya puede hacerlo desde su panel.",
       "cta": "Iniciar sesión",
       "ignore": "Si no esperaba este cambio, comuníquese con el administrador."
+    },
+    "passwordChanged": {
+      "subject": "La contraseña de su cuenta cambió",
+      "preview": "Se actualizó la contraseña de su cuenta de Element.",
+      "heading": "Su contraseña cambió",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "bodyChanged": "La contraseña de su cuenta de Element se cambió correctamente. Por seguridad, se cerraron las demás sesiones abiertas.",
+      "bodyCreated": "Se creó una contraseña para su cuenta de Element. Desde ahora también puede iniciar sesión con su correo y esta contraseña.",
+      "cta": "Iniciar sesión",
+      "ignore": "Si usted no hizo este cambio, restablezca su contraseña de inmediato y comuníquese con el administrador."
     }
   },
   "Files": {

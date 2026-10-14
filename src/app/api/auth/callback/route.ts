@@ -1,7 +1,8 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { after, NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, isAppLocale, LOCALE_COOKIE } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { ACTIVITY_COOKIE, activityCookieOptions, signActivity } from "@/lib/auth/activity";
+import { notifyUploadGrantOnVerification } from "@/lib/email/security-emails";
 import { requestMeta } from "@/lib/security/request-meta";
 import { createRouteClient } from "@/lib/supabase/route";
 
@@ -50,6 +51,19 @@ export async function GET(request: NextRequest) {
     }
   } else {
     locale = ctx.preferred_locale;
+  }
+
+  // Google verified the address just now (new account, or an unverified sign-up
+  // completed with Google): tell the owner about upload access granted before.
+  const confirmedAt = user.email_confirmed_at ? new Date(user.email_confirmed_at).getTime() : 0;
+  if (Date.now() - confirmedAt < NEW_ACCOUNT_WINDOW_MS) {
+    after(async () => {
+      try {
+        await notifyUploadGrantOnVerification(user.id, meta);
+      } catch {
+        console.error("[auth] upload grant notice failed");
+      }
+    });
   }
 
   await audit(

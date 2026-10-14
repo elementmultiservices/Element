@@ -578,7 +578,8 @@
     "migrationPending": "The database update (migration 20261013000100) has not been applied yet. Run it in the Supabase SQL editor and try again.",
     "notPublished": "The post must be published before it can be sent to subscribers.",
     "noSubscribers": "There are no active subscribers yet.",
-    "codeInvalid": "The code is incorrect or has expired. Request a new one if needed."
+    "codeInvalid": "The code is incorrect or has expired. Request a new one if needed.",
+    "userInactive": "This account is deactivated. Activate it before forcing a password reset."
   },
   "NotFound": {
     "code": "Error 404",
@@ -718,6 +719,17 @@
       "body": "An administrator has authorized your Element account to upload documents. You can now do so from your dashboard.",
       "cta": "Sign in",
       "ignore": "If you were not expecting this change, please contact the administrator."
+    },
+    "passwordChanged": {
+      "subject": "Your account password changed",
+      "preview": "The password of your Element account was updated.",
+      "heading": "Your password changed",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "bodyChanged": "The password of your Element account was changed successfully. For your security, your other open sessions were signed out.",
+      "bodyCreated": "A password was created for your Element account. From now on you can also sign in with your email and this password.",
+      "cta": "Sign in",
+      "ignore": "If you did not make this change, reset your password immediately and contact the administrator."
     }
   },
   "Files": {

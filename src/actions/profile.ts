@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { after } from "next/server";
 import { cookies } from "next/headers";
 import { redirect } from "@/i18n/navigation";
 import { LOCALE_COOKIE } from "@/i18n/routing";
@@ -9,6 +10,7 @@ import { consumeEmailCode, issueEmailCode } from "@/lib/auth/email-code";
 import { deleteRecoveryCodes, issueRecoveryCodes } from "@/lib/auth/recovery-codes";
 import { homePathFor, requireUser } from "@/lib/auth/session";
 import { sendCodeEmail } from "@/lib/email/auth-emails";
+import { sendSecurityNotice } from "@/lib/email/security-emails";
 import { serverEnv } from "@/lib/env";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
 import { hashIdentifier } from "@/lib/security/hash";
@@ -116,6 +118,13 @@ export async function changePasswordAction(
   }
   await supabase.auth.signOut({ scope: "others" });
   await audit({ actorId: session.userId, action: "auth.password.updated", targetType: "user", targetId: session.userId }, meta);
+  after(async () => {
+    try {
+      await sendSecurityNotice({ kind: "passwordChanged", userId: session.userId, created: false });
+    } catch {
+      console.error("[profile] password notice failed");
+    }
+  });
   return { status: "success" };
 }
 
@@ -174,6 +183,13 @@ export async function setPasswordAction(_prev: FormState<SetPasswordField>, form
   }
   await supabase.auth.signOut({ scope: "others" });
   await audit({ actorId: session.userId, action: "auth.password.created", targetType: "user", targetId: session.userId }, meta);
+  after(async () => {
+    try {
+      await sendSecurityNotice({ kind: "passwordChanged", userId: session.userId, created: true });
+    } catch {
+      console.error("[profile] password notice failed");
+    }
+  });
   return { status: "success" };
 }
 

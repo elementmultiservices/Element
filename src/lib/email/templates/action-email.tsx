@@ -1,4 +1,4 @@
-import { Body, Button, Container, Head, Heading, Hr, Html, Link, Preview, Section, Text } from "@react-email/components";
+import { Body, Button, Container, Head, Heading, Hr, Html, Img, Link, Preview, Section, Text } from "@react-email/components";
 
 /**
  * Institutional email layout shared by every transactional message.
@@ -32,6 +32,9 @@ const colors = {
 
 const font = "'Instrument Sans', 'Segoe UI', Helvetica, Arial, sans-serif";
 
+/** Same hosted logo as the Supabase auth templates; absolute so it also loads in emails sent from development. */
+const logoUrl = "https://www.elementmultiservices.com/brand/element-logo-email.png";
+
 export function ActionEmail(props: ActionEmailProps) {
   return (
     <Html lang={props.locale}>
@@ -39,8 +42,8 @@ export function ActionEmail(props: ActionEmailProps) {
       <Preview>{props.preview}</Preview>
       <Body style={{ backgroundColor: colors.surface, fontFamily: font, margin: 0, padding: "24px 0" }}>
         <Container style={{ backgroundColor: "#ffffff", border: `1px solid ${colors.border}`, maxWidth: 560, margin: "0 auto" }}>
-          <Section style={{ backgroundColor: colors.primary, padding: "18px 32px" }}>
-            <Text style={{ color: "#ffffff", fontSize: 20, fontWeight: 500, letterSpacing: "0.04em", margin: 0 }}>Element</Text>
+          <Section style={{ backgroundColor: colors.primary, padding: "22px 32px" }}>
+            <Img src={logoUrl} alt="Element Multiservices" width="162" height="30" style={{ display: "block", border: 0, color: "#ffffff", fontSize: 18, fontWeight: 600 }} />
           </Section>
           <Section style={{ padding: "28px 32px 8px" }}>
             <Heading as="h1" style={{ color: colors.primary, fontSize: 20, fontWeight: 600, margin: "0 0 16px" }}>
