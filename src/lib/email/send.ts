@@ -25,12 +25,12 @@ export async function sendEmail({ to, subject, react }: SendEmailInput): Promise
     const resend = new Resend(env.RESEND_API_KEY);
     const { error } = await resend.emails.send({ from: env.EMAIL_FROM, to, subject, react });
     if (error) {
-      console.error(`[email] send failed: ${error.name}`);
+      console.error(`[email] send failed: ${error.name} — ${error.message}`);
       return false;
     }
     return true;
-  } catch {
-    console.error("[email] send threw");
+  } catch (err) {
+    console.error(`[email] send threw: ${err instanceof Error ? err.message : String(err)}`);
     return false;
   }
 }

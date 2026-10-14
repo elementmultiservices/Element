@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowRight, Check, MessageCircle } from "lucide-react";
 import { CtaPanel } from "@/components/marketing/cta-panel";
@@ -6,6 +7,7 @@ import { delay, stagger } from "@/components/marketing/motion";
 import { SmartLink } from "@/components/marketing/smart-link";
 import { ServicesExplorer, type ServiceGroup } from "@/components/services/services-explorer";
 import { Button } from "@/components/ui/button";
+import { clientMessages } from "@/i18n/client-messages";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { getSiteContact } from "@/lib/site-settings";
@@ -73,29 +75,32 @@ export default async function ServicesPage({ params }: PageProps<"/[locale]/serv
 
   return (
     <>
-      <ServicesExplorer
-        bookingHref={contact.bookingHref}
-        groups={groups}
-        taxesExtras={taxesExtras}
-        intro={
-          <>
-            <p style={delay(0)} className="motion-enter text-[15px] text-graphite">
-              {t("eyebrow")}
-            </p>
-            <h1
-              style={delay(1)}
-              className="motion-enter text-[44px] leading-[1] font-semibold tracking-[-0.03em] text-ink sm:text-6xl lg:text-[76px]"
-            >
-              {t("titleStart")}
-              <br />
-              <span className="text-electric">{t("titleEnd")}</span>
-            </h1>
-            <p style={delay(2)} className="motion-enter max-w-[600px] text-base leading-relaxed text-graphite sm:text-lg">
-              {t("body")}
-            </p>
-          </>
-        }
-      />
+      {/* The explorer only needs its search and filter labels in the browser. */}
+      <NextIntlClientProvider messages={await clientMessages("ServicesPage.search", "ServicesPage.filters")}>
+        <ServicesExplorer
+          bookingHref={contact.bookingHref}
+          groups={groups}
+          taxesExtras={taxesExtras}
+          intro={
+            <>
+              <p style={delay(0)} className="motion-enter text-[15px] text-graphite">
+                {t("eyebrow")}
+              </p>
+              <h1
+                style={delay(1)}
+                className="motion-enter text-[44px] leading-[1] font-semibold tracking-[-0.03em] text-ink sm:text-6xl lg:text-[76px]"
+              >
+                {t("titleStart")}
+                <br />
+                <span className="text-electric">{t("titleEnd")}</span>
+              </h1>
+              <p style={delay(2)} className="motion-enter max-w-[600px] text-base leading-relaxed text-graphite sm:text-lg">
+                {t("body")}
+              </p>
+            </>
+          }
+        />
+      </NextIntlClientProvider>
       <div className="h-16 lg:h-24" />
       <CtaPanel id="services-cta" title={t("cta.title")} body={t("cta.body")}>
         <div className="flex flex-col gap-3 sm:flex-row lg:shrink-0">

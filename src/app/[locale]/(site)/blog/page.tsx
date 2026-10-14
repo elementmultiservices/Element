@@ -31,13 +31,15 @@ export default async function BlogPage({ params, searchParams }: PageProps<"/[lo
   const { locale: rawLocale } = await params;
   const locale = toLocale(rawLocale);
   setRequestLocale(locale);
-  const t = await getTranslations("Blog");
-  const contact = await getSiteContact();
-  const tn = await getTranslations("Nav");
-  const format = await getFormatter();
   const { category, page, kind } = paramsSchema.parse(await searchParams);
-
-  const [list, categories] = await Promise.all([listPublishedPosts(locale, { category, page, kind }), listPublicCategories(locale)]);
+  const [t, tn, format, contact, list, categories] = await Promise.all([
+    getTranslations("Blog"),
+    getTranslations("Nav"),
+    getFormatter(),
+    getSiteContact(),
+    listPublishedPosts(locale, { category, page, kind }),
+    listPublicCategories(locale),
+  ]);
   const query = (overrides: { category?: string; kind?: string; page?: number }) => {
     const q: Record<string, string> = {};
     const c = "category" in overrides ? overrides.category : category;
@@ -126,7 +128,7 @@ export default async function BlogPage({ params, searchParams }: PageProps<"/[lo
       {magazine && featured ? (
         <section aria-label={t("featured")} className="mx-auto grid max-w-[1240px] gap-4 px-4 sm:px-6 lg:grid-cols-[1.15fr_1fr]">
           <article style={delay(4)} className="motion-enter-scale group relative flex min-h-[420px] flex-col justify-end overflow-hidden rounded-[32px] bg-azure-50 p-4 lg:min-h-[480px]">
-            <PostCover post={featured} className="absolute inset-0" sizes="(min-width: 1024px) 55vw, 100vw" iconClass="size-24 -translate-y-16" />
+            <PostCover post={featured} className="absolute inset-0" sizes="(min-width: 1024px) 55vw, 100vw" iconClass="size-24 -translate-y-16" preload />
             <div className="relative flex flex-col gap-3 rounded-[24px] bg-white p-6 shadow-[0_20px_40px_rgba(5,13,41,0.12)]">
               <p className="font-mono text-[11px] tracking-[0.14em] text-electric">
                 {featured.kind === "update" ? t("kinds.update").toUpperCase() : t("featured")}

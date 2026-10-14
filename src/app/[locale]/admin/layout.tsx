@@ -1,4 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import { clientMessages } from "@/i18n/client-messages";
 import { toLocale } from "@/i18n/routing";
 import { PanelShell } from "@/components/layout/panel-shell";
 import { Toaster } from "@/components/ui/sonner";
@@ -10,9 +12,11 @@ export default async function AdminLayout({ children, params }: LayoutProps<"/[l
   const session = await requireAdmin();
 
   return (
-    <PanelShell variant="admin" session={session}>
-      {children}
-      <Toaster />
-    </PanelShell>
+    <NextIntlClientProvider messages={await clientMessages("Admin", "Panel", "Profile", "Upload")}>
+      <PanelShell variant="admin" session={session}>
+        {children}
+        <Toaster />
+      </PanelShell>
+    </NextIntlClientProvider>
   );
 }

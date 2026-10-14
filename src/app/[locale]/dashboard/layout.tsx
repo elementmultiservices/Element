@@ -1,4 +1,6 @@
+import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import { clientMessages } from "@/i18n/client-messages";
 import { PanelShell } from "@/components/layout/panel-shell";
 import { redirect } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
@@ -11,8 +13,10 @@ export default async function DashboardLayout({ children, params }: LayoutProps<
   if (session.role === "admin") redirect({ href: "/admin", locale: toLocale(locale) });
 
   return (
-    <PanelShell variant="user" session={session}>
-      {children}
-    </PanelShell>
+    <NextIntlClientProvider messages={await clientMessages("Panel", "Profile", "Upload", "Admin.files")}>
+      <PanelShell variant="user" session={session}>
+        {children}
+      </PanelShell>
+    </NextIntlClientProvider>
   );
 }

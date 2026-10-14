@@ -52,11 +52,14 @@ export default async function BlogPostPage({ params }: PageProps<"/[locale]/blog
   if (!post.title || !post.slug) return redirect({ href: "/blog", locale });
   if (post.slug !== slug) return redirect({ href: `/blog/${post.slug}`, locale });
 
-  const t = await getTranslations();
-  const format = await getFormatter();
-  const contact = await getSiteContact();
+  const [t, format, contact, latest] = await Promise.all([
+    getTranslations(),
+    getFormatter(),
+    getSiteContact(),
+    listPublishedPosts(locale, { limit: 7 }),
+  ]);
   const others = locales.filter((l) => l !== locale && post.slugs[l]);
-  const recent = (await listPublishedPosts(locale, { limit: 7 })).posts.filter((p) => p.id !== post.id);
+  const recent = latest.posts.filter((p) => p.id !== post.id);
   const sideRecent = recent.slice(0, 3);
   const moreRecent = recent.slice(3, 6).length === 3 ? recent.slice(3, 6) : recent.slice(0, 3);
 

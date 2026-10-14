@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { ArrowRight, CalendarDays, ChartNoAxesColumn, FileText, IdCard, Newspaper, ShieldCheck, type LucideIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { coverUrl, type PostSummary } from "@/lib/blog/queries";
+import { coverUrl, optimizeCovers, type PostSummary } from "@/lib/blog/queries";
 import { cn } from "@/lib/utils";
 
 // Covers for posts without an image: a gradient and an icon, picked per post.
@@ -21,15 +21,28 @@ function fallbackFor(id: string) {
   return FALLBACKS[hash % FALLBACKS.length] ?? FALLBACKS[0]!;
 }
 
-export function PostCover({ post, className, sizes, iconClass = "size-10" }: { post: PostSummary; className?: string; sizes: string; iconClass?: string }) {
+export function PostCover({
+  post,
+  className,
+  sizes,
+  iconClass = "size-10",
+  preload = false,
+}: {
+  post: PostSummary;
+  className?: string;
+  sizes: string;
+  iconClass?: string;
+  /** For the cover that is the largest element above the fold. */
+  preload?: boolean;
+}) {
   const src = coverUrl(post.coverPath);
   const fallback = fallbackFor(post.id);
   const Icon = fallback.icon;
   return (
     <div className={cn("relative overflow-hidden", !src && fallback.bg, className)}>
       {src ? (
-        // Covers are public images from our own storage; served as-is.
-        <Image src={src} alt="" fill unoptimized sizes={sizes} className="object-cover transition-transform duration-700 group-hover:scale-105" />
+        // Covers are public images from our own storage, resized by the image optimizer.
+        <Image src={src} alt="" fill unoptimized={!optimizeCovers} preload={preload} sizes={sizes} className="object-cover transition-transform duration-700 group-hover:scale-105" />
       ) : (
         <span aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
           <Icon className={cn(iconClass, "transition-transform duration-700 group-hover:scale-110", fallback.dark ? "text-white/85" : "text-cobalt")} strokeWidth={1.5} />

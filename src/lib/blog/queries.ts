@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import type { AppLocale } from "@/i18n/routing";
 import { publicEnv } from "@/lib/public-env";
 import { createPublicClient } from "@/lib/supabase/public";
@@ -17,6 +18,12 @@ export const POST_KINDS = ["article", "update"] as const;
 const NOT_MIGRATED = new Set(["PGRST202", "PGRST204", "PGRST205", "42883", "42703", "42P01"]);
 export const isNotMigrated = (code: string | undefined) => !!code && NOT_MIGRATED.has(code);
 export const COVER_BUCKET = "blog-covers";
+
+/**
+ * Covers go through Next.js image optimization (resized, WebP), except with a
+ * local Supabase: the optimizer refuses loopback hosts.
+ */
+export const optimizeCovers = !/^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/.test(publicEnv.supabaseUrl);
 
 export function coverUrl(path: string | null): string | null {
   if (!path) return null;
@@ -54,7 +61,7 @@ type FeedRow = {
   total_count: number;
 };
 
-export async function listPublishedPosts(
+async function fetchPublishedPosts(
   locale: AppLocale,
   options: { category?: string; kind?: PostKind; page?: number; limit?: number } = {},
 ): Promise<{ posts: PostSummary[]; total: number; pageCount: number; page: number }> {
@@ -125,7 +132,7 @@ type ArticleRow = {
   reading_minutes?: number;
 };
 
-export async function getPublishedPost(locale: AppLocale, slug: string): Promise<PublicPost | null> {
+async function fetchPublishedPost(locale: AppLocale, slug: string): Promise<PublicPost | null> {
   const client = createPublicClient();
   const args = { p_locale: locale, p_slug: slug };
   let { data, error } = (await client.rpc("blog_article", args).maybeSingle()) as { data: ArticleRow | null; error: { code: string } | null };
@@ -150,16 +157,33 @@ export async function getPublishedPost(locale: AppLocale, slug: string): Promise
   };
 }
 
-export async function listPublicCategories(locale: AppLocale): Promise<{ name: string; slug: string; count: number }[]> {
+async function fetchPublicCategories(locale: AppLocale): Promise<{ name: string; slug: string; count: number }[]> {
   const { data, error } = await createPublicClient().rpc("blog_categories", { p_locale: locale });
   if (error) throw new Error(`[blog] categories failed: ${error.code}`);
   return (data ?? []).map((c) => ({ name: c.name, slug: c.slug, count: c.post_count }));
 }
 
-export async function sitemapPosts(): Promise<{ slugs: Partial<Record<AppLocale, string>>; updatedAt: string }[]> {
+async function fetchSitemapPosts(): Promise<{ slugs: Partial<Record<AppLocale, string>>; updatedAt: string }[]> {
   const { data, error } = await createPublicClient().rpc("blog_sitemap");
-  if (error) return [];
+  if (error) throw new Error(`[blog] sitemap failed: ${error.code}`);
   return (data ?? []).map((r) => ({ slugs: (r.slugs ?? {}) as Partial<Record<AppLocale, string>>, updatedAt: r.updated_at }));
+}
+
+/**
+ * Public reads are shared across requests (the arguments are the cache key).
+ * Admin changes expire BLOG_TAG; the short revalidate lets scheduled posts
+ * appear on time. Errors throw, so they are never cached.
+ */
+export const BLOG_TAG = "blog";
+const blogCache = { tags: [BLOG_TAG], revalidate: 60 };
+
+export const listPublishedPosts = unstable_cache(fetchPublishedPosts, ["blog-feed"], blogCache);
+export const getPublishedPost = unstable_cache(fetchPublishedPost, ["blog-post"], blogCache);
+export const listPublicCategories = unstable_cache(fetchPublicCategories, ["blog-categories"], blogCache);
+const cachedSitemapPosts = unstable_cache(fetchSitemapPosts, ["blog-sitemap"], blogCache);
+
+export async function sitemapPosts(): Promise<{ slugs: Partial<Record<AppLocale, string>>; updatedAt: string }[]> {
+  return cachedSitemapPosts().catch(() => []);
 }
 
 // ---------------------------------------------------------------------------

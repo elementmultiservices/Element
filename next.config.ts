@@ -22,11 +22,16 @@ const securityHeaders = [
   ...(isProduction ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" }] : []),
 ];
 
+// Blog covers are the only remote images: the public bucket of our own Supabase project.
+const supabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin : null;
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   images: {
-    remotePatterns: [],
+    remotePatterns: supabaseOrigin ? [new URL(`${supabaseOrigin}/storage/v1/object/public/blog-covers/**`)] : [],
+    // Cover paths are unique per upload, so optimized copies never go stale.
+    minimumCacheTTL: 31536000,
   },
   // Pages that were removed: keep old links working.
   async redirects() {

@@ -12,9 +12,7 @@ import { LanguageSwitcher } from "./language-switcher";
 import { MobileNav } from "./mobile-nav";
 
 export async function SiteHeader() {
-  const t = await getTranslations();
-  const contact = await getSiteContact();
-  const session = await getSessionContext();
+  const [t, contact, session] = await Promise.all([getTranslations(), getSiteContact(), getSessionContext()]);
   const accountHref = session ? homePathFor(session.role) : "/sign-in";
   const accountLabel = session ? t("Common.myPanel") : t("Common.signIn");
 

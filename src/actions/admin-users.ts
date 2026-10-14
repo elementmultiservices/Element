@@ -84,7 +84,7 @@ export async function inviteUserAction(_prev: InviteState, formData: FormData): 
   );
 
   const sent = await sendAuthLinkEmail({ kind: "invitation", to: email, locale, name: fullName, url: link.url });
-  if (!sent) return { status: "error", error: "deliveryFailed", invitedId: link.userId };
+  if (!sent) return { status: "error", error: "deliveryFailed", invitedId: link.userId, invitedEmail: email };
   return { status: "success", invitedId: link.userId, invitedEmail: email };
 }
 

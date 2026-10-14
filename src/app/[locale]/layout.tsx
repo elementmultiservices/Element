@@ -3,17 +3,19 @@ import { Geist_Mono, Instrument_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { clientMessages } from "@/i18n/client-messages";
 import { routing } from "@/i18n/routing";
 import { publicEnv } from "@/lib/public-env";
 
+// Only the latin subset is preloaded: it covers Spanish and English text.
 const instrument = Instrument_Sans({
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   variable: "--font-instrument",
   display: "swap",
 });
 
 const geistMono = Geist_Mono({
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   variable: "--font-geist-mono",
   display: "swap",
 });
@@ -56,7 +58,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         >
           {t("skipToContent")}
         </a>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={await clientMessages()}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

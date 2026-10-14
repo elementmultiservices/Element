@@ -1,10 +1,11 @@
 "use server";
 
+import { updateTag } from "next/cache";
 import type { AppLocale } from "@/i18n/routing";
 import { locales } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/auth/session";
-import { COVER_BUCKET, isNotMigrated } from "@/lib/blog/queries";
+import { BLOG_TAG, COVER_BUCKET, isNotMigrated } from "@/lib/blog/queries";
 import { plainText, sanitizePostHtml } from "@/lib/blog/sanitize";
 import { slugify } from "@/lib/blog/slug";
 import type { FormState, ValidationKey } from "@/lib/forms";
@@ -133,6 +134,7 @@ export async function savePostAction(_prev: PostState, formData: FormData): Prom
     return { status: "error", error: "generic" };
   }
 
+  updateTag(BLOG_TAG);
   const title = translations.en?.title ?? translations.es?.title ?? "";
   await audit({
     actorId: session.userId,
@@ -163,6 +165,7 @@ export async function deletePostAction(_prev: FormState<never>, formData: FormDa
     console.error(`[blog] delete failed: ${error.code}`);
     return { status: "error", error: "generic" };
   }
+  updateTag(BLOG_TAG);
   if (post.cover_path) await createAdminClient().storage.from(COVER_BUCKET).remove([post.cover_path]);
 
   await audit({
@@ -213,6 +216,7 @@ export async function savePostCategoryAction(
     return { status: "error", error: "generic" };
   }
   if (!data) return { status: "error", error: "notFound" };
+  updateTag(BLOG_TAG);
 
   await audit({
     actorId: session.userId,
@@ -237,6 +241,7 @@ export async function deletePostCategoryAction(_prev: FormState<never>, formData
     return { status: "error", error: "generic" };
   }
   if (!data) return { status: "error", error: "notFound" };
+  updateTag(BLOG_TAG);
 
   await audit({
     actorId: session.userId,

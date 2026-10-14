@@ -12,7 +12,6 @@ import { Testimonials } from "@/components/home/testimonials";
 import { Vault } from "@/components/home/vault";
 import { WhyElement } from "@/components/home/why-element";
 import { toLocale } from "@/i18n/routing";
-import { listPublishedPosts } from "@/lib/blog/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
@@ -24,7 +23,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale: rawLocale } = await params;
   const locale = toLocale(rawLocale);
   setRequestLocale(locale);
-  const latest = await listPublishedPosts(locale, { limit: 3 });
 
   return (
     <>
@@ -37,7 +35,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <Services />
       <Location />
       <Testimonials />
-      <LatestNews posts={latest.posts} />
+      <LatestNews locale={locale} />
       <Faq />
       <FinalCta />
     </>

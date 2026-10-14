@@ -1,9 +1,10 @@
+import { revalidateTag } from "next/cache";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 import { apiError, apiOk, authFailure } from "@/lib/api";
 import { audit } from "@/lib/audit";
 import { authorize } from "@/lib/auth/session";
-import { COVER_BUCKET } from "@/lib/blog/queries";
+import { BLOG_TAG, COVER_BUCKET } from "@/lib/blog/queries";
 import { rateLimit } from "@/lib/security/rate-limit";
 import { isSameOrigin } from "@/lib/security/origin";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -71,6 +72,7 @@ export async function POST(request: NextRequest, { params }: RouteContext<"/api/
     console.error(`[blog] cover update failed: ${error.code}`);
     return apiError("server_error", 500);
   }
+  revalidateTag(BLOG_TAG, { expire: 0 });
   if (ctx.post.cover_path) await storage.remove([ctx.post.cover_path]);
 
   await audit({ actorId: ctx.adminId, action: "post.cover_updated", targetType: "post", targetId: ctx.post.id, metadata: { size_bytes: buf.byteLength, type: type.ext } });
@@ -84,6 +86,7 @@ export async function DELETE(request: NextRequest, { params }: RouteContext<"/ap
 
   const { error } = await ctx.supabase.from("posts").update({ cover_path: null }).eq("id", ctx.post.id);
   if (error) return apiError("server_error", 500);
+  revalidateTag(BLOG_TAG, { expire: 0 });
   await createAdminClient().storage.from(COVER_BUCKET).remove([ctx.post.cover_path]);
 
   await audit({ actorId: ctx.adminId, action: "post.cover_removed", targetType: "post", targetId: ctx.post.id });

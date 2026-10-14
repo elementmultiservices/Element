@@ -27,10 +27,17 @@ export function InviteForm() {
   const invite = state as InviteState;
   const fe = (f: InviteField) => (state.fieldErrors?.[f] ? tv(state.fieldErrors[f]) : undefined);
 
-  if (state.status === "success" && invite.invitedId && state !== dismissed) {
+  // The account is created even when the email could not be delivered; the
+  // invitation can then be resent from the user's page.
+  const emailFailed = state.status === "error" && state.error === "deliveryFailed";
+  if ((state.status === "success" || emailFailed) && invite.invitedId && state !== dismissed) {
     return (
       <div className="space-y-4 rounded-[24px] border border-azure-50 bg-white p-6">
-        <FormAlert variant="success">{t("success", { email: invite.invitedEmail ?? "" })}</FormAlert>
+        {emailFailed ? (
+          <FormAlert variant="error">{t("createdNoEmail", { email: invite.invitedEmail ?? "" })}</FormAlert>
+        ) : (
+          <FormAlert variant="success">{t("success", { email: invite.invitedEmail ?? "" })}</FormAlert>
+        )}
         <div className="flex flex-wrap gap-2">
           <Button asChild>
             <Link href={`/admin/users/${invite.invitedId}`}>{t("viewUser")}</Link>

@@ -1,9 +1,11 @@
 "use server";
 
+import { updateTag } from "next/cache";
 import { audit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/auth/session";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
 import { rateLimit } from "@/lib/security/rate-limit";
+import { SITE_SETTINGS_TAG } from "@/lib/site-settings";
 import { createClient } from "@/lib/supabase/server";
 import { siteSettingsSchema, type SiteSettingsField } from "@/lib/validation/admin";
 
@@ -73,6 +75,7 @@ export async function updateSiteSettingsAction(
     return { status: "error", error: "generic" };
   }
   if (!data) return { status: "error", error: "migrationPending" };
+  updateTag(SITE_SETTINGS_TAG);
 
   await audit({
     actorId: session.userId,

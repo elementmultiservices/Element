@@ -3,13 +3,13 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { PostCover } from "@/components/blog/post-card";
 import { NewsletterCard } from "@/components/newsletter/newsletter-card";
-import { type PostSummary } from "@/lib/blog/queries";
+import type { AppLocale } from "@/i18n/routing";
+import { listPublishedPosts, type PostSummary } from "@/lib/blog/queries";
 import { stagger } from "@/components/marketing/motion";
 import { container, SectionIntro } from "@/components/marketing/section-intro";
 
-export async function LatestNews({ posts }: { posts: PostSummary[] }) {
-  const t = await getTranslations("Home.blog");
-  const format = await getFormatter();
+export async function LatestNews({ locale }: { locale: AppLocale }) {
+  const [t, format, { posts }] = await Promise.all([getTranslations("Home.blog"), getFormatter(), listPublishedPosts(locale, { limit: 3 })]);
   const [featured, ...rest] = posts;
 
   const date = (post: PostSummary) =>

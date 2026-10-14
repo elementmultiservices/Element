@@ -246,8 +246,6 @@
         "encrypted": "Encrypted files",
         "twoStep": "Two-step verification"
       },
-      "learn": "Learn about My Files",
-      "enter": "Go to My Files",
       "mock": {
         "label": "Example of the document list in My Files",
         "search": "Search “W-2 2024”",
@@ -985,6 +983,7 @@
         "submit": "Send invitation",
         "submitting": "Sending…",
         "success": "The invitation was sent to {email}.",
+        "createdNoEmail": "The user {email} was created, but the invitation email could not be sent. Open their profile and use “Resend invitation” to try again.",
         "roleNote": "Invited accounts have the user role and are authorized to upload documents.",
         "another": "Invite another user",
         "viewUser": "View user"

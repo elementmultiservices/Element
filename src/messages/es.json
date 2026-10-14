@@ -246,8 +246,6 @@
         "encrypted": "Archivos cifrados",
         "twoStep": "Verificación en dos pasos"
       },
-      "learn": "Conoce Mi Archivo",
-      "enter": "Entrar a Mi Archivo",
       "mock": {
         "label": "Ejemplo de la lista de documentos en Mi Archivo",
         "search": "Buscar “W-2 2024”",
@@ -985,6 +983,7 @@
         "submit": "Enviar invitación",
         "submitting": "Enviando…",
         "success": "La invitación fue enviada a {email}.",
+        "createdNoEmail": "El usuario {email} fue creado, pero no fue posible enviar el correo de invitación. Abra su perfil y use «Reenviar invitación» para intentarlo de nuevo.",
         "roleNote": "Las cuentas invitadas tienen el rol de usuario y quedan autorizadas para subir documentos.",
         "another": "Invitar a otro usuario",
         "viewUser": "Ver usuario"

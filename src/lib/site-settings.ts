@@ -1,5 +1,6 @@
 import "server-only";
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { getLocale } from "next-intl/server";
 import { toLocale } from "@/i18n/routing";
 import { CONTACT_FALLBACK, lines, phoneHrefFor, whatsappHrefFor } from "@/lib/business";
@@ -31,18 +32,39 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   updated_at: new Date(0).toISOString(),
 };
 
-/** Raw settings row (one query per request). */
+/** Cache tag of the settings row; expired by the admin settings action. */
+export const SITE_SETTINGS_TAG = "site-settings";
+
+class SettingsReadError extends Error {
+  constructor(readonly code: string) {
+    super(`[settings] read failed: ${code}`);
+  }
+}
+
+/**
+ * The settings row, shared across requests (every public page reads it).
+ * Errors throw so they are never cached; the admin save expires the tag.
+ */
+const readStoredSettings = unstable_cache(
+  async (): Promise<SiteSettings | null> => {
+    const { data, error } = await createPublicClient().from("site_settings").select("*").eq("id", true).maybeSingle();
+    if (error) throw new SettingsReadError(error.code);
+    if (!data) return null;
+    const { id: _id, updated_by: _by, ...settings } = data;
+    return settings;
+  },
+  ["site-settings"],
+  { tags: [SITE_SETTINGS_TAG], revalidate: 3600 },
+);
+
+/** Raw settings row. */
 export const getSiteSettings = cache(async (): Promise<SiteSettings & { stored: boolean }> => {
   try {
-    const { data, error } = await createPublicClient().from("site_settings").select("*").eq("id", true).maybeSingle();
-    if (error || !data) {
-      // PGRST205 / 42P01: table not created yet (migration pending); defaults are expected.
-      if (error && error.code !== "PGRST205" && error.code !== "42P01") console.error(`[settings] read failed: ${error.code}`);
-      return { ...DEFAULT_SETTINGS, stored: false };
-    }
-    const { id: _id, updated_by: _by, ...settings } = data;
-    return { ...settings, stored: true };
-  } catch {
+    const settings = await readStoredSettings();
+    return settings ? { ...settings, stored: true } : { ...DEFAULT_SETTINGS, stored: false };
+  } catch (error) {
+    // PGRST205 / 42P01: table not created yet (migration pending); defaults are expected.
+    if (error instanceof SettingsReadError && error.code !== "PGRST205" && error.code !== "42P01") console.error(error.message);
     return { ...DEFAULT_SETTINGS, stored: false };
   }
 });

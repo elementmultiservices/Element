@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { delay } from "@/components/marketing/motion";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
-import { coverUrl } from "@/lib/blog/queries";
+import { coverUrl, optimizeCovers } from "@/lib/blog/queries";
 import { sanitizePostHtml } from "@/lib/blog/sanitize";
 import { cn } from "@/lib/utils";
 
@@ -91,7 +91,7 @@ export async function Article({
           style={delay(2)}
           className="motion-enter-scale relative mt-10 aspect-[16/9] overflow-hidden rounded-[28px] bg-azure-25 lg:mt-12 lg:aspect-[21/9] lg:rounded-[36px]"
         >
-          <Image src={cover} alt="" fill unoptimized priority sizes="(min-width: 1280px) 1240px, 100vw" className="object-cover" />
+          <Image src={cover} alt="" fill unoptimized={!optimizeCovers} preload sizes="(min-width: 1280px) 1240px, 100vw" className="object-cover" />
         </div>
       ) : (
         <div aria-hidden="true" className="mt-10 h-px bg-azure-50 lg:mt-12" />

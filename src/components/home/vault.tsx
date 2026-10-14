@@ -1,7 +1,5 @@
 import { getTranslations } from "next-intl/server";
 import { KeyRound, Lock, Search, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { stagger } from "@/components/marketing/motion";
 
@@ -41,14 +39,6 @@ export async function Vault() {
               </li>
             ))}
           </ul>
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <Button asChild size="pill-lg" className="bg-white text-ink hover:bg-azure-25">
-              <Link href="/sign-up">{t("learn")}</Link>
-            </Button>
-            <Button asChild size="pill-lg" className="border border-white/25 bg-transparent text-white hover:bg-white/10">
-              <Link href="/dashboard">{t("enter")}</Link>
-            </Button>
-          </div>
         </div>
 
         <figure aria-label={t("mock.label")} style={stagger(2)} className="reveal flex flex-col gap-4">
