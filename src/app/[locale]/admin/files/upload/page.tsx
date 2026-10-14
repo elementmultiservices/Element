@@ -40,7 +40,7 @@ export default async function AdminUploadPage({ params, searchParams }: PageProp
           { label: t("Admin.files.upload") },
         ]}
       />
-      <div className="max-w-4xl">
+      <div>
         {owners.length === 0 ? (
           <p className="rounded-[24px] border border-dashed border-azure-100 bg-surface px-6 py-10 text-center text-sm text-muted-foreground">{t("Admin.files.noOwners")}</p>
         ) : (

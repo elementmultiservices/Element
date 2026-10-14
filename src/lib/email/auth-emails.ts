@@ -36,3 +36,26 @@ export async function sendAuthLinkEmail(input: {
 
   return sendEmail({ to: input.to, subject: `${t(`${k}.subject`)} | Element`, react });
 }
+
+/** Sends a localized one-time confirmation code (e.g. to create a first password). */
+export async function sendCodeEmail(input: { kind: "setPasswordCode"; to: string; locale: AppLocale; name: string; code: string }): Promise<boolean> {
+  const t = await getTranslations({ locale: input.locale, namespace: "Email" });
+  const k = input.kind;
+  const name = input.name.trim();
+
+  const react = createElement(ActionEmail, {
+    locale: input.locale,
+    preview: t(`${k}.preview`),
+    heading: t(`${k}.heading`),
+    greeting: name ? t(`${k}.greeting`, { name }) : t(`${k}.greetingFallback`),
+    body: t(`${k}.body`),
+    code: input.code,
+    expiry: t(`${k}.expiry`),
+    ignore: t(`${k}.ignore`),
+    linkFallback: t("linkFallback"),
+    automatedNotice: t("automatedNotice"),
+    footerAddress: t("footerAddress"),
+  });
+
+  return sendEmail({ to: input.to, subject: `${t(`${k}.subject`)} | Element`, react });
+}

@@ -21,6 +21,7 @@ export const LIMITS = {
   confirmLinkIp: { tokens: 20, window: "10 m" },
   mfaUser: { tokens: 10, window: "10 m" },
   passwordUpdateUser: { tokens: 10, window: "1 h" },
+  passwordCodeUser: { tokens: 5, window: "1 h" },
   profileUpdateUser: { tokens: 30, window: "1 h" },
   uploadIntentUser: { tokens: 20, window: "10 m" },
   uploadIntentIp: { tokens: 60, window: "10 m" },
@@ -56,7 +57,8 @@ export const LOCKOUT_SECONDS = 15 * 60;
 const PREFIX = "element";
 
 let redisClient: Redis | null | undefined;
-function redis(): Redis | null {
+/** Shared Upstash client, or null in local development without Upstash. */
+export function redis(): Redis | null {
   if (redisClient !== undefined) return redisClient;
   const env = serverEnv();
   redisClient =

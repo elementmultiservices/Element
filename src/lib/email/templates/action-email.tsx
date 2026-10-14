@@ -10,8 +10,10 @@ export type ActionEmailProps = {
   heading: string;
   greeting: string;
   body: string;
-  ctaLabel: string;
-  ctaUrl: string;
+  /** One-time code shown instead of a button (e.g. to confirm an action). */
+  code?: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
   expiry?: string;
   ignore?: string;
   linkFallback: string;
@@ -46,30 +48,55 @@ export function ActionEmail(props: ActionEmailProps) {
             </Heading>
             <Text style={{ color: colors.text, fontSize: 15, lineHeight: "24px" }}>{props.greeting}</Text>
             <Text style={{ color: colors.text, fontSize: 15, lineHeight: "24px", whiteSpace: "pre-line" }}>{props.body}</Text>
-            <Section style={{ margin: "24px 0" }}>
-              <Button
-                href={props.ctaUrl}
-                style={{
-                  backgroundColor: colors.accent,
-                  borderRadius: 999,
-                  color: "#ffffff",
-                  fontSize: 15,
-                  fontWeight: 500,
-                  padding: "12px 22px",
-                  textDecoration: "none",
-                }}
-              >
-                {props.ctaLabel}
-              </Button>
-            </Section>
+            {props.code ? (
+              <Section style={{ margin: "24px 0" }}>
+                <Text
+                  style={{
+                    backgroundColor: colors.surface,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: 16,
+                    color: colors.primary,
+                    display: "inline-block",
+                    fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', monospace",
+                    fontSize: 28,
+                    fontWeight: 600,
+                    letterSpacing: "0.3em",
+                    margin: 0,
+                    padding: "12px 20px 12px 28px",
+                  }}
+                >
+                  {props.code}
+                </Text>
+              </Section>
+            ) : null}
+            {props.ctaUrl ? (
+              <Section style={{ margin: "24px 0" }}>
+                <Button
+                  href={props.ctaUrl}
+                  style={{
+                    backgroundColor: colors.accent,
+                    borderRadius: 999,
+                    color: "#ffffff",
+                    fontSize: 15,
+                    fontWeight: 500,
+                    padding: "12px 22px",
+                    textDecoration: "none",
+                  }}
+                >
+                  {props.ctaLabel}
+                </Button>
+              </Section>
+            ) : null}
             {props.expiry ? <Text style={{ color: colors.muted, fontSize: 13, lineHeight: "20px" }}>{props.expiry}</Text> : null}
             {props.ignore ? <Text style={{ color: colors.muted, fontSize: 13, lineHeight: "20px" }}>{props.ignore}</Text> : null}
-            <Text style={{ color: colors.muted, fontSize: 12, lineHeight: "18px", wordBreak: "break-all" }}>
-              {props.linkFallback}{" "}
-              <Link href={props.ctaUrl} style={{ color: colors.accent }}>
-                {props.ctaUrl}
-              </Link>
-            </Text>
+            {props.ctaUrl ? (
+              <Text style={{ color: colors.muted, fontSize: 12, lineHeight: "18px", wordBreak: "break-all" }}>
+                {props.linkFallback}{" "}
+                <Link href={props.ctaUrl} style={{ color: colors.accent }}>
+                  {props.ctaUrl}
+                </Link>
+              </Text>
+            ) : null}
           </Section>
           <Hr style={{ borderColor: colors.border, margin: 0 }} />
           <Section style={{ padding: "16px 32px" }}>

@@ -5,15 +5,17 @@ import { cookies } from "next/headers";
 import { redirect } from "@/i18n/navigation";
 import { LOCALE_COOKIE } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
+import { consumeEmailCode, issueEmailCode } from "@/lib/auth/email-code";
 import { deleteRecoveryCodes, issueRecoveryCodes } from "@/lib/auth/recovery-codes";
 import { homePathFor, requireUser } from "@/lib/auth/session";
+import { sendCodeEmail } from "@/lib/email/auth-emails";
 import { serverEnv } from "@/lib/env";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
 import { hashIdentifier } from "@/lib/security/hash";
 import { isLockedOut, rateLimit, registerFailure } from "@/lib/security/rate-limit";
 import { requestMeta } from "@/lib/security/request-meta";
 import { createClient } from "@/lib/supabase/server";
-import { localeSchema, mfaVerifySchema, updatePasswordSchema } from "@/lib/validation/auth";
+import { localeSchema, mfaVerifySchema, setPasswordSchema, updatePasswordSchema } from "@/lib/validation/auth";
 import { profileNameSchema } from "@/lib/validation/files";
 import { z } from "zod";
 
@@ -114,6 +116,64 @@ export async function changePasswordAction(
   }
   await supabase.auth.signOut({ scope: "others" });
   await audit({ actorId: session.userId, action: "auth.password.updated", targetType: "user", targetId: session.userId }, meta);
+  return { status: "success" };
+}
+
+// ---------------------------------------------------------------------------
+// First password for accounts created with Google. There is no current
+// password to verify, so a one-time code sent to the account's email confirms
+// that the request comes from the owner (not just from a stolen session).
+// ---------------------------------------------------------------------------
+export type SetPasswordField = "code" | "password" | "confirmPassword";
+
+/** Null when the status cannot be read (e.g. migration not applied yet). */
+async function hasPassword(): Promise<boolean | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("my_has_password");
+  if (error) {
+    console.error(`[profile] password status unavailable: ${error.code}`);
+    return null;
+  }
+  return data;
+}
+
+export async function sendPasswordCodeAction(): Promise<FormState> {
+  const session = await requireUser();
+  if (!session.email) return { status: "error", error: "generic" };
+  if ((await hasPassword()) !== false) return { status: "error", error: "generic" };
+  if (!(await rateLimit("passwordCodeUser", session.userId)).success) return { status: "error", error: "rateLimited" };
+
+  const code = await issueEmailCode("setPassword", session.userId);
+  if (!code) return { status: "error", error: "generic" };
+  const sent = await sendCodeEmail({ kind: "setPasswordCode", to: session.email, locale: session.locale, name: session.fullName, code });
+  return sent ? { status: "success" } : { status: "error", error: "generic" };
+}
+
+export async function setPasswordAction(_prev: FormState<SetPasswordField>, formData: FormData): Promise<FormState<SetPasswordField>> {
+  const session = await requireUser();
+  const meta = await requestMeta();
+  const parsed = setPasswordSchema.safeParse({
+    code: formData.get("code"),
+    password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
+  });
+  if (!parsed.success) return { status: "error", fieldErrors: fieldErrorsFrom<SetPasswordField>(parsed.error) };
+  if (!(await rateLimit("passwordUpdateUser", session.userId)).success) return { status: "error", error: "rateLimited" };
+  if ((await hasPassword()) !== false) return { status: "error", error: "generic" };
+
+  if (!(await consumeEmailCode("setPassword", session.userId, parsed.data.code))) {
+    return { status: "error", fieldErrors: {}, error: "codeInvalid" };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+  if (error) {
+    if (error.code === "weak_password") return { status: "error", error: "weakPassword" };
+    console.error(`[profile] password creation failed: ${error.code ?? "unknown"}`);
+    return { status: "error", error: "generic" };
+  }
+  await supabase.auth.signOut({ scope: "others" });
+  await audit({ actorId: session.userId, action: "auth.password.created", targetType: "user", targetId: session.userId }, meta);
   return { status: "success" };
 }
 

@@ -31,7 +31,7 @@ export default async function NewPostPage({ params }: PageProps<"/[locale]/admin
           { label: t("Admin.blog.newPost") },
         ]}
       />
-      <div className="max-w-5xl">
+      <div>
         <p className="mb-4 text-sm text-muted-foreground">{t("Admin.blog.editor.coverSaveFirst")}</p>
         <PostEditor post={null} categories={categories.map((c) => ({ id: c.id, label: locale === "es" ? c.nameEs : c.nameEn }))} />
       </div>

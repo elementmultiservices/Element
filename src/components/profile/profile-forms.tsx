@@ -6,6 +6,8 @@ import {
   changePasswordAction,
   disableMfaAction,
   regenerateRecoveryCodesAction,
+  sendPasswordCodeAction,
+  setPasswordAction,
   updateLocaleAction,
   updateNameAction,
   type ChangePasswordField,
@@ -13,6 +15,7 @@ import {
   type NameField,
   type RegenerateField,
   type RegenerateState,
+  type SetPasswordField,
 } from "@/actions/profile";
 import { RecoveryCodesPanel } from "@/components/auth/recovery-codes-panel";
 import { FormAlert } from "@/components/forms/form-alert";
@@ -120,6 +123,103 @@ export function PasswordForm() {
       />
       <SubmitButton pending={pending} label={t("submit")} pendingLabel={t("submitting")} className="w-auto" />
     </form>
+  );
+}
+
+/**
+ * Password section. Accounts created with Google have no password yet, so they
+ * get a "create password" flow instead; the confirmation lives here so it
+ * survives the refresh that swaps the create form for the change form.
+ */
+export function PasswordControls({ hasPassword, email }: { hasPassword: boolean; email: string }) {
+  const t = useTranslations("Profile.createPassword");
+  const router = useRouter();
+  const [created, setCreated] = useState(false);
+
+  return (
+    <div className="space-y-4">
+      {created ? <FormAlert variant="success">{t("success")}</FormAlert> : null}
+      {hasPassword ? (
+        <PasswordForm />
+      ) : (
+        <CreatePasswordForm
+          email={email}
+          onCreated={() => {
+            setCreated(true);
+            router.refresh();
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+function CreatePasswordForm({ email, onCreated }: { email: string; onCreated: () => void }) {
+  const t = useTranslations("Profile.createPassword");
+  const tp = useTranslations("Profile.password");
+  const tu = useTranslations("Auth.update");
+  const tv = useTranslations("Validation");
+  const te = useTranslations("Errors");
+  const [sentCount, setSentCount] = useState(0);
+  const send = useProtectedAction(sendPasswordCodeAction, { onSuccess: () => setSentCount((n) => n + 1) });
+  const create = useProtectedAction<SetPasswordField>(setPasswordAction, { onSuccess: onCreated });
+  const fe = create.state.fieldErrors ?? {};
+
+  if (sentCount === 0) {
+    return (
+      <form onSubmit={send.onSubmit} className="max-w-md space-y-4">
+        {send.state.error ? <FormAlert variant="error">{te(send.state.error)}</FormAlert> : null}
+        <p className="text-sm text-muted-foreground">{t("intro")}</p>
+        <SubmitButton pending={send.pending} label={t("sendCode")} pendingLabel={t("sending")} className="w-auto" />
+      </form>
+    );
+  }
+
+  return (
+    <div className="max-w-md space-y-4">
+      <FormAlert variant="info">{t(sentCount > 1 ? "codeResent" : "codeSent", { email })}</FormAlert>
+      <form onSubmit={create.onSubmit} noValidate className="space-y-4">
+        {create.state.error ? <FormAlert variant="error">{te(create.state.error)}</FormAlert> : null}
+        <FormField
+          name="code"
+          id="field-set-password-code"
+          label={t("code")}
+          inputMode="numeric"
+          autoComplete="one-time-code"
+          maxLength={6}
+          required
+          className="max-w-48"
+          error={fe.code ? tv(fe.code) : undefined}
+        />
+        <FormField
+          name="password"
+          type="password"
+          label={tp("new")}
+          hint={tu("requirements")}
+          autoComplete="new-password"
+          required
+          maxLength={128}
+          error={fe.password ? tv(fe.password) : undefined}
+        />
+        <FormField
+          name="confirmPassword"
+          type="password"
+          label={tp("confirm")}
+          autoComplete="new-password"
+          required
+          maxLength={128}
+          error={fe.confirmPassword ? tv(fe.confirmPassword) : undefined}
+        />
+        <SubmitButton pending={create.pending} label={t("submit")} pendingLabel={t("submitting")} className="w-auto" />
+      </form>
+      <form onSubmit={send.onSubmit} className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
+        {send.state.error ? <FormAlert variant="error" className="mb-2 w-full">{te(send.state.error)}</FormAlert> : null}
+        <span>{t("noCode")}</span>
+        <Button type="submit" variant="link" disabled={send.pending} className="h-auto p-0">
+          {send.pending ? t("sending") : t("resend")}
+        </Button>
+      </form>
+    </div>
   );
 }
 

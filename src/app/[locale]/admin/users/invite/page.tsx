@@ -28,7 +28,7 @@ export default async function InviteUserPage({ params }: PageProps<"/[locale]/ad
           { label: t("Admin.users.inviteCta") },
         ]}
       />
-      <div className="max-w-3xl">
+      <div>
         <InviteForm />
       </div>
     </>

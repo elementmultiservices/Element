@@ -42,7 +42,7 @@ export default async function EditPostPage({ params }: PageProps<"/[locale]/admi
         ]}
         actions={<DeletePostButton id={post.id} onDeletedHref="/admin/blog" />}
       />
-      <div className="max-w-5xl space-y-6">
+      <div className="space-y-6">
         <NewsletterPanel post={post} supabase={supabase} />
         <PostEditor
           post={{

@@ -579,7 +579,8 @@
     "uploadGrantAdmin": "This address belongs to an administrator account; administrators do not need this authorization.",
     "migrationPending": "The database update (migration 20261013000100) has not been applied yet. Run it in the Supabase SQL editor and try again.",
     "notPublished": "The post must be published before it can be sent to subscribers.",
-    "noSubscribers": "There are no active subscribers yet."
+    "noSubscribers": "There are no active subscribers yet.",
+    "codeInvalid": "The code is incorrect or has expired. Request a new one if needed."
   },
   "NotFound": {
     "code": "Error 404",
@@ -639,6 +640,16 @@
       "cta": "Set new password",
       "expiry": "This link is valid for 24 hours and can be used only once.",
       "ignore": "If you have questions about this change, contact the administrator."
+    },
+    "setPasswordCode": {
+      "subject": "Your code to create a password",
+      "preview": "Use this code to create the password for your Element account.",
+      "heading": "Verification code",
+      "greeting": "Hello {name},",
+      "greetingFallback": "Hello,",
+      "body": "We received a request to create a password for your Element account. Enter this code in your profile to confirm it.",
+      "expiry": "This code expires in 10 minutes and can be used only once.",
+      "ignore": "If you did not make this request, ignore this message and contact the administrator: someone may have access to your session."
     },
     "contactNotice": {
       "subject": "New contact message: {subject}",
@@ -850,6 +861,21 @@
       "submitting": "Saving…",
       "success": "Your password was changed."
     },
+    "createPassword": {
+      "heading": "Create password",
+      "description": "Your account signs in with Google. Create a password to also sign in with your email address.",
+      "intro": "To confirm it is you, we will send a 6-digit code to your email address.",
+      "sendCode": "Send code",
+      "sending": "Sending…",
+      "codeSent": "We sent a code to {email}. It expires in 10 minutes.",
+      "codeResent": "We sent a new code to {email}. The previous one is no longer valid.",
+      "code": "Verification code",
+      "submit": "Create password",
+      "submitting": "Saving…",
+      "noCode": "Didn't get the code?",
+      "resend": "Send another code",
+      "success": "Your password was created. You can now also sign in with your email address and password."
+    },
     "mfa": {
       "heading": "Two-step verification",
       "enabledBody": "Two-step verification is enabled. You will be asked for a code from your authenticator app when you sign in.",
@@ -882,6 +908,7 @@
         "session_ended": "Session ended",
         "password_reset_requested": "Password reset requested",
         "password_updated": "Password changed",
+        "password_created": "Password created",
         "link_verified": "Access link used",
         "mfa_enrolled": "Two-step verification enabled",
         "mfa_verified": "Two-step verification completed",
@@ -1089,6 +1116,10 @@
       "uploadDescription": "The file is verified before it is stored, and the user receives an email notification in their language.",
       "ownerLabel": "User receiving the file",
       "ownerPlaceholder": "Select a user",
+      "ownerSearchPlaceholder": "Search by name or email…",
+      "ownerNoResults": "No users match your search.",
+      "ownerMoreResults": "Showing {shown} of {total}. Keep typing to narrow the search.",
+      "ownerChange": "Change",
       "noOwners": "There are no active users to receive files.",
       "ownerRequired": "Select the user who will receive the file."
     },

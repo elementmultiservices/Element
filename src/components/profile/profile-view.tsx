@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import type { SessionContext } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { describeUserAgent } from "@/lib/user-agent";
-import { LocaleForm, MfaControls, NameForm, PasswordForm, RecoveryCodesSection } from "./profile-forms";
+import { LocaleForm, MfaControls, NameForm, PasswordControls, RecoveryCodesSection } from "./profile-forms";
 
 type EventKey = keyof Messages["Profile"]["activity"]["events"];
 const EVENT_KEYS = new Set<string>([
@@ -17,6 +17,7 @@ const EVENT_KEYS = new Set<string>([
   "session_ended",
   "password_reset_requested",
   "password_updated",
+  "password_created",
   "link_verified",
   "mfa_enrolled",
   "mfa_verified",
@@ -50,11 +51,15 @@ export async function ProfileView({ session }: { session: SessionContext }) {
   const format = await getFormatter();
 
   const supabase = await createClient();
-  const [{ data: activity }, { data: recoveryRemaining }] = await Promise.all([
+  const [{ data: activity }, { data: recoveryRemaining }, { data: hasPasswordData }] = await Promise.all([
     supabase.rpc("my_auth_activity", { p_limit: 20 }),
     supabase.rpc("my_recovery_codes_remaining"),
+    supabase.rpc("my_has_password"),
   ]);
   const isAdmin = session.role === "admin";
+  // Only an explicit "false" offers to create one (null if the migration is not applied yet).
+  const hasPassword = hasPasswordData !== false;
+  const passwordCopy = hasPassword ? "password" : "createPassword";
 
   return (
     <>
@@ -87,8 +92,8 @@ export async function ProfileView({ session }: { session: SessionContext }) {
           <LocaleForm current={session.locale} />
         </Section>
 
-        <Section id="profile-password" title={t("Profile.password.heading")} description={t("Profile.password.description")}>
-          <PasswordForm />
+        <Section id="profile-password" title={t(`Profile.${passwordCopy}.heading`)} description={t(`Profile.${passwordCopy}.description`)}>
+          <PasswordControls hasPassword={hasPassword} email={session.email ?? ""} />
         </Section>
 
         <Section id="profile-mfa" title={t("Profile.mfa.heading")}>

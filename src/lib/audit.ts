@@ -13,6 +13,7 @@ export type AuditAction =
   | "auth.session.ended"
   | "auth.password_reset.requested"
   | "auth.password.updated"
+  | "auth.password.created"
   | "auth.link.verified"
   | "auth.mfa.enrolled"
   | "auth.mfa.verified"

@@ -3,6 +3,7 @@
 import { useId, useRef, useState, type DragEvent } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { CheckCircle2, FileUp, Loader2 } from "lucide-react";
+import { OwnerPicker, type OwnerOption } from "@/components/files/owner-picker";
 import { FormAlert } from "@/components/forms/form-alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -75,7 +76,7 @@ async function postJson(url: string, body: unknown): Promise<{ ok: boolean; data
   return { ok: res.ok, data };
 }
 
-export type OwnerOption = { id: string; label: string };
+export type { OwnerOption };
 
 /**
  * Upload form. Users upload to their own account. Administrators pass `owners`
@@ -256,22 +257,15 @@ export function UploadForm({
               {ta("ownerLabel")}
               <span aria-hidden="true" className="text-destructive"> *</span>
             </Label>
-            <NativeSelect
+            <OwnerPicker
               id={`${ids}-owner`}
               name="ownerId"
-              defaultValue={defaultOwnerId ?? ""}
+              owners={owners}
+              defaultOwnerId={lastOwnerId ?? defaultOwnerId}
               disabled={busy}
-              required
-              aria-invalid={ownerError || undefined}
-              aria-describedby={ownerError ? `${ids}-owner-error` : undefined}
-            >
-              <option value="">{ta("ownerPlaceholder")}</option>
-              {owners.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.label}
-                </option>
-              ))}
-            </NativeSelect>
+              invalid={ownerError}
+              describedBy={ownerError ? `${ids}-owner-error` : undefined}
+            />
             {ownerError ? (
               <p id={`${ids}-owner-error`} role="alert" className="text-sm text-destructive">
                 {ta("ownerRequired")}

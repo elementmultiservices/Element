@@ -412,6 +412,9 @@ isOneToOne: false
               "action": string,"created_at": string,"id": number,"ip": unknown,"user_agent": string
             }[]
                            },
+"my_has_password":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "my_recovery_codes_remaining":
 { Args: Record<PropertyKey, never>; Returns: number
                            },

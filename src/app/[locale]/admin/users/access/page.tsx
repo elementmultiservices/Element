@@ -38,7 +38,7 @@ export default async function UploadAccessPage({ params }: PageProps<"/[locale]/
         ]}
       />
 
-      <div className="max-w-3xl">
+      <div>
         <PreauthorizeForm />
         <p className="mt-3 text-sm text-muted-foreground">
           {t("Admin.users.upload.existingHint")}{" "}

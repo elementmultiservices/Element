@@ -37,6 +37,11 @@ export const updatePasswordSchema = z
   })
   .refine((v) => v.password === v.confirmPassword, { path: ["confirmPassword"], error: "passwordMismatch" });
 
+/** First password for accounts created with Google, confirmed with a code sent by email. */
+export const setPasswordSchema = z
+  .object({ code: z.string({ error: "required" }).trim().regex(/^\d{6}$/, { error: "codeInvalid" }) })
+  .and(updatePasswordSchema);
+
 export const confirmLinkSchema = z.object({
   tokenHash: z.string().min(10).max(500).regex(/^[A-Za-z0-9_-]+$/),
   type: z.enum(["recovery", "invite"]),

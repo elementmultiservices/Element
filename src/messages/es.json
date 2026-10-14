@@ -579,7 +579,8 @@
     "uploadGrantAdmin": "Este correo pertenece a una cuenta de administrador; los administradores no necesitan esta autorización.",
     "migrationPending": "Falta aplicar la actualización de la base de datos (migración 20261013000100). Ejecútela en el editor SQL de Supabase y vuelva a intentarlo.",
     "notPublished": "La publicación debe estar publicada para enviarla a los suscriptores.",
-    "noSubscribers": "Todavía no hay suscriptores activos."
+    "noSubscribers": "Todavía no hay suscriptores activos.",
+    "codeInvalid": "El código es incorrecto o ya venció. Solicite uno nuevo si es necesario."
   },
   "NotFound": {
     "code": "Error 404",
@@ -639,6 +640,16 @@
       "cta": "Definir nueva contraseña",
       "expiry": "Este enlace es válido por 24 horas y solo puede usarse una vez.",
       "ignore": "Si tiene preguntas sobre este cambio, comuníquese con el administrador."
+    },
+    "setPasswordCode": {
+      "subject": "Su código para crear una contraseña",
+      "preview": "Use este código para crear la contraseña de su cuenta de Element.",
+      "heading": "Código de verificación",
+      "greeting": "Hola, {name}:",
+      "greetingFallback": "Hola:",
+      "body": "Recibimos una solicitud para crear una contraseña en su cuenta de Element. Ingrese este código en su perfil para confirmarla.",
+      "expiry": "Este código vence en 10 minutos y solo puede usarse una vez.",
+      "ignore": "Si usted no hizo esta solicitud, ignore este mensaje y comuníquese con el administrador: alguien podría tener acceso a su sesión."
     },
     "contactNotice": {
       "subject": "Nuevo mensaje de contacto: {subject}",
@@ -850,6 +861,21 @@
       "submitting": "Guardando…",
       "success": "Su contraseña fue cambiada."
     },
+    "createPassword": {
+      "heading": "Crear contraseña",
+      "description": "Su cuenta inició sesión con Google. Cree una contraseña para entrar también con su correo electrónico.",
+      "intro": "Para confirmar que es usted, le enviaremos un código de 6 dígitos a su correo electrónico.",
+      "sendCode": "Enviar código",
+      "sending": "Enviando…",
+      "codeSent": "Enviamos un código a {email}. Vence en 10 minutos.",
+      "codeResent": "Enviamos un nuevo código a {email}. El anterior ya no es válido.",
+      "code": "Código de verificación",
+      "submit": "Crear contraseña",
+      "submitting": "Guardando…",
+      "noCode": "¿No recibió el código?",
+      "resend": "Enviar otro código",
+      "success": "Su contraseña fue creada. Ahora también puede iniciar sesión con su correo electrónico y contraseña."
+    },
     "mfa": {
       "heading": "Verificación en dos pasos",
       "enabledBody": "La verificación en dos pasos está activa. Al iniciar sesión se le pedirá un código de su aplicación de autenticación.",
@@ -882,6 +908,7 @@
         "session_ended": "Sesión finalizada",
         "password_reset_requested": "Solicitud de restablecimiento de contraseña",
         "password_updated": "Contraseña cambiada",
+        "password_created": "Contraseña creada",
         "link_verified": "Enlace de acceso utilizado",
         "mfa_enrolled": "Verificación en dos pasos activada",
         "mfa_verified": "Verificación en dos pasos completada",
@@ -1089,6 +1116,10 @@
       "uploadDescription": "El archivo se verifica antes de almacenarse y el usuario recibe una notificación por correo en su idioma.",
       "ownerLabel": "Usuario que recibe el archivo",
       "ownerPlaceholder": "Seleccione un usuario",
+      "ownerSearchPlaceholder": "Buscar por nombre o correo…",
+      "ownerNoResults": "Ningún usuario coincide con la búsqueda.",
+      "ownerMoreResults": "Mostrando {shown} de {total}. Escriba más para afinar la búsqueda.",
+      "ownerChange": "Cambiar",
       "noOwners": "No hay usuarios activos para recibir archivos.",
       "ownerRequired": "Seleccione el usuario que recibirá el archivo."
     },
