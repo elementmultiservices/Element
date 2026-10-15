@@ -44,7 +44,7 @@ export async function pageMetadata(options: {
     if (fallback) languages["x-default"] = `/${options.paths.en ? "en" : options.locale}${fallback}`;
   }
 
-  const ogLocale = (l: AppLocale) => (l === "es" ? "es_CO" : "en_US");
+  const ogLocale = (l: AppLocale) => (l === "es" ? "es_US" : "en_US");
   const otherLocales = (options.paths ? (Object.keys(options.paths) as AppLocale[]) : [...locales]).filter((l) => l !== options.locale);
 
   return {

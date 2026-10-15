@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AlertTriangle, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
+import { getSiteContact } from "@/lib/site-settings";
 import { cn } from "@/lib/utils";
 
 const DOCS = {
@@ -39,8 +40,11 @@ export default async function LegalPage({ params }: PageProps<"/[locale]/legal/[
   setRequestLocale(toLocale(locale));
   if (!isDoc(doc)) notFound();
   const key: DocKey = DOCS[doc];
-  const t = await getTranslations("Legal");
-  const tf = await getTranslations("Footer");
+  const [t, tf, contact] = await Promise.all([getTranslations("Legal"), getTranslations("Footer"), getSiteContact()]);
+
+  // The documents name the office's current details from the business settings.
+  const reach = contact.email ? t("contactWithEmail", { phone: contact.phone, email: contact.email }) : t("contactPhoneOnly", { phone: contact.phone });
+  const fill = (text: string) => text.replaceAll("{address}", contact.address).replaceAll("{phone}", contact.phone).replaceAll("{contact}", reach);
 
   const sections = t.raw(`${key}.sections`) as Section[];
   const rows = key === "cookies" ? (t.raw("cookies.rows") as CookieRow[]) : [];
@@ -76,17 +80,13 @@ export default async function LegalPage({ params }: PageProps<"/[locale]/legal/[
         </nav>
 
         <div className="min-w-0 max-w-3xl">
-          <div role="note" className="flex gap-3 rounded-2xl border border-warning/30 bg-warning-bg px-4 py-3 text-sm text-warning">
-            <AlertTriangle aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
-            <p className="font-medium">{t("reviewBanner")}</p>
-          </div>
-          <div className="prose-element mt-8">
-            <p className="text-lg text-graphite">{t(`${key}.intro`)}</p>
+          <div className="prose-element">
+            <p className="text-lg text-graphite">{fill(t.raw(`${key}.intro`) as string)}</p>
             {sections.map((section) => (
               <section key={section.heading}>
                 <h2>{section.heading}</h2>
                 {section.body.map((paragraph, i) => (
-                  <p key={i}>{paragraph}</p>
+                  <p key={i}>{fill(paragraph)}</p>
                 ))}
               </section>
             ))}

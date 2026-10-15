@@ -24,7 +24,7 @@
       "adminCategories": "Categorías de archivos",
       "adminAudit": "Registro de auditoría",
       "privacy": "Política de privacidad",
-      "dataPolicy": "Política de tratamiento de datos personales",
+      "dataPolicy": "Política de seguridad de la información",
       "terms": "Términos de uso",
       "cookies": "Aviso de cookies",
       "adminMessages": "Mensajes de contacto",
@@ -89,7 +89,7 @@
     "contactHeading": "Contacto",
     "legalHeading": "Información legal",
     "privacy": "Política de privacidad",
-    "dataPolicy": "Política de tratamiento de datos personales",
+    "dataPolicy": "Política de seguridad de la información",
     "terms": "Términos de uso",
     "cookies": "Aviso de cookies",
     "siteHeading": "Sitio",
@@ -1445,10 +1445,11 @@
     "accept": "Entendido"
   },
   "Legal": {
-    "reviewBanner": "TEXTO PROVISIONAL — PENDIENTE DE REVISIÓN LEGAL. Este contenido es de referencia y debe ser revisado y aprobado por un asesor jurídico antes de su publicación.",
     "lastUpdated": "Última actualización: {date}",
-    "updatedDate": "[PENDIENTE: fecha de vigencia]",
+    "updatedDate": "15 de octubre de 2026",
     "otherDocuments": "Otros documentos legales",
+    "contactWithEmail": "llamando al {phone} o escribiendo a {email}",
+    "contactPhoneOnly": "llamando al {phone}",
     "cookieTable": {
       "name": "Cookie",
       "purpose": "Finalidad",
@@ -1457,166 +1458,222 @@
     },
     "privacy": {
       "title": "Política de privacidad",
-      "intro": "Esta política explica qué información recopila Element, con qué finalidad y cómo se protege.",
+      "intro": "Esta política explica qué información personal recopila Element Multiservices LLC, cómo la usamos, con quién la compartimos y cómo la protegemos, tanto en nuestra oficina como en este sitio web.",
       "sections": [
         {
-          "heading": "1. Responsable del tratamiento",
+          "heading": "1. Quiénes somos",
           "body": [
-            "[PENDIENTE: razón social de la organización], NIT [PENDIENTE], con domicilio en 2330 Cambreleng Ave, Bronx, NY 10458 y correo electrónico [PENDIENTE: correo de privacidad], es responsable de los datos personales tratados a través de Element."
+            "Element Multiservices LLC («Element», «nosotros») es un negocio de servicios de impuestos, contabilidad, registro de empresas y documentos ubicado en {address}. Puede comunicarse con nosotros {contact}, o visitarnos en la oficina."
           ]
         },
         {
           "heading": "2. Información que recopilamos",
           "body": [
-            "Datos de la cuenta suministrados por la organización (nombre, correo electrónico, idioma preferido).",
-            "Archivos y sus descripciones cargados por los usuarios o por los administradores.",
-            "Registros de seguridad: inicios de sesión, dirección IP, tipo de navegador y acciones realizadas, que se conservan para proteger las cuentas e investigar incidentes.",
-            "Mensajes enviados mediante el formulario de contacto."
+            "Datos de contacto: nombre, teléfono, correo electrónico, dirección e idioma preferido, cuando agenda una cita, nos escribe, crea una cuenta o se suscribe a nuestras actualizaciones.",
+            "Información para prestar el servicio: números de Seguro Social o ITIN, fecha de nacimiento, estado civil, dependientes, ingresos, formularios W-2 y 1099, datos bancarios para depósitos o pagos, información de su negocio y los demás documentos que nos entregue en persona o suba a Mi Archivo.",
+            "Documentos de identidad y de soporte que nos entregue para trámites como ITIN, traducciones, formularios migratorios o servicios notariales.",
+            "Datos técnicos y de seguridad: inicios de sesión, dirección IP, tipo de navegador y acciones realizadas en su cuenta, que guardamos para proteger las cuentas e investigar incidentes."
           ]
         },
         {
-          "heading": "3. Finalidades",
+          "heading": "3. Cómo usamos la información",
           "body": [
-            "Prestar el servicio de gestión documental, autenticar a los usuarios, enviar correos transaccionales (invitaciones, restablecimiento de contraseña y avisos de archivos), mantener la seguridad de la plataforma, atender las solicitudes de contacto y cumplir obligaciones legales."
+            "Usamos su información para preparar y presentar sus declaraciones y trámites, comunicarnos con usted sobre su caso, gestionar su cuenta y sus archivos, enviarle correos de servicio (invitaciones, restablecimiento de contraseña, avisos de archivos), responder sus mensajes, mantener la seguridad del sitio y cumplir nuestras obligaciones legales.",
+            "Solo le enviamos las actualizaciones del IRS por correo si se suscribió. Cada correo incluye un enlace para darse de baja, que se aplica de inmediato."
           ]
         },
         {
-          "heading": "4. Proveedores de servicios",
+          "heading": "4. Información de su declaración de impuestos",
           "body": [
-            "Element se apoya en proveedores que tratan datos por nuestra cuenta: Supabase (base de datos, autenticación y almacenamiento), Vercel (alojamiento), Resend (envío de correos), Upstash (prevención de abuso), Google reCAPTCHA (protección contra bots) y Sentry (monitoreo de errores, sin datos personales ni nombres de archivos). Algunos de estos proveedores almacenan datos fuera de Colombia. [PENDIENTE: confirmar regiones y acuerdos de transferencia]"
+            "Como preparadores de impuestos, la ley federal (sección 7216 del Código de Rentas Internas) nos prohíbe usar o revelar la información de su declaración para fines distintos a prepararla y presentarla, salvo con su consentimiento firmado o en los casos que la ley permite. No usamos esa información para ofrecerle otros servicios sin su autorización por escrito."
           ]
         },
         {
-          "heading": "5. Conservación",
+          "heading": "5. Con quién compartimos información",
           "body": [
-            "Los archivos enviados a la papelera se eliminan definitivamente a los 30 días. Los registros de seguridad y los mensajes de contacto se conservan durante [PENDIENTE: plazo de conservación]."
+            "No vendemos ni alquilamos su información personal.",
+            "La compartimos solo cuando es necesario para prestar el servicio: con el IRS, el Departamento de Impuestos y Finanzas del Estado de Nueva York y otras agencias ante las que presentamos sus trámites; con su banco o el de su negocio cuando usted lo solicita; y con el agente de seguros licenciado, si pide una cotización de seguro de vida.",
+            "También usamos proveedores tecnológicos que procesan datos por nuestra cuenta y bajo nuestras instrucciones: Supabase (base de datos, cuentas y almacenamiento de archivos), Vercel (alojamiento del sitio), Resend (envío de correos), Upstash (prevención de abuso), Google reCAPTCHA (protección de formularios contra bots) y Sentry (monitoreo de errores, sin nombres ni contenido de archivos).",
+            "Podemos revelar información cuando lo exija la ley, una orden judicial o una autoridad competente."
           ]
         },
         {
-          "heading": "6. Sus derechos",
+          "heading": "6. Cómo protegemos su información",
           "body": [
-            "Usted puede ejercer sus derechos a conocer, actualizar, rectificar y suprimir sus datos, y a revocar la autorización, según lo descrito en la política de tratamiento de datos personales."
+            "Mantenemos un programa de seguridad de la información, como exigen la Regla de Salvaguardas de la Comisión Federal de Comercio (FTC) y la Ley SHIELD del Estado de Nueva York. Lo describimos en nuestra Política de seguridad de la información."
           ]
         },
         {
-          "heading": "7. Cambios",
+          "heading": "7. Cuánto tiempo conservamos la información",
           "body": [
-            "Publicaremos en esta página cualquier cambio a esta política, con la fecha de la última actualización."
+            "Conservamos las copias de las declaraciones y sus documentos de soporte al menos tres años, como exige el IRS a los preparadores de impuestos, y durante el tiempo adicional que sea necesario para atender revisiones, enmiendas o requisitos legales. Los archivos que se envían a la papelera de Mi Archivo se eliminan de forma definitiva a los 30 días."
+          ]
+        },
+        {
+          "heading": "8. Sus opciones",
+          "body": [
+            "Puede pedirnos una copia de la información que tenemos sobre usted, corregirla o solicitar que la eliminemos cuando ya no tengamos obligación legal de conservarla. Puede darse de baja de las actualizaciones por correo en cualquier momento con el enlace de cada correo. Para cualquier solicitud, comuníquese con nosotros {contact}."
+          ]
+        },
+        {
+          "heading": "9. Menores de edad",
+          "body": [
+            "Este sitio no está dirigido a menores de 13 años y no recopilamos a sabiendas sus datos en línea. La información de hijos y dependientes que usted nos entregue para su declaración se trata con la misma protección que la suya."
+          ]
+        },
+        {
+          "heading": "10. Enlaces a otros sitios",
+          "body": [
+            "La página de Actualizaciones reproduce noticias publicadas por el IRS en irs.gov y enlaza a ese sitio. Element no está afiliado al IRS. Los sitios de terceros tienen sus propias políticas de privacidad."
+          ]
+        },
+        {
+          "heading": "11. Cambios a esta política",
+          "body": [
+            "Publicaremos en esta página cualquier cambio, con la fecha de la última actualización. Si el cambio es importante, se lo informaremos por correo o en la oficina."
           ]
         }
       ]
     },
     "dataPolicy": {
-      "title": "Política de tratamiento de datos personales",
-      "intro": "Esta política se adopta en cumplimiento de la Ley 1581 de 2012, el Decreto 1377 de 2013 (compilado en el Decreto 1074 de 2015) y las demás normas aplicables.",
+      "title": "Política de seguridad de la información",
+      "intro": "Esta política describe cómo Element Multiservices LLC protege la información personal y financiera de sus clientes, en cumplimiento de la Regla de Salvaguardas de la FTC (Ley Gramm-Leach-Bliley), la Ley SHIELD del Estado de Nueva York y las normas del IRS para preparadores de impuestos.",
       "sections": [
         {
-          "heading": "1. Responsable del tratamiento",
+          "heading": "1. Responsable",
           "body": [
-            "[PENDIENTE: razón social], NIT [PENDIENTE], dirección 2330 Cambreleng Ave, Bronx, NY 10458, teléfono [PENDIENTE], correo para solicitudes sobre datos personales [PENDIENTE]."
+            "Element Multiservices LLC, {address}. Una persona designada por la empresa coordina el programa de seguridad, lo revisa al menos una vez al año y lo actualiza cuando cambian nuestros servicios o sistemas. Puede comunicarse con nosotros {contact}."
           ]
         },
         {
-          "heading": "2. Tratamiento y finalidades",
+          "heading": "2. Información que protegemos",
           "body": [
-            "Los datos personales se recolectan, almacenan, usan y suprimen para: administrar las cuentas de usuario; prestar el servicio de gestión documental; enviar comunicaciones transaccionales; garantizar la seguridad de la plataforma y conservar un registro de auditoría; y atender las solicitudes recibidas por el formulario de contacto."
+            "Toda la información personal y financiera no pública de nuestros clientes: números de Seguro Social e ITIN, datos de ingresos y de declaraciones, cuentas bancarias, documentos de identidad y los demás documentos que recibimos en la oficina o a través de Mi Archivo."
           ]
         },
         {
-          "heading": "3. Derechos de los titulares",
+          "heading": "3. Salvaguardas en la oficina",
           "body": [
-            "De acuerdo con el artículo 8 de la Ley 1581 de 2012, los titulares tienen derecho a: (a) conocer, actualizar y rectificar sus datos personales; (b) solicitar prueba de la autorización otorgada; (c) ser informados sobre el uso que se ha dado a sus datos; (d) presentar quejas ante la Superintendencia de Industria y Comercio; (e) revocar la autorización y/o solicitar la supresión de los datos cuando en el tratamiento no se respeten los principios, derechos y garantías constitucionales y legales; y (f) acceder en forma gratuita a sus datos personales."
+            "Los documentos en papel se guardan en lugares cerrados y solo los maneja el personal que los necesita para su trabajo. Los documentos que ya no debemos conservar se destruyen de forma segura. El personal recibe capacitación sobre confidencialidad y sobre cómo reconocer intentos de fraude o suplantación."
           ]
         },
         {
-          "heading": "4. Autorización",
+          "heading": "4. Salvaguardas técnicas",
           "body": [
-            "Los datos se tratan con la autorización previa, expresa e informada del titular, salvo en los casos previstos por la ley. La autorización para las solicitudes de contacto se obtiene mediante la casilla de aceptación del formulario."
+            "Los datos viajan cifrados (HTTPS) y se almacenan cifrados. Mi Archivo usa cuentas personales con contraseña, verificación en dos pasos y cierre automático de la sesión por inactividad. Cada persona solo puede ver sus propios archivos. Los archivos se revisan al subirlos y se rechazan los formatos no permitidos.",
+            "Registramos los inicios de sesión y las acciones administrativas en un registro de auditoría que no se puede modificar. Los formularios del sitio tienen protección contra bots y límites de intentos."
           ]
         },
         {
-          "heading": "5. Consultas y reclamos",
+          "heading": "5. Proveedores",
           "body": [
-            "Las consultas se atenderán en un término máximo de diez (10) días hábiles contados a partir de su recibo, prorrogable por cinco (5) días hábiles adicionales. Los reclamos se atenderán en un término máximo de quince (15) días hábiles, prorrogable por ocho (8) días hábiles adicionales. Las solicitudes deben enviarse a [PENDIENTE: correo o canal], indicando la identificación del titular, la descripción de la solicitud y los datos de contacto."
+            "Solo trabajamos con proveedores que se comprometen a proteger la información y la usan únicamente para prestarnos su servicio. La lista de proveedores tecnológicos está en nuestra Política de privacidad."
           ]
         },
         {
-          "heading": "6. Área responsable",
+          "heading": "6. Uso y divulgación de información tributaria",
           "body": [
-            "[PENDIENTE: área o persona responsable de atender las solicitudes de los titulares]."
+            "La información de las declaraciones de impuestos solo se usa para preparar y presentar la declaración del cliente. No se revela a terceros ni se usa para otros fines sin el consentimiento firmado del cliente, salvo en los casos permitidos por la sección 7216 del Código de Rentas Internas."
           ]
         },
         {
-          "heading": "7. Datos sensibles y de menores",
+          "heading": "7. Incidentes de seguridad",
           "body": [
-            "Element no está destinado a recolectar datos sensibles ni datos de menores de edad. Si esta información se incluye en documentos, se tratará únicamente con las autorizaciones exigidas por la ley. [PENDIENTE: revisión legal]"
+            "Si ocurre un acceso no autorizado a información personal, lo investigaremos, tomaremos medidas para contenerlo y notificaremos a las personas afectadas sin demoras injustificadas, como exige la ley de Nueva York. Cuando corresponda, también avisaremos a la Fiscalía General del Estado de Nueva York, a otras autoridades estatales y al IRS.",
+            "Si usted cree que su cuenta o su información están en riesgo, comuníquese con nosotros de inmediato {contact}."
           ]
         },
         {
-          "heading": "8. Transferencias y transmisiones",
+          "heading": "8. Conservación y eliminación",
           "body": [
-            "Los datos pueden transmitirse a los proveedores tecnológicos indicados en la política de privacidad, algunos ubicados fuera de Colombia, en condiciones que garanticen un nivel adecuado de protección. [PENDIENTE: revisión legal]"
+            "Conservamos las copias de las declaraciones al menos tres años, como exige el IRS. Cuando la información ya no es necesaria para el servicio ni debe conservarse por ley, la eliminamos de forma segura. Los archivos enviados a la papelera de Mi Archivo se eliminan de forma definitiva a los 30 días."
           ]
         },
         {
-          "heading": "9. Vigencia",
+          "heading": "9. Sus responsabilidades",
           "body": [
-            "Esta política rige a partir de [PENDIENTE: fecha]. Las bases de datos se conservarán durante el tiempo necesario para cumplir las finalidades descritas."
+            "Le pedimos mantener en reserva su contraseña, activar la verificación en dos pasos y cerrar la sesión en computadores compartidos. Element nunca le pedirá su contraseña por teléfono, correo ni WhatsApp."
           ]
         }
       ]
     },
     "terms": {
       "title": "Términos de uso",
-      "intro": "Estos términos regulan el acceso y el uso de Element. Al usar la plataforma, usted los acepta.",
+      "intro": "Estos términos regulan el uso del sitio web de Element Multiservices LLC y de Mi Archivo, el espacio en línea para compartir documentos con nosotros. Al usar el sitio, usted los acepta.",
       "sections": [
         {
-          "heading": "1. Acceso",
+          "heading": "1. Nuestros servicios",
           "body": [
-            "Cualquier persona puede crear una cuenta; la organización decide qué cuentas pueden subir documentos. Las credenciales son personales e intransferibles; el usuario debe mantenerlas en reserva y activar la verificación en dos pasos cuando esté disponible."
+            "El sitio informa sobre nuestros servicios y le permite agendar citas, escribirnos, suscribirse a actualizaciones y compartir documentos de forma segura. Los servicios en sí (preparación de impuestos, contabilidad, registro de empresas, traducciones y demás) se acuerdan con usted por separado, con el precio por escrito antes de empezar."
           ]
         },
         {
-          "heading": "2. Uso aceptable",
+          "heading": "2. No somos abogados",
           "body": [
-            "Está prohibido cargar contenido malicioso, archivos que vulneren derechos de terceros o información ajena a la finalidad del servicio, así como intentar acceder a información o cuentas ajenas."
+            "Element no es un bufete de abogados y no da asesoría legal. En los trámites migratorios solo ayudamos a llenar formularios y a traducir documentos; no podemos aconsejarle sobre su caso migratorio ni representarlo ante ninguna agencia. Para asesoría legal, consulte a un abogado licenciado o a un representante acreditado por el Departamento de Justicia."
           ]
         },
         {
-          "heading": "3. Archivos",
+          "heading": "3. Servicios con reglas especiales",
           "body": [
-            "Solo se aceptan los formatos permitidos, dentro de los límites de tamaño y almacenamiento publicados. Element puede rechazar archivos que no superen sus controles de seguridad."
+            "Reparación de crédito: antes de empezar le entregamos un contrato por escrito y una explicación de sus derechos, y usted puede cancelarlo sin costo dentro de los tres días hábiles siguientes a la firma. No cobramos por estos servicios antes de prestarlos. La información correcta y reciente de sus reportes de crédito no se puede eliminar.",
+            "Seguros de vida: la orientación y las cotizaciones las da un agente licenciado en el Estado de Nueva York. La aprobación y las condiciones de la póliza dependen de la aseguradora.",
+            "Notaría: el notario público certifica firmas; no redacta documentos legales ni da asesoría legal. Debe presentar una identificación con foto vigente."
           ]
         },
         {
-          "heading": "4. Disponibilidad",
+          "heading": "4. Su cuenta en Mi Archivo",
           "body": [
-            "Hacemos esfuerzos razonables para mantener el servicio disponible, pero no garantizamos un funcionamiento ininterrumpido. [PENDIENTE: nivel de servicio, si aplica]"
+            "Cualquier persona puede crear una cuenta. Element decide qué cuentas pueden subir documentos. Sus credenciales son personales: no las comparta y active la verificación en dos pasos. Usted es responsable de la actividad de su cuenta."
           ]
         },
         {
-          "heading": "5. Suspensión",
+          "heading": "5. Uso aceptable",
           "body": [
-            "La organización puede desactivar las cuentas que incumplan estos términos o por razones de seguridad."
+            "No está permitido subir contenido malicioso, documentos que no le pertenezcan o que no tenga derecho a compartir, ni intentar acceder a cuentas o información de otras personas. Solo se aceptan los formatos permitidos y dentro de los límites de tamaño indicados."
           ]
         },
         {
-          "heading": "6. Responsabilidad",
+          "heading": "6. Contenido informativo",
           "body": [
-            "[PENDIENTE: cláusula de limitación de responsabilidad revisada por el asesor jurídico]"
+            "Las actualizaciones del IRS se reproducen tal como el IRS las publica en irs.gov, con un enlace a la fuente. Element no está afiliado al IRS. El contenido del sitio es informativo y no reemplaza la revisión de su caso particular."
           ]
         },
         {
-          "heading": "7. Ley aplicable",
+          "heading": "7. Disponibilidad",
           "body": [
-            "Estos términos se rigen por las leyes de la República de Colombia. [PENDIENTE: jurisdicción]"
+            "Hacemos todo lo razonable para que el sitio y Mi Archivo estén disponibles y seguros, pero no garantizamos que funcionen sin interrupciones. Le recomendamos conservar sus propias copias de los documentos importantes."
+          ]
+        },
+        {
+          "heading": "8. Suspensión de cuentas",
+          "body": [
+            "Podemos desactivar una cuenta que incumpla estos términos o cuando sea necesario para proteger la seguridad del sitio o de otros usuarios."
+          ]
+        },
+        {
+          "heading": "9. Limitación de responsabilidad",
+          "body": [
+            "En la medida que lo permita la ley, Element no responde por daños indirectos derivados del uso del sitio ni por interrupciones fuera de nuestro control. Nada en estos términos limita los derechos que la ley le reconoce como consumidor ni nuestra responsabilidad por los servicios profesionales que le prestemos."
+          ]
+        },
+        {
+          "heading": "10. Ley aplicable",
+          "body": [
+            "Estos términos se rigen por las leyes del Estado de Nueva York y las leyes federales de los Estados Unidos aplicables. Cualquier disputa se resolverá ante los tribunales competentes del condado del Bronx, Nueva York."
+          ]
+        },
+        {
+          "heading": "11. Contacto",
+          "body": [
+            "Si tiene preguntas sobre estos términos, visítenos en {address} o comuníquese con nosotros {contact}."
           ]
         }
       ]
     },
     "cookies": {
       "title": "Aviso de cookies",
-      "intro": "Element solo usa cookies estrictamente necesarias para que el sitio funcione de forma segura. No usamos cookies publicitarias, de perfilamiento ni de analítica.",
+      "intro": "Element solo usa cookies estrictamente necesarias para que el sitio funcione de forma segura. No usamos cookies publicitarias, de perfilamiento ni de analítica, y no vendemos ni compartimos datos de navegación.",
       "sections": [
         {
           "heading": "¿Qué son las cookies?",
@@ -1627,7 +1684,7 @@
         {
           "heading": "Cómo administrarlas",
           "body": [
-            "Puede eliminar o bloquear las cookies desde la configuración de su navegador. Si bloquea las cookies necesarias, no podrá iniciar sesión."
+            "Puede eliminar o bloquear las cookies desde la configuración de su navegador. Si bloquea las cookies necesarias, no podrá iniciar sesión en Mi Archivo. Si tiene preguntas, comuníquese con nosotros {contact}."
           ]
         }
       ],
@@ -1636,7 +1693,7 @@
         {
           "name": "sb-…-auth-token",
           "purpose": "Mantiene su sesión abierta después de iniciar sesión.",
-          "duration": "Sesión / hasta cerrar sesión",
+          "duration": "Hasta cerrar sesión",
           "type": "Necesaria"
         },
         {

@@ -24,7 +24,7 @@
       "adminCategories": "File categories",
       "adminAudit": "Audit log",
       "privacy": "Privacy policy",
-      "dataPolicy": "Personal data processing policy",
+      "dataPolicy": "Information Security Policy",
       "terms": "Terms of use",
       "cookies": "Cookie notice",
       "adminMessages": "Contact messages",
@@ -89,7 +89,7 @@
     "contactHeading": "Contact",
     "legalHeading": "Legal",
     "privacy": "Privacy policy",
-    "dataPolicy": "Personal data processing policy",
+    "dataPolicy": "Information Security Policy",
     "terms": "Terms of use",
     "cookies": "Cookie notice",
     "siteHeading": "Site",
@@ -1445,10 +1445,11 @@
     "accept": "Understood"
   },
   "Legal": {
-    "reviewBanner": "PROVISIONAL TEXT — PENDING LEGAL REVIEW. This content is a placeholder and must be reviewed and approved by legal counsel before publication.",
     "lastUpdated": "Last updated: {date}",
-    "updatedDate": "[PENDING: effective date]",
+    "updatedDate": "October 15, 2026",
     "otherDocuments": "Other legal documents",
+    "contactWithEmail": "by calling {phone} or emailing {email}",
+    "contactPhoneOnly": "by calling {phone}",
     "cookieTable": {
       "name": "Cookie",
       "purpose": "Purpose",
@@ -1456,178 +1457,234 @@
       "type": "Type"
     },
     "privacy": {
-      "title": "Privacy policy",
-      "intro": "This policy explains what information Element collects, why, and how it is protected.",
+      "title": "Privacy Policy",
+      "intro": "This policy explains what personal information Element Multiservices LLC collects, how we use it, who we share it with and how we protect it, both at our office and on this website.",
       "sections": [
         {
-          "heading": "1. Data controller",
+          "heading": "1. Who we are",
           "body": [
-            "[PENDING: legal name of the organization], tax ID [PENDING], domiciled at 2330 Cambreleng Ave, Bronx, NY 10458, email [PENDING: privacy contact email], is responsible for the personal data processed through Element."
+            "Element Multiservices LLC (“Element”, “we”) provides tax, bookkeeping, business registration and document services from our office at {address}. You can reach us {contact}, or visit us at the office."
           ]
         },
         {
           "heading": "2. Information we collect",
           "body": [
-            "Account data provided by the organization (name, email address, preferred language).",
-            "Files and their descriptions uploaded by users or administrators.",
-            "Security records: sign-ins, IP address, browser type and actions performed, kept to protect accounts and investigate incidents.",
-            "Messages sent through the contact form."
+            "Contact details: name, phone, email, address and preferred language, when you book an appointment, write to us, create an account or subscribe to our updates.",
+            "Information needed to provide our services: Social Security or ITIN numbers, date of birth, marital status, dependents, income, W-2 and 1099 forms, bank details for refunds or payments, information about your business and any other documents you give us in person or upload to My Files.",
+            "Identity and supporting documents you provide for services such as ITIN applications, translations, immigration forms or notary services.",
+            "Technical and security data: sign-ins, IP address, browser type and actions taken in your account, which we keep to protect accounts and investigate incidents."
           ]
         },
         {
-          "heading": "3. Purposes",
+          "heading": "3. How we use information",
           "body": [
-            "To provide the document management service, authenticate users, send transactional emails (invitations, password resets and file notifications), keep the platform secure, respond to contact requests and comply with legal obligations."
+            "We use your information to prepare and file your returns and applications, contact you about your case, manage your account and files, send service emails (invitations, password resets, file notices), answer your messages, keep the website secure and meet our legal obligations.",
+            "We only email you IRS updates if you subscribed. Every email includes an unsubscribe link that takes effect immediately."
           ]
         },
         {
-          "heading": "4. Service providers",
+          "heading": "4. Your tax return information",
           "body": [
-            "Element relies on providers that process data on our behalf: Supabase (database, authentication and storage), Vercel (hosting), Resend (email delivery), Upstash (abuse prevention), Google reCAPTCHA (bot protection) and Sentry (error monitoring, without personal data or file names). Some of these providers store data outside Colombia. [PENDING: confirm regions and transfer agreements]"
+            "As tax return preparers, federal law (Internal Revenue Code section 7216) prohibits us from using or disclosing your tax return information for any purpose other than preparing and filing your return, unless you give signed consent or the law allows it. We do not use that information to offer you other services without your written consent."
           ]
         },
         {
-          "heading": "5. Retention",
+          "heading": "5. Who we share information with",
           "body": [
-            "Files moved to the trash are permanently deleted after 30 days. Security records and contact messages are kept for [PENDING: retention period]."
+            "We do not sell or rent your personal information.",
+            "We share it only when needed to provide our services: with the IRS, the New York State Department of Taxation and Finance and other agencies where we file on your behalf; with your bank or your business's bank when you ask us to; and with the licensed insurance agent if you request a life insurance quote.",
+            "We also use technology providers that process data on our behalf and under our instructions: Supabase (database, accounts and file storage), Vercel (website hosting), Resend (email delivery), Upstash (abuse prevention), Google reCAPTCHA (form protection against bots) and Sentry (error monitoring, without file names or contents).",
+            "We may disclose information when required by law, a court order or a competent authority."
           ]
         },
         {
-          "heading": "6. Your rights",
+          "heading": "6. How we protect information",
           "body": [
-            "You may exercise your rights to know, update, rectify and delete your data, and to revoke your authorization, as described in the personal data processing policy."
+            "We maintain an information security program, as required by the Federal Trade Commission (FTC) Safeguards Rule and the New York SHIELD Act. It is described in our Information Security Policy."
           ]
         },
         {
-          "heading": "7. Changes",
+          "heading": "7. How long we keep information",
           "body": [
-            "We will publish any change to this policy on this page, indicating the date of the last update."
+            "We keep copies of returns and their supporting documents for at least three years, as the IRS requires of tax return preparers, and for any additional time needed for reviews, amendments or legal requirements. Files moved to the My Files trash are permanently deleted after 30 days."
+          ]
+        },
+        {
+          "heading": "8. Your choices",
+          "body": [
+            "You may ask us for a copy of the information we hold about you, ask us to correct it, or ask us to delete it once we are no longer legally required to keep it. You can unsubscribe from email updates at any time using the link in each email. For any request, contact us {contact}."
+          ]
+        },
+        {
+          "heading": "9. Children",
+          "body": [
+            "This website is not directed to children under 13, and we do not knowingly collect their information online. Information about children and dependents that you give us for your return receives the same protection as yours."
+          ]
+        },
+        {
+          "heading": "10. Links to other websites",
+          "body": [
+            "The Updates page reproduces news published by the IRS on irs.gov and links to that site. Element is not affiliated with the IRS. Third-party websites have their own privacy policies."
+          ]
+        },
+        {
+          "heading": "11. Changes to this policy",
+          "body": [
+            "We will post any changes on this page, with the date of the last update. If a change is significant, we will let you know by email or at the office."
           ]
         }
       ]
     },
     "dataPolicy": {
-      "title": "Personal data processing policy",
-      "intro": "This policy is adopted in compliance with Colombian Law 1581 of 2012, Decree 1377 of 2013 (compiled in Decree 1074 of 2015) and other applicable regulations.",
+      "title": "Information Security Policy",
+      "intro": "This policy describes how Element Multiservices LLC protects its clients' personal and financial information, in compliance with the FTC Safeguards Rule (Gramm-Leach-Bliley Act), the New York SHIELD Act and IRS rules for tax return preparers.",
       "sections": [
         {
-          "heading": "1. Controller",
+          "heading": "1. Responsibility",
           "body": [
-            "[PENDING: legal name], tax ID [PENDING], address 2330 Cambreleng Ave, Bronx, NY 10458, phone [PENDING], email for data requests [PENDING]."
+            "Element Multiservices LLC, {address}. A person designated by the company coordinates the security program, reviews it at least once a year and updates it when our services or systems change. You can reach us {contact}."
           ]
         },
         {
-          "heading": "2. Processing and purposes",
+          "heading": "2. Information we protect",
           "body": [
-            "Personal data is collected, stored, used and deleted to: manage user accounts; provide the document management service; send transactional communications; ensure the security of the platform and keep an audit trail; and respond to requests received through the contact form."
+            "All of our clients' nonpublic personal and financial information: Social Security and ITIN numbers, income and tax return data, bank accounts, identity documents and any other documents we receive at the office or through My Files."
           ]
         },
         {
-          "heading": "3. Rights of data subjects",
+          "heading": "3. Office safeguards",
           "body": [
-            "Under article 8 of Law 1581 of 2012, data subjects have the right to: (a) know, update and rectify their personal data; (b) request proof of the authorization granted; (c) be informed about the use given to their data; (d) file complaints with the Superintendence of Industry and Commerce; (e) revoke the authorization and/or request the deletion of data when the processing does not respect constitutional and legal principles, rights and guarantees; and (f) access their personal data free of charge."
+            "Paper documents are kept in locked areas and handled only by staff who need them for their work. Documents we no longer need to keep are securely destroyed. Staff are trained on confidentiality and on recognizing fraud and impersonation attempts."
           ]
         },
         {
-          "heading": "4. Authorization",
+          "heading": "4. Technical safeguards",
           "body": [
-            "Data is processed with the prior, express and informed authorization of the data subject, except in the cases provided by law. Authorization for contact requests is obtained through the form's acceptance box."
+            "Data travels encrypted (HTTPS) and is stored encrypted. My Files uses personal accounts with a password, two-step verification and automatic sign-out after inactivity. Each person can only see their own files. Files are checked on upload and disallowed formats are rejected.",
+            "Sign-ins and administrative actions are recorded in an audit log that cannot be altered. Website forms are protected against bots and limited in the number of attempts."
           ]
         },
         {
-          "heading": "5. Inquiries and claims",
+          "heading": "5. Service providers",
           "body": [
-            "Inquiries will be answered within a maximum of ten (10) business days from their receipt, extendable by five (5) additional business days. Claims will be answered within a maximum of fifteen (15) business days, extendable by eight (8) additional business days. Requests must be sent to [PENDING: email or channel], indicating the data subject's identification, a description of the request and contact details."
+            "We only work with providers that commit to protecting information and use it solely to provide their service to us. The list of technology providers is in our Privacy Policy."
           ]
         },
         {
-          "heading": "6. Area responsible",
+          "heading": "6. Use and disclosure of tax information",
           "body": [
-            "[PENDING: area or person responsible for handling requests from data subjects]."
+            "Tax return information is used only to prepare and file the client's return. It is not disclosed to third parties or used for other purposes without the client's signed consent, except as permitted by Internal Revenue Code section 7216."
           ]
         },
         {
-          "heading": "7. Sensitive data and minors",
+          "heading": "7. Security incidents",
           "body": [
-            "Element is not intended to collect sensitive data or data of minors. If such information is included in documents, it will be processed only with the authorizations required by law. [PENDING: legal review]"
+            "If personal information is accessed without authorization, we will investigate, take steps to contain it and notify affected individuals without unreasonable delay, as New York law requires. When applicable, we will also notify the New York State Attorney General, other state authorities and the IRS.",
+            "If you believe your account or information is at risk, contact us right away {contact}."
           ]
         },
         {
-          "heading": "8. Transfers and transmissions",
+          "heading": "8. Retention and disposal",
           "body": [
-            "Data may be transmitted to the technology providers listed in the privacy policy, some of which are located outside Colombia, under conditions that guarantee an adequate level of protection. [PENDING: legal review]"
+            "We keep copies of returns for at least three years, as the IRS requires. When information is no longer needed for the service and does not have to be kept by law, we securely delete it. Files moved to the My Files trash are permanently deleted after 30 days."
           ]
         },
         {
-          "heading": "9. Effective date",
+          "heading": "9. Your part",
           "body": [
-            "This policy is effective from [PENDING: date]. Databases will be kept for as long as necessary to fulfill the purposes described."
+            "Please keep your password private, turn on two-step verification and sign out on shared computers. Element will never ask for your password by phone, email or WhatsApp."
           ]
         }
       ]
     },
     "terms": {
-      "title": "Terms of use",
-      "intro": "These terms govern access to and use of Element. By using the platform you accept them.",
+      "title": "Terms of Use",
+      "intro": "These terms govern the use of the Element Multiservices LLC website and of My Files, the online space for sharing documents with us. By using the website, you accept them.",
       "sections": [
         {
-          "heading": "1. Access",
+          "heading": "1. Our services",
           "body": [
-            "Anyone can create an account; the organization decides which accounts may upload documents. Credentials are personal and non-transferable; the user must keep them confidential and enable two-step verification when available."
+            "The website describes our services and lets you book appointments, write to us, subscribe to updates and share documents securely. The services themselves (tax preparation, bookkeeping, business registration, translations and others) are agreed with you separately, with the price in writing before we start."
           ]
         },
         {
-          "heading": "2. Acceptable use",
+          "heading": "2. We are not lawyers",
           "body": [
-            "It is forbidden to upload malicious content, files that infringe third-party rights, or information not related to the purpose of the service, and to attempt to access information or accounts of others."
+            "Element is not a law firm and does not give legal advice. For immigration matters we only help complete forms and translate documents; we cannot advise you on your immigration case or represent you before any agency. For legal advice, consult a licensed attorney or a representative accredited by the Department of Justice."
           ]
         },
         {
-          "heading": "3. Files",
+          "heading": "3. Services with special rules",
           "body": [
-            "Only the allowed formats are accepted, up to the published size and storage limits. Element may reject files that fail its security checks."
+            "Credit repair: before we start, we give you a written contract and a statement of your rights, and you may cancel without charge within three business days of signing. We do not charge for these services before they are performed. Accurate and recent information on your credit reports cannot be removed.",
+            "Life insurance: guidance and quotes are provided by an agent licensed in New York State. Policy approval and terms depend on the insurer.",
+            "Notary: the notary public certifies signatures; they do not draft legal documents or give legal advice. A valid photo ID is required."
           ]
         },
         {
-          "heading": "4. Availability",
+          "heading": "4. Your My Files account",
           "body": [
-            "We make reasonable efforts to keep the service available, but we do not guarantee uninterrupted operation. [PENDING: service level, if any]"
+            "Anyone can create an account. Element decides which accounts can upload documents. Your credentials are personal: do not share them, and turn on two-step verification. You are responsible for activity on your account."
           ]
         },
         {
-          "heading": "5. Suspension",
+          "heading": "5. Acceptable use",
           "body": [
-            "The organization may deactivate accounts that breach these terms or for security reasons."
+            "You may not upload malicious content or documents that do not belong to you or that you have no right to share, or try to access other people's accounts or information. Only allowed formats are accepted, within the stated size limits."
           ]
         },
         {
-          "heading": "6. Liability",
+          "heading": "6. Informational content",
           "body": [
-            "[PENDING: limitation of liability clause reviewed by legal counsel]"
+            "IRS updates are reproduced exactly as the IRS publishes them on irs.gov, with a link to the source. Element is not affiliated with the IRS. Website content is informational and does not replace a review of your particular situation."
           ]
         },
         {
-          "heading": "7. Applicable law",
+          "heading": "7. Availability",
           "body": [
-            "These terms are governed by the laws of the Republic of Colombia. [PENDING: jurisdiction]"
+            "We make every reasonable effort to keep the website and My Files available and secure, but we do not guarantee uninterrupted operation. We recommend keeping your own copies of important documents."
+          ]
+        },
+        {
+          "heading": "8. Account suspension",
+          "body": [
+            "We may deactivate an account that breaks these terms or when needed to protect the security of the website or other users."
+          ]
+        },
+        {
+          "heading": "9. Limitation of liability",
+          "body": [
+            "To the extent permitted by law, Element is not liable for indirect damages arising from the use of the website or for interruptions beyond our control. Nothing in these terms limits your rights as a consumer under the law or our responsibility for the professional services we provide to you."
+          ]
+        },
+        {
+          "heading": "10. Governing law",
+          "body": [
+            "These terms are governed by the laws of the State of New York and applicable federal law of the United States. Any dispute will be resolved in the competent courts of Bronx County, New York."
+          ]
+        },
+        {
+          "heading": "11. Contact",
+          "body": [
+            "If you have questions about these terms, visit us at {address} or contact us {contact}."
           ]
         }
       ]
     },
     "cookies": {
-      "title": "Cookie notice",
-      "intro": "Element only uses cookies that are strictly necessary for the site to work securely. We do not use advertising, profiling or analytics cookies.",
+      "title": "Cookie Notice",
+      "intro": "Element only uses cookies that are strictly necessary for the website to work securely. We do not use advertising, profiling or analytics cookies, and we do not sell or share browsing data.",
       "sections": [
         {
           "heading": "What are cookies?",
           "body": [
-            "Cookies are small files that a website stores in your browser to remember information between visits."
+            "Cookies are small files a website stores in your browser to remember information between visits."
           ]
         },
         {
           "heading": "How to manage them",
           "body": [
-            "You can delete or block cookies from your browser settings. If you block the necessary cookies, you will not be able to sign in."
+            "You can delete or block cookies in your browser settings. If you block the necessary cookies, you will not be able to sign in to My Files. If you have questions, contact us {contact}."
           ]
         }
       ],
@@ -1635,13 +1692,13 @@
       "rows": [
         {
           "name": "sb-…-auth-token",
-          "purpose": "Keeps your session open after you sign in.",
-          "duration": "Session / until sign-out",
+          "purpose": "Keeps you signed in.",
+          "duration": "Until you sign out",
           "type": "Necessary"
         },
         {
           "name": "el_activity",
-          "purpose": "Closes the session after a period of inactivity.",
+          "purpose": "Signs you out after a period of inactivity.",
           "duration": "30 minutes (administrators) / 8 hours (users)",
           "type": "Necessary"
         },
@@ -1653,7 +1710,7 @@
         },
         {
           "name": "el_cookie_notice",
-          "purpose": "Remembers that you have read this notice.",
+          "purpose": "Remembers that you read this notice.",
           "duration": "1 year",
           "type": "Necessary"
         },
