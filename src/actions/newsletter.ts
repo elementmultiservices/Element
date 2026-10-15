@@ -5,10 +5,10 @@ import { z } from "zod";
 import { toLocale } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/auth/session";
-import { effectiveStatus, getAdminPost } from "@/lib/blog/queries";
 import { fieldErrorsFrom, type FormState } from "@/lib/forms";
+import { findUpdateVersions } from "@/lib/irs/newsroom";
 import { newsletterNotMigrated } from "@/lib/newsletter/queries";
-import { sendPostToSubscribers, type Recipient } from "@/lib/newsletter/send";
+import { sendUpdateToSubscribers, type Recipient } from "@/lib/newsletter/send";
 import { hashIdentifier } from "@/lib/security/hash";
 import { checkFormToken } from "@/lib/security/form-token";
 import { rateLimit } from "@/lib/security/rate-limit";
@@ -140,17 +140,20 @@ export async function removeSubscriberAction(_prev: FormState<never>, formData: 
   return { status: "success" };
 }
 
-/** Admin: email a published post to every active subscriber. */
-export async function sendPostNewsletterAction(_prev: FormState<never>, formData: FormData): Promise<FormState<never>> {
+/** Admin: email an IRS update (by its slug) to every active subscriber. */
+export async function sendUpdateNewsletterAction(_prev: FormState<never>, formData: FormData): Promise<FormState<never>> {
   const session = await requireAdmin();
   if (!(await rateLimit("newsletterSendUser", session.userId)).success) return { status: "error", error: "rateLimited" };
-  const parsed = idSchema.safeParse({ id: formData.get("id") });
-  if (!parsed.success) return { status: "error", error: "notFound" };
+  const slug = z
+    .string()
+    .regex(/^[a-z0-9-]{1,300}$/)
+    .safeParse(formData.get("slug"));
+  if (!slug.success) return { status: "error", error: "notFound" };
+
+  const versions = await findUpdateVersions(slug.data);
+  if (!versions) return { status: "error", error: "notFound" };
 
   const supabase = await createClient();
-  const post = await getAdminPost(supabase, parsed.data.id);
-  if (!post) return { status: "error", error: "notFound" };
-  if (effectiveStatus(post) !== "published") return { status: "error", error: "notPublished" };
 
   const { data: rows, error } = await supabase
     .from("newsletter_subscribers")
@@ -163,14 +166,14 @@ export async function sendPostNewsletterAction(_prev: FormState<never>, formData
   if (recipients.length === 0) return { status: "error", error: "noSubscribers" };
 
   const settings = await getSiteSettings();
-  const { sent, failed } = await sendPostToSubscribers(post, recipients, settings.address);
-  const title = post.translations.es?.title ?? post.translations.en?.title ?? "";
+  const { sent, failed } = await sendUpdateToSubscribers(slug.data, versions, recipients, settings.address);
+  const title = versions.es?.title ?? versions.en?.title ?? "";
 
   // newsletter_sends has no client insert policy: written with the service role.
   await createAdminClient()
     .from("newsletter_sends")
-    .insert({ post_id: post.id, title: title.slice(0, 200) || "—", recipients: sent, failed, sent_by: session.userId });
-  await audit({ actorId: session.userId, action: "newsletter.sent", targetType: "post", targetId: post.id, metadata: { sent, failed, title } });
+    .insert({ update_slug: slug.data, title: title.slice(0, 200) || "—", recipients: sent, failed, sent_by: session.userId });
+  await audit({ actorId: session.userId, action: "newsletter.sent", targetType: "update", metadata: { sent, failed, title, slug: slug.data } });
 
   if (sent === 0) return { status: "error", error: "deliveryFailed" };
   return { status: "success" };

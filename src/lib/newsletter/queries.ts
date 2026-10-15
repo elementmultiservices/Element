@@ -65,15 +65,15 @@ export async function countActiveSubscribers(supabase: ServerSupabaseClient): Pr
   return count ?? 0;
 }
 
-export type NewsletterSend = { id: string; recipients: number; failed: number; createdAt: string };
+export type NewsletterSend = { id: string; slug: string | null; title: string; recipients: number; failed: number; createdAt: string };
 
-export async function listSendsForPost(supabase: ServerSupabaseClient, postId: string): Promise<NewsletterSend[]> {
+/** Latest newsletter emails sent, newest first (includes sends from before the blog was removed). */
+export async function listRecentSends(supabase: ServerSupabaseClient, limit = 200): Promise<NewsletterSend[]> {
   const { data, error } = await supabase
     .from("newsletter_sends")
-    .select("id, recipients, failed, created_at")
-    .eq("post_id", postId)
+    .select("id, update_slug, title, recipients, failed, created_at")
     .order("created_at", { ascending: false })
-    .limit(10);
+    .limit(limit);
   if (error) return [];
-  return (data ?? []).map((s) => ({ id: s.id, recipients: s.recipients, failed: s.failed, createdAt: s.created_at }));
+  return (data ?? []).map((s) => ({ id: s.id, slug: s.update_slug, title: s.title, recipients: s.recipients, failed: s.failed, createdAt: s.created_at }));
 }

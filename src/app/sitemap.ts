@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 import { locales, type AppLocale } from "@/i18n/routing";
-import { sitemapPosts } from "@/lib/blog/queries";
+import { loadIrsUpdates } from "@/lib/irs/newsroom";
 import { publicEnv } from "@/lib/public-env";
 
-// Rebuilt at most once per hour; new posts appear without a redeploy.
+// Rebuilt at most once per hour; new IRS updates appear without a redeploy.
 export const revalidate = 3600;
 
 const STATIC_PATHS = ["/", "/services", "/location", "/faq", "/updates", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies"];
@@ -12,7 +12,7 @@ function absolute(locale: AppLocale, path: string): string {
   return `${publicEnv.siteUrl}/${locale}${path === "/" ? "" : path}`;
 }
 
-/** Public pages in both languages plus every visible post, with hreflang alternates. */
+/** Public pages in both languages plus every IRS update page, with hreflang alternates. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
 
@@ -28,13 +28,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  for (const post of await sitemapPosts()) {
-    const available = locales.filter((l) => post.slugs[l]);
-    const languages = Object.fromEntries(available.map((l) => [l, absolute(l, `/blog/${post.slugs[l]}`)]));
-    for (const locale of available) {
+  // An update is listed in each language the IRS published it in.
+  const lists = await Promise.all(locales.map(async (locale) => [locale, (await loadIrsUpdates(locale)) ?? []] as const));
+  const bySlug = new Map<string, { locale: AppLocale; date: string }[]>();
+  for (const [locale, updates] of lists) {
+    for (const u of updates) if (u.slug) bySlug.set(u.slug, [...(bySlug.get(u.slug) ?? []), { locale, date: u.date }]);
+  }
+  for (const [slug, versions] of bySlug) {
+    const languages = Object.fromEntries(versions.map((v) => [v.locale, absolute(v.locale, `/updates/${slug}`)]));
+    for (const v of versions) {
       entries.push({
-        url: absolute(locale, `/blog/${post.slugs[locale]}`),
-        lastModified: new Date(post.updatedAt),
+        url: absolute(v.locale, `/updates/${slug}`),
+        lastModified: new Date(v.date),
         changeFrequency: "monthly",
         priority: 0.7,
         alternates: { languages },

@@ -66,9 +66,9 @@ export default async function AdminSubscribersPage({ params, searchParams }: Pag
                 </a>
               </Button>
               <Button asChild>
-                <Link href="/admin/blog">
+                <Link href="/admin/newsletter">
                   <Send aria-hidden="true" />
-                  {t("Admin.subscribers.sendFromBlog")}
+                  {t("Admin.subscribers.sendUpdate")}
                 </Link>
               </Button>
             </>

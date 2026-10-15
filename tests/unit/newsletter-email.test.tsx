@@ -13,7 +13,7 @@ describe("newsletter email", () => {
         logoUrl="https://element.test/brand/element-logo-email.png"
         coverUrl={null}
         ctaLabel="Leer el artículo"
-        postUrl="https://element.test/es/blog/propinas"
+        postUrl="https://element.test/es/updates/propinas"
         reason="Recibes este correo porque te suscribiste."
         unsubscribeLabel="Darte de baja"
         unsubscribeUrl="https://element.test/es/newsletter/unsubscribe?token=abc"
@@ -21,7 +21,7 @@ describe("newsletter email", () => {
       />,
     );
     expect(html).toContain("https://element.test/brand/element-logo-email.png");
-    expect(html).toContain("https://element.test/es/blog/propinas");
+    expect(html).toContain("https://element.test/es/updates/propinas");
     expect(html).toContain("https://element.test/es/newsletter/unsubscribe?token=abc");
     expect(html).toContain("123 Main St, Bronx, NY");
     expect(html).toContain('lang="es"');

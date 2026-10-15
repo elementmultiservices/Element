@@ -131,23 +131,17 @@ isOneToOne: false
                   ]
                 },"newsletter_sends": {
                   Row: {
-                    "created_at": string,"failed": number,"id": string,"post_id": string | null,"recipients": number,"sent_by": string | null,"title": string
+                    "created_at": string,"failed": number,"id": string,"recipients": number,"sent_by": string | null,"title": string,"update_slug": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "title": string,"created_at"?: string,"failed"?: number,"id"?: string,"post_id"?: string | null,"recipients"?: number,"sent_by"?: string | null
+                    "title": string,"created_at"?: string,"failed"?: number,"id"?: string,"recipients"?: number,"sent_by"?: string | null,"update_slug"?: string | null
                   }
                   Update: {
-                    "created_at"?: string,"failed"?: number,"id"?: string,"post_id"?: string | null,"recipients"?: number,"sent_by"?: string | null,"title"?: string
+                    "created_at"?: string,"failed"?: number,"id"?: string,"recipients"?: number,"sent_by"?: string | null,"title"?: string,"update_slug"?: string | null
                   }
                   Relationships: [
                     {
-      foreignKeyName: "newsletter_sends_post_id_fkey"
-      columns: ["post_id"]
-isOneToOne: false
-      referencedRelation: "posts"
-      referencedColumns: ["id"]
-    },{
       foreignKeyName: "newsletter_sends_sent_by_fkey"
       columns: ["sent_by"]
 isOneToOne: false
@@ -167,66 +161,6 @@ isOneToOne: false
                     "created_at"?: string,"email"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"source"?: string,"unsubscribe_token"?: string,"unsubscribed_at"?: string | null,"updated_at"?: string
                   }
                   Relationships: [
-                  ]
-                },"post_categories": {
-                  Row: {
-                    "created_at": string,"id": string,"name_en": string,"name_es": string,"slug_en": string,"slug_es": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"id"?: string,"name_en": string,"name_es": string,"slug_en": string,"slug_es": string
-                  }
-                  Update: {
-                    "created_at"?: string,"id"?: string,"name_en"?: string,"name_es"?: string,"slug_en"?: string,"slug_es"?: string
-                  }
-                  Relationships: [
-                    
-                  ]
-                },"post_translations": {
-                  Row: {
-                    "content": string,"created_at": string,"excerpt": string,"id": string,"locale": Database["public"]['Enums']["app_locale"],"post_id": string,"slug": string,"title": string,"updated_at": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "content"?: string,"created_at"?: string,"excerpt"?: string,"id"?: string,"locale": Database["public"]['Enums']["app_locale"],"post_id": string,"slug": string,"title": string,"updated_at"?: string
-                  }
-                  Update: {
-                    "content"?: string,"created_at"?: string,"excerpt"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"post_id"?: string,"slug"?: string,"title"?: string,"updated_at"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "post_translations_post_id_fkey"
-      columns: ["post_id"]
-isOneToOne: false
-      referencedRelation: "posts"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"posts": {
-                  Row: {
-                    "author_id": string,"category_id": string | null,"cover_path": string | null,"created_at": string,"id": string,"is_featured": boolean,"kind": Database["public"]['Enums']["post_kind"],"published_at": string | null,"source_url": string | null,"status": Database["public"]['Enums']["post_status"],"updated_at": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "author_id": string,"category_id"?: string | null,"cover_path"?: string | null,"created_at"?: string,"id"?: string,"is_featured"?: boolean,"kind"?: Database["public"]['Enums']["post_kind"],"published_at"?: string | null,"source_url"?: string | null,"status"?: Database["public"]['Enums']["post_status"],"updated_at"?: string
-                  }
-                  Update: {
-                    "author_id"?: string,"category_id"?: string | null,"cover_path"?: string | null,"created_at"?: string,"id"?: string,"is_featured"?: boolean,"kind"?: Database["public"]['Enums']["post_kind"],"published_at"?: string | null,"source_url"?: string | null,"status"?: Database["public"]['Enums']["post_status"],"updated_at"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "posts_author_id_fkey"
-      columns: ["author_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "posts_category_id_fkey"
-      columns: ["category_id"]
-isOneToOne: false
-      referencedRelation: "post_categories"
-      referencedColumns: ["id"]
-    }
                   ]
                 },"site_settings": {
                   Row: {
@@ -335,12 +269,6 @@ isOneToOne: false
               "files_active": number,"files_trashed": number,"storage_trashed_bytes": number,"storage_used_bytes": number,"uploads_last_7d": number,"users_active": number,"users_inactive": number,"users_pending": number,"users_total": number
             }[]
                            },
-"admin_save_post":
-{ Args: { "p_category_id"?: string,"p_id"?: string,"p_published_at"?: string,"p_status": Database["public"]['Enums']["post_status"],"p_translations": Json }; Returns: string
-                           },
-"admin_save_post_v2":
-{ Args: { "p_category_id"?: string,"p_featured"?: boolean,"p_id"?: string,"p_kind"?: Database["public"]['Enums']["post_kind"],"p_published_at"?: string,"p_source_url"?: string,"p_status": Database["public"]['Enums']["post_status"],"p_translations": Json }; Returns: string
-                           },
 "admin_search_audit":
 { Args: { "p_action"?: string,"p_actor"?: string,"p_from"?: string,"p_limit"?: number,"p_offset"?: number,"p_q"?: string,"p_subject"?: string,"p_to"?: string }; Returns: {
               "action": string,"actor_email": string,"actor_id": string,"actor_name": string,"created_at": string,"id": number,"ip": unknown,"metadata": Json,"target_id": string,"target_label": string,"target_type": string,"total_count": number,"user_agent": string
@@ -358,36 +286,6 @@ isOneToOne: false
                            },
 "auth_user_id_by_email":
 { Args: { "p_email": string }; Returns: string
-                           },
-"blog_article":
-{ Args: { "p_locale": Database["public"]['Enums']["app_locale"],"p_slug": string }; Returns: {
-              "category_name": string,"category_slug": string,"content": string,"cover_path": string,"excerpt": string,"kind": Database["public"]['Enums']["post_kind"],"post_id": string,"published_at": string,"reading_minutes": number,"slug": string,"slugs": Json,"source_url": string,"title": string,"updated_at": string
-            }[]
-                           },
-"blog_categories":
-{ Args: { "p_locale": Database["public"]['Enums']["app_locale"] }; Returns: {
-              "name": string,"post_count": number,"slug": string
-            }[]
-                           },
-"blog_feed":
-{ Args: { "p_category"?: string,"p_kind"?: Database["public"]['Enums']["post_kind"],"p_limit"?: number,"p_locale": Database["public"]['Enums']["app_locale"],"p_offset"?: number }; Returns: {
-              "category_name": string,"category_slug": string,"cover_path": string,"excerpt": string,"is_featured": boolean,"kind": Database["public"]['Enums']["post_kind"],"post_id": string,"published_at": string,"reading_minutes": number,"slug": string,"title": string,"total_count": number
-            }[]
-                           },
-"blog_list":
-{ Args: { "p_category"?: string,"p_limit"?: number,"p_locale": Database["public"]['Enums']["app_locale"],"p_offset"?: number }; Returns: {
-              "category_name": string,"category_slug": string,"cover_path": string,"excerpt": string,"post_id": string,"published_at": string,"slug": string,"title": string,"total_count": number
-            }[]
-                           },
-"blog_post":
-{ Args: { "p_locale": Database["public"]['Enums']["app_locale"],"p_slug": string }; Returns: {
-              "category_name": string,"category_slug": string,"content": string,"cover_path": string,"excerpt": string,"post_id": string,"published_at": string,"slug": string,"slugs": Json,"title": string,"updated_at": string
-            }[]
-                           },
-"blog_sitemap":
-{ Args: Record<PropertyKey, never>; Returns: {
-              "post_id": string,"slugs": Json,"updated_at": string
-            }[]
                            },
 "consume_recovery_code":
 { Args: { "p_hash": string,"p_user": string }; Returns: boolean
@@ -418,15 +316,6 @@ isOneToOne: false
 "my_recovery_codes_remaining":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
-"post_is_visible":
-{ Args: { "p_published_at": string,"p_status": Database["public"]['Enums']["post_status"] }; Returns: boolean
-                           },
-"publish_due_posts":
-{ Args: Record<PropertyKey, never>; Returns: number
-                           },
-"reading_minutes":
-{ Args: { "p_html": string }; Returns: number
-                           },
 "revoke_user_sessions":
 { Args: { "p_user": string }; Returns: undefined
                            },
@@ -442,7 +331,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "app_locale": "en"|"es","post_kind": "article"|"update","post_status": "draft"|"scheduled"|"published","user_role": "user"|"admin"
+            "app_locale": "en"|"es","user_role": "user"|"admin"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -562,7 +451,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "app_locale": ["en", "es"],"post_kind": ["article", "update"],"post_status": ["draft", "scheduled", "published"],"user_role": ["user", "admin"]
+            "app_locale": ["en", "es"],"user_role": ["user", "admin"]
           }
         }
 } as const

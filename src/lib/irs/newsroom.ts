@@ -1,7 +1,7 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
 import type { AppLocale } from "@/i18n/routing";
-import { sanitizePostHtml } from "@/lib/blog/sanitize";
+import { sanitizeRichHtml } from "@/lib/sanitize-html";
 
 /**
  * Updates page: items published in the IRS newsroom (https://www.irs.gov/newsroom
@@ -209,6 +209,33 @@ export async function loadIrsUpdates(locale: AppLocale): Promise<IrsUpdate[] | n
   }
 }
 
+/** An update (with its own page) and the versions the IRS published, keyed by language. */
+export type UpdateWithVersions = { slug: string; date: string; versions: Partial<Record<AppLocale, IrsUpdate>> };
+
+/**
+ * Every update that has a page on our site, with its English and Spanish
+ * versions side by side, newest first. Null when the IRS cannot be reached.
+ */
+export async function listUpdatesWithVersions(): Promise<UpdateWithVersions[] | null> {
+  const [en, es] = await Promise.all([loadIrsUpdates("en"), loadIrsUpdates("es")]);
+  if (!en && !es) return null;
+  const bySlug = new Map<string, UpdateWithVersions>();
+  for (const [locale, list] of [["en", en], ["es", es]] as const) {
+    for (const u of list ?? []) {
+      if (!u.slug) continue;
+      const entry = bySlug.get(u.slug) ?? { slug: u.slug, date: u.date, versions: {} };
+      entry.versions[locale] = u;
+      bySlug.set(u.slug, entry);
+    }
+  }
+  return [...bySlug.values()].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+}
+
+/** Both language versions of one update, or null when it is not listed. */
+export async function findUpdateVersions(slug: string): Promise<Partial<Record<AppLocale, IrsUpdate>> | null> {
+  return (await listUpdatesWithVersions())?.find((u) => u.slug === slug)?.versions ?? null;
+}
+
 // ---------------------------------------------------------------------------
 // Article content
 // ---------------------------------------------------------------------------
@@ -231,7 +258,7 @@ function innerDiv(html: string, marker: RegExp, from = 0): string | null {
 
 /**
  * Title and body of an IRS newsroom article page. Links are made absolute to
- * irs.gov and the HTML goes through the blog allowlist sanitizer.
+ * irs.gov and the HTML goes through the rich-HTML allowlist sanitizer.
  */
 export function parseIrsArticle(html: string): { title: string; html: string } | null {
   const title = /<h1[^>]*pup-page-node-type-article-page__title[^>]*>([\s\S]*?)<\/h1>/i.exec(html);
@@ -247,7 +274,7 @@ export function parseIrsArticle(html: string): { title: string; html: string } |
       return "";
     }
   });
-  return { title: plain(title[1]!), html: sanitizePostHtml(absolute) };
+  return { title: plain(title[1]!), html: sanitizeRichHtml(absolute) };
 }
 
 export type IrsArticle = { title: string; html: string; url: string };

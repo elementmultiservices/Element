@@ -4,7 +4,7 @@ import { publicEnv } from "@/lib/public-env";
 import type { Database } from "./database.types";
 
 /**
- * Anonymous client for public content (blog, sitemap). It never carries a user
+ * Anonymous client for public content (site settings). It never carries a user
  * session, so public pages show exactly what an anonymous visitor may see,
  * even when an administrator is signed in.
  */

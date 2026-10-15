@@ -116,7 +116,7 @@ export default async function UpdatePage({ params }: PageProps<"/[locale]/update
 
         <div className="mt-10 grid gap-12 lg:mt-14 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
           <div className="min-w-0 max-w-[760px]">
-            {/* IRS article body, sanitized with the blog allowlist (parseIrsArticle). */}
+            {/* IRS article body, sanitized with the rich-HTML allowlist (parseIrsArticle). */}
             <div style={delay(3)} className="motion-enter prose-element lg:text-[1.1875rem]" dangerouslySetInnerHTML={{ __html: article.html }} />
 
             <div className="mt-12 flex flex-col gap-4 rounded-[24px] border border-azure-50 bg-mist p-6 sm:flex-row sm:items-center sm:justify-between">

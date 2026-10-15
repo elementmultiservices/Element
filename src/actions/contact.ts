@@ -15,7 +15,7 @@ import { requestMeta } from "@/lib/security/request-meta";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { idSchema } from "@/lib/validation/admin";
-import { contactExtrasSchema, contactSchema } from "@/lib/validation/blog";
+import { contactExtrasSchema, contactSchema } from "@/lib/validation/contact";
 
 export type ContactField = "name" | "email" | "subject" | "message" | "consent" | "phone" | "need" | "preferredLanguage";
 

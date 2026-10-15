@@ -11,7 +11,7 @@ import { newContext, signIn, signInAdmin } from "./helpers";
 const NAMESPACES = Object.keys(en).join("|");
 const RAW_KEY = new RegExp(`\\b(?:${NAMESPACES})\\.[A-Za-z]+(?:\\.[A-Za-z]+)*\\b`);
 
-const PUBLIC_PATHS = ["", "/services", "/location", "/faq", "/blog", "/sign-in", "/reset-password", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies", "/does-not-exist"];
+const PUBLIC_PATHS = ["", "/services", "/location", "/faq", "/updates", "/sign-in", "/reset-password", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies", "/does-not-exist"];
 const USER_PATHS = ["/dashboard", "/dashboard/upload", "/dashboard/profile"];
 const ADMIN_PATHS = [
   "/admin",
@@ -21,9 +21,8 @@ const ADMIN_PATHS = [
   "/admin/files/upload",
   "/admin/trash",
   "/admin/categories",
-  "/admin/blog",
-  "/admin/blog/new",
-  "/admin/blog/categories",
+  "/admin/newsletter",
+  "/admin/subscribers",
   "/admin/messages",
   "/admin/settings",
   "/admin/audit",

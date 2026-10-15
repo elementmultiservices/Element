@@ -4,8 +4,8 @@ import { render } from "@react-email/render";
 import { Resend } from "resend";
 import { getTranslations } from "next-intl/server";
 import { locales, type AppLocale } from "@/i18n/routing";
-import { coverUrl, type AdminPost } from "@/lib/blog/queries";
 import { isProduction, serverEnv } from "@/lib/env";
+import type { IrsUpdate } from "@/lib/irs/newsroom";
 import { NewsletterEmail } from "@/lib/email/templates/newsletter-email";
 
 /** Resend accepts up to 100 messages per batch request. */
@@ -23,43 +23,47 @@ export function unsubscribeUrl(locale: AppLocale, token: string): string {
 
 type Rendered = { subject: string; html: string; text: string };
 
+/** The same IRS update in each language the IRS published it in. */
+export type UpdateVersions = Partial<Record<AppLocale, IrsUpdate>>;
+
 /**
- * Emails a published post to every recipient, in their language when a
- * translation exists (otherwise in the other one). Each message carries its own
- * unsubscribe link and one-click List-Unsubscribe headers.
+ * Emails an IRS update to every recipient, in their language when the IRS
+ * published it in that language (otherwise in the other one). The email links
+ * to the update's page on our site. Each message carries its own unsubscribe
+ * link and one-click List-Unsubscribe headers.
  */
-export async function sendPostToSubscribers(
-  post: AdminPost,
+export async function sendUpdateToSubscribers(
+  slug: string,
+  versions: UpdateVersions,
   recipients: Recipient[],
   footerAddress: string,
 ): Promise<{ sent: number; failed: number }> {
   const env = serverEnv();
-  const cover = coverUrl(post.coverPath);
 
   // One rendered template per language; the unsubscribe URL is substituted per recipient.
   const PLACEHOLDER = "__UNSUBSCRIBE_URL__";
   const rendered = new Map<AppLocale, Rendered>();
   for (const locale of locales) {
-    const tr = post.translations[locale] ?? post.translations[locale === "es" ? "en" : "es"];
-    if (!tr) continue;
-    const contentLocale: AppLocale = post.translations[locale] ? locale : locale === "es" ? "en" : "es";
+    const contentLocale: AppLocale = versions[locale] ? locale : locale === "es" ? "en" : "es";
+    const update = versions[contentLocale];
+    if (!update) continue;
     const t = await getTranslations({ locale, namespace: "Newsletter.email" });
     const react = createElement(NewsletterEmail, {
       locale,
-      eyebrow: post.kind === "update" ? t("eyebrowUpdate") : t("eyebrowArticle"),
-      title: tr.title,
-      excerpt: tr.excerpt,
+      eyebrow: t("eyebrow"),
+      title: update.title,
+      excerpt: update.summary,
       logoUrl: `${siteUrl()}/brand/element-logo-email.png`,
-      coverUrl: cover,
+      coverUrl: null,
       ctaLabel: t("cta"),
-      postUrl: `${siteUrl()}/${contentLocale}/blog/${tr.slug}`,
+      postUrl: `${siteUrl()}/${contentLocale}/updates/${slug}`,
       reason: t("reason"),
       unsubscribeLabel: t("unsubscribe"),
       unsubscribeUrl: PLACEHOLDER,
       footerAddress: footerAddress ? `Element Multiservices · ${footerAddress}` : "Element Multiservices",
     });
     rendered.set(locale, {
-      subject: tr.title.replace(/[\r\n\t]+/g, " ").slice(0, 150),
+      subject: update.title.replace(/[\r\n\t]+/g, " ").slice(0, 150),
       html: await render(react),
       text: await render(react, { plainText: true }),
     });

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useProtectedAction } from "@/hooks/use-protected-action";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { CONTACT_NEEDS } from "@/lib/validation/blog";
+import { CONTACT_NEEDS } from "@/lib/validation/contact";
 
 const input =
   "w-full rounded-2xl border border-azure-100 bg-azure-25 px-4 text-[15px] text-ink outline-none transition-colors placeholder:text-graphite/60 focus:border-electric focus:bg-white aria-invalid:border-destructive";

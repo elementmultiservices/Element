@@ -22,24 +22,16 @@ const securityHeaders = [
   ...(isProduction ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" }] : []),
 ];
 
-// Blog covers are the only remote images: the public bucket of our own Supabase project.
-const supabaseOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin : null;
-
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
-  images: {
-    remotePatterns: supabaseOrigin ? [new URL(`${supabaseOrigin}/storage/v1/object/public/blog-covers/**`)] : [],
-    // Cover paths are unique per upload, so optimized copies never go stale.
-    minimumCacheTTL: 31536000,
-  },
   // Pages that were removed: keep old links working.
   async redirects() {
     return [
       { source: "/:locale(en|es)/about", destination: "/:locale", permanent: true },
       { source: "/:locale(en|es)/contact", destination: "/:locale/location#contact-form", permanent: true },
-      // The blog list was replaced by the IRS updates page; posts keep their /blog/<slug> links.
-      { source: "/:locale(en|es)/blog", destination: "/:locale/updates", permanent: false },
+      // The blog was replaced by the IRS updates page.
+      { source: "/:locale(en|es)/blog/:slug*", destination: "/:locale/updates", permanent: true },
     ];
   },
   async headers() {

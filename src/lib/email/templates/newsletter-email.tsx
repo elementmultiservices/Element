@@ -1,7 +1,7 @@
 import { Body, Button, Container, Head, Heading, Hr, Html, Img, Link, Preview, Section, Text } from "@react-email/components";
 
 /**
- * Newsletter email for a published post. All copy arrives already translated;
+ * Newsletter email for an IRS update. All copy arrives already translated;
  * the unsubscribe link is mandatory (CAN-SPAM) and unique per subscriber.
  */
 export type NewsletterEmailProps = {

@@ -16,7 +16,7 @@ test.afterAll(async () => {
   await deleteTestUsers(users);
 });
 
-const ADMIN_PAGES = ["/en/admin", "/en/admin/users", "/en/admin/files", "/en/admin/trash", "/en/admin/audit", "/en/admin/blog", "/en/admin/messages", "/es/admin/categories"];
+const ADMIN_PAGES = ["/en/admin", "/en/admin/users", "/en/admin/files", "/en/admin/trash", "/en/admin/audit", "/en/admin/newsletter", "/en/admin/messages", "/es/admin/categories"];
 
 test("anonymous visitors are sent to sign-in from private areas", async ({ browser }) => {
   const page = await (await newContext(browser)).newPage();
@@ -43,11 +43,6 @@ test("admin routes reject regular users", async ({ browser }) => {
     const res = await page.request.get(`/api/admin/export/${kind}`);
     expect(res.status(), kind).toBe(403);
   }
-  const cover = await page.request.post("/api/admin/blog/00000000-0000-0000-0000-000000000000/cover", {
-    headers: { Origin: "http://localhost:3100" },
-    multipart: { file: { name: "a.png", mimeType: "image/png", buffer: Buffer.from("x") } },
-  });
-  expect(cover.status()).toBe(403);
   // Uploading on behalf of another account is an admin-only capability.
   const intent = await page.request.post("/api/files/upload-intent", {
     headers: { Origin: "http://localhost:3100" },
