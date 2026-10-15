@@ -17,7 +17,7 @@ export async function Hero() {
     { key: "itin", count: 3 },
     { key: "business", count: 12 },
   ] as const;
-  const trust = (["irs", "notary", "afsp", "languages", "yearRound"] as const).map((key) => ({
+  const trust = (["irs", "notary", "languages", "yearRound"] as const).map((key) => ({
     key,
     label: t(`trust.${key}`),
   }));

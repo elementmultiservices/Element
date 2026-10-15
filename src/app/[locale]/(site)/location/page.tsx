@@ -119,7 +119,14 @@ export default async function LocationPage({ params }: PageProps<"/[locale]/loca
               </Button>
             </div>
           </div>
-          <MapIllustration label={tg("Home.location.mapPin")} badge={t("station")} logoPin className="h-[320px] rounded-none sm:h-[400px] lg:h-full lg:rounded-none" />
+          <MapIllustration
+            label={tg("Home.location.mapPin")}
+            badge={t("station")}
+            logoPin
+            href={contact.mapsHref.startsWith("http") ? contact.mapsHref : undefined}
+            linkLabel={t("directions")}
+            className="h-[320px] rounded-none sm:h-[400px] lg:h-full lg:rounded-none"
+          />
         </div>
       </section>
 

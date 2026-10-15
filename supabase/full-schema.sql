@@ -1946,11 +1946,12 @@ create trigger site_settings_set_updated_at
   for each row execute function public.set_updated_at();
 
 insert into public.site_settings (
-  phone, whatsapp, email, address,
+  phone, whatsapp, email, address, maps_url,
   hours_regular_es, hours_regular_en, hours_season_es, hours_season_en,
   announcement_label_es, announcement_label_en, announcement_text_es, announcement_text_en
 ) values (
-  '+1 (917) 890-0892', '19178900892', '', '',
+  '+1 (917) 890-0892', '19178900892', '', '2330 Cambreleng Ave, Bronx, NY 10458',
+  'https://www.google.com/maps/dir/?api=1&destination=2330+Cambreleng+Ave%2C+Bronx%2C+NY+10458',
   E'Lun – Vie · 10:00 a. m. – 6:00 p. m.\nSábados · con cita\nDomingos · cerrado',
   E'Mon – Fri · 10:00 a.m. – 6:00 p.m.\nSaturday · by appointment\nSunday · closed',
   E'Lun – Sáb · 9:00 a. m. – 8:00 p. m.\nDomingos · con cita',

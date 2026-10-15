@@ -151,7 +151,6 @@
       "label": "Credentials",
       "irs": "[IRS Certifying Acceptance Agent]",
       "notary": "[Notary Public · NY]",
-      "afsp": "[IRS AFSP Program]",
       "languages": "English · Español",
       "yearRound": "Open 12 months a year",
       "pause": "Pause scrolling",
@@ -596,7 +595,7 @@
   },
   "Email": {
     "automatedNotice": "This is an automated message from Element. Please do not reply to this email.",
-    "footerAddress": "Element · Street 00 # 00-00, City, Country",
+    "footerAddress": "Element · 2330 Cambreleng Ave, Bronx, NY 10458",
     "linkFallback": "If the button does not work, copy and paste this address into your browser:",
     "passwordReset": {
       "subject": "Reset your password",
@@ -1636,7 +1635,7 @@
         {
           "heading": "1. Data controller",
           "body": [
-            "[PENDING: legal name of the organization], tax ID [PENDING], domiciled at [PENDING: address], email [PENDING: privacy contact email], is responsible for the personal data processed through Element."
+            "[PENDING: legal name of the organization], tax ID [PENDING], domiciled at 2330 Cambreleng Ave, Bronx, NY 10458, email [PENDING: privacy contact email], is responsible for the personal data processed through Element."
           ]
         },
         {
@@ -1687,7 +1686,7 @@
         {
           "heading": "1. Controller",
           "body": [
-            "[PENDING: legal name], tax ID [PENDING], address [PENDING], phone [PENDING], email for data requests [PENDING]."
+            "[PENDING: legal name], tax ID [PENDING], address 2330 Cambreleng Ave, Bronx, NY 10458, phone [PENDING], email for data requests [PENDING]."
           ]
         },
         {

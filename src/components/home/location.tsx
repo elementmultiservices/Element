@@ -58,7 +58,12 @@ export async function Location() {
           </Button>
         </div>
       </div>
-      <MapIllustration label={t("Home.location.mapPin")} className="reveal" />
+      <MapIllustration
+        label={t("Home.location.mapPin")}
+        href={contact.mapsHref.startsWith("http") ? contact.mapsHref : undefined}
+        linkLabel={t("Home.location.directions")}
+        className="reveal"
+      />
     </section>
   );
 }

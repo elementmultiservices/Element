@@ -151,7 +151,6 @@
       "label": "Credenciales",
       "irs": "[Agente Certificador del IRS]",
       "notary": "[Notary Public · NY]",
-      "afsp": "[Programa AFSP del IRS]",
       "languages": "Español · English",
       "yearRound": "Abiertos los 12 meses",
       "pause": "Pausar el desplazamiento",
@@ -596,7 +595,7 @@
   },
   "Email": {
     "automatedNotice": "Este es un mensaje automático de Element. Por favor, no responda a este correo.",
-    "footerAddress": "Element · Calle 00 # 00-00, Ciudad, País",
+    "footerAddress": "Element · 2330 Cambreleng Ave, Bronx, NY 10458",
     "linkFallback": "Si el botón no funciona, copie y pegue esta dirección en su navegador:",
     "passwordReset": {
       "subject": "Restablezca su contraseña",
@@ -1636,7 +1635,7 @@
         {
           "heading": "1. Responsable del tratamiento",
           "body": [
-            "[PENDIENTE: razón social de la organización], NIT [PENDIENTE], con domicilio en [PENDIENTE: dirección] y correo electrónico [PENDIENTE: correo de privacidad], es responsable de los datos personales tratados a través de Element."
+            "[PENDIENTE: razón social de la organización], NIT [PENDIENTE], con domicilio en 2330 Cambreleng Ave, Bronx, NY 10458 y correo electrónico [PENDIENTE: correo de privacidad], es responsable de los datos personales tratados a través de Element."
           ]
         },
         {
@@ -1687,7 +1686,7 @@
         {
           "heading": "1. Responsable del tratamiento",
           "body": [
-            "[PENDIENTE: razón social], NIT [PENDIENTE], dirección [PENDIENTE], teléfono [PENDIENTE], correo para solicitudes sobre datos personales [PENDIENTE]."
+            "[PENDIENTE: razón social], NIT [PENDIENTE], dirección 2330 Cambreleng Ave, Bronx, NY 10458, teléfono [PENDIENTE], correo para solicitudes sobre datos personales [PENDIENTE]."
           ]
         },
         {

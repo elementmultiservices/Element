@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { BadgeCheck, CalendarDays, FileCheck, Languages, Pause, Play, Stamp } from "lucide-react";
+import { BadgeCheck, CalendarDays, Languages, Pause, Play, Stamp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const icons = { irs: BadgeCheck, notary: Stamp, afsp: FileCheck, languages: Languages, yearRound: CalendarDays };
+const icons = { irs: BadgeCheck, notary: Stamp, languages: Languages, yearRound: CalendarDays };
 
 type Item = { key: keyof typeof icons; label: string };
 

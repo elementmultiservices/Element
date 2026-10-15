@@ -2,11 +2,13 @@ import { MapPin } from "lucide-react";
 import { BrandMark } from "@/components/brand/wordmark";
 import { cn } from "@/lib/utils";
 
-/** Decorative street map. A live map embed would need CSP changes; "Get directions" opens Google Maps instead. */
+/** Decorative street map. A live map embed would need CSP changes; with `href` the map opens Google Maps instead. */
 export function MapIllustration({
   label,
   badge,
   logoPin = false,
+  href,
+  linkLabel,
   className,
 }: {
   label: string;
@@ -14,9 +16,12 @@ export function MapIllustration({
   badge?: string;
   /** Use the brand mark instead of a map pin. */
   logoPin?: boolean;
+  /** Makes the whole map a link (e.g. to Google Maps), named by `linkLabel`. */
+  href?: string;
+  linkLabel?: string;
   className?: string;
 }) {
-  return (
+  const map = (
     <div aria-hidden="true" className={cn("relative h-[340px] overflow-hidden rounded-[28px] bg-[#e8f2fd] sm:h-[440px] lg:rounded-[32px]", className)}>
       <svg viewBox="0 0 600 440" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 size-full">
         <path d="M430 -20 C 470 90, 400 170, 460 260 S 520 400, 480 470 L 640 470 L 640 -20 Z" fill="#a1d3fb" opacity="0.7" />
@@ -62,5 +67,11 @@ export function MapIllustration({
         </span>
       ) : null}
     </div>
+  );
+  if (!href) return map;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={linkLabel} className="block rounded-[28px] transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric lg:rounded-[32px]">
+      {map}
+    </a>
   );
 }
