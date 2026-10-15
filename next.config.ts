@@ -38,6 +38,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:locale(en|es)/about", destination: "/:locale", permanent: true },
       { source: "/:locale(en|es)/contact", destination: "/:locale/location#contact-form", permanent: true },
+      // The blog list was replaced by the IRS updates page; posts keep their /blog/<slug> links.
+      { source: "/:locale(en|es)/blog", destination: "/:locale/updates", permanent: false },
     ];
   },
   async headers() {

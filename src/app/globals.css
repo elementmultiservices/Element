@@ -223,13 +223,9 @@
     .motion-pulse {
       animation: pulse-ring 2.4s ease-out infinite;
     }
+    /* Speed changes (hover slow-down, pause toggle) are eased in TrustTicker via playbackRate. */
     .ticker-track {
       animation: ticker 40s linear infinite;
-    }
-    .ticker:hover .ticker-track,
-    .ticker:focus-within .ticker-track,
-    .ticker[data-paused="true"] .ticker-track {
-      animation-play-state: paused;
     }
 
     @supports (animation-timeline: view()) {

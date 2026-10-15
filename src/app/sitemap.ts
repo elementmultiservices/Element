@@ -6,7 +6,7 @@ import { publicEnv } from "@/lib/public-env";
 // Rebuilt at most once per hour; new posts appear without a redeploy.
 export const revalidate = 3600;
 
-const STATIC_PATHS = ["/", "/services", "/location", "/faq", "/blog", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies"];
+const STATIC_PATHS = ["/", "/services", "/location", "/faq", "/updates", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies"];
 
 function absolute(locale: AppLocale, path: string): string {
   return `${publicEnv.siteUrl}/${locale}${path === "/" ? "" : path}`;
@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const locale of locales) {
       entries.push({
         url: absolute(locale, path),
-        changeFrequency: path === "/blog" ? "daily" : "monthly",
+        changeFrequency: path === "/updates" ? "daily" : "monthly",
         priority: path === "/" ? 1 : 0.6,
         alternates: { languages },
       });

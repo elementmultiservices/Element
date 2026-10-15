@@ -41,14 +41,16 @@
       "faq": "Preguntas frecuentes",
       "adminSettings": "Datos del negocio",
       "adminSubscribers": "Suscriptores",
-      "unsubscribe": "Darte de baja"
+      "unsubscribe": "Darte de baja",
+      "updates": "Actualizaciones"
     },
     "descriptions": {
       "blog": "Lo que cambia en los impuestos de EE. UU. y cómo te afecta, explicado en español y sin enredos.",
       "legal": "Información legal sobre el uso de Element.",
       "services": "Impuestos, negocios, documentos y protección para tu familia, con el mismo equipo y el precio claro desde el inicio.",
       "location": "Visítanos en Nueva York o haz tu trámite a distancia. Dirección, horarios y cómo llegar.",
-      "faq": "Respuestas claras sobre reembolsos, documentos, precios, ITIN, el IRS y nuestros servicios."
+      "faq": "Respuestas claras sobre reembolsos, documentos, precios, ITIN, el IRS y nuestros servicios.",
+      "updates": "Las noticias más recientes del IRS: comunicados, consejos tributarios y hojas informativas, tal como las publica el IRS."
     }
   },
   "Common": {
@@ -86,7 +88,8 @@
     "bookShort": "Agendar",
     "myFiles": "Mi Archivo",
     "call": "Llamar",
-    "whatsapp": "WhatsApp"
+    "whatsapp": "WhatsApp",
+    "updates": "Actualizaciones"
   },
   "Footer": {
     "tagline": "Cada elemento en su lugar.",
@@ -358,13 +361,6 @@
         }
       }
     },
-    "blog": {
-      "eyebrow": "Blog · Al Día",
-      "title": "Noticias de impuestos, en claro.",
-      "body": "Lo que cambia en los impuestos de EE. UU., explicado en español y sin enredos.",
-      "viewAll": "Ver todas las noticias",
-      "empty": "Pronto publicaremos las primeras noticias."
-    },
     "faq": {
       "eyebrow": "Preguntas frecuentes",
       "title": "Preguntas que nos hacen siempre.",
@@ -399,6 +395,13 @@
       "body": "Agenda en un minuto o escríbenos. Te respondemos en español o en inglés.",
       "badgeFiled": "1040 presentado ✓",
       "badgeItin": "ITIN renovado ✓"
+    },
+    "updates": {
+      "eyebrow": "Actualizaciones · IRS",
+      "title": "Lo último del IRS, al día.",
+      "body": "Las noticias más recientes de la sala de prensa del IRS, tal como las publica.",
+      "viewAll": "Ver todas las actualizaciones",
+      "empty": "Pronto verás aquí las últimas noticias del IRS."
     }
   },
   "Panel": {
@@ -2052,26 +2055,26 @@
     },
     "directions": "Cómo llegar",
     "call": "Llamar",
-    "station": "Estación [Nombre] · [X] min a pie",
+    "station": "Metro-North Fordham · 15 min a pie",
     "getting": {
       "eyebrow": "Cómo llegar",
       "title": "Fácil de encontrar.",
       "items": {
         "train": {
           "title": "En tren",
-          "body": "Línea [X] hasta la estación [Nombre]. Camina [X] minutos."
+          "body": "Metro-North (líneas Harlem y New Haven) hasta Fordham y camina unos 15 minutos. En metro, los trenes B o D hasta 182–183 St, a unos 20 minutos a pie."
         },
         "bus": {
           "title": "En bus",
-          "body": "Rutas [BX…] con parada en [Calle]."
+          "body": "El Bx17 para en Crotona Ave, a una cuadra. También te sirven el Bx9 por Southern Blvd y el Bx12 SBS por Fordham Rd."
         },
         "car": {
           "title": "En carro",
-          "body": "Estacionamiento en la calle o en [estacionamiento cercano]."
+          "body": "Hay estacionamiento en la calle en el vecindario. Se llega fácil desde el Bronx River Parkway o la Cross Bronx Expressway (I-95)."
         },
         "landmark": {
           "title": "Referencia",
-          "body": "Estamos [frente a / al lado de] [lugar conocido del barrio]."
+          "body": "Estamos en Belmont, la Little Italy del Bronx, a dos cuadras del Arthur Avenue Market y de la iglesia Our Lady of Mount Carmel."
         }
       }
     },
@@ -2338,5 +2341,53 @@
       "reason": "Recibes este correo porque te suscribiste a las noticias de Element.",
       "unsubscribe": "Darte de baja"
     }
+  },
+  "Updates": {
+    "eyebrow": "ACTUALIZACIONES DEL IRS",
+    "heroTitleStart": "Lo último del IRS,",
+    "heroTitleAccent": "al día.",
+    "heroBody": "Notas de prensa, consejos tributarios y hojas de datos publicados por el IRS, tal como aparecen en su sala de prensa. Se actualiza automáticamente.",
+    "categoriesLabel": "Filtrar por categoría",
+    "allCategories": "Todas",
+    "latest": "Lo más reciente",
+    "latestNote": "Fuente: sala de prensa del IRS",
+    "readOnIrs": "Leer en IRS.gov",
+    "openPdf": "Abrir PDF",
+    "opensInNewTab": "(se abre en una pestaña nueva)",
+    "empty": "Aún no hay actualizaciones en esta categoría.",
+    "unavailable": "No pudimos cargar las actualizaciones del IRS en este momento. Puedes verlas directamente en su sitio.",
+    "visitNewsroom": "Ir a la sala de prensa del IRS",
+    "pagination": {
+      "label": "Paginación de actualizaciones",
+      "previous": "Más recientes",
+      "next": "Anteriores",
+      "page": "Página {page} de {pages}",
+      "first": "Primera página",
+      "last": "Última página",
+      "pageN": "Página {page}"
+    },
+    "disclaimer": "Contenido publicado por el Internal Revenue Service (IRS) en irs.gov. Element no está afiliado al IRS.",
+    "cta": {
+      "title": "¿Tienes dudas sobre tu caso?",
+      "body": "Estas noticias son generales. Tu situación es única: revisémosla juntos."
+    },
+    "readUpdate": "Leer actualización",
+    "backToUpdates": "Volver a actualizaciones",
+    "articleUnavailable": "No pudimos cargar esta actualización del IRS en este momento. Inténtalo de nuevo en unos minutos.",
+    "sourceTitle": "Fuente: IRS.gov",
+    "sourceBody": "Este contenido fue publicado por el IRS. Consulta la versión original en su sitio.",
+    "goToSource": "Ir a la fuente",
+    "facts": {
+      "title": "Sobre esta actualización",
+      "category": "Categoría",
+      "number": "Número",
+      "date": "Fecha"
+    },
+    "sidebarCta": {
+      "title": "¿Cómo te afecta esto?",
+      "body": "Revisamos tu situación y te decimos qué hacer, cuánto cuesta y qué traer."
+    },
+    "keepReading": "Sigue leyendo",
+    "viewAll": "Ver todas las actualizaciones"
   }
 }

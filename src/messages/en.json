@@ -41,14 +41,16 @@
       "faq": "Frequently asked questions",
       "adminSettings": "Business details",
       "adminSubscribers": "Subscribers",
-      "unsubscribe": "Unsubscribe"
+      "unsubscribe": "Unsubscribe",
+      "updates": "Updates"
     },
     "descriptions": {
       "blog": "What's changing in U.S. taxes and how it affects you, explained plainly.",
       "legal": "Legal information about the use of Element.",
       "services": "Taxes, business, documents and protection for your family, with the same team and a clear price from the start.",
       "location": "Visit us in New York or get it done remotely. Address, hours and directions.",
-      "faq": "Clear answers about refunds, documents, pricing, ITIN, the IRS and our services."
+      "faq": "Clear answers about refunds, documents, pricing, ITIN, the IRS and our services.",
+      "updates": "The latest from the IRS: news releases, tax tips and fact sheets, exactly as the IRS publishes them."
     }
   },
   "Common": {
@@ -86,7 +88,8 @@
     "bookShort": "Book",
     "myFiles": "My Files",
     "call": "Call",
-    "whatsapp": "WhatsApp"
+    "whatsapp": "WhatsApp",
+    "updates": "Updates"
   },
   "Footer": {
     "tagline": "Every element in its place.",
@@ -358,13 +361,6 @@
         }
       }
     },
-    "blog": {
-      "eyebrow": "Blog · Up to Date",
-      "title": "Tax news, made clear.",
-      "body": "What's changing in U.S. taxes, explained plainly.",
-      "viewAll": "See all news",
-      "empty": "Our first news posts are coming soon."
-    },
     "faq": {
       "eyebrow": "Frequently asked questions",
       "title": "Questions we always get.",
@@ -399,6 +395,13 @@
       "body": "Book in a minute or message us. We answer in English or Spanish.",
       "badgeFiled": "1040 filed ✓",
       "badgeItin": "ITIN renewed ✓"
+    },
+    "updates": {
+      "eyebrow": "Updates · IRS",
+      "title": "The latest from the IRS.",
+      "body": "The most recent news from the IRS newsroom, exactly as published.",
+      "viewAll": "See all updates",
+      "empty": "The latest IRS news will appear here soon."
     }
   },
   "Panel": {
@@ -2052,26 +2055,26 @@
     },
     "directions": "Get directions",
     "call": "Call",
-    "station": "[Name] station · [X] min walk",
+    "station": "Fordham Metro-North · 15 min walk",
     "getting": {
       "eyebrow": "Getting here",
       "title": "Easy to find.",
       "items": {
         "train": {
           "title": "By train",
-          "body": "Line [X] to [Name] station. Walk [X] minutes."
+          "body": "Metro-North (Harlem and New Haven lines) to Fordham, then about a 15-minute walk. By subway, take the B or D to 182–183 St, about a 20-minute walk."
         },
         "bus": {
           "title": "By bus",
-          "body": "Routes [BX…] stopping at [Street]."
+          "body": "The Bx17 stops on Crotona Ave, one block away. The Bx9 on Southern Blvd and the Bx12 SBS on Fordham Rd also work."
         },
         "car": {
           "title": "By car",
-          "body": "Street parking or at [nearby parking lot]."
+          "body": "Street parking is available in the neighborhood. Easy access from the Bronx River Parkway or the Cross Bronx Expressway (I-95)."
         },
         "landmark": {
           "title": "Landmark",
-          "body": "We're [across from / next to] [well-known neighborhood place]."
+          "body": "We're in Belmont, the Bronx's Little Italy, two blocks from the Arthur Avenue Market and Our Lady of Mount Carmel church."
         }
       }
     },
@@ -2338,5 +2341,53 @@
       "reason": "You're receiving this email because you subscribed to Element news.",
       "unsubscribe": "Unsubscribe"
     }
+  },
+  "Updates": {
+    "eyebrow": "IRS UPDATES",
+    "heroTitleStart": "The latest from the IRS,",
+    "heroTitleAccent": "up to date.",
+    "heroBody": "News releases, tax tips and fact sheets from the IRS newsroom, exactly as they appear there. Updated automatically.",
+    "categoriesLabel": "Filter by category",
+    "allCategories": "All",
+    "latest": "Latest",
+    "latestNote": "Source: IRS Newsroom",
+    "readOnIrs": "Read on IRS.gov",
+    "openPdf": "Open PDF",
+    "opensInNewTab": "(opens in a new tab)",
+    "empty": "No updates in this category yet.",
+    "unavailable": "We couldn't load the IRS updates right now. You can read them directly on the IRS website.",
+    "visitNewsroom": "Go to the IRS newsroom",
+    "pagination": {
+      "label": "Updates pagination",
+      "previous": "Newer",
+      "next": "Older",
+      "page": "Page {page} of {pages}",
+      "first": "First page",
+      "last": "Last page",
+      "pageN": "Page {page}"
+    },
+    "disclaimer": "Content published by the Internal Revenue Service (IRS) on irs.gov. Element is not affiliated with the IRS.",
+    "cta": {
+      "title": "Questions about your situation?",
+      "body": "These updates are general. Your situation is unique: let's review it together."
+    },
+    "readUpdate": "Read update",
+    "backToUpdates": "Back to updates",
+    "articleUnavailable": "We couldn't load this IRS update right now. Please try again in a few minutes.",
+    "sourceTitle": "Source: IRS.gov",
+    "sourceBody": "This content was published by the IRS. Read the original on their website.",
+    "goToSource": "Go to source",
+    "facts": {
+      "title": "About this update",
+      "category": "Category",
+      "number": "Number",
+      "date": "Date"
+    },
+    "sidebarCta": {
+      "title": "How does this affect you?",
+      "body": "We review your situation and tell you what to do, what it costs and what to bring."
+    },
+    "keepReading": "Keep reading",
+    "viewAll": "See all updates"
   }
 }
