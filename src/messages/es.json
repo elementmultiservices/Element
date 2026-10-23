@@ -39,8 +39,8 @@
       "updates": "Actualizaciones",
       "adminNewsletter": "Newsletter",
       "whatToBring": "Qué traer",
-      "intake": "Paquete de Cliente Nuevo",
-      "intakeNew": "Llenar el Paquete de Cliente Nuevo",
+      "intake": "Formulario de admisión",
+      "intakeNew": "Llenar el formulario de admisión",
       "adminIntake": "Formularios de admisión"
     },
     "descriptions": {
@@ -413,7 +413,7 @@
       "files": "Mis archivos",
       "profile": "Perfil",
       "upload": "Subir archivo",
-      "intake": "Paquete de Cliente Nuevo"
+      "intake": "Formulario de admisión"
     },
     "admin": {
       "overview": "Resumen",
@@ -453,7 +453,7 @@
       "noAccount": "¿No tiene una cuenta?",
       "createAccount": "Crear una cuenta",
       "oauthFailed": "No fue posible iniciar sesión con Google. Por favor, intente nuevamente.",
-      "intake": "Inicie sesión o cree una cuenta para llenar el Paquete de Cliente Nuevo. Lo llevaremos a él enseguida."
+      "intake": "Inicie sesión o cree una cuenta para llenar el formulario de admisión. Lo llevaremos a él enseguida."
     },
     "signUp": {
       "title": "Crear una cuenta",
@@ -1429,7 +1429,7 @@
     },
     "intake": {
       "description": "Formularios de admisión enviados por los clientes: respuestas, acuerdo firmado y documentos. Descárguelos en PDF en inglés o en español.",
-      "empty": "Ningún paquete coincide con estos filtros.",
+      "empty": "Ningún formulario coincide con estos filtros.",
       "view": "Ver",
       "account": "Cuenta",
       "documents": "{count, plural, =0 {sin documentos} one {# documento} other {# documentos}}",
@@ -1442,13 +1442,13 @@
         "allYears": "Todos los años"
       },
       "markReviewed": "Marcar como revisado",
-      "markReviewedTitle": "¿Marcar este paquete como revisado?",
-      "markReviewedBody": "Saldrá de la lista de paquetes nuevos.",
-      "markedReviewed": "Paquete marcado como revisado.",
+      "markReviewedTitle": "¿Marcar este formulario como revisado?",
+      "markReviewedBody": "Saldrá de la lista de formularios nuevos.",
+      "markedReviewed": "Formulario marcado como revisado.",
       "reopen": "Marcar como nuevo",
-      "reopenTitle": "¿Marcar este paquete como nuevo otra vez?",
-      "reopenBody": "Volverá a aparecer en la lista de paquetes nuevos.",
-      "reopened": "Paquete marcado como nuevo."
+      "reopenTitle": "¿Marcar este formulario como nuevo otra vez?",
+      "reopenBody": "Volverá a aparecer en la lista de formularios nuevos.",
+      "reopened": "Formulario marcado como nuevo."
     }
   },
   "Contact": {
@@ -2365,7 +2365,7 @@
       "back": "Atrás",
       "next": "Continuar",
       "signAndContinue": "Firmar y continuar",
-      "submit": "Enviar paquete",
+      "submit": "Enviar formulario",
       "submitWithout": "Enviar sin documentos",
       "submitting": "Enviando…",
       "progress": "Progreso del formulario"
@@ -2373,7 +2373,7 @@
     "sections": {
       "general": {
         "title": "Parte 1 · Admisión del cliente",
-        "body": "Completa este paquete antes de tu cita. Toma unos 10 minutos. Los campos con * son obligatorios. Tu información es confidencial y llega directamente a nuestra oficina.",
+        "body": "Completa este formulario antes de tu cita. Toma unos 10 minutos. Los campos con * son obligatorios. Tu información es confidencial y llega directamente a nuestra oficina.",
         "summary": "Año fiscal e idioma"
       },
       "taxpayer": {
@@ -2573,7 +2573,7 @@
       "ready": "Listo",
       "remove": "Quitar {name}",
       "recommended": "Recomendado",
-      "next": "Qué sigue: revisamos tu paquete y te contactamos para confirmar tu cita. Antes de presentar, revisarás tu declaración y firmarás la autorización del IRS (Formulario 8879) en nuestra oficina o en nuestro portal seguro.",
+      "next": "Qué sigue: revisamos tu formulario y te contactamos para confirmar tu cita. Antes de presentar, revisarás tu declaración y firmarás la autorización del IRS (Formulario 8879) en nuestra oficina o en nuestro portal seguro.",
       "errors": {
         "invalid_name": "Nombre de archivo no válido.",
         "double_extension": "No se permiten nombres de archivo con dos extensiones.",
@@ -2651,11 +2651,11 @@
         },
         "esign": {
           "title": "Firmas electrónicas",
-          "body": "Aceptas que te enviemos documentos de forma electrónica y que tu firma electrónica en este paquete tiene el mismo efecto que una firma a mano."
+          "body": "Aceptas que te enviemos documentos de forma electrónica y que tu firma electrónica en este formulario tiene el mismo efecto que una firma a mano."
         },
         "term": {
           "title": "Vigencia",
-          "body": "Este acuerdo cubre el año fiscal indicado y termina cuando se presenten tus declaraciones y te devolvamos tus documentos, salvo que cualquiera lo termine antes por escrito. Entra en vigor cuando Element acepta tu paquete."
+          "body": "Este acuerdo cubre el año fiscal indicado y termina cuando se presenten tus declaraciones y te devolvamos tus documentos, salvo que cualquiera lo termine antes por escrito. Entra en vigor cuando Element acepta tu formulario."
         }
       }
     },
@@ -2696,19 +2696,19 @@
       "generic": "Algo salió mal. Inténtalo de nuevo."
     },
     "list": {
-      "description": "Tus Paquetes de Cliente Nuevo. Llena uno antes de tu cita para que preparemos tu declaración más rápido.",
-      "new": "Llenar el Paquete de Cliente Nuevo",
-      "emptyTitle": "Todavía no has llenado tu paquete",
+      "description": "Tus formularios de admisión. Llena uno antes de tu cita para que preparemos tu declaración más rápido.",
+      "new": "Llenar el formulario de admisión",
+      "emptyTitle": "Todavía no has llenado tu formulario de admisión",
       "emptyBody": "Toma unos 10 minutos. Respondes unas preguntas, firmas en línea y puedes adjuntar tus documentos.",
-      "item": "Paquete de Cliente Nuevo {year}",
+      "item": "Formulario de admisión {year}",
       "reference": "Ref. {reference}"
     },
     "new": {
-      "title": "Paquete de Cliente Nuevo",
+      "title": "Formulario de admisión",
       "description": "Admisión · Acuerdo · Documentos. Tus respuestas solo se envían al final."
     },
     "detail": {
-      "submitted": "¡Gracias! Recibimos tu paquete (ref. {reference}). Te contactaremos para confirmar tu cita.",
+      "submitted": "¡Gracias! Recibimos tu formulario (ref. {reference}). Te contactaremos para confirmar tu cita.",
       "download": "Descargar",
       "signatureOf": "Firma de {name}",
       "confirmations": "Confirmaciones",
@@ -2718,7 +2718,7 @@
       }
     },
     "pdf": {
-      "title": "Paquete de Cliente Nuevo",
+      "title": "Formulario de admisión",
       "subtitle": "Año fiscal {year} · {name}",
       "packageParts": "Admisión · Acuerdo · Documentos",
       "reference": "Referencia {reference}",
@@ -2745,9 +2745,9 @@
     "body": "Trae todo lo que aplique a tu caso. Si te falta algo, ven de todas formas: te diremos exactamente qué necesitamos.",
     "intake": {
       "eyebrow": "Clientes nuevos y recurrentes",
-      "title": "Llena el Paquete de Cliente Nuevo antes de tu visita",
+      "title": "Llena el formulario de admisión antes de tu visita",
       "body": "Inicia sesión o crea tu cuenta, responde unas preguntas, sube tus documentos y firma en línea. Tu cita será más rápida.",
-      "cta": "Llenar el Paquete de Cliente Nuevo",
+      "cta": "Llenar el formulario de admisión",
       "note": "Disponible en inglés y en español. Tu información es privada y solo nuestro equipo puede verla.",
       "steps": {
         "account": {

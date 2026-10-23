@@ -95,7 +95,7 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/i
     meta,
   );
 
-  const fileName = `package-${submission.tax_year}-${reference}-${locale}.pdf`;
+  const fileName = `intake-${submission.tax_year}-${reference}-${locale}.pdf`;
   return new NextResponse(Buffer.from(pdf), {
     headers: {
       "Content-Type": "application/pdf",

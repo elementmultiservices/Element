@@ -39,8 +39,8 @@
       "updates": "Updates",
       "adminNewsletter": "Newsletter",
       "whatToBring": "What to bring",
-      "intake": "New Client Package",
-      "intakeNew": "Fill out the New Client Package",
+      "intake": "Intake form",
+      "intakeNew": "Fill out the intake form",
       "adminIntake": "Client intake forms"
     },
     "descriptions": {
@@ -413,7 +413,7 @@
       "files": "My files",
       "profile": "Profile",
       "upload": "Upload file",
-      "intake": "New Client Package"
+      "intake": "Intake form"
     },
     "admin": {
       "overview": "Overview",
@@ -453,7 +453,7 @@
       "noAccount": "Don't have an account?",
       "createAccount": "Create an account",
       "oauthFailed": "We could not sign you in with Google. Please try again.",
-      "intake": "Sign in or create an account to fill out the New Client Package. We will take you to it right after."
+      "intake": "Sign in or create an account to fill out the intake form. We will take you to it right after."
     },
     "signUp": {
       "title": "Create an account",
@@ -1429,7 +1429,7 @@
     },
     "intake": {
       "description": "Intake forms submitted by clients: answers, signed agreement and documents. Download each one as a PDF in English or Spanish.",
-      "empty": "No packages match these filters.",
+      "empty": "No forms match these filters.",
       "view": "View",
       "account": "Account",
       "documents": "{count, plural, =0 {no documents} one {# document} other {# documents}}",
@@ -1442,13 +1442,13 @@
         "allYears": "All years"
       },
       "markReviewed": "Mark as reviewed",
-      "markReviewedTitle": "Mark this package as reviewed?",
-      "markReviewedBody": "It will move out of the list of new packages.",
-      "markedReviewed": "Package marked as reviewed.",
+      "markReviewedTitle": "Mark this form as reviewed?",
+      "markReviewedBody": "It will move out of the list of new forms.",
+      "markedReviewed": "Form marked as reviewed.",
       "reopen": "Mark as new",
-      "reopenTitle": "Mark this package as new again?",
-      "reopenBody": "It will appear again in the list of new packages.",
-      "reopened": "Package marked as new."
+      "reopenTitle": "Mark this form as new again?",
+      "reopenBody": "It will appear again in the list of new forms.",
+      "reopened": "Form marked as new."
     }
   },
   "Contact": {
@@ -2365,7 +2365,7 @@
       "back": "Back",
       "next": "Continue",
       "signAndContinue": "Sign and continue",
-      "submit": "Send package",
+      "submit": "Send form",
       "submitWithout": "Send without documents",
       "submitting": "Sending…",
       "progress": "Form progress"
@@ -2373,7 +2373,7 @@
     "sections": {
       "general": {
         "title": "Part 1 · Client intake",
-        "body": "Complete this package before your appointment. It takes about 10 minutes. Fields marked * are required. Your information is confidential and goes straight to our office.",
+        "body": "Complete this form before your appointment. It takes about 10 minutes. Fields marked * are required. Your information is confidential and goes straight to our office.",
         "summary": "Tax year and language"
       },
       "taxpayer": {
@@ -2573,7 +2573,7 @@
       "ready": "Ready",
       "remove": "Remove {name}",
       "recommended": "Recommended",
-      "next": "What's next: we review your package and contact you to confirm your appointment. Before filing, you will review your return and sign the IRS authorization (Form 8879) at our office or in our secure portal.",
+      "next": "What's next: we review your form and contact you to confirm your appointment. Before filing, you will review your return and sign the IRS authorization (Form 8879) at our office or in our secure portal.",
       "errors": {
         "invalid_name": "Invalid file name.",
         "double_extension": "File names with two extensions are not allowed.",
@@ -2651,11 +2651,11 @@
         },
         "esign": {
           "title": "Electronic signatures",
-          "body": "You agree that we may send you documents electronically and that your electronic signature on this package has the same effect as a handwritten signature."
+          "body": "You agree that we may send you documents electronically and that your electronic signature on this form has the same effect as a handwritten signature."
         },
         "term": {
           "title": "Term",
-          "body": "This agreement covers the tax year indicated and ends when your returns are filed and your documents are returned to you, unless either party ends it earlier in writing. It takes effect when Element accepts your package."
+          "body": "This agreement covers the tax year indicated and ends when your returns are filed and your documents are returned to you, unless either party ends it earlier in writing. It takes effect when Element accepts your form."
         }
       }
     },
@@ -2696,19 +2696,19 @@
       "generic": "Something went wrong. Please try again."
     },
     "list": {
-      "description": "Your New Client Packages. Fill one out before your appointment so we can prepare your return faster.",
-      "new": "Fill out the New Client Package",
-      "emptyTitle": "You have not filled out your package yet",
+      "description": "Your intake forms. Fill one out before your appointment so we can prepare your return faster.",
+      "new": "Fill out the intake form",
+      "emptyTitle": "You have not filled out your intake form yet",
       "emptyBody": "It takes about 10 minutes. You answer a few questions, sign online and can attach your documents.",
-      "item": "New Client Package {year}",
+      "item": "Intake form {year}",
       "reference": "Ref. {reference}"
     },
     "new": {
-      "title": "New Client Package",
+      "title": "Intake form",
       "description": "Intake · Agreement · Documents. Your answers are only sent at the end."
     },
     "detail": {
-      "submitted": "Thank you! We received your package (ref. {reference}). We will contact you to confirm your appointment.",
+      "submitted": "Thank you! We received your form (ref. {reference}). We will contact you to confirm your appointment.",
       "download": "Download",
       "signatureOf": "Signature of {name}",
       "confirmations": "Confirmations",
@@ -2718,7 +2718,7 @@
       }
     },
     "pdf": {
-      "title": "New Client Package",
+      "title": "Intake form",
       "subtitle": "Tax year {year} · {name}",
       "packageParts": "Intake · Agreement · Documents",
       "reference": "Reference {reference}",
@@ -2745,9 +2745,9 @@
     "body": "Bring every item that applies to you. If something is missing, come anyway: we will tell you exactly what we still need.",
     "intake": {
       "eyebrow": "New and returning clients",
-      "title": "Fill out the New Client Package before your visit",
+      "title": "Fill out the intake form before your visit",
       "body": "Sign in or create your account, answer a few questions, upload your documents and sign online. Your appointment will be faster.",
-      "cta": "Fill out the New Client Package",
+      "cta": "Fill out the intake form",
       "note": "Available in English and Spanish. Your information is private and only our team can see it.",
       "steps": {
         "account": {

@@ -3,7 +3,7 @@ import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFImage, type PDFP
 import type { SummarySection } from "./summary";
 
 /**
- * Builds the New Client Package PDF in three parts, like the paper package:
+ * Builds the intake form PDF in three parts, like the paper form:
  * 1) intake answers and the signed declaration, 2) the service agreement with
  * its confirmations and signatures, 3) the list of documents. Every attached
  * PDF and image follows, so the whole file can be reviewed in one document.
