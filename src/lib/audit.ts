@@ -38,6 +38,7 @@ export type AuditAction =
   | "user.deactivated"
   | "user.password_reset.forced"
   | "user.quota.changed"
+  | "user.id_last4.changed"
   | "user.upload.granted"
   | "user.upload.revoked"
   | "user.upload.preauthorized"

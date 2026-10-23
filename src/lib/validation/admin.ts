@@ -75,6 +75,16 @@ export const quotaSchema = z.object({ userId: z.uuid(), quotaMb });
 
 export const idSchema = z.object({ id: z.uuid() });
 
+/** Last four digits of the tax ID; an empty value clears them. */
+export const idLast4Schema = z.object({
+  userId: z.uuid(),
+  idLast4: z
+    .string()
+    .trim()
+    .regex(/^([0-9]{4})?$/, { error: "invalid" })
+    .transform((v) => v || null),
+});
+
 export const uploadGrantSchema = z.object({ email: emailSchema });
 
 export const roleChangeSchema = z.object({

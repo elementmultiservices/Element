@@ -41,7 +41,7 @@
       "whatToBring": "What to bring",
       "intake": "New Client Package",
       "intakeNew": "Fill out the New Client Package",
-      "adminIntake": "New Client Packages"
+      "adminIntake": "Client intake forms"
     },
     "descriptions": {
       "legal": "Legal information about the use of Element.",
@@ -427,7 +427,7 @@
       "settings": "Business details",
       "subscribers": "Subscribers",
       "newsletter": "Newsletter",
-      "intake": "Client packages"
+      "intake": "Intake forms"
     },
     "roles": {
       "user": "User",
@@ -1001,8 +1001,8 @@
         "another": "Invite another user",
         "viewUser": "View user"
       },
-      "searchLabel": "Search by name or email",
-      "searchPlaceholder": "Name or email",
+      "searchLabel": "Search by name, email or ID",
+      "searchPlaceholder": "Name, email or last 4 digits of the ID",
       "table": {
         "caption": "Users",
         "name": "Name",
@@ -1013,7 +1013,8 @@
         "storage": "Storage",
         "lastSignIn": "Last sign-in",
         "created": "Created",
-        "upload": "Document upload"
+        "upload": "Document upload",
+        "idLast4": "ID (last 4)"
       },
       "empty": "There are no users matching the filters.",
       "noName": "(no name)",
@@ -1101,6 +1102,16 @@
         "removeTitle": "Remove the pre-authorization?",
         "removeBody": "{email} will no longer be authorized automatically when signing up.",
         "removed": "The pre-authorization was removed."
+      },
+      "idLast4": {
+        "heading": "Tax ID",
+        "body": "Last four digits of the client's Social Security number, ITIN or EIN. We use them to find the client and match office records. Never store the full number.",
+        "label": "Last 4 digits of the ID",
+        "hint": "4 digits. Leave it empty to remove them.",
+        "invalid": "Enter exactly 4 digits, or leave it empty.",
+        "save": "Save ID",
+        "saved": "ID updated.",
+        "none": "Not set"
       }
     },
     "files": {
@@ -1235,7 +1246,8 @@
         "quotaBytes": "Storage quota (bytes)",
         "mfa": "Two-step verification",
         "lastSignIn": "Last sign-in",
-        "created": "Created"
+        "created": "Created",
+        "idLast4": "ID (last 4)"
       },
       "files": {
         "id": "ID",
@@ -1416,7 +1428,7 @@
       "sent": "The update was sent to subscribers."
     },
     "intake": {
-      "description": "Packages submitted by clients: intake, signed agreement and documents. Download them as a PDF in English or Spanish.",
+      "description": "Intake forms submitted by clients: answers, signed agreement and documents. Download each one as a PDF in English or Spanish.",
       "empty": "No packages match these filters.",
       "view": "View",
       "account": "Account",

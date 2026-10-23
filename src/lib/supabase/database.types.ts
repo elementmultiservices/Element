@@ -313,7 +313,7 @@ isOneToOne: false
                            },
 "admin_list_users":
 { Args: { "p_dir"?: string,"p_id"?: string,"p_limit"?: number,"p_offset"?: number,"p_role"?: string,"p_search"?: string,"p_sort"?: string,"p_status"?: string,"p_upload"?: string }; Returns: {
-              "can_upload": boolean,"created_at": string,"email": string,"file_count": number,"full_name": string,"has_mfa": boolean,"id": string,"invitation_pending": boolean,"is_active": boolean,"last_sign_in_at": string,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number,"total_count": number,"used_bytes": number
+              "can_upload": boolean,"created_at": string,"email": string,"file_count": number,"full_name": string,"has_mfa": boolean,"id": string,"id_last4": string,"invitation_pending": boolean,"is_active": boolean,"last_sign_in_at": string,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number,"total_count": number,"used_bytes": number
             }[]
                            },
 "admin_overview":

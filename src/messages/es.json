@@ -41,7 +41,7 @@
       "whatToBring": "Qué traer",
       "intake": "Paquete de Cliente Nuevo",
       "intakeNew": "Llenar el Paquete de Cliente Nuevo",
-      "adminIntake": "Paquetes de Cliente Nuevo"
+      "adminIntake": "Formularios de admisión"
     },
     "descriptions": {
       "legal": "Información legal sobre el uso de Element.",
@@ -427,7 +427,7 @@
       "settings": "Datos del negocio",
       "subscribers": "Suscriptores",
       "newsletter": "Newsletter",
-      "intake": "Paquetes de clientes"
+      "intake": "Formularios de admisión"
     },
     "roles": {
       "user": "Usuario",
@@ -1001,8 +1001,8 @@
         "another": "Invitar a otro usuario",
         "viewUser": "Ver usuario"
       },
-      "searchLabel": "Buscar por nombre o correo",
-      "searchPlaceholder": "Nombre o correo",
+      "searchLabel": "Buscar por nombre, correo o ID",
+      "searchPlaceholder": "Nombre, correo o últimos 4 dígitos del ID",
       "table": {
         "caption": "Usuarios",
         "name": "Nombre",
@@ -1013,7 +1013,8 @@
         "storage": "Almacenamiento",
         "lastSignIn": "Último inicio de sesión",
         "created": "Creación",
-        "upload": "Subida de documentos"
+        "upload": "Subida de documentos",
+        "idLast4": "ID (últimos 4)"
       },
       "empty": "No hay usuarios que coincidan con los filtros.",
       "noName": "(sin nombre)",
@@ -1101,6 +1102,16 @@
         "removeTitle": "¿Quitar la pre-autorización?",
         "removeBody": "{email} ya no quedará autorizado(a) automáticamente al registrarse.",
         "removed": "Se quitó la pre-autorización."
+      },
+      "idLast4": {
+        "heading": "ID fiscal",
+        "body": "Últimos cuatro dígitos del Seguro Social, ITIN o EIN del cliente. Sirven para encontrar al cliente y relacionar los registros de la oficina. Nunca guarde el número completo.",
+        "label": "Últimos 4 dígitos del ID",
+        "hint": "4 dígitos. Déjelo vacío para quitarlos.",
+        "invalid": "Escriba exactamente 4 dígitos o déjelo vacío.",
+        "save": "Guardar ID",
+        "saved": "ID actualizado.",
+        "none": "Sin registrar"
       }
     },
     "files": {
@@ -1235,7 +1246,8 @@
         "quotaBytes": "Cuota de almacenamiento (bytes)",
         "mfa": "Verificación en dos pasos",
         "lastSignIn": "Último inicio de sesión",
-        "created": "Creación"
+        "created": "Creación",
+        "idLast4": "ID (últimos 4)"
       },
       "files": {
         "id": "ID",
@@ -1416,7 +1428,7 @@
       "sent": "La actualización fue enviada a los suscriptores."
     },
     "intake": {
-      "description": "Paquetes enviados por los clientes: admisión, acuerdo firmado y documentos. Descárgalos en PDF en inglés o en español.",
+      "description": "Formularios de admisión enviados por los clientes: respuestas, acuerdo firmado y documentos. Descárguelos en PDF en inglés o en español.",
       "empty": "Ningún paquete coincide con estos filtros.",
       "view": "Ver",
       "account": "Cuenta",

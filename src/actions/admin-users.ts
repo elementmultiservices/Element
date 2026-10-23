@@ -13,7 +13,7 @@ import { rateLimit } from "@/lib/security/rate-limit";
 import { requestMeta } from "@/lib/security/request-meta";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { idSchema, inviteUserSchema, quotaSchema, roleChangeSchema, uploadGrantSchema } from "@/lib/validation/admin";
+import { idLast4Schema, idSchema, inviteUserSchema, quotaSchema, roleChangeSchema, uploadGrantSchema } from "@/lib/validation/admin";
 
 const MB = 1024 * 1024;
 const BAN_FOREVER = "876000h"; // ~100 years
@@ -304,6 +304,36 @@ export async function updateQuotaAction(_prev: FormState<QuotaField>, formData: 
     targetType: "user",
     targetId: parsed.data.userId,
     metadata: { from_bytes: before.quotaBytes, to_bytes: bytes },
+  });
+  return { status: "success" };
+}
+
+// ---------------------------------------------------------------------------
+// Last four digits of the tax ID (used to match office records to accounts).
+// ---------------------------------------------------------------------------
+export type IdLast4Field = "idLast4";
+
+export async function updateIdLast4Action(_prev: FormState<IdLast4Field>, formData: FormData): Promise<FormState<IdLast4Field>> {
+  const g = await guard();
+  if (!g.ok) return g.result;
+
+  const parsed = idLast4Schema.safeParse({ userId: formData.get("userId"), idLast4: formData.get("idLast4") ?? "" });
+  if (!parsed.success) return { status: "error", fieldErrors: fieldErrorsFrom<IdLast4Field>(parsed.error) };
+
+  const supabase = await createClient();
+  const before = await getUser(supabase, parsed.data.userId);
+  if (!before) return { status: "error", error: "notFound" };
+  if (before.idLast4 === parsed.data.idLast4) return { status: "success" };
+
+  const { error } = await supabase.from("profiles").update({ id_last4: parsed.data.idLast4 }).eq("id", parsed.data.userId);
+  if (error) return { status: "error", error: profileErrorKey(error.message) };
+
+  await audit({
+    actorId: g.session.userId,
+    action: "user.id_last4.changed",
+    targetType: "user",
+    targetId: parsed.data.userId,
+    metadata: { from: before.idLast4, to: parsed.data.idLast4 },
   });
   return { status: "success" };
 }

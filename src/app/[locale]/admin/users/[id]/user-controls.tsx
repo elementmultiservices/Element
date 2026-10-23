@@ -11,7 +11,9 @@ import {
   grantUploadAction,
   resendInvitationAction,
   revokeUploadAction,
+  updateIdLast4Action,
   updateQuotaAction,
+  type IdLast4Field,
   type QuotaField,
   type RoleField,
 } from "@/actions/admin-users";
@@ -65,6 +67,40 @@ export function QuotaForm({ userId, quotaMb }: { userId: string; quotaMb: number
         error={state.fieldErrors?.quotaMb ? tv(state.fieldErrors.quotaMb) : undefined}
       />
       <SubmitButton pending={pending} label={t("saveQuota")} pendingLabel={t("saveQuota")} className="w-auto" />
+    </form>
+  );
+}
+
+/** Sets, changes or clears the last four digits of the client's tax ID. */
+export function IdLast4Form({ userId, idLast4 }: { userId: string; idLast4: string | null }) {
+  const t = useTranslations("Admin.users.idLast4");
+  const te = useTranslations("Errors");
+  const router = useRouter();
+  const { state, onSubmit, pending } = useProtectedAction<IdLast4Field>(updateIdLast4Action, {
+    onSuccess: () => {
+      toast.success(t("saved"));
+      router.refresh();
+    },
+  });
+
+  return (
+    <form onSubmit={onSubmit} noValidate className="space-y-4">
+      {state.status === "error" && state.error ? <FormAlert variant="error">{te(state.error)}</FormAlert> : null}
+      <input type="hidden" name="userId" value={userId} />
+      <FormField
+        name="idLast4"
+        label={t("label")}
+        hint={t("hint")}
+        inputMode="numeric"
+        autoComplete="off"
+        pattern="[0-9]{4}"
+        maxLength={4}
+        placeholder="1234"
+        defaultValue={idLast4 ?? ""}
+        className="max-w-xs"
+        error={state.fieldErrors?.idLast4 ? t("invalid") : undefined}
+      />
+      <SubmitButton pending={pending} label={t("save")} pendingLabel={t("save")} className="w-auto" />
     </form>
   );
 }

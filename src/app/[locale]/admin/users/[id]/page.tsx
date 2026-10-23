@@ -14,7 +14,7 @@ import { getUser, searchAudit } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/auth/session";
 import { pageMetadata } from "@/lib/seo";
 import { createClient } from "@/lib/supabase/server";
-import { AccountActions, QuotaForm, UploadAccessControl } from "./user-controls";
+import { AccountActions, IdLast4Form, QuotaForm, UploadAccessControl } from "./user-controls";
 
 const MB = 1024 * 1024;
 
@@ -107,6 +107,12 @@ export default async function AdminUserPage({ params }: PageProps<"/[locale]/adm
               <dt className="text-muted-foreground">{t("Admin.users.detail.files")}</dt>
               <dd className="font-medium tabular-nums">{format.number(user.fileCount)}</dd>
             </div>
+            {user.role === "user" ? (
+              <div>
+                <dt className="text-muted-foreground">{t("Admin.users.idLast4.label")}</dt>
+                <dd className="font-mono font-medium tabular-nums">{user.idLast4 ? `•••-••-${user.idLast4}` : t("Admin.users.idLast4.none")}</dd>
+              </div>
+            ) : null}
             <div>
               <dt className="text-muted-foreground">{t("Admin.users.detail.mfa")}</dt>
               <dd className="font-medium">{user.hasMfa ? t("Admin.users.detail.mfaOn") : t("Admin.users.detail.mfaOff")}</dd>
@@ -121,6 +127,17 @@ export default async function AdminUserPage({ params }: PageProps<"/[locale]/adm
           </div>
         </Section>
       </div>
+
+      {user.role === "user" ? (
+        <div className="mt-6">
+          <Section title={t("Admin.users.idLast4.heading")}>
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">{t("Admin.users.idLast4.body")}</p>
+              <IdLast4Form userId={user.id} idLast4={user.idLast4} />
+            </div>
+          </Section>
+        </div>
+      ) : null}
 
       {user.role === "user" ? (
         <div className="mt-6">

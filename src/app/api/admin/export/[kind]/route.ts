@@ -47,7 +47,7 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/a
     filters = { q: p.q, status: p.status, role: p.role, upload: p.upload };
     const { rows: users } = await listUsers(supabase, p, { limit: MAX_ROWS });
     headers = [
-      t("csv.users.id"), t("csv.users.name"), t("csv.users.email"), t("csv.users.role"), t("csv.users.status"),
+      t("csv.users.id"), t("csv.users.name"), t("csv.users.email"), t("csv.users.idLast4"), t("csv.users.role"), t("csv.users.status"),
       t("csv.users.upload"), t("csv.users.language"), t("csv.users.files"), t("csv.users.usedBytes"), t("csv.users.quotaBytes"),
       t("csv.users.mfa"), t("csv.users.lastSignIn"), t("csv.users.created"),
     ];
@@ -55,6 +55,7 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/a
       u.id,
       u.fullName,
       u.email,
+      u.idLast4,
       u.role,
       u.invitationPending ? t("statuses.pending") : u.isActive ? t("statuses.active") : t("statuses.inactive"),
       u.role === "user" ? (u.canUpload ? t("common.yes") : t("common.no")) : null,

@@ -49,6 +49,8 @@ export type AdminUserRow = {
   invitationPending: boolean;
   hasMfa: boolean;
   canUpload: boolean;
+  /** Last four digits of the tax ID (SSN, ITIN or EIN), or null. */
+  idLast4: string | null;
 };
 
 type UserRpcRow = {
@@ -66,6 +68,8 @@ type UserRpcRow = {
   invitation_pending: boolean;
   has_mfa: boolean;
   can_upload: boolean;
+  /** Missing until migration 20261023000300 is applied. */
+  id_last4?: string | null;
   total_count: number;
 };
 
@@ -85,6 +89,7 @@ function toUser(r: UserRpcRow): AdminUserRow {
     invitationPending: r.invitation_pending,
     hasMfa: r.has_mfa,
     canUpload: r.can_upload,
+    idLast4: r.id_last4 ?? null,
   };
 }
 

@@ -120,6 +120,7 @@ export default async function AdminUsersPage({ params, searchParams }: PageProps
             <tr>
               <SortTh column="full_name" label={t("Admin.users.table.name")} params={filters} basePath={basePath} />
               <SortTh column="email" label={t("Admin.users.table.email")} params={filters} basePath={basePath} />
+              <Th>{t("Admin.users.table.idLast4")}</Th>
               <Th>{t("Admin.users.table.role")}</Th>
               <Th>{t("Admin.users.table.status")}</Th>
               <Th>{t("Admin.users.table.upload")}</Th>
@@ -139,6 +140,7 @@ export default async function AdminUsersPage({ params, searchParams }: PageProps
                 <td className="max-w-56 truncate px-4 py-3.5 text-muted-foreground" title={u.email}>
                   {u.email}
                 </td>
+                <td className="px-4 py-3.5 font-mono whitespace-nowrap text-muted-foreground tabular-nums">{u.idLast4 ?? "—"}</td>
                 <td className="px-4 py-3.5">
                   <RoleBadge role={u.role} />
                 </td>
