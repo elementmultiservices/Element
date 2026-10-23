@@ -69,6 +69,7 @@ export type AuditAction =
   | "newsletter.sent"
   | "intake.upload_rejected"
   | "intake.submitted"
+  | "intake.id_last4_mismatch"
   | "intake.pdf_downloaded"
   | "intake.document_downloaded"
   | "intake.reviewed"

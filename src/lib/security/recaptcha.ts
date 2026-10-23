@@ -2,13 +2,14 @@ import "server-only";
 import { z } from "zod";
 import { isProduction, serverEnv } from "@/lib/env";
 
-export type RecaptchaAction = "sign_in" | "sign_up" | "password_reset" | "upload" | "contact" | "newsletter" | "intake";
+export type RecaptchaAction = "sign_in" | "sign_up" | "password_reset" | "upload" | "contact" | "newsletter";
 
 const responseSchema = z.object({
   success: z.boolean(),
   score: z.number().optional(),
   action: z.string().optional(),
   hostname: z.string().optional(),
+  "error-codes": z.array(z.string()).optional(),
 });
 
 /**
@@ -53,9 +54,17 @@ export async function assessRecaptcha(
     if (!res.ok) return { ok: false, score: null };
     const parsed = responseSchema.safeParse(await res.json());
     if (!parsed.success) return { ok: false, score: null };
-    const { success, score, action: returnedAction } = parsed.data;
+    const { success, score, action: returnedAction, hostname } = parsed.data;
     const value = score ?? 0;
-    return { ok: success && returnedAction === action && value >= env.RECAPTCHA_MIN_SCORE, score: value };
+    const ok = success && returnedAction === action && value >= env.RECAPTCHA_MIN_SCORE;
+    if (!ok) {
+      // Why it failed, for diagnosis (e.g. "browser-error" when the host is not
+      // listed for the site key, or a low score). Never the token itself.
+      console.warn(
+        `[recaptcha] rejected: action=${action} returned=${returnedAction ?? "none"} score=${value} host=${hostname ?? "none"} errors=${(parsed.data["error-codes"] ?? []).join(",") || "none"}`,
+      );
+    }
+    return { ok, score: value };
   } catch {
     console.error("[recaptcha] verification request failed");
     return { ok: false, score: null };

@@ -1,8 +1,10 @@
-import { ShieldCheck, ShieldOff } from "lucide-react";
+import { Globe, ShieldCheck, ShieldOff } from "lucide-react";
 import type { Messages } from "next-intl";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import type { SessionContext } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { describeUserAgent } from "@/lib/user-agent";
@@ -70,6 +72,14 @@ export async function ProfileView({ session }: { session: SessionContext }) {
           isAdmin
             ? [{ label: t("Panel.adminTitle"), href: "/admin" }, { label: t("Panel.admin.profile") }]
             : [{ label: t("Panel.dashboardTitle"), href: "/dashboard" }, { label: t("Panel.user.profile") }]
+        }
+        actions={
+          <Button asChild variant="outline">
+            <Link href="/">
+              <Globe aria-hidden="true" />
+              {t("Profile.goToSite")}
+            </Link>
+          </Button>
         }
       />
       <div className="grid gap-6 lg:grid-cols-2">

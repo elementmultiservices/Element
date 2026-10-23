@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { FormAlert } from "@/components/forms/form-alert";
 import { IntakeDetail, IntakePdfButtons } from "@/components/intake/intake-detail";
 import { PageHeader } from "@/components/layout/page-header";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
-import { userDisplayName, userLabels } from "@/lib/admin/queries";
+import { getUser, userDisplayName, userLabels } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/auth/session";
 import { getIntakeSubmission, intakeReference } from "@/lib/intake/queries";
 import { pageMetadata } from "@/lib/seo";
@@ -28,7 +29,9 @@ export default async function AdminIntakeDetailPage({ params }: PageProps<"/[loc
   const found = await getIntakeSubmission(supabase, id);
   if (!found) notFound();
   const { submission, uploads } = found;
-  const labels = await userLabels(supabase, [submission.owner_id, submission.reviewed_by]);
+  const [labels, account] = await Promise.all([userLabels(supabase, [submission.owner_id, submission.reviewed_by]), getUser(supabase, submission.owner_id)]);
+  const formLast4 = submission.data.taxpayer.ssn.slice(-4);
+  const accountLast4 = account?.idLast4 ?? null;
   const owner = labels.get(submission.owner_id);
   const reference = intakeReference(submission.id);
 
@@ -53,6 +56,10 @@ export default async function AdminIntakeDetailPage({ params }: PageProps<"/[loc
                 {userDisplayName(owner, t("Admin.common.unknownUser"))}
               </Link>
             </p>
+            <p>
+              <span className="text-muted-foreground">{t("Admin.users.idLast4.label")}: </span>
+              <span className="font-mono font-medium">{accountLast4 ? `•••-••-${accountLast4}` : t("Admin.users.idLast4.none")}</span>
+            </p>
             <p className="text-muted-foreground">
               {submission.status === "reviewed" && submission.reviewed_at
                 ? t("Admin.intake.reviewedBy", {
@@ -64,6 +71,14 @@ export default async function AdminIntakeDetailPage({ params }: PageProps<"/[loc
           </div>
           <IntakeStatusAction id={submission.id} reviewed={submission.status === "reviewed"} />
         </section>
+        {accountLast4 && accountLast4 !== formLast4 ? (
+          <FormAlert variant="error">
+            {t("Admin.intake.idMismatch", { account: accountLast4, form: formLast4 })}{" "}
+            <Link href={`/admin/users/${submission.owner_id}`} className="font-medium underline">
+              {t("Admin.intake.idMismatchAction")}
+            </Link>
+          </FormAlert>
+        ) : null}
         <IntakeDetail submission={submission} uploads={uploads} full />
       </div>
     </>

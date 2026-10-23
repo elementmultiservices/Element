@@ -235,7 +235,6 @@ export const intakeSubmitSchema = z.object({
   spouseSignature: signatureImage,
   spouseSignatureMethod: z.string().max(10),
   uploadIds: z.array(z.uuid()).max(MAX_INTAKE_UPLOADS),
-  recaptchaToken: z.string().max(4000).nullish(),
 });
 
 export const intakeUploadIntentSchema = z.object({

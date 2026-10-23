@@ -112,10 +112,6 @@ export function StateRefundDialog({ triggerClassName }: { triggerClassName?: str
                     ))}
                   </ol>
                 </section>
-
-                {state.steps.some((s) => "shot" in s && s.shot) ? null : (
-                  <p className="rounded-xl bg-azure-25 p-4 text-sm text-graphite">{t("noShots")}</p>
-                )}
               </div>
             ) : null}
 

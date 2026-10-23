@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
-import { useRecaptcha } from "@/hooks/use-recaptcha";
 import { useRouter } from "@/i18n/navigation";
 import { formatBytes } from "@/lib/format";
 import { checkFileName, FILE_KINDS, MAX_FILE_BYTES } from "@/lib/files/rules";
@@ -150,7 +149,6 @@ export function IntakeForm({
   const t = useTranslations("Intake");
   const locale = useLocale();
   const router = useRouter();
-  const getToken = useRecaptcha();
   const ids = useId();
   const fileRefs = useRef<Partial<Record<DocType, HTMLInputElement | null>>>({});
   const topRef = useRef<HTMLDivElement>(null);
@@ -331,7 +329,6 @@ export function IntakeForm({
         spouseSignature: spouseSigns ? signing.spouseSignature : "",
         spouseSignatureMethod: spouseSigns ? signing.spouseSignatureMethod : "",
         uploadIds: uploads.filter((u) => u.status === "ready" && u.id).map((u) => u.id),
-        recaptchaToken: await getToken("intake"),
       });
       if (res.ok) {
         setDirty(false);
@@ -346,7 +343,7 @@ export function IntakeForm({
         if (first) setStep(stepOf(first));
         setFormError(t("errors.fixErrors"));
       } else {
-        setFormError(t(`errors.${["intake_uploads_invalid", "recaptcha_failed", "rate_limited"].includes(code) ? code : "generic"}` as "errors.generic"));
+        setFormError(t(`errors.${["intake_uploads_invalid", "rate_limited"].includes(code) ? code : "generic"}` as "errors.generic"));
       }
       scrollTop();
     } catch {
@@ -1005,7 +1002,6 @@ export function IntakeForm({
           </Button>
         )}
       </div>
-      <p className="text-xs text-muted-foreground">{t("recaptcha")}</p>
     </div>
   );
 }

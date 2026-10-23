@@ -941,7 +941,8 @@
       "regenerating": "Generando…",
       "regenerated": "Se generaron nuevos códigos de recuperación. Guárdelos ahora; no se volverán a mostrar.",
       "done": "Ya los guardé"
-    }
+    },
+    "goToSite": "Ir a la página de Element"
   },
   "Admin": {
     "common": {
@@ -1448,7 +1449,9 @@
       "reopen": "Marcar como nuevo",
       "reopenTitle": "¿Marcar este formulario como nuevo otra vez?",
       "reopenBody": "Volverá a aparecer en la lista de formularios nuevos.",
-      "reopened": "Formulario marcado como nuevo."
+      "reopened": "Formulario marcado como nuevo.",
+      "idMismatch": "Los últimos 4 dígitos del Seguro Social o ITIN de este formulario ({form}) no coinciden con los registrados en la cuenta ({account}). La cuenta no se modificó.",
+      "idMismatchAction": "Revisar la cuenta"
     }
   },
   "Contact": {
@@ -2080,7 +2083,6 @@
         "captcha": "Marca la casilla “No soy un robot”."
       },
       "shotAlt": "Captura de la página de reembolsos de {state}, paso {n}",
-      "noShots": "Este sitio no permite capturas automáticas, así que no tenemos imágenes para este estado. Sigue los pasos en la página oficial.",
       "note": "Son páginas oficiales del gobierno de cada estado y están en inglés. Los enlaces y pantallas pueden cambiar; si algo se ve diferente, contáctanos y te ayudamos.",
       "close": "Cerrar"
     },
@@ -2352,7 +2354,6 @@
   },
   "Intake": {
     "choose": "Selecciona…",
-    "recaptcha": "Este sitio está protegido por reCAPTCHA y se aplican la Política de privacidad y los Términos del servicio de Google.",
     "steps": {
       "you": "Tú",
       "family": "Familia",
@@ -2691,7 +2692,6 @@
       "fixErrors": "Revisa los campos marcados.",
       "uploadsPending": "Espera a que terminen de subir tus documentos.",
       "intake_uploads_invalid": "Algunos documentos expiraron o ya no están disponibles. Quítalos y súbelos de nuevo.",
-      "recaptcha_failed": "No pudimos verificar la solicitud. Recarga la página e inténtalo de nuevo.",
       "rate_limited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
       "generic": "Algo salió mal. Inténtalo de nuevo."
     },

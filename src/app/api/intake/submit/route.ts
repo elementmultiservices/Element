@@ -13,10 +13,51 @@ import {
 } from "@/lib/intake/schema";
 import { INTAKE_BUCKET } from "@/lib/intake/storage";
 import { rateLimit } from "@/lib/security/rate-limit";
-import { verifyRecaptcha } from "@/lib/security/recaptcha";
 import { isSameOrigin } from "@/lib/security/origin";
-import { requestMeta } from "@/lib/security/request-meta";
+import { requestMeta, type RequestMeta } from "@/lib/security/request-meta";
 import { createAdminClient } from "@/lib/supabase/admin";
+
+/**
+ * Links the account to the taxpayer's tax ID: the last four digits of the
+ * SSN/ITIN typed in the form are stored on the profile when it has none yet.
+ * Digits already on file (set by staff or an import) are never overwritten; a
+ * difference is recorded so staff can check it on the form.
+ */
+async function linkIdLast4(userId: string, last4: string, submissionId: string, meta: RequestMeta): Promise<"linked" | "same" | "mismatch" | "unavailable"> {
+  const admin = createAdminClient();
+  const { data: profile, error } = await admin.from("profiles").select("id_last4").eq("id", userId).maybeSingle();
+  if (error || !profile) {
+    // e.g. migration 20261023000200 not applied yet: the form is still accepted.
+    console.error(`[intake] id_last4 read failed: ${error?.code ?? "no_profile"}`);
+    return "unavailable";
+  }
+  if (profile.id_last4 === last4) return "same";
+  if (profile.id_last4) {
+    await audit(
+      { actorId: userId, action: "intake.id_last4_mismatch", targetType: "intake", targetId: submissionId, metadata: { on_file: profile.id_last4, in_form: last4 } },
+      meta,
+    );
+    return "mismatch";
+  }
+
+  // Only fills an empty value, even if two forms race.
+  const { data: updated, error: updateError } = await admin
+    .from("profiles")
+    .update({ id_last4: last4 })
+    .eq("id", userId)
+    .is("id_last4", null)
+    .select("id")
+    .maybeSingle();
+  if (updateError || !updated) {
+    if (updateError) console.error(`[intake] id_last4 update failed: ${updateError.code}`);
+    return "unavailable";
+  }
+  await audit(
+    { actorId: userId, action: "user.id_last4.changed", targetType: "user", targetId: userId, metadata: { from: null, to: last4, source: "intake", submission_id: submissionId } },
+    meta,
+  );
+  return "linked";
+}
 
 /** Decodes a drawn signature (PNG data URL) and checks it really is a small PNG image. */
 function decodeSignature(dataUrl: string): Uint8Array | null {
@@ -30,7 +71,9 @@ function decodeSignature(dataUrl: string): Uint8Array | null {
 /**
  * Receives a completed intake form: answers, drawn signature(s) and the ids of
  * documents uploaded (and verified) beforehand. Everything is validated again
- * here; the documents are then attached to the new submission.
+ * here; the documents are then attached to the new submission. No reCAPTCHA:
+ * the caller is signed in (session, same origin, per-user rate limit), and a
+ * low score after a long form would throw away ten minutes of answers.
  */
 export async function POST(request: NextRequest) {
   if (!isSameOrigin(request)) return apiError("forbidden", 403);
@@ -51,7 +94,6 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return apiError("bad_request", 400);
   const input = parsed.data;
 
-  if (!(await verifyRecaptcha(input.recaptchaToken, "intake", meta.ip))) return apiError("recaptcha_failed", 403);
   if (!(await rateLimit("intakeSubmitUser", ctx.userId)).success) return apiError("rate_limited", 429);
 
   const data = intakeDataSchema.safeParse(input.data);
@@ -162,13 +204,15 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  const idLink = await linkIdLast4(ctx.userId, t.ssn.slice(-4), submissionId, meta);
+
   await audit(
     {
       actorId: ctx.userId,
       action: "intake.submitted",
       targetType: "intake",
       targetId: submissionId,
-      metadata: { tax_year: answers.taxYear, signature_method: signing.data.signatureMethod, documents: uploadIds.length, spouse_signed: Boolean(spousePath) },
+      metadata: { tax_year: answers.taxYear, signature_method: signing.data.signatureMethod, documents: uploadIds.length, spouse_signed: Boolean(spousePath), id_last4: idLink },
     },
     meta,
   );

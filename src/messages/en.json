@@ -941,7 +941,8 @@
       "regenerating": "Generating…",
       "regenerated": "New recovery codes were generated. Save them now; they will not be shown again.",
       "done": "I have saved them"
-    }
+    },
+    "goToSite": "Go to the Element website"
   },
   "Admin": {
     "common": {
@@ -1448,7 +1449,9 @@
       "reopen": "Mark as new",
       "reopenTitle": "Mark this form as new again?",
       "reopenBody": "It will appear again in the list of new forms.",
-      "reopened": "Form marked as new."
+      "reopened": "Form marked as new.",
+      "idMismatch": "The last 4 digits of the Social Security number or ITIN in this form ({form}) do not match the ones on the account ({account}). The account was not changed.",
+      "idMismatchAction": "Review the account"
     }
   },
   "Contact": {
@@ -2080,7 +2083,6 @@
         "captcha": "Check the “I'm not a robot” box."
       },
       "shotAlt": "Screenshot of the {state} refund page, step {n}",
-      "noShots": "This site doesn't allow automated captures, so we don't have screenshots for this state. Follow the steps on the official page.",
       "note": "These are official state government sites. Links and screens can change; if something looks different, contact us and we'll help.",
       "close": "Close"
     },
@@ -2352,7 +2354,6 @@
   },
   "Intake": {
     "choose": "Select…",
-    "recaptcha": "This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.",
     "steps": {
       "you": "You",
       "family": "Family",
@@ -2691,7 +2692,6 @@
       "fixErrors": "Please review the highlighted fields.",
       "uploadsPending": "Wait until your documents finish uploading.",
       "intake_uploads_invalid": "Some documents expired or are no longer available. Remove them and upload them again.",
-      "recaptcha_failed": "We could not verify the request. Reload the page and try again.",
       "rate_limited": "Too many attempts. Wait a few minutes and try again.",
       "generic": "Something went wrong. Please try again."
     },
