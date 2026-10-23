@@ -46,6 +46,19 @@ describe("inspectFile — PDF active content", () => {
     expect(inspectFile(pdf, "pdf")).toEqual({ ok: false, reason: "activeContent" });
   });
 
+  it("rejects /JS values even without a /JavaScript name", () => {
+    for (const js of ["/JS (app.alert(1))", "/JS<6170702e616c6572742831293e>", "/JS 12 0 R"]) {
+      const pdf = concat(`%PDF-1.4\n1 0 obj << /AA << /O << ${js} >> >> >> endobj\n%%EOF`);
+      expect(inspectFile(pdf, "pdf")).toEqual({ ok: false, reason: "activeContent" });
+    }
+  });
+
+  it("ignores /JS bytes that occur by chance inside binary image data", () => {
+    const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0x2f, 0x4a, 0x53, 0xd0, 0xd0, 0x5b, 0x52]); // "/JS" + binary
+    const pdf = concat("%PDF-1.4\n1 0 obj << /Filter /DCTDecode /Length 10 >>\nstream\n", jpeg, "\nendstream\nendobj\n%%EOF");
+    expect(inspectFile(pdf, "pdf")).toEqual({ ok: true });
+  });
+
   it("rejects /Launch actions", () => {
     const pdf = concat("%PDF-1.4\n1 0 obj << /OpenAction << /S /Launch /F (cmd.exe) >> >> endobj\n%%EOF");
     expect(inspectFile(pdf, "pdf")).toEqual({ ok: false, reason: "activeContent" });

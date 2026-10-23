@@ -22,6 +22,8 @@ export function SmoothScroll() {
         autoRaf: true,
         lerp: 0.1,
         anchors: { offset: -96 },
+        // Dialogs scroll natively; otherwise the wheel moves the page behind them.
+        prevent: (node) => node.closest('[role="dialog"], [role="alertdialog"]') !== null,
       });
     });
     return () => {

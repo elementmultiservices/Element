@@ -29,7 +29,10 @@ const OOXML_MAIN_TYPES: Record<"docx" | "xlsx" | "pptx", string> = {
 };
 
 // PDF names that trigger scripts, launch programs or carry embedded payloads.
-const PDF_ACTIVE = /\/(JavaScript|JS|Launch|EmbeddedFiles?|RichMedia|SubmitForm|ImportData|GoToE)\b/;
+// The short /JS key only counts when followed by a value (string, hex string or
+// indirect reference): as a bare 3-byte sequence it turns up by chance inside
+// binary image data (e.g. scanned JPEG pages) and rejected legitimate scans.
+const PDF_ACTIVE = /\/(JavaScript|Launch|EmbeddedFiles?|RichMedia|SubmitForm|ImportData|GoToE)\b|\/JS\s*(\(|<|\d+\s+\d+\s+R\b)/;
 
 /** Inflates zlib/deflate data, aborting once the output exceeds `limit` bytes. */
 function boundedInflate(data: Uint8Array, limit: number): Uint8Array | null | "overflow" {

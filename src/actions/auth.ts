@@ -9,6 +9,7 @@ import { audit } from "@/lib/audit";
 import { ACTIVITY_COOKIE, activityCookieOptions, signActivity } from "@/lib/auth/activity";
 import { generateInviteLink, generateRecoveryLink } from "@/lib/auth/links";
 import { consumeRecoveryCode, issueRecoveryCodes, resetMfaFactors } from "@/lib/auth/recovery-codes";
+import { consumeNextTarget } from "@/lib/auth/next-target";
 import { getSessionContext, homePathFor, requireSession } from "@/lib/auth/session";
 import { sendAuthLinkEmail } from "@/lib/email/auth-emails";
 import { notifyUploadGrantOnVerification, sendSecurityNotice } from "@/lib/email/security-emails";
@@ -125,7 +126,8 @@ export async function signInAction(_prev: FormState<SignInField>, formData: Form
   await padResponse(startedAt);
 
   const mfaRequired = ctx.role === "admin" || ctx.has_verified_mfa;
-  return redirect({ href: mfaRequired ? "/mfa" : homePathFor(ctx.role), locale: ctx.preferred_locale });
+  const href = mfaRequired ? "/mfa" : ((await consumeNextTarget(ctx.role)) ?? homePathFor(ctx.role));
+  return redirect({ href, locale: ctx.preferred_locale });
 }
 
 // ---------------------------------------------------------------------------
@@ -342,7 +344,7 @@ export async function updatePasswordAction(
   }
 
   const mfaRequired = session.role === "admin" || session.hasVerifiedMfa;
-  const href = mfaRequired && session.aal !== "aal2" ? "/mfa" : homePathFor(session.role);
+  const href = mfaRequired && session.aal !== "aal2" ? "/mfa" : ((await consumeNextTarget(session.role)) ?? homePathFor(session.role));
   return redirect({ href, locale: session.locale });
 }
 
@@ -414,9 +416,9 @@ export async function verifyMfaAction(_prev: MfaState, formData: FormData): Prom
   );
   if (enrolling) {
     const recoveryCodes = await issueRecoveryCodes(session.userId);
-    return { status: "success", recoveryCodes, next: homePathFor(session.role) };
+    return { status: "success", recoveryCodes, next: (await consumeNextTarget(session.role)) ?? homePathFor(session.role) };
   }
-  return redirect({ href: homePathFor(session.role), locale: session.locale });
+  return redirect({ href: (await consumeNextTarget(session.role)) ?? homePathFor(session.role), locale: session.locale });
 }
 
 // ---------------------------------------------------------------------------

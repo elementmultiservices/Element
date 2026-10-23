@@ -37,14 +37,19 @@
       "adminSubscribers": "Subscribers",
       "unsubscribe": "Unsubscribe",
       "updates": "Updates",
-      "adminNewsletter": "Newsletter"
+      "adminNewsletter": "Newsletter",
+      "whatToBring": "What to bring",
+      "intake": "New Client Package",
+      "intakeNew": "Fill out the New Client Package",
+      "adminIntake": "New Client Packages"
     },
     "descriptions": {
       "legal": "Legal information about the use of Element.",
       "services": "Taxes, business, documents and protection for your family, with the same team and a clear price from the start.",
       "location": "Visit us in New York or get it done remotely. Address, hours and directions.",
       "faq": "Clear answers about refunds, documents, pricing, ITIN, the IRS and our services.",
-      "updates": "The latest from the IRS: news releases, tax tips and fact sheets, exactly as the IRS publishes them."
+      "updates": "The latest from the IRS: news releases, tax tips and fact sheets, exactly as the IRS publishes them.",
+      "whatToBring": "Checklist of documents for your personal or business tax appointment, and the online intake form you can sign before your visit."
     }
   },
   "Common": {
@@ -82,7 +87,8 @@
     "myFiles": "My Files",
     "call": "Call",
     "whatsapp": "WhatsApp",
-    "updates": "Updates"
+    "updates": "Updates",
+    "bring": "What to bring"
   },
   "Footer": {
     "tagline": "Every element in its place.",
@@ -406,7 +412,8 @@
     "user": {
       "files": "My files",
       "profile": "Profile",
-      "upload": "Upload file"
+      "upload": "Upload file",
+      "intake": "New Client Package"
     },
     "admin": {
       "overview": "Overview",
@@ -419,7 +426,8 @@
       "profile": "My profile",
       "settings": "Business details",
       "subscribers": "Subscribers",
-      "newsletter": "Newsletter"
+      "newsletter": "Newsletter",
+      "intake": "Client packages"
     },
     "roles": {
       "user": "User",
@@ -444,7 +452,8 @@
       "mfaReset": "Two-step verification was reset with a recovery code. Sign in again; administrators must set up a new authenticator app.",
       "noAccount": "Don't have an account?",
       "createAccount": "Create an account",
-      "oauthFailed": "We could not sign you in with Google. Please try again."
+      "oauthFailed": "We could not sign you in with Google. Please try again.",
+      "intake": "Sign in or create an account to fill out the New Client Package. We will take you to it right after."
     },
     "signUp": {
       "title": "Create an account",
@@ -1405,6 +1414,29 @@
       "confirmBody": "“{title}”. {count, plural, one {# person will receive} other {# people will receive}} an email with the title, the summary and a link to the update. It cannot be cancelled once sent.",
       "confirm": "{count, plural, one {Send to # person} other {Send to # people}}",
       "sent": "The update was sent to subscribers."
+    },
+    "intake": {
+      "description": "Packages submitted by clients: intake, signed agreement and documents. Download them as a PDF in English or Spanish.",
+      "empty": "No packages match these filters.",
+      "view": "View",
+      "account": "Account",
+      "documents": "{count, plural, =0 {no documents} one {# document} other {# documents}}",
+      "reviewedBy": "Reviewed by {name} · {date}",
+      "filters": {
+        "search": "Search",
+        "searchPlaceholder": "Taxpayer name",
+        "status": "Status",
+        "all": "All",
+        "allYears": "All years"
+      },
+      "markReviewed": "Mark as reviewed",
+      "markReviewedTitle": "Mark this package as reviewed?",
+      "markReviewedBody": "It will move out of the list of new packages.",
+      "markedReviewed": "Package marked as reviewed.",
+      "reopen": "Mark as new",
+      "reopenTitle": "Mark this package as new again?",
+      "reopenBody": "It will appear again in the list of new packages.",
+      "reopened": "Package marked as new."
     }
   },
   "Contact": {
@@ -2003,6 +2035,43 @@
       "body": "Message us and we'll answer the same business day, in English or Spanish."
     },
     "count": "{count, plural, one {# question} other {# questions}}",
+    "refundStates": {
+      "trigger": "Check your state refund",
+      "title": "Check your state refund",
+      "description": "Choose your state to see the official page and how to look up your refund step by step.",
+      "select": "Your state",
+      "placeholder": "Select a state",
+      "open": "Open the {state} refund page",
+      "stepsTitle": "How to check it",
+      "steps": {
+        "open": "Open the official page with the button above.",
+        "click": "Click “{label}”.",
+        "fill": "Fill in what it asks for:",
+        "submit": "Then click “{label}” to see your status.",
+        "submitGeneric": "Then submit the form to see your status.",
+        "find": "Look for the “Where's My Refund?” or “Check Refund Status” link. You don't need to log in.",
+        "fillGeneric": "Enter the information it asks for, usually your Social Security number or ITIN, the tax year and the exact refund amount."
+      },
+      "fields": {
+        "ssn": "Your Social Security number (or ITIN, if the form lets you choose it).",
+        "last7": "The last 7 digits of your Social Security number or ITIN.",
+        "taxYear": "The tax year of the return.",
+        "refundAmount": "The exact refund amount shown on your return.",
+        "zip": "Your ZIP code.",
+        "address": "The numbers in your mailing address.",
+        "filingStatus": "Your filing status.",
+        "lastName": "Your last name.",
+        "accountType": "Account type: Individual Income Tax.",
+        "howFiled": "How you filed: electronically or on paper.",
+        "securityCode": "The security code shown on the screen.",
+        "declaration": "Check the declaration box.",
+        "captcha": "Check the “I'm not a robot” box."
+      },
+      "shotAlt": "Screenshot of the {state} refund page, step {n}",
+      "noShots": "This site doesn't allow automated captures, so we don't have screenshots for this state. Follow the steps on the official page.",
+      "note": "These are official state government sites. Links and screens can change; if something looks different, contact us and we'll help.",
+      "close": "Close"
+    },
     "groups": {
       "refunds": {
         "title": "Refunds",
@@ -2015,7 +2084,6 @@
             "q": "Where can I check the status of my refund?",
             "a": "You can check it 24 hours after the IRS accepts your e-filed return (about 4 weeks if you filed on paper). You'll need your Social Security number or ITIN, your filing status and the exact refund amount.",
             "federal": "Check your federal refund",
-            "state": "Check your New York State refund",
             "after": "If you have trouble finding the information, contact us and we'll gladly help you check your status."
           },
           "delay": {
@@ -2269,5 +2337,619 @@
     },
     "keepReading": "Keep reading",
     "viewAll": "See all updates"
+  },
+  "Intake": {
+    "choose": "Select…",
+    "recaptcha": "This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.",
+    "steps": {
+      "you": "You",
+      "family": "Family",
+      "income": "Income",
+      "questions": "Questions",
+      "sign": "Sign",
+      "documents": "Documents"
+    },
+    "nav": {
+      "back": "Back",
+      "next": "Continue",
+      "signAndContinue": "Sign and continue",
+      "submit": "Send package",
+      "submitWithout": "Send without documents",
+      "submitting": "Sending…",
+      "progress": "Form progress"
+    },
+    "sections": {
+      "general": {
+        "title": "Part 1 · Client intake",
+        "body": "Complete this package before your appointment. It takes about 10 minutes. Fields marked * are required. Your information is confidential and goes straight to our office.",
+        "summary": "Tax year and language"
+      },
+      "taxpayer": {
+        "title": "Taxpayer"
+      },
+      "filingStatus": {
+        "title": "Filing status",
+        "body": "If you are not sure, choose \"I'm not sure\" and we will help you decide.",
+        "unsureNote": "We will confirm the right filing status with you at your appointment."
+      },
+      "spouse": {
+        "title": "Spouse",
+        "body": "Your spouse's information, needed because you are married."
+      },
+      "dependents": {
+        "title": "Dependents",
+        "body": "Children or relatives you support who may be claimed on your return."
+      },
+      "income": {
+        "title": "This year's income",
+        "body": "Mark all that apply.",
+        "pick": "Types of income"
+      },
+      "deductions": {
+        "title": "Deductions and credits",
+        "body": "Mark all that apply.",
+        "pick": "Deductions and credits"
+      },
+      "questions": {
+        "title": "A few questions"
+      },
+      "refund": {
+        "title": "Your refund",
+        "body": "Direct deposit is the fastest way to receive it."
+      },
+      "referral": {
+        "title": "How did you hear about us?"
+      },
+      "notes": {
+        "title": "Notes"
+      },
+      "documents": {
+        "title": "Part 3 · Upload your documents (optional)",
+        "body": "Upload what you have now or bring it to your appointment. You can use photos from your phone."
+      }
+    },
+    "fields": {
+      "taxYear": "Tax year",
+      "preferredLanguage": "Preferred language",
+      "firstName": "First name",
+      "middleInitial": "Initial",
+      "lastName": "Last name",
+      "ssn": "Social Security or ITIN",
+      "ssnHint": "9 digits. Kept private: only our team can see it in full.",
+      "dob": "Date of birth",
+      "ipPin": "IRS IP PIN (if you have one)",
+      "ipPinHint": "6 digits, only if the IRS sent you one.",
+      "occupation": "Occupation",
+      "cellPhone": "Cell phone",
+      "workPhone": "Work phone",
+      "email": "Email",
+      "street": "Address",
+      "apt": "Apt.",
+      "city": "City",
+      "state": "State",
+      "zip": "ZIP code",
+      "blind": "Taxpayer: are you legally blind?",
+      "claimedByOther": "Taxpayer: can someone else claim you as a dependent?",
+      "spouseBlind": "Spouse: legally blind?",
+      "spouseClaimedByOther": "Spouse: can someone else claim your spouse as a dependent?",
+      "filingStatus": "Filing status",
+      "married": "Are you married?",
+      "hasDependents": "Do you have dependents?",
+      "fullName": "Full name",
+      "relationship": "Relationship",
+      "months": "Months lived with you",
+      "businessDescription": "What kind of work or business do you do on your own?",
+      "businessDescriptionHint": "For example: cleaning, construction, rideshare driver, beauty salon.",
+      "otherIncome": "Describe your other income",
+      "childcareProvider": "Childcare provider (name, address and tax ID if you have it)",
+      "childcareProviderHint": "We need it to claim the childcare credit.",
+      "refundMethod": "How do you want your refund?",
+      "bankName": "Bank name",
+      "routing": "Routing number",
+      "account": "Account number",
+      "accountType": "Account type",
+      "referral": "How did you hear about us?",
+      "referralOther": "Tell us how",
+      "notes": "Anything else we should know? (optional)"
+    },
+    "languages": {
+      "en": "English",
+      "es": "Spanish"
+    },
+    "filingStatus": {
+      "single": "Single",
+      "mfj": "Married, filing jointly",
+      "mfs": "Married, filing separately",
+      "hoh": "Head of household",
+      "qss": "Qualifying surviving spouse",
+      "unsure": "I'm not sure"
+    },
+    "relationships": {
+      "son": "Son",
+      "daughter": "Daughter",
+      "stepchild": "Stepchild",
+      "fosterChild": "Foster child",
+      "sibling": "Brother or sister",
+      "parent": "Parent",
+      "grandchild": "Grandchild",
+      "other": "Other relative"
+    },
+    "income": {
+      "w2": "W-2 wages",
+      "selfEmployment": "Self-employed / 1099-NEC or MISC",
+      "paymentApps": "1099-K (apps, card payments)",
+      "unemployment": "Unemployment (1099-G)",
+      "socialSecurity": "Social Security (SSA-1099)",
+      "retirement": "Pension or retirement (1099-R)",
+      "interestDividends": "Interest or dividends",
+      "rental": "Rental property",
+      "k1": "Schedule K-1",
+      "cryptoStocks": "Sale of crypto or stocks",
+      "gambling": "Gambling winnings",
+      "other": "Other income"
+    },
+    "deductions": {
+      "mortgage": "Mortgage interest (1098)",
+      "propertyTax": "Property tax",
+      "charity": "Charitable donations",
+      "tuition": "Tuition (1098-T)",
+      "studentLoan": "Student loan interest (1098-E)",
+      "childcare": "Childcare",
+      "marketplace": "Marketplace insurance (1095-A)",
+      "retirementContrib": "IRA / 401(k) / HSA contributions",
+      "estimatedPayments": "Estimated tax payments"
+    },
+    "questions": {
+      "irsLetter": "Did you receive letters from the IRS or New York State this year?",
+      "movedState": "Did you move during the year?",
+      "homeSale": "Did you buy or sell a home?",
+      "fullYearCoverage": "Did you have health insurance all year?",
+      "foreignAccounts": "Do you have income or bank accounts outside the United States?"
+    },
+    "followUps": {
+      "irsLetter": "What was the letter about? (upload it at the end if you can)",
+      "movedState": "Where did you move from, and when?",
+      "homeSale": "Did you buy or sell, and on what date?",
+      "fullYearCoverage": "Which months were you without health insurance?",
+      "foreignAccounts": "In which country, and what kind of income or account?"
+    },
+    "refund": {
+      "direct": "Direct deposit",
+      "check": "Check by mail",
+      "applyNext": "Apply to next year",
+      "checking": "Checking",
+      "savings": "Savings"
+    },
+    "referrals": {
+      "friend": "Friend or family",
+      "social": "Social media",
+      "walkIn": "I walked by the office",
+      "google": "Google",
+      "previousClient": "Previous client",
+      "other": "Other"
+    },
+    "docTypes": {
+      "id": "Photo ID",
+      "ssn": "Social Security / ITIN cards",
+      "income": "Income documents",
+      "prior_return": "Last year's return",
+      "dependents": "Dependent documents",
+      "deductions": "Deduction documents",
+      "irs_letters": "IRS or State letters",
+      "other": "Other documents"
+    },
+    "docHints": {
+      "id": "Driver's license, state ID or passport — you and your spouse",
+      "ssn": "Everyone on the return",
+      "income": "W-2, 1099, SSA-1099, K-1",
+      "prior_return": "Federal and state",
+      "dependents": "Birth certificates, school or daycare letters",
+      "deductions": "1098, 1098-T, 1095-A, donation receipts",
+      "irs_letters": "Any letter received this year",
+      "other": "Anything else you think we need"
+    },
+    "dependents": {
+      "add": "Add dependent",
+      "remove": "Remove",
+      "title": "Dependent {n}"
+    },
+    "documents": {
+      "add": "Upload",
+      "hint": "PDF, JPG, PNG, DOCX, XLSX or PPTX · up to {max} each · up to {count} files in total.",
+      "uploading": "Uploading {percent}%",
+      "verifying": "Checking…",
+      "ready": "Ready",
+      "remove": "Remove {name}",
+      "recommended": "Recommended",
+      "next": "What's next: we review your package and contact you to confirm your appointment. Before filing, you will review your return and sign the IRS authorization (Form 8879) at our office or in our secure portal.",
+      "errors": {
+        "invalid_name": "Invalid file name.",
+        "double_extension": "File names with two extensions are not allowed.",
+        "type_not_allowed": "This type of file is not allowed.",
+        "too_large": "The file is larger than {max}.",
+        "empty_file": "The file is empty.",
+        "intake_limit": "You reached the limit of {max} documents.",
+        "daily_cap": "Daily upload limit reached. Try again tomorrow.",
+        "rate_limited": "Too many uploads. Wait a few minutes.",
+        "content_rejected": "The file content does not match its type or is not allowed.",
+        "size_mismatch": "The upload was incomplete. Try again.",
+        "upload_missing": "The upload failed. Try again.",
+        "intent_invalid": "The upload expired. Try again.",
+        "generic": "The file could not be uploaded."
+      }
+    },
+    "sign": {
+      "declarationTitle": "Declaration",
+      "declaration": "I declare that the information I have provided, and the documents I will deliver, are true, correct and complete to the best of my knowledge. I understand that Element Multiservices relies on this information to prepare my return and that I am responsible for its accuracy.",
+      "consent": "I have read and accept the declaration.",
+      "confirmationsTitle": "Confirmations",
+      "pub135": "I received the Taxpayer Bill of Rights for tax preparer clients (Publication 135).",
+      "agreement": "I have read and accept this service agreement.",
+      "signaturesTitle": "Signatures",
+      "signaturesBody": "Your signature applies to the declaration and to the service agreement. Draw it, type your name or upload an image of your signature.",
+      "signature": "Taxpayer signature — {name}",
+      "spouseSignature": "Spouse signature — {name}",
+      "date": "Date (filled in automatically): {date}",
+      "clear": "Clear",
+      "methods": {
+        "draw": "Draw",
+        "type": "Type",
+        "upload": "Upload image"
+      },
+      "drawHint": "Sign with your finger, a stylus or the mouse.",
+      "typeLabel": "Your name as you want it to appear",
+      "typeHint": "Your typed name is turned into a signature.",
+      "uploadButton": "Choose image",
+      "uploadHint": "PNG or JPG of your signature (a photo of it on white paper works).",
+      "uploadError": "We could not read a signature in that image. Try a clear PNG or JPG on a white background."
+    },
+    "signatureMethods": {
+      "draw": "drawn signature",
+      "type": "typed signature",
+      "upload": "uploaded signature image"
+    },
+    "agreement": {
+      "title": "Part 2 · Service agreement",
+      "body": "Read the agreement, then check both confirmations.",
+      "intro": "This agreement explains the services that Element Multiservices LLC (\"Element\", \"we\") will provide to you, what we need from you and our fees.",
+      "clauses": {
+        "services": {
+          "title": "Our services",
+          "body": "We will prepare your federal and New York State returns for the tax year indicated, with the information and documents you give us. We will file them electronically only after you review your return and sign the IRS and State authorizations (Form 8879 and Form TR-579-IT), which we will give you separately."
+        },
+        "responsibilities": {
+          "title": "Your responsibilities",
+          "body": "You agree to give us complete and correct information, keep the records that support your return and review it before signing. You are legally responsible for your return, including taxes, interest or penalties caused by incomplete or incorrect information."
+        },
+        "excluded": {
+          "title": "What is not included",
+          "body": "We do not audit or verify the information you give us, and we do not give legal advice. We cannot guarantee the amount of any refund or how long the IRS or the State will take to process it."
+        },
+        "fees": {
+          "title": "Fees and payment",
+          "body": "Our fee depends on the forms and schedules your return needs. We will tell you the cost before filing. Payment is due when your return is ready. A $50 charge applies to balances unpaid after 30 days, and balances unpaid after 90 days may be sent to a collection agency."
+        },
+        "letters": {
+          "title": "Letters after filing",
+          "body": "If the IRS or the State contacts you about your return, bring us the letter promptly. If it is due to our error, we help you resolve it at no cost. Other correspondence, amendments and additional work are charged separately."
+        },
+        "privacy": {
+          "title": "Confidentiality and records",
+          "body": "We protect your tax information as required by federal law (Internal Revenue Code section 7216) and will not use or share it for any other purpose without your separate written consent. We keep copies of your return and authorization for at least three years."
+        },
+        "esign": {
+          "title": "Electronic signatures",
+          "body": "You agree that we may send you documents electronically and that your electronic signature on this package has the same effect as a handwritten signature."
+        },
+        "term": {
+          "title": "Term",
+          "body": "This agreement covers the tax year indicated and ends when your returns are filed and your documents are returned to you, unless either party ends it earlier in writing. It takes effect when Element accepts your package."
+        }
+      }
+    },
+    "summary": {
+      "none": "—",
+      "yes": "Yes",
+      "no": "No",
+      "address": "Address",
+      "dependent": "Dependent {n}",
+      "selected": "Selected"
+    },
+    "status": {
+      "new": "New",
+      "reviewed": "Reviewed"
+    },
+    "errors": {
+      "required": "This field is required.",
+      "invalid": "Check this value.",
+      "tooLong": "This value is too long.",
+      "choose": "Choose an option.",
+      "emailInvalid": "Enter a valid email address.",
+      "phoneInvalid": "Enter a valid phone number.",
+      "ssnInvalid": "Enter a valid 9-digit SSN or ITIN.",
+      "dateInvalid": "Enter a valid date.",
+      "stateInvalid": "Use the 2-letter state code (e.g. NY).",
+      "zipInvalid": "Enter a valid ZIP code.",
+      "routingInvalid": "Enter a valid 9-digit routing number.",
+      "accountInvalid": "Enter a valid account number (4 to 17 digits).",
+      "ipPinInvalid": "The IP PIN has 6 digits.",
+      "consentRequired": "You must check this box to continue.",
+      "signatureRequired": "Please sign: draw, type or upload your signature.",
+      "dependentsRequired": "Add at least one dependent, or answer No.",
+      "fixErrors": "Please review the highlighted fields.",
+      "uploadsPending": "Wait until your documents finish uploading.",
+      "intake_uploads_invalid": "Some documents expired or are no longer available. Remove them and upload them again.",
+      "recaptcha_failed": "We could not verify the request. Reload the page and try again.",
+      "rate_limited": "Too many attempts. Wait a few minutes and try again.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "list": {
+      "description": "Your New Client Packages. Fill one out before your appointment so we can prepare your return faster.",
+      "new": "Fill out the New Client Package",
+      "emptyTitle": "You have not filled out your package yet",
+      "emptyBody": "It takes about 10 minutes. You answer a few questions, sign online and can attach your documents.",
+      "item": "New Client Package {year}",
+      "reference": "Ref. {reference}"
+    },
+    "new": {
+      "title": "New Client Package",
+      "description": "Intake · Agreement · Documents. Your answers are only sent at the end."
+    },
+    "detail": {
+      "submitted": "Thank you! We received your package (ref. {reference}). We will contact you to confirm your appointment.",
+      "download": "Download",
+      "signatureOf": "Signature of {name}",
+      "confirmations": "Confirmations",
+      "pdf": {
+        "en": "PDF (English)",
+        "es": "PDF (Spanish)"
+      }
+    },
+    "pdf": {
+      "title": "New Client Package",
+      "subtitle": "Tax year {year} · {name}",
+      "packageParts": "Intake · Agreement · Documents",
+      "reference": "Reference {reference}",
+      "submitted": "Submitted {date}",
+      "part1": "Part 1 · Client intake",
+      "part2": "Part 2 · Service agreement",
+      "part3": "Part 3 · Documents",
+      "documentsEmpty": "No documents were attached.",
+      "documentsSeparate": "download separately from the admin panel",
+      "signedBy": "Taxpayer",
+      "spouseSignedBy": "Spouse",
+      "signedAt": "Date",
+      "signerIp": "Signed from IP address",
+      "attachment": "Attachment",
+      "attachmentFailed": "This file could not be embedded (it may be protected). Download it separately from the admin panel.",
+      "page": "Page",
+      "footer": "Element Multiservices LLC · New York"
+    }
+  },
+  "BringPage": {
+    "badge": "Checklist for your appointment",
+    "titleStart": "What to",
+    "titleAccent": "bring",
+    "body": "Bring every item that applies to you. If something is missing, come anyway: we will tell you exactly what we still need.",
+    "intake": {
+      "eyebrow": "New and returning clients",
+      "title": "Fill out the New Client Package before your visit",
+      "body": "Sign in or create your account, answer a few questions, upload your documents and sign online. Your appointment will be faster.",
+      "cta": "Fill out the New Client Package",
+      "note": "Available in English and Spanish. Your information is private and only our team can see it.",
+      "steps": {
+        "account": {
+          "title": "Sign in",
+          "body": "Your form is saved to your account."
+        },
+        "fill": {
+          "title": "Answer",
+          "body": "Your details, family, income and refund."
+        },
+        "upload": {
+          "title": "Upload",
+          "body": "Optional: photos or PDFs of your documents."
+        },
+        "sign": {
+          "title": "Sign",
+          "body": "Sign on screen with your finger or mouse."
+        }
+      }
+    },
+    "listTitle": "Your checklist",
+    "listBody": "Choose the type of return. Bring originals or clear copies.",
+    "tabs": {
+      "personal": "Personal taxes",
+      "business": "Business taxes"
+    },
+    "closing": "Missing something? Bring what you have. We will review it with you and tell you what is still needed.",
+    "visit": {
+      "title": "Ready? Come see us",
+      "body": "Book your appointment or call us if you have questions about what to bring."
+    },
+    "personal": {
+      "prior": {
+        "title": "Prior year",
+        "items": {
+          "returns": {
+            "label": "Complete copy of last year's federal and state returns"
+          }
+        }
+      },
+      "identification": {
+        "title": "Identification",
+        "items": {
+          "photoId": {
+            "label": "Photo ID for you and your spouse",
+            "sub": "Driver's license, state ID or passport"
+          },
+          "ssn": {
+            "label": "Social Security card or ITIN letter for everyone on the return"
+          },
+          "ipPin": {
+            "label": "IRS Identity Protection PIN (IP PIN), if you have one"
+          }
+        }
+      },
+      "dependents": {
+        "title": "Dependents",
+        "items": {
+          "birth": {
+            "label": "Birth certificate for each dependent"
+          },
+          "ssn": {
+            "label": "Social Security card or ITIN for each dependent"
+          },
+          "residency": {
+            "label": "Proof that each dependent lived with you",
+            "sub": "School or daycare letter, lease or medical records with their name and address"
+          },
+          "childcare": {
+            "label": "Childcare provider's name, address and tax ID, and the amount paid"
+          }
+        }
+      },
+      "income": {
+        "title": "Income",
+        "items": {
+          "w2": {
+            "label": "W-2 from every employer"
+          },
+          "forms1099": {
+            "label": "1099 forms",
+            "sub": "NEC, MISC, K, INT, DIV, B, R, G and SSA-1099"
+          },
+          "selfEmployed": {
+            "label": "Self-employment income and expense records",
+            "sub": "Bank statements, receipts and mileage"
+          },
+          "rental": {
+            "label": "Rental income and expenses"
+          },
+          "k1": {
+            "label": "Schedule K-1 and any other source of income"
+          }
+        }
+      },
+      "expenses": {
+        "title": "Expenses and deductions",
+        "items": {
+          "mortgage": {
+            "label": "Mortgage interest (1098) and property tax records"
+          },
+          "donations": {
+            "label": "Donation receipts",
+            "sub": "Cash donations need a letter with the organization's name, EIN and address"
+          },
+          "education": {
+            "label": "Education expenses: 1098-T and 1098-E"
+          },
+          "health": {
+            "label": "Form 1095-A if you have Marketplace insurance"
+          },
+          "retirement": {
+            "label": "IRA, HSA or other retirement plan contributions"
+          },
+          "medical": {
+            "label": "Medical and dental expenses you paid"
+          }
+        }
+      },
+      "refund": {
+        "title": "Refund and letters",
+        "items": {
+          "bank": {
+            "label": "Routing and account number for direct deposit",
+            "sub": "A voided check or a bank letter works"
+          },
+          "letters": {
+            "label": "Any letter from the IRS or the state"
+          },
+          "estimated": {
+            "label": "Records of estimated tax payments"
+          }
+        }
+      }
+    },
+    "business": {
+      "company": {
+        "title": "Your company",
+        "items": {
+          "ein": {
+            "label": "EIN confirmation letter (CP 575)"
+          },
+          "formation": {
+            "label": "Articles of organization or incorporation and operating agreement"
+          },
+          "prior": {
+            "label": "Last year's business return"
+          },
+          "owners": {
+            "label": "Owners and ownership percentages"
+          }
+        }
+      },
+      "income": {
+        "title": "Income",
+        "items": {
+          "sales": {
+            "label": "Sales and income records for the year"
+          },
+          "forms": {
+            "label": "1099-NEC, 1099-MISC and 1099-K received"
+          },
+          "bank": {
+            "label": "Bank and credit card statements for all 12 months"
+          }
+        }
+      },
+      "expenses": {
+        "title": "Expenses",
+        "items": {
+          "receipts": {
+            "label": "Receipts organized by category",
+            "sub": "Rent, supplies, insurance, phone, advertising…"
+          },
+          "vehicle": {
+            "label": "Mileage log and vehicle expenses"
+          },
+          "homeOffice": {
+            "label": "Home office: square footage and household bills"
+          },
+          "assets": {
+            "label": "Purchases of equipment, machinery or vehicles"
+          }
+        }
+      },
+      "payroll": {
+        "title": "Payroll and contractors",
+        "items": {
+          "w2": {
+            "label": "W-2 and W-3 forms issued"
+          },
+          "quarterly": {
+            "label": "Quarterly payroll returns",
+            "sub": "Forms 941, 940 and NYS-45"
+          },
+          "contractors": {
+            "label": "1099-NEC issued to contractors, with their W-9"
+          }
+        }
+      },
+      "finance": {
+        "title": "Loans and balances",
+        "items": {
+          "loans": {
+            "label": "Loan statements and interest paid"
+          },
+          "inventory": {
+            "label": "Inventory at the beginning and end of the year"
+          },
+          "balance": {
+            "label": "Balance sheet or bookkeeping reports, if you have them"
+          }
+        }
+      }
+    }
   }
 }

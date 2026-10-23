@@ -37,14 +37,19 @@
       "adminSubscribers": "Suscriptores",
       "unsubscribe": "Darte de baja",
       "updates": "Actualizaciones",
-      "adminNewsletter": "Newsletter"
+      "adminNewsletter": "Newsletter",
+      "whatToBring": "Qué traer",
+      "intake": "Paquete de Cliente Nuevo",
+      "intakeNew": "Llenar el Paquete de Cliente Nuevo",
+      "adminIntake": "Paquetes de Cliente Nuevo"
     },
     "descriptions": {
       "legal": "Información legal sobre el uso de Element.",
       "services": "Impuestos, negocios, documentos y protección para tu familia, con el mismo equipo y el precio claro desde el inicio.",
       "location": "Visítanos en Nueva York o haz tu trámite a distancia. Dirección, horarios y cómo llegar.",
       "faq": "Respuestas claras sobre reembolsos, documentos, precios, ITIN, el IRS y nuestros servicios.",
-      "updates": "Las noticias más recientes del IRS: comunicados, consejos tributarios y hojas informativas, tal como las publica el IRS."
+      "updates": "Las noticias más recientes del IRS: comunicados, consejos tributarios y hojas informativas, tal como las publica el IRS.",
+      "whatToBring": "Lista de documentos para tu cita de impuestos personales o de negocio, y el formulario de ingreso que puedes firmar en línea antes de tu visita."
     }
   },
   "Common": {
@@ -82,7 +87,8 @@
     "myFiles": "Mi Archivo",
     "call": "Llamar",
     "whatsapp": "WhatsApp",
-    "updates": "Actualizaciones"
+    "updates": "Actualizaciones",
+    "bring": "Qué traer"
   },
   "Footer": {
     "tagline": "Cada elemento en su lugar.",
@@ -406,7 +412,8 @@
     "user": {
       "files": "Mis archivos",
       "profile": "Perfil",
-      "upload": "Subir archivo"
+      "upload": "Subir archivo",
+      "intake": "Paquete de Cliente Nuevo"
     },
     "admin": {
       "overview": "Resumen",
@@ -419,7 +426,8 @@
       "profile": "Mi perfil",
       "settings": "Datos del negocio",
       "subscribers": "Suscriptores",
-      "newsletter": "Newsletter"
+      "newsletter": "Newsletter",
+      "intake": "Paquetes de clientes"
     },
     "roles": {
       "user": "Usuario",
@@ -444,7 +452,8 @@
       "mfaReset": "La verificación en dos pasos se restableció con un código de recuperación. Inicie sesión nuevamente; los administradores deberán configurar una nueva aplicación de autenticación.",
       "noAccount": "¿No tiene una cuenta?",
       "createAccount": "Crear una cuenta",
-      "oauthFailed": "No fue posible iniciar sesión con Google. Por favor, intente nuevamente."
+      "oauthFailed": "No fue posible iniciar sesión con Google. Por favor, intente nuevamente.",
+      "intake": "Inicie sesión o cree una cuenta para llenar el Paquete de Cliente Nuevo. Lo llevaremos a él enseguida."
     },
     "signUp": {
       "title": "Crear una cuenta",
@@ -1405,6 +1414,29 @@
       "confirmBody": "«{title}». {count, plural, one {# persona recibirá} other {# personas recibirán}} un correo con el título, el resumen y un enlace a la actualización. No se puede cancelar una vez enviado.",
       "confirm": "{count, plural, one {Enviar a # persona} other {Enviar a # personas}}",
       "sent": "La actualización fue enviada a los suscriptores."
+    },
+    "intake": {
+      "description": "Paquetes enviados por los clientes: admisión, acuerdo firmado y documentos. Descárgalos en PDF en inglés o en español.",
+      "empty": "Ningún paquete coincide con estos filtros.",
+      "view": "Ver",
+      "account": "Cuenta",
+      "documents": "{count, plural, =0 {sin documentos} one {# documento} other {# documentos}}",
+      "reviewedBy": "Revisado por {name} · {date}",
+      "filters": {
+        "search": "Buscar",
+        "searchPlaceholder": "Nombre del contribuyente",
+        "status": "Estado",
+        "all": "Todos",
+        "allYears": "Todos los años"
+      },
+      "markReviewed": "Marcar como revisado",
+      "markReviewedTitle": "¿Marcar este paquete como revisado?",
+      "markReviewedBody": "Saldrá de la lista de paquetes nuevos.",
+      "markedReviewed": "Paquete marcado como revisado.",
+      "reopen": "Marcar como nuevo",
+      "reopenTitle": "¿Marcar este paquete como nuevo otra vez?",
+      "reopenBody": "Volverá a aparecer en la lista de paquetes nuevos.",
+      "reopened": "Paquete marcado como nuevo."
     }
   },
   "Contact": {
@@ -2003,6 +2035,43 @@
       "body": "Escríbenos y te respondemos el mismo día hábil, en español o en inglés."
     },
     "count": "{count, plural, one {# pregunta} other {# preguntas}}",
+    "refundStates": {
+      "trigger": "Verifica tu reembolso estatal",
+      "title": "Verifica tu reembolso estatal",
+      "description": "Elige tu estado para ver la página oficial y cómo consultar tu reembolso paso a paso.",
+      "select": "Tu estado",
+      "placeholder": "Selecciona un estado",
+      "open": "Abrir la página de reembolsos de {state}",
+      "stepsTitle": "Cómo consultarlo",
+      "steps": {
+        "open": "Abre la página oficial con el botón de arriba.",
+        "click": "Haz clic en “{label}”.",
+        "fill": "Completa los datos que te pide:",
+        "submit": "Luego haz clic en “{label}” para ver tu estatus.",
+        "submitGeneric": "Luego envía el formulario para ver tu estatus.",
+        "find": "Busca el enlace “Where's My Refund?” o “Check Refund Status”. No necesitas iniciar sesión.",
+        "fillGeneric": "Ingresa los datos que te pide; normalmente tu número de Seguro Social o ITIN, el año fiscal y la cantidad exacta del reembolso."
+      },
+      "fields": {
+        "ssn": "Tu número de Seguro Social (o ITIN, si el formulario te deja elegirlo).",
+        "last7": "Los últimos 7 dígitos de tu número de Seguro Social o ITIN.",
+        "taxYear": "El año fiscal de la declaración.",
+        "refundAmount": "La cantidad exacta del reembolso que aparece en tu declaración.",
+        "zip": "Tu código postal (ZIP).",
+        "address": "Los números de tu dirección postal.",
+        "filingStatus": "Tu estado civil para efectos de impuestos (filing status).",
+        "lastName": "Tu apellido.",
+        "accountType": "Tipo de cuenta: impuesto sobre el ingreso individual (Individual Income).",
+        "howFiled": "Cómo presentaste la declaración: electrónicamente o en papel.",
+        "securityCode": "El código de seguridad que aparece en pantalla.",
+        "declaration": "Marca la casilla de declaración.",
+        "captcha": "Marca la casilla “No soy un robot”."
+      },
+      "shotAlt": "Captura de la página de reembolsos de {state}, paso {n}",
+      "noShots": "Este sitio no permite capturas automáticas, así que no tenemos imágenes para este estado. Sigue los pasos en la página oficial.",
+      "note": "Son páginas oficiales del gobierno de cada estado y están en inglés. Los enlaces y pantallas pueden cambiar; si algo se ve diferente, contáctanos y te ayudamos.",
+      "close": "Cerrar"
+    },
     "groups": {
       "refunds": {
         "title": "Reembolsos",
@@ -2015,7 +2084,6 @@
             "q": "¿Dónde puedo verificar el estatus de mi reembolso?",
             "a": "Puedes verificarlo 24 horas después de que el IRS acepte tu declaración electrónica (unas 4 semanas si fue en papel). Necesitarás tu número de Seguro Social o ITIN, tu estado civil para efectos de impuestos y la cantidad exacta del reembolso.",
             "federal": "Verifica tu reembolso federal",
-            "state": "Verifica tu reembolso del Estado de Nueva York",
             "after": "Si te cuesta encontrar la información, contáctanos y con gusto te ayudamos a verificar tu estatus."
           },
           "delay": {
@@ -2269,5 +2337,619 @@
     },
     "keepReading": "Sigue leyendo",
     "viewAll": "Ver todas las actualizaciones"
+  },
+  "Intake": {
+    "choose": "Selecciona…",
+    "recaptcha": "Este sitio está protegido por reCAPTCHA y se aplican la Política de privacidad y los Términos del servicio de Google.",
+    "steps": {
+      "you": "Tú",
+      "family": "Familia",
+      "income": "Ingresos",
+      "questions": "Preguntas",
+      "sign": "Firma",
+      "documents": "Documentos"
+    },
+    "nav": {
+      "back": "Atrás",
+      "next": "Continuar",
+      "signAndContinue": "Firmar y continuar",
+      "submit": "Enviar paquete",
+      "submitWithout": "Enviar sin documentos",
+      "submitting": "Enviando…",
+      "progress": "Progreso del formulario"
+    },
+    "sections": {
+      "general": {
+        "title": "Parte 1 · Admisión del cliente",
+        "body": "Completa este paquete antes de tu cita. Toma unos 10 minutos. Los campos con * son obligatorios. Tu información es confidencial y llega directamente a nuestra oficina.",
+        "summary": "Año fiscal e idioma"
+      },
+      "taxpayer": {
+        "title": "Contribuyente"
+      },
+      "filingStatus": {
+        "title": "Estado civil para la declaración",
+        "body": "Si no estás seguro/a, elige \"No estoy seguro/a\" y te ayudamos a decidir.",
+        "unsureNote": "Confirmaremos contigo el estado civil correcto en tu cita."
+      },
+      "spouse": {
+        "title": "Cónyuge",
+        "body": "Los datos de tu cónyuge, necesarios porque estás casado/a."
+      },
+      "dependents": {
+        "title": "Dependientes",
+        "body": "Hijos o familiares que mantienes y que podrían incluirse en tu declaración."
+      },
+      "income": {
+        "title": "Ingresos de este año",
+        "body": "Marca todos los que apliquen.",
+        "pick": "Tipos de ingreso"
+      },
+      "deductions": {
+        "title": "Deducciones y créditos",
+        "body": "Marca todos los que apliquen.",
+        "pick": "Deducciones y créditos"
+      },
+      "questions": {
+        "title": "Algunas preguntas"
+      },
+      "refund": {
+        "title": "Tu reembolso",
+        "body": "El depósito directo es la forma más rápida de recibirlo."
+      },
+      "referral": {
+        "title": "¿Cómo supiste de nosotros?"
+      },
+      "notes": {
+        "title": "Notas"
+      },
+      "documents": {
+        "title": "Parte 3 · Sube tus documentos (opcional)",
+        "body": "Sube lo que tengas ahora o tráelo a tu cita. Puedes usar fotos desde tu celular."
+      }
+    },
+    "fields": {
+      "taxYear": "Año fiscal",
+      "preferredLanguage": "Idioma preferido",
+      "firstName": "Nombre",
+      "middleInitial": "Inicial",
+      "lastName": "Apellidos",
+      "ssn": "Seguro Social o ITIN",
+      "ssnHint": "9 dígitos. Es privado: solo nuestro equipo lo ve completo.",
+      "dob": "Fecha de nacimiento",
+      "ipPin": "IP PIN del IRS (si tienes)",
+      "ipPinHint": "6 dígitos, solo si el IRS te envió uno.",
+      "occupation": "Ocupación",
+      "cellPhone": "Celular",
+      "workPhone": "Teléfono del trabajo",
+      "email": "Correo electrónico",
+      "street": "Dirección",
+      "apt": "Apto.",
+      "city": "Ciudad",
+      "state": "Estado",
+      "zip": "Código postal",
+      "blind": "Contribuyente: ¿ciego/a legalmente?",
+      "claimedByOther": "Contribuyente: ¿alguien más puede reclamarte como dependiente?",
+      "spouseBlind": "Cónyuge: ¿ciego/a legalmente?",
+      "spouseClaimedByOther": "Cónyuge: ¿alguien más puede reclamar a tu cónyuge como dependiente?",
+      "filingStatus": "Estado civil para la declaración",
+      "married": "¿Estás casado/a?",
+      "hasDependents": "¿Tienes dependientes?",
+      "fullName": "Nombre completo",
+      "relationship": "Parentesco",
+      "months": "Meses que vivió contigo",
+      "businessDescription": "¿Qué tipo de trabajo o negocio haces por cuenta propia?",
+      "businessDescriptionHint": "Por ejemplo: limpieza, construcción, conductor de aplicación, salón de belleza.",
+      "otherIncome": "Describe tus otros ingresos",
+      "childcareProvider": "Proveedor de cuidado de niños (nombre, dirección y número de identificación si lo tienes)",
+      "childcareProviderHint": "Lo necesitamos para reclamar el crédito por cuidado de niños.",
+      "refundMethod": "¿Cómo quieres tu reembolso?",
+      "bankName": "Nombre del banco",
+      "routing": "Número de ruta",
+      "account": "Número de cuenta",
+      "accountType": "Tipo de cuenta",
+      "referral": "¿Cómo supiste de nosotros?",
+      "referralOther": "Cuéntanos cómo",
+      "notes": "¿Algo más que debamos saber? (opcional)"
+    },
+    "languages": {
+      "en": "Inglés",
+      "es": "Español"
+    },
+    "filingStatus": {
+      "single": "Soltero/a",
+      "mfj": "Casado/a, conjunta",
+      "mfs": "Casado/a, por separado",
+      "hoh": "Cabeza de familia",
+      "qss": "Cónyuge sobreviviente calificado",
+      "unsure": "No estoy seguro/a"
+    },
+    "relationships": {
+      "son": "Hijo",
+      "daughter": "Hija",
+      "stepchild": "Hijastro/a",
+      "fosterChild": "Hijo/a de crianza",
+      "sibling": "Hermano/a",
+      "parent": "Padre o madre",
+      "grandchild": "Nieto/a",
+      "other": "Otro familiar"
+    },
+    "income": {
+      "w2": "Salario W-2",
+      "selfEmployment": "Cuenta propia / 1099-NEC o MISC",
+      "paymentApps": "1099-K (apps, pagos con tarjeta)",
+      "unemployment": "Desempleo (1099-G)",
+      "socialSecurity": "Seguro Social (SSA-1099)",
+      "retirement": "Pensión o retiro (1099-R)",
+      "interestDividends": "Intereses o dividendos",
+      "rental": "Propiedad en alquiler",
+      "k1": "Schedule K-1",
+      "cryptoStocks": "Venta de cripto o acciones",
+      "gambling": "Premios de juegos de azar",
+      "other": "Otros ingresos"
+    },
+    "deductions": {
+      "mortgage": "Interés hipotecario (1098)",
+      "propertyTax": "Impuesto a la propiedad",
+      "charity": "Donaciones benéficas",
+      "tuition": "Matrícula (1098-T)",
+      "studentLoan": "Interés estudiantil (1098-E)",
+      "childcare": "Cuidado de niños",
+      "marketplace": "Seguro del Marketplace (1095-A)",
+      "retirementContrib": "Aportes a IRA / 401(k) / HSA",
+      "estimatedPayments": "Pagos de impuestos estimados"
+    },
+    "questions": {
+      "irsLetter": "¿Recibiste cartas del IRS o del Estado de Nueva York este año?",
+      "movedState": "¿Te mudaste durante el año?",
+      "homeSale": "¿Compraste o vendiste una vivienda?",
+      "fullYearCoverage": "¿Tuviste seguro médico todo el año?",
+      "foreignAccounts": "¿Tienes ingresos o cuentas bancarias fuera de Estados Unidos?"
+    },
+    "followUps": {
+      "irsLetter": "¿De qué se trataba la carta? (súbela al final si puedes)",
+      "movedState": "¿Desde dónde te mudaste y cuándo?",
+      "homeSale": "¿Compraste o vendiste, y en qué fecha?",
+      "fullYearCoverage": "¿Qué meses estuviste sin seguro médico?",
+      "foreignAccounts": "¿En qué país y qué tipo de ingreso o cuenta?"
+    },
+    "refund": {
+      "direct": "Depósito directo",
+      "check": "Cheque por correo",
+      "applyNext": "Aplicar al próximo año",
+      "checking": "Cheques",
+      "savings": "Ahorros"
+    },
+    "referrals": {
+      "friend": "Amigo o familiar",
+      "social": "Redes sociales",
+      "walkIn": "Pasé por la oficina",
+      "google": "Google",
+      "previousClient": "Cliente anterior",
+      "other": "Otro"
+    },
+    "docTypes": {
+      "id": "Identificación con foto",
+      "ssn": "Tarjetas de Seguro Social / ITIN",
+      "income": "Documentos de ingresos",
+      "prior_return": "Declaración del año pasado",
+      "dependents": "Documentos de dependientes",
+      "deductions": "Documentos de deducciones",
+      "irs_letters": "Cartas del IRS o del Estado",
+      "other": "Otros documentos"
+    },
+    "docHints": {
+      "id": "Licencia, ID estatal o pasaporte — tú y tu cónyuge",
+      "ssn": "Todas las personas en la declaración",
+      "income": "W-2, 1099, SSA-1099, K-1",
+      "prior_return": "Federal y estatal",
+      "dependents": "Actas de nacimiento, cartas de escuela o guardería",
+      "deductions": "1098, 1098-T, 1095-A, recibos de donaciones",
+      "irs_letters": "Cualquier carta recibida este año",
+      "other": "Cualquier otra cosa que creas necesaria"
+    },
+    "dependents": {
+      "add": "Agregar dependiente",
+      "remove": "Quitar",
+      "title": "Dependiente {n}"
+    },
+    "documents": {
+      "add": "Subir",
+      "hint": "PDF, JPG, PNG, DOCX, XLSX o PPTX · hasta {max} cada uno · hasta {count} archivos en total.",
+      "uploading": "Subiendo {percent}%",
+      "verifying": "Verificando…",
+      "ready": "Listo",
+      "remove": "Quitar {name}",
+      "recommended": "Recomendado",
+      "next": "Qué sigue: revisamos tu paquete y te contactamos para confirmar tu cita. Antes de presentar, revisarás tu declaración y firmarás la autorización del IRS (Formulario 8879) en nuestra oficina o en nuestro portal seguro.",
+      "errors": {
+        "invalid_name": "Nombre de archivo no válido.",
+        "double_extension": "No se permiten nombres de archivo con dos extensiones.",
+        "type_not_allowed": "Este tipo de archivo no está permitido.",
+        "too_large": "El archivo pesa más de {max}.",
+        "empty_file": "El archivo está vacío.",
+        "intake_limit": "Llegaste al límite de {max} documentos.",
+        "daily_cap": "Llegaste al límite diario de subidas. Inténtalo mañana.",
+        "rate_limited": "Demasiadas subidas. Espera unos minutos.",
+        "content_rejected": "El contenido del archivo no coincide con su tipo o no está permitido.",
+        "size_mismatch": "La subida quedó incompleta. Inténtalo de nuevo.",
+        "upload_missing": "La subida falló. Inténtalo de nuevo.",
+        "intent_invalid": "La subida expiró. Inténtalo de nuevo.",
+        "generic": "No se pudo subir el archivo."
+      }
+    },
+    "sign": {
+      "declarationTitle": "Declaración",
+      "declaration": "Declaro que la información que he proporcionado, y los documentos que entregaré, son verdaderos, correctos y completos según mi leal saber y entender. Entiendo que Element Multiservices depende de esta información para preparar mi declaración y que soy responsable de su exactitud.",
+      "consent": "He leído y acepto la declaración.",
+      "confirmationsTitle": "Confirmaciones",
+      "pub135": "Recibí la Carta de Derechos del Consumidor sobre Preparadores de Impuestos (Publicación 135).",
+      "agreement": "He leído y acepto este acuerdo de servicios.",
+      "signaturesTitle": "Firmas",
+      "signaturesBody": "Tu firma aplica a la declaración y al acuerdo de servicios. Dibújala, escribe tu nombre o sube una imagen de tu firma.",
+      "signature": "Contribuyente — Firma — {name}",
+      "spouseSignature": "Cónyuge — Firma — {name}",
+      "date": "Fecha (se llena automáticamente): {date}",
+      "clear": "Borrar",
+      "methods": {
+        "draw": "Dibujar",
+        "type": "Escribir",
+        "upload": "Subir imagen"
+      },
+      "drawHint": "Firma con el dedo, un lápiz táctil o el mouse.",
+      "typeLabel": "Tu nombre como quieres que aparezca",
+      "typeHint": "Tu nombre escrito se convierte en firma.",
+      "uploadButton": "Elegir imagen",
+      "uploadHint": "PNG o JPG de tu firma (sirve una foto de tu firma en papel blanco).",
+      "uploadError": "No pudimos leer una firma en esa imagen. Prueba con un PNG o JPG nítido sobre fondo blanco."
+    },
+    "signatureMethods": {
+      "draw": "firma dibujada",
+      "type": "firma escrita",
+      "upload": "imagen de firma subida"
+    },
+    "agreement": {
+      "title": "Parte 2 · Acuerdo de servicios",
+      "body": "Lee el acuerdo y marca las dos confirmaciones.",
+      "intro": "Este acuerdo explica los servicios que Element Multiservices LLC (\"Element\", \"nosotros\") te prestará, lo que necesitamos de ti y nuestras tarifas.",
+      "clauses": {
+        "services": {
+          "title": "Nuestros servicios",
+          "body": "Prepararemos tus declaraciones federales y del Estado de Nueva York para el año fiscal indicado, con la información y los documentos que nos entregues. Las presentaremos electrónicamente solo después de que revises tu declaración y firmes las autorizaciones del IRS y del Estado (Formulario 8879 y Formulario TR-579-IT), que te entregaremos aparte."
+        },
+        "responsibilities": {
+          "title": "Tus responsabilidades",
+          "body": "Te comprometes a darnos información completa y correcta, guardar los registros que respaldan tu declaración y revisarla antes de firmar. Eres legalmente responsable de tu declaración, incluidos impuestos, intereses o multas causados por información incompleta o incorrecta."
+        },
+        "excluded": {
+          "title": "Lo que no está incluido",
+          "body": "No auditamos ni verificamos la información que nos das, y no damos asesoría legal. No podemos garantizar el monto de ningún reembolso ni cuánto tardará el IRS o el Estado en procesarlo."
+        },
+        "fees": {
+          "title": "Tarifas y pago",
+          "body": "Nuestra tarifa depende de los formularios y anexos que tu declaración necesite. Te diremos el costo antes de presentarla. El pago se hace cuando tu declaración esté lista. Se cobrará un cargo de $50 a los saldos no pagados después de 30 días, y los saldos no pagados después de 90 días podrán enviarse a una agencia de cobro."
+        },
+        "letters": {
+          "title": "Cartas después de presentar",
+          "body": "Si el IRS o el Estado te contactan sobre tu declaración, tráenos la carta pronto. Si se debe a un error nuestro, te ayudamos a resolverla sin costo. Otra correspondencia, enmiendas y trabajo adicional se cobran aparte."
+        },
+        "privacy": {
+          "title": "Confidencialidad y registros",
+          "body": "Protegemos tu información fiscal como lo exige la ley federal (sección 7216 del Código de Rentas Internas) y no la usaremos ni compartiremos para otro fin sin tu consentimiento escrito por separado. Guardamos copias de tu declaración y autorización por al menos tres años."
+        },
+        "esign": {
+          "title": "Firmas electrónicas",
+          "body": "Aceptas que te enviemos documentos de forma electrónica y que tu firma electrónica en este paquete tiene el mismo efecto que una firma a mano."
+        },
+        "term": {
+          "title": "Vigencia",
+          "body": "Este acuerdo cubre el año fiscal indicado y termina cuando se presenten tus declaraciones y te devolvamos tus documentos, salvo que cualquiera lo termine antes por escrito. Entra en vigor cuando Element acepta tu paquete."
+        }
+      }
+    },
+    "summary": {
+      "none": "—",
+      "yes": "Sí",
+      "no": "No",
+      "address": "Dirección",
+      "dependent": "Dependiente {n}",
+      "selected": "Seleccionado"
+    },
+    "status": {
+      "new": "Nuevo",
+      "reviewed": "Revisado"
+    },
+    "errors": {
+      "required": "Este campo es obligatorio.",
+      "invalid": "Revisa este valor.",
+      "tooLong": "Este valor es demasiado largo.",
+      "choose": "Elige una opción.",
+      "emailInvalid": "Escribe un correo electrónico válido.",
+      "phoneInvalid": "Escribe un teléfono válido.",
+      "ssnInvalid": "Escribe un Seguro Social o ITIN válido de 9 dígitos.",
+      "dateInvalid": "Escribe una fecha válida.",
+      "stateInvalid": "Usa el código de 2 letras del estado (p. ej., NY).",
+      "zipInvalid": "Escribe un código postal válido.",
+      "routingInvalid": "Escribe un número de ruta válido de 9 dígitos.",
+      "accountInvalid": "Escribe un número de cuenta válido (de 4 a 17 dígitos).",
+      "ipPinInvalid": "El IP PIN tiene 6 dígitos.",
+      "consentRequired": "Debes marcar esta casilla para continuar.",
+      "signatureRequired": "Firma por favor: dibuja, escribe o sube tu firma.",
+      "dependentsRequired": "Agrega al menos un dependiente o responde No.",
+      "fixErrors": "Revisa los campos marcados.",
+      "uploadsPending": "Espera a que terminen de subir tus documentos.",
+      "intake_uploads_invalid": "Algunos documentos expiraron o ya no están disponibles. Quítalos y súbelos de nuevo.",
+      "recaptcha_failed": "No pudimos verificar la solicitud. Recarga la página e inténtalo de nuevo.",
+      "rate_limited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
+      "generic": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "list": {
+      "description": "Tus Paquetes de Cliente Nuevo. Llena uno antes de tu cita para que preparemos tu declaración más rápido.",
+      "new": "Llenar el Paquete de Cliente Nuevo",
+      "emptyTitle": "Todavía no has llenado tu paquete",
+      "emptyBody": "Toma unos 10 minutos. Respondes unas preguntas, firmas en línea y puedes adjuntar tus documentos.",
+      "item": "Paquete de Cliente Nuevo {year}",
+      "reference": "Ref. {reference}"
+    },
+    "new": {
+      "title": "Paquete de Cliente Nuevo",
+      "description": "Admisión · Acuerdo · Documentos. Tus respuestas solo se envían al final."
+    },
+    "detail": {
+      "submitted": "¡Gracias! Recibimos tu paquete (ref. {reference}). Te contactaremos para confirmar tu cita.",
+      "download": "Descargar",
+      "signatureOf": "Firma de {name}",
+      "confirmations": "Confirmaciones",
+      "pdf": {
+        "en": "PDF (inglés)",
+        "es": "PDF (español)"
+      }
+    },
+    "pdf": {
+      "title": "Paquete de Cliente Nuevo",
+      "subtitle": "Año fiscal {year} · {name}",
+      "packageParts": "Admisión · Acuerdo · Documentos",
+      "reference": "Referencia {reference}",
+      "submitted": "Enviado el {date}",
+      "part1": "Parte 1 · Admisión del cliente",
+      "part2": "Parte 2 · Acuerdo de servicios",
+      "part3": "Parte 3 · Documentos",
+      "documentsEmpty": "No se adjuntaron documentos.",
+      "documentsSeparate": "descargar por separado desde el panel de administración",
+      "signedBy": "Contribuyente",
+      "spouseSignedBy": "Cónyuge",
+      "signedAt": "Fecha",
+      "signerIp": "Firmado desde la dirección IP",
+      "attachment": "Adjunto",
+      "attachmentFailed": "Este archivo no se pudo incluir (puede estar protegido). Descárgalo por separado desde el panel de administración.",
+      "page": "Página",
+      "footer": "Element Multiservices LLC · New York"
+    }
+  },
+  "BringPage": {
+    "badge": "Lista para tu cita",
+    "titleStart": "Qué",
+    "titleAccent": "traer",
+    "body": "Trae todo lo que aplique a tu caso. Si te falta algo, ven de todas formas: te diremos exactamente qué necesitamos.",
+    "intake": {
+      "eyebrow": "Clientes nuevos y recurrentes",
+      "title": "Llena el Paquete de Cliente Nuevo antes de tu visita",
+      "body": "Inicia sesión o crea tu cuenta, responde unas preguntas, sube tus documentos y firma en línea. Tu cita será más rápida.",
+      "cta": "Llenar el Paquete de Cliente Nuevo",
+      "note": "Disponible en inglés y en español. Tu información es privada y solo nuestro equipo puede verla.",
+      "steps": {
+        "account": {
+          "title": "Inicia sesión",
+          "body": "Tu formulario queda guardado en tu cuenta."
+        },
+        "fill": {
+          "title": "Responde",
+          "body": "Tus datos, familia, ingresos y reembolso."
+        },
+        "upload": {
+          "title": "Sube",
+          "body": "Opcional: fotos o PDF de tus documentos."
+        },
+        "sign": {
+          "title": "Firma",
+          "body": "Firma en la pantalla con el dedo o el mouse."
+        }
+      }
+    },
+    "listTitle": "Tu lista",
+    "listBody": "Elige el tipo de declaración. Trae originales o copias legibles.",
+    "tabs": {
+      "personal": "Impuestos personales",
+      "business": "Impuestos de negocio"
+    },
+    "closing": "¿Te falta algo? Trae lo que tengas. Lo revisaremos contigo y te diremos qué hace falta.",
+    "visit": {
+      "title": "¿Listo? Ven a vernos",
+      "body": "Agenda tu cita o llámanos si tienes dudas sobre qué traer."
+    },
+    "personal": {
+      "prior": {
+        "title": "Año anterior",
+        "items": {
+          "returns": {
+            "label": "Copia completa de las declaraciones federal y estatal del año pasado"
+          }
+        }
+      },
+      "identification": {
+        "title": "Identificación",
+        "items": {
+          "photoId": {
+            "label": "Identificación con foto tuya y de tu cónyuge",
+            "sub": "Licencia de conducir, ID estatal o pasaporte"
+          },
+          "ssn": {
+            "label": "Tarjeta de Seguro Social o carta del ITIN de cada persona en la declaración"
+          },
+          "ipPin": {
+            "label": "PIN de Protección de Identidad del IRS (IP PIN), si tienes uno"
+          }
+        }
+      },
+      "dependents": {
+        "title": "Dependientes",
+        "items": {
+          "birth": {
+            "label": "Acta de nacimiento de cada dependiente"
+          },
+          "ssn": {
+            "label": "Tarjeta de Seguro Social o ITIN de cada dependiente"
+          },
+          "residency": {
+            "label": "Prueba de que cada dependiente vivió contigo",
+            "sub": "Carta de la escuela o guardería, contrato de alquiler o registros médicos con su nombre y dirección"
+          },
+          "childcare": {
+            "label": "Nombre, dirección y número de identificación del proveedor de cuidado infantil, y el monto pagado"
+          }
+        }
+      },
+      "income": {
+        "title": "Ingresos",
+        "items": {
+          "w2": {
+            "label": "W-2 de cada empleador"
+          },
+          "forms1099": {
+            "label": "Formularios 1099",
+            "sub": "NEC, MISC, K, INT, DIV, B, R, G y SSA-1099"
+          },
+          "selfEmployed": {
+            "label": "Registros de ingresos y gastos si trabajas por cuenta propia",
+            "sub": "Estados de cuenta, recibos y millaje"
+          },
+          "rental": {
+            "label": "Ingresos y gastos de alquiler"
+          },
+          "k1": {
+            "label": "Anexo K-1 y cualquier otra fuente de ingresos"
+          }
+        }
+      },
+      "expenses": {
+        "title": "Gastos y deducciones",
+        "items": {
+          "mortgage": {
+            "label": "Intereses hipotecarios (1098) e impuestos sobre la propiedad"
+          },
+          "donations": {
+            "label": "Recibos de donaciones",
+            "sub": "Las donaciones en efectivo requieren una carta con el nombre, EIN y dirección de la organización"
+          },
+          "education": {
+            "label": "Gastos de educación: 1098-T y 1098-E"
+          },
+          "health": {
+            "label": "Formulario 1095-A si tienes seguro del Mercado"
+          },
+          "retirement": {
+            "label": "Aportes a una IRA, HSA u otro plan de retiro"
+          },
+          "medical": {
+            "label": "Gastos médicos y dentales que pagaste"
+          }
+        }
+      },
+      "refund": {
+        "title": "Reembolso y cartas",
+        "items": {
+          "bank": {
+            "label": "Número de ruta y de cuenta para el depósito directo",
+            "sub": "Sirve un cheque anulado o una carta del banco"
+          },
+          "letters": {
+            "label": "Cualquier carta del IRS o del estado"
+          },
+          "estimated": {
+            "label": "Comprobantes de pagos de impuestos estimados"
+          }
+        }
+      }
+    },
+    "business": {
+      "company": {
+        "title": "Tu empresa",
+        "items": {
+          "ein": {
+            "label": "Carta de confirmación del EIN (CP 575)"
+          },
+          "formation": {
+            "label": "Acta de constitución y acuerdo operativo"
+          },
+          "prior": {
+            "label": "Declaración del negocio del año pasado"
+          },
+          "owners": {
+            "label": "Socios y porcentajes de participación"
+          }
+        }
+      },
+      "income": {
+        "title": "Ingresos",
+        "items": {
+          "sales": {
+            "label": "Registros de ventas e ingresos del año"
+          },
+          "forms": {
+            "label": "1099-NEC, 1099-MISC y 1099-K recibidos"
+          },
+          "bank": {
+            "label": "Estados de cuenta bancarios y de tarjetas de crédito de los 12 meses"
+          }
+        }
+      },
+      "expenses": {
+        "title": "Gastos",
+        "items": {
+          "receipts": {
+            "label": "Recibos organizados por categoría",
+            "sub": "Alquiler, materiales, seguros, teléfono, publicidad…"
+          },
+          "vehicle": {
+            "label": "Registro de millaje y gastos del vehículo"
+          },
+          "homeOffice": {
+            "label": "Oficina en casa: metros cuadrados y facturas del hogar"
+          },
+          "assets": {
+            "label": "Compras de equipos, maquinaria o vehículos"
+          }
+        }
+      },
+      "payroll": {
+        "title": "Nómina y contratistas",
+        "items": {
+          "w2": {
+            "label": "Formularios W-2 y W-3 emitidos"
+          },
+          "quarterly": {
+            "label": "Declaraciones trimestrales de nómina",
+            "sub": "Formularios 941, 940 y NYS-45"
+          },
+          "contractors": {
+            "label": "1099-NEC emitidos a contratistas, con su W-9"
+          }
+        }
+      },
+      "finance": {
+        "title": "Préstamos y balances",
+        "items": {
+          "loans": {
+            "label": "Estados de cuenta de préstamos e intereses pagados"
+          },
+          "inventory": {
+            "label": "Inventario al inicio y al final del año"
+          },
+          "balance": {
+            "label": "Balance general o reportes contables, si los tienes"
+          }
+        }
+      }
+    }
   }
 }

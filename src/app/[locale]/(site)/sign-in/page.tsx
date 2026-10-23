@@ -23,6 +23,7 @@ export default async function SignInPage({ params, searchParams }: PageProps<"/[
     password_updated: "passwordUpdated",
     mfa_reset: "mfaReset",
     oauth_failed: "oauthFailed",
+    intake: "intake",
   } as const;
   const notice = typeof reason === "string" && Object.hasOwn(notices, reason) ? notices[reason as keyof typeof notices] : undefined;
 

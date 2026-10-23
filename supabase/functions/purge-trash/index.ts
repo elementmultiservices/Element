@@ -100,7 +100,24 @@ Deno.serve(async (req: Request): Promise<Response> => {
     }
   }
 
-  return new Response(JSON.stringify({ ok: failed === 0, purged, failed, intentsCleaned }), {
+  // Intake documents uploaded for a form that was never submitted.
+  const { data: intakeUploads } = await supabase
+    .from("intake_uploads")
+    .select("id, storage_path")
+    .is("submission_id", null)
+    .lt("expires_at", new Date(Date.now() - 3_600_000).toISOString())
+    .limit(500);
+
+  let intakeCleaned = 0;
+  if (intakeUploads && intakeUploads.length > 0) {
+    const { error } = await supabase.storage.from(BUCKET).remove(intakeUploads.map((u) => u.storage_path));
+    if (!error) {
+      await supabase.from("intake_uploads").delete().in("id", intakeUploads.map((u) => u.id));
+      intakeCleaned = intakeUploads.length;
+    }
+  }
+
+  return new Response(JSON.stringify({ ok: failed === 0, purged, failed, intentsCleaned, intakeCleaned }), {
     headers: { "Content-Type": "application/json" },
   });
 });

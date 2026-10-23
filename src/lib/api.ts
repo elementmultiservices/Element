@@ -26,6 +26,9 @@ export type ApiErrorCode =
   | "size_mismatch"
   | "content_rejected"
   | "not_found"
+  | "intake_limit"
+  | "intake_invalid"
+  | "intake_uploads_invalid"
   | "server_error";
 
 const noStore = { "Cache-Control": "private, no-store" };

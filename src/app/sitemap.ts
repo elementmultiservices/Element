@@ -6,7 +6,7 @@ import { publicEnv } from "@/lib/public-env";
 // Rebuilt at most once per hour; new IRS updates appear without a redeploy.
 export const revalidate = 3600;
 
-const STATIC_PATHS = ["/", "/services", "/location", "/faq", "/updates", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies"];
+const STATIC_PATHS = ["/", "/services", "/what-to-bring", "/location", "/faq", "/updates", "/legal/privacy", "/legal/data-policy", "/legal/terms", "/legal/cookies"];
 
 function absolute(locale: AppLocale, path: string): string {
   return `${publicEnv.siteUrl}/${locale}${path === "/" ? "" : path}`;

@@ -44,6 +44,10 @@ export const LIMITS = {
   newsletterUnsubscribeIp: { tokens: 30, window: "10 m" },
   newsletterSendUser: { tokens: 10, window: "1 h" },
   coverUploadUser: { tokens: 30, window: "10 m" },
+  intakeUploadUser: { tokens: 60, window: "10 m" },
+  intakeUploadDailyUser: { tokens: 150, window: "1 d" },
+  intakeSubmitUser: { tokens: 5, window: "1 h" },
+  intakePdfUser: { tokens: 60, window: "10 m" },
 } as const satisfies Record<string, LimitConfig>;
 
 export type LimitName = keyof typeof LIMITS;

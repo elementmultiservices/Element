@@ -48,7 +48,7 @@ type Phase = "idle" | "preparing" | "uploading" | "verifying" | "done" | "error"
 const ACCEPT = FILE_KINDS.map((k) => (k === "jpg" ? ".jpg,.jpeg" : `.${k}`)).join(",");
 
 /** Uploads the file body straight to Supabase Storage with progress events. */
-function putWithProgress(url: string, file: File, contentType: string, onProgress: (ratio: number) => void): Promise<void> {
+export function putWithProgress(url: string, file: File, contentType: string, onProgress: (ratio: number) => void): Promise<void> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("PUT", url);
@@ -65,7 +65,7 @@ function putWithProgress(url: string, file: File, contentType: string, onProgres
   });
 }
 
-async function postJson(url: string, body: unknown): Promise<{ ok: boolean; data: Record<string, unknown> }> {
+export async function postJson(url: string, body: unknown): Promise<{ ok: boolean; data: Record<string, unknown> }> {
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

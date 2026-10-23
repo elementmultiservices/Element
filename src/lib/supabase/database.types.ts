@@ -109,6 +109,58 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"intake_submissions": {
+                  Row: {
+                    "created_at": string,"data": NonNullable<Json>,"filing_status": string,"id": string,"locale": Database["public"]['Enums']["app_locale"],"owner_id": string,"pub135_acknowledged": boolean,"agreement_accepted": boolean,"reviewed_at": string | null,"reviewed_by": string | null,"signature_method": string,"spouse_signature_method": string | null,"signature_path": string,"signed_at": string,"signer_ip": unknown,"signer_name": string,"signer_user_agent": string | null,"spouse_signature_path": string | null,"spouse_signer_name": string | null,"status": string,"tax_year": number,"taxpayer_name": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"data": NonNullable<Json>,"filing_status": string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"owner_id": string,"pub135_acknowledged"?: boolean,"agreement_accepted"?: boolean,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"signature_method"?: string,"spouse_signature_method"?: string | null,"signature_path": string,"signed_at"?: string,"signer_ip"?: unknown,"signer_name": string,"signer_user_agent"?: string | null,"spouse_signature_path"?: string | null,"spouse_signer_name"?: string | null,"status"?: string,"tax_year": number,"taxpayer_name": string
+                  }
+                  Update: {
+                    "created_at"?: string,"data"?: NonNullable<Json>,"filing_status"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"owner_id"?: string,"pub135_acknowledged"?: boolean,"agreement_accepted"?: boolean,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"signature_method"?: string,"spouse_signature_method"?: string | null,"signature_path"?: string,"signed_at"?: string,"signer_ip"?: unknown,"signer_name"?: string,"signer_user_agent"?: string | null,"spouse_signature_path"?: string | null,"spouse_signer_name"?: string | null,"status"?: string,"tax_year"?: number,"taxpayer_name"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "intake_submissions_owner_id_fkey"
+      columns: ["owner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "intake_submissions_reviewed_by_fkey"
+      columns: ["reviewed_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"intake_uploads": {
+                  Row: {
+                    "checksum_sha256": string | null,"created_at": string,"doc_type": string,"expires_at": string,"id": string,"mime_type": string,"original_name": string,"owner_id": string,"size_bytes": number,"storage_path": string,"submission_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "checksum_sha256"?: string | null,"created_at"?: string,"doc_type": string,"expires_at": string,"id"?: string,"mime_type": string,"original_name": string,"owner_id": string,"size_bytes": number,"storage_path": string,"submission_id"?: string | null
+                  }
+                  Update: {
+                    "checksum_sha256"?: string | null,"created_at"?: string,"doc_type"?: string,"expires_at"?: string,"id"?: string,"mime_type"?: string,"original_name"?: string,"owner_id"?: string,"size_bytes"?: number,"storage_path"?: string,"submission_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "intake_uploads_owner_id_fkey"
+      columns: ["owner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "intake_uploads_submission_id_fkey"
+      columns: ["submission_id"]
+isOneToOne: false
+      referencedRelation: "intake_submissions"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"mfa_recovery_codes": {
                   Row: {
                     "code_hash": string,"created_at": string,"id": string,"used_at": string | null,"user_id": string
@@ -184,14 +236,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "can_upload": boolean,"created_at": string,"full_name": string,"id": string,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number
+                    "can_upload": boolean,"created_at": string,"full_name": string,"id": string,"id_last4": string | null,"is_active": boolean,"preferred_locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["user_role"],"storage_quota_bytes": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "can_upload"?: boolean,"created_at"?: string,"full_name"?: string,"id": string,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
+                    "can_upload"?: boolean,"created_at"?: string,"full_name"?: string,"id": string,"id_last4"?: string | null,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
                   }
                   Update: {
-                    "can_upload"?: boolean,"created_at"?: string,"full_name"?: string,"id"?: string,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
+                    "can_upload"?: boolean,"created_at"?: string,"full_name"?: string,"id"?: string,"id_last4"?: string | null,"is_active"?: boolean,"preferred_locale"?: Database["public"]['Enums']["app_locale"],"role"?: Database["public"]['Enums']["user_role"],"storage_quota_bytes"?: number
                   }
                   Relationships: [
                     

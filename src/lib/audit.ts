@@ -65,7 +65,13 @@ export type AuditAction =
   | "newsletter.subscribed"
   | "newsletter.unsubscribed"
   | "newsletter.removed"
-  | "newsletter.sent";
+  | "newsletter.sent"
+  | "intake.upload_rejected"
+  | "intake.submitted"
+  | "intake.pdf_downloaded"
+  | "intake.document_downloaded"
+  | "intake.reviewed"
+  | "intake.reopened";
 
 export type AuditEntry = {
   actorId: string | null;

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
+  ClipboardList,
   FileText,
   FolderTree,
   LayoutDashboard,
@@ -34,6 +35,7 @@ function useItems(variant: PanelVariant, canUpload: boolean): Item[] {
     return [
       { href: "/admin", icon: LayoutDashboard, label: t("admin.overview"), exact: true },
       { href: "/admin/users", icon: Users, label: t("admin.users") },
+      { href: "/admin/intake", icon: ClipboardList, label: t("admin.intake") },
       { href: "/admin/files", icon: FileText, label: t("admin.files") },
       { href: "/admin/trash", icon: Trash2, label: t("admin.trash") },
       { href: "/admin/categories", icon: FolderTree, label: t("admin.categories") },
@@ -47,6 +49,7 @@ function useItems(variant: PanelVariant, canUpload: boolean): Item[] {
   }
   return [
     { href: "/dashboard", icon: FileText, label: t("user.files"), exact: true },
+    { href: "/dashboard/intake", icon: ClipboardList, label: t("user.intake") },
     ...(canUpload ? [{ href: "/dashboard/upload", icon: Upload, label: t("user.upload") }] : []),
     { href: "/dashboard/profile", icon: UserRound, label: t("user.profile") },
   ];

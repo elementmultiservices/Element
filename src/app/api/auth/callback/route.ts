@@ -2,6 +2,7 @@ import { after, NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, isAppLocale, LOCALE_COOKIE } from "@/i18n/routing";
 import { audit } from "@/lib/audit";
 import { ACTIVITY_COOKIE, activityCookieOptions, signActivity } from "@/lib/auth/activity";
+import { NEXT_TARGET_COOKIE, nextTargetPath } from "@/lib/auth/next-target";
 import { notifyUploadGrantOnVerification } from "@/lib/email/security-emails";
 import { requestMeta } from "@/lib/security/request-meta";
 import { createRouteClient } from "@/lib/supabase/route";
@@ -72,8 +73,10 @@ export async function GET(request: NextRequest) {
   );
 
   const mfaRequired = ctx.role === "admin" || ctx.has_verified_mfa;
-  const home = ctx.role === "admin" ? "/admin" : "/dashboard";
+  const next = mfaRequired ? null : nextTargetPath(request.cookies.get(NEXT_TARGET_COOKIE)?.value, ctx.role);
+  const home = next ?? (ctx.role === "admin" ? "/admin" : "/dashboard");
   const response = go(`/${locale}${mfaRequired ? "/mfa" : home}`);
+  if (next) response.cookies.delete(NEXT_TARGET_COOKIE);
   response.cookies.set(ACTIVITY_COOKIE, await signActivity({ sub: user.id, role: ctx.role }), activityCookieOptions(ctx.role));
   response.cookies.set(LOCALE_COOKIE, locale, {
     httpOnly: true,

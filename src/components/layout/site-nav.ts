@@ -1,5 +1,6 @@
 export const publicNav = [
   { href: "/services", key: "services" },
+  { href: "/what-to-bring", key: "bring" },
   { href: "/location", key: "location" },
   { href: "/updates", key: "updates" },
   { href: "/faq", key: "faq" },
@@ -8,6 +9,7 @@ export const publicNav = [
 export const footerSiteNav = [
   { href: "/location", key: "location" },
   { href: "/updates", key: "updates" },
+  { href: "/what-to-bring", key: "bring" },
   { href: "/faq", key: "faqLong" },
 ] as const;
 

@@ -13,7 +13,7 @@ export default async function DashboardLayout({ children, params }: LayoutProps<
   if (session.role === "admin") redirect({ href: "/admin", locale: toLocale(locale) });
 
   return (
-    <NextIntlClientProvider messages={await clientMessages("Panel", "Profile", "Upload", "Admin.files")}>
+    <NextIntlClientProvider messages={await clientMessages("Panel", "Profile", "Upload", "Admin.files", "Intake")}>
       <PanelShell variant="user" session={session}>
         {children}
       </PanelShell>

@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowRight, ArrowUpRight, MapPin, MessageCircle, Phone } from "lucide-react";
 import { Accordion, type AccordionItem } from "@/components/marketing/accordion";
 import { delay, stagger } from "@/components/marketing/motion";
 import { SmartLink } from "@/components/marketing/smart-link";
+import { StateRefundDialog } from "@/components/marketing/state-refund-dialog";
 import { Button } from "@/components/ui/button";
+import { clientMessages } from "@/i18n/client-messages";
 import { toLocale } from "@/i18n/routing";
 import { getSiteContact } from "@/lib/site-settings";
 import { pageMetadata } from "@/lib/seo";
@@ -20,8 +23,9 @@ const GROUPS = {
 
 type GroupKey = keyof typeof GROUPS;
 
-const IRS_REFUND_URL = "https://www.irs.gov/wheres-my-refund";
-const NY_REFUND_URL = "https://www.tax.ny.gov/pit/file/refund.htm";
+const IRS_REFUND_URL = "https://sa.www4.irs.gov/wmr/";
+const REFUND_LINK_CLASS =
+  "inline-flex items-center gap-1.5 rounded-xl bg-azure-25 px-3.5 py-2 text-sm font-semibold text-electric hover:bg-azure-50";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/faq">): Promise<Metadata> {
   const { locale } = await params;
@@ -34,6 +38,7 @@ export default async function FaqPage({ params }: PageProps<"/[locale]/faq">) {
   const t = await getTranslations();
   const contact = await getSiteContact();
   const copy = (await getMessages()).FaqPage.groups;
+  const refundMessages = await clientMessages("FaqPage.refundStates");
   const keys = Object.keys(GROUPS) as GroupKey[];
   const total = keys.reduce((n, k) => n + GROUPS[k].length, 0);
   const entry = (group: GroupKey, item: string) => (copy[group].items as Record<string, { q: string; a: string }>)[item] ?? { q: "", a: "" };
@@ -45,23 +50,18 @@ export default async function FaqPage({ params }: PageProps<"/[locale]/faq">) {
       return (
         <div className="flex flex-col gap-4">
           <p>{s.a}</p>
-          <ul className="flex flex-col gap-2">
-            {[
-              { href: IRS_REFUND_URL, label: s.federal },
-              { href: NY_REFUND_URL, label: s.state },
-            ].map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-azure-25 px-3.5 py-2 text-sm font-semibold text-electric hover:bg-azure-50"
-                >
-                  {link.label}
-                  <ArrowUpRight aria-hidden="true" className="size-4" />
-                </a>
-              </li>
-            ))}
+          <ul className="flex flex-col items-start gap-2">
+            <li>
+              <a href={IRS_REFUND_URL} target="_blank" rel="noopener noreferrer" className={REFUND_LINK_CLASS}>
+                {s.federal}
+                <ArrowUpRight aria-hidden="true" className="size-4" />
+              </a>
+            </li>
+            <li>
+              <NextIntlClientProvider messages={refundMessages}>
+                <StateRefundDialog triggerClassName={REFUND_LINK_CLASS} />
+              </NextIntlClientProvider>
+            </li>
           </ul>
           <p>{s.after}</p>
         </div>

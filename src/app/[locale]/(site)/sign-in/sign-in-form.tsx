@@ -8,7 +8,7 @@ import { SubmitButton } from "@/components/forms/submit-button";
 import { useProtectedAction } from "@/hooks/use-protected-action";
 import { Link } from "@/i18n/navigation";
 
-export function SignInForm({ notice }: { notice?: "sessionEnded" | "passwordUpdated" | "mfaReset" | "oauthFailed" }) {
+export function SignInForm({ notice }: { notice?: "sessionEnded" | "passwordUpdated" | "mfaReset" | "oauthFailed" | "intake" }) {
   const t = useTranslations("Auth");
   const tv = useTranslations("Validation");
   const te = useTranslations("Errors");
