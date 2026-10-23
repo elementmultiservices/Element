@@ -3,6 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeft, ArrowRight, CheckCircle2, FileUp, Info, Loader2, Plus, Send, Trash2, X } from "lucide-react";
+import { Wordmark } from "@/components/brand/wordmark";
 import { postJson, putWithProgress } from "@/components/files/upload-form";
 import { FormAlert } from "@/components/forms/form-alert";
 import { FormField } from "@/components/forms/form-field";
@@ -597,6 +598,15 @@ export function IntakeForm({
 
   return (
     <div ref={topRef} className="scroll-mt-24 space-y-6">
+      {/* Same band as the paper form: official logo and the form's parts. */}
+      <div className="flex flex-col gap-4 rounded-[24px] bg-[linear-gradient(180deg,#050D29_0%,#0B1A44_100%)] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+        <Wordmark inverted className="h-9" />
+        <div className="sm:text-right">
+          <p className="font-semibold text-white">{t("new.title")}</p>
+          <p className="text-sm text-azure-300">{t("pdf.packageParts")}</p>
+        </div>
+      </div>
+
       <ol aria-label={t("nav.progress")} className="flex gap-1.5 overflow-x-auto pb-1">
         {steps.map((s, i) => (
           <li key={s.key} className="min-w-[92px] flex-1">

@@ -1,5 +1,6 @@
 import "server-only";
 import { PDFDocument, rgb, StandardFonts, type PDFFont, type PDFImage, type PDFPage } from "pdf-lib";
+import { LOGO_SIZE, MARK_MIDDLE, MARK_OUTER, TAGLINE, WORD } from "@/components/brand/logo-paths";
 import type { SummarySection } from "./summary";
 
 /**
@@ -20,6 +21,10 @@ const ACCENT = rgb(0.11, 0.51, 0.96);
 const BAND = rgb(0.94, 0.97, 1);
 const RULE = rgb(0.85, 0.9, 0.96);
 const HEADER = rgb(0.05, 0.08, 0.2);
+const HEADER_HEIGHT = 70;
+// Official logo colors (see components/brand/wordmark.tsx).
+const BRAND_DARK = rgb(0x16 / 255, 0x6b / 255, 0xdf / 255);
+const BRAND_LIGHT = rgb(0x30 / 255, 0x9f / 255, 0xfd / 255);
 
 export type PdfAttachment = {
   name: string;
@@ -137,8 +142,15 @@ export async function buildIntakePdf(input: PdfInput): Promise<Uint8Array> {
   const newPage = () => {
     page = doc.addPage([PAGE.width, PAGE.height]);
     packagePages.push(page);
-    page.drawRectangle({ x: 0, y: PAGE.height - 70, width: PAGE.width, height: 70, color: HEADER });
-    page.drawText(safe(input.businessName.toUpperCase()), { x: MARGIN, y: PAGE.height - 42, size: 16, font: bold, color: rgb(1, 1, 1) });
+    page.drawRectangle({ x: 0, y: PAGE.height - HEADER_HEIGHT, width: PAGE.width, height: HEADER_HEIGHT, color: HEADER });
+    // The official logo, drawn from its SVG paths (y grows downward from the given top).
+    const scale = 1.1;
+    const logoTop = PAGE.height - (HEADER_HEIGHT - LOGO_SIZE.height * scale) / 2;
+    const logo = { x: MARGIN, y: logoTop, scale };
+    page.drawSvgPath(MARK_OUTER, { ...logo, color: BRAND_DARK });
+    page.drawSvgPath(MARK_MIDDLE, { ...logo, color: BRAND_LIGHT });
+    page.drawSvgPath(TAGLINE, { ...logo, color: BRAND_LIGHT });
+    page.drawSvgPath(WORD, { ...logo, color: rgb(1, 1, 1) });
     const title = safe(L.title);
     page.drawText(title, { x: PAGE.width - MARGIN - bold.widthOfTextAtSize(title, 12), y: PAGE.height - 36, size: 12, font: bold, color: rgb(1, 1, 1) });
     const parts = safe(L.packageParts);
