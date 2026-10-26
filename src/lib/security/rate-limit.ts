@@ -47,6 +47,13 @@ export const LIMITS = {
   intakeUploadUser: { tokens: 60, window: "10 m" },
   intakeUploadDailyUser: { tokens: 150, window: "1 d" },
   intakeSubmitUser: { tokens: 5, window: "1 h" },
+  // Public (no account) intake form: stricter, per IP and per typed email.
+  intakePublicUploadIp: { tokens: 40, window: "10 m" },
+  intakePublicUploadDailyIp: { tokens: 60, window: "1 d" },
+  intakePublicSubmitIp: { tokens: 3, window: "1 h" },
+  intakePublicSubmitDailyIp: { tokens: 6, window: "1 d" },
+  intakePublicSubmitEmail: { tokens: 2, window: "1 d" },
+  adminIntakeAssignUser: { tokens: 60, window: "1 h" },
   intakePdfUser: { tokens: 60, window: "10 m" },
 } as const satisfies Record<string, LimitConfig>;
 

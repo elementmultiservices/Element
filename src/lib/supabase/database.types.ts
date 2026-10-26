@@ -111,19 +111,25 @@ isOneToOne: false
                   ]
                 },"intake_submissions": {
                   Row: {
-                    "created_at": string,"data": NonNullable<Json>,"filing_status": string,"id": string,"locale": Database["public"]['Enums']["app_locale"],"owner_id": string,"pub135_acknowledged": boolean,"agreement_accepted": boolean,"reviewed_at": string | null,"reviewed_by": string | null,"signature_method": string,"spouse_signature_method": string | null,"signature_path": string,"signed_at": string,"signer_ip": unknown,"signer_name": string,"signer_user_agent": string | null,"spouse_signature_path": string | null,"spouse_signer_name": string | null,"status": string,"tax_year": number,"taxpayer_name": string
+                    "created_at": string,"data": NonNullable<Json>,"filing_status": string,"id": string,"locale": Database["public"]['Enums']["app_locale"],"owner_id": string | null,"contact_email": string | null,"draft_id": string | null,"assigned_by": string | null,"assigned_at": string | null,"pub135_acknowledged": boolean,"agreement_accepted": boolean,"reviewed_at": string | null,"reviewed_by": string | null,"signature_method": string,"spouse_signature_method": string | null,"signature_path": string,"signed_at": string,"signer_ip": unknown,"signer_name": string,"signer_user_agent": string | null,"spouse_signature_path": string | null,"spouse_signer_name": string | null,"status": string,"tax_year": number,"taxpayer_name": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"data": NonNullable<Json>,"filing_status": string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"owner_id": string,"pub135_acknowledged"?: boolean,"agreement_accepted"?: boolean,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"signature_method"?: string,"spouse_signature_method"?: string | null,"signature_path": string,"signed_at"?: string,"signer_ip"?: unknown,"signer_name": string,"signer_user_agent"?: string | null,"spouse_signature_path"?: string | null,"spouse_signer_name"?: string | null,"status"?: string,"tax_year": number,"taxpayer_name": string
+                    "created_at"?: string,"data": NonNullable<Json>,"filing_status": string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"owner_id"?: string | null,"contact_email"?: string | null,"draft_id"?: string | null,"assigned_by"?: string | null,"assigned_at"?: string | null,"pub135_acknowledged"?: boolean,"agreement_accepted"?: boolean,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"signature_method"?: string,"spouse_signature_method"?: string | null,"signature_path": string,"signed_at"?: string,"signer_ip"?: unknown,"signer_name": string,"signer_user_agent"?: string | null,"spouse_signature_path"?: string | null,"spouse_signer_name"?: string | null,"status"?: string,"tax_year": number,"taxpayer_name": string
                   }
                   Update: {
-                    "created_at"?: string,"data"?: NonNullable<Json>,"filing_status"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"owner_id"?: string,"pub135_acknowledged"?: boolean,"agreement_accepted"?: boolean,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"signature_method"?: string,"spouse_signature_method"?: string | null,"signature_path"?: string,"signed_at"?: string,"signer_ip"?: unknown,"signer_name"?: string,"signer_user_agent"?: string | null,"spouse_signature_path"?: string | null,"spouse_signer_name"?: string | null,"status"?: string,"tax_year"?: number,"taxpayer_name"?: string
+                    "created_at"?: string,"data"?: NonNullable<Json>,"filing_status"?: string,"id"?: string,"locale"?: Database["public"]['Enums']["app_locale"],"owner_id"?: string | null,"contact_email"?: string | null,"draft_id"?: string | null,"assigned_by"?: string | null,"assigned_at"?: string | null,"pub135_acknowledged"?: boolean,"agreement_accepted"?: boolean,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"signature_method"?: string,"spouse_signature_method"?: string | null,"signature_path"?: string,"signed_at"?: string,"signer_ip"?: unknown,"signer_name"?: string,"signer_user_agent"?: string | null,"spouse_signature_path"?: string | null,"spouse_signer_name"?: string | null,"status"?: string,"tax_year"?: number,"taxpayer_name"?: string
                   }
                   Relationships: [
                     {
       foreignKeyName: "intake_submissions_owner_id_fkey"
       columns: ["owner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "intake_submissions_assigned_by_fkey"
+      columns: ["assigned_by"]
 isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
@@ -137,14 +143,14 @@ isOneToOne: false
                   ]
                 },"intake_uploads": {
                   Row: {
-                    "checksum_sha256": string | null,"created_at": string,"doc_type": string,"expires_at": string,"id": string,"mime_type": string,"original_name": string,"owner_id": string,"size_bytes": number,"storage_path": string,"submission_id": string | null
+                    "checksum_sha256": string | null,"created_at": string,"doc_type": string,"expires_at": string,"id": string,"mime_type": string,"original_name": string,"owner_id": string | null,"draft_id": string | null,"size_bytes": number,"storage_path": string,"submission_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "checksum_sha256"?: string | null,"created_at"?: string,"doc_type": string,"expires_at": string,"id"?: string,"mime_type": string,"original_name": string,"owner_id": string,"size_bytes": number,"storage_path": string,"submission_id"?: string | null
+                    "checksum_sha256"?: string | null,"created_at"?: string,"doc_type": string,"expires_at": string,"id"?: string,"mime_type": string,"original_name": string,"owner_id"?: string | null,"draft_id"?: string | null,"size_bytes": number,"storage_path": string,"submission_id"?: string | null
                   }
                   Update: {
-                    "checksum_sha256"?: string | null,"created_at"?: string,"doc_type"?: string,"expires_at"?: string,"id"?: string,"mime_type"?: string,"original_name"?: string,"owner_id"?: string,"size_bytes"?: number,"storage_path"?: string,"submission_id"?: string | null
+                    "checksum_sha256"?: string | null,"created_at"?: string,"doc_type"?: string,"expires_at"?: string,"id"?: string,"mime_type"?: string,"original_name"?: string,"owner_id"?: string | null,"draft_id"?: string | null,"size_bytes"?: number,"storage_path"?: string,"submission_id"?: string | null
                   }
                   Relationships: [
                     {

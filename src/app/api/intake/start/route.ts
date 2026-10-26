@@ -5,8 +5,9 @@ import { NEXT_TARGET_COOKIE, nextTargetCookieOptions, NEXT_TARGETS } from "@/lib
 
 /**
  * Entry point of the public "Fill out the intake form" buttons. Signed-in
- * clients go straight to the form; everyone else signs in (or creates an
- * account) first and is brought back to the form afterwards.
+ * clients go to the form in their account (it is theirs right away); everyone
+ * else fills out the public form, which staff assign to an account afterwards.
+ * A session still waiting for its second factor finishes signing in first.
  */
 export async function GET(request: NextRequest) {
   const param = request.nextUrl.searchParams.get("locale");
@@ -19,8 +20,9 @@ export async function GET(request: NextRequest) {
 
   const auth = await authorize();
   if (auth.ok) return go(auth.ctx.role === "admin" ? "/admin/intake" : NEXT_TARGETS.intake);
+  if (auth.reason !== "mfa_required") return go("/intake");
 
-  const response = go(auth.reason === "mfa_required" ? "/mfa" : "/sign-in?reason=intake");
+  const response = go("/mfa");
   response.cookies.set(NEXT_TARGET_COOKIE, "intake", nextTargetCookieOptions);
   return response;
 }

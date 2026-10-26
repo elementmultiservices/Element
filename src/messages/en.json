@@ -580,7 +580,9 @@
     "migrationPending": "The database update (migration 20261013000100) has not been applied yet. Run it in the Supabase SQL editor and try again.",
     "noSubscribers": "There are no active subscribers yet.",
     "codeInvalid": "The code is incorrect or has expired. Request a new one if needed.",
-    "userInactive": "This account is deactivated. Activate it before forcing a password reset."
+    "userInactive": "This account is deactivated. Activate it before forcing a password reset.",
+    "intakeAssignInvalid": "Choose an active client account.",
+    "intakeAssignConflict": "Someone changed this form's account in the meantime. Reload the page and try again."
   },
   "NotFound": {
     "code": "Error 404",
@@ -1429,7 +1431,7 @@
       "sent": "The update was sent to subscribers."
     },
     "intake": {
-      "description": "Intake forms submitted by clients: answers, signed agreement and documents. Download each one as a PDF in English or Spanish.",
+      "description": "Intake forms sent by clients and from the public form: answers, signed agreement and documents. Assign each public form to a client account, and download it as a PDF in English or Spanish.",
       "empty": "No forms match these filters.",
       "view": "View",
       "account": "Account",
@@ -1437,10 +1439,12 @@
       "reviewedBy": "Reviewed by {name} · {date}",
       "filters": {
         "search": "Search",
-        "searchPlaceholder": "Taxpayer name",
+        "searchPlaceholder": "Taxpayer name or email",
         "status": "Status",
         "all": "All",
-        "allYears": "All years"
+        "allYears": "All years",
+        "assignment": "Account",
+        "assigned": "Assigned"
       },
       "markReviewed": "Mark as reviewed",
       "markReviewedTitle": "Mark this form as reviewed?",
@@ -1451,7 +1455,39 @@
       "reopenBody": "It will appear again in the list of new forms.",
       "reopened": "Form marked as new.",
       "idMismatch": "The last 4 digits of the Social Security number or ITIN in this form ({form}) do not match the ones on the account ({account}). The account was not changed.",
-      "idMismatchAction": "Review the account"
+      "idMismatchAction": "Review the account",
+      "unassigned": "Unassigned",
+      "assign": {
+        "formEmail": "Email in the form",
+        "assignedTo": "Assigned to",
+        "assignedBy": "Assigned by {name} · {date}",
+        "emailDiffers": "The account's email is not the one typed in the form.",
+        "publicNote": "Sent from the public form, without an account. Assign it to a client account so the client can see it in their dashboard.",
+        "matchFound": "A registered account uses this email",
+        "invitationPending": "invitation pending",
+        "matchIsStaff": "It is a staff account: forms can only be assigned to client accounts.",
+        "matchInactive": "The account is deactivated: activate it before assigning the form.",
+        "assignMatch": "Assign to this account",
+        "assignTitle": "Assign this form to {name}?",
+        "assignBody": "The client will see the form and its documents in their dashboard. If the account has no SSN/ITIN digits on file, the form's last 4 are saved.",
+        "assignConfirm": "Assign",
+        "assigned": "Form assigned.",
+        "noMatch": "No registered account uses {email}.",
+        "invite": "Create account and assign",
+        "inviteTitle": "Create an account for {email}?",
+        "inviteBody": "A client account is created with the name and language from the form, an invitation is emailed to that address, and the form is assigned to it.",
+        "inviteConfirm": "Create and assign",
+        "invited": "Account created and invitation sent to {email}.",
+        "unassign": "Remove assignment",
+        "unassignTitle": "Remove this form from its account?",
+        "unassignBody": "The client will no longer see it; it goes back to the unassigned forms. Digits saved on the account are not changed.",
+        "unassigned": "Assignment removed.",
+        "pickerLabel": "Assign to another account",
+        "pickerChange": "Move to another account",
+        "pickerSubmit": "Assign",
+        "last4Match": "matches the form",
+        "last4Differs": "differs from the form"
+      }
     }
   },
   "Contact": {
@@ -2588,7 +2624,9 @@
         "size_mismatch": "The upload was incomplete. Try again.",
         "upload_missing": "The upload failed. Try again.",
         "intent_invalid": "The upload expired. Try again.",
-        "generic": "The file could not be uploaded."
+        "generic": "The file could not be uploaded.",
+        "recaptcha_failed": "We could not verify the upload. Try again.",
+        "form_expired": "This form expired. Reload the page."
       }
     },
     "sign": {
@@ -2693,7 +2731,9 @@
       "uploadsPending": "Wait until your documents finish uploading.",
       "intake_uploads_invalid": "Some documents expired or are no longer available. Remove them and upload them again.",
       "rate_limited": "Too many attempts. Wait a few minutes and try again.",
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "recaptcha_failed": "We could not verify that you are not a robot. Wait a moment and send it again; your answers are kept.",
+      "form_expired": "This form was open for too long. Reload the page to start again."
     },
     "list": {
       "description": "Your intake forms. Fill one out before your appointment so we can prepare your return faster.",
@@ -2736,6 +2776,11 @@
       "attachmentFailed": "This file could not be embedded (it may be protected). Download it separately from the admin panel.",
       "page": "Page",
       "footer": "Element Multiservices LLC · New York"
+    },
+    "public": {
+      "description": "No account needed. Answer the questions, sign and, if you like, attach your documents. Our team will review your form and link it to your client account.",
+      "submittedTitle": "Thank you! We received your form.",
+      "submittedBody": "Your reference is {reference}. We will contact you to confirm your appointment."
     }
   },
   "BringPage": {
@@ -2746,13 +2791,13 @@
     "intake": {
       "eyebrow": "New and returning clients",
       "title": "Fill out the intake form before your visit",
-      "body": "Sign in or create your account, answer a few questions, upload your documents and sign online. Your appointment will be faster.",
+      "body": "No account needed: answer a few questions, upload your documents and sign online. Your appointment will be faster.",
       "cta": "Fill out the intake form",
       "note": "Available in English and Spanish. Your information is private and only our team can see it.",
       "steps": {
         "account": {
-          "title": "Sign in",
-          "body": "Your form is saved to your account."
+          "title": "No account needed",
+          "body": "Fill it out from any device; we link it to your file."
         },
         "fill": {
           "title": "Answer",

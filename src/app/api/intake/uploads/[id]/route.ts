@@ -5,6 +5,7 @@ import { audit } from "@/lib/audit";
 import { authorize } from "@/lib/auth/session";
 import { inspectFile, sha256Hex } from "@/lib/files/inspect";
 import { kindFromMime, MAX_FILE_BYTES, sanitizeDownloadName } from "@/lib/files/rules";
+import { actorColumn, actorId, intakeActor } from "@/lib/intake/actor";
 import { INTAKE_BUCKET, redirectToIntakeObject } from "@/lib/intake/storage";
 import { rateLimit } from "@/lib/security/rate-limit";
 import { isSameOrigin } from "@/lib/security/origin";
@@ -14,24 +15,25 @@ import { createClient } from "@/lib/supabase/server";
 
 type Context = RouteContext<"/api/intake/uploads/[id]">;
 
-/** The caller's own upload that has not been attached to a submitted form yet. */
+/** The caller's own upload (account or public-form draft) that has not been attached to a submitted form yet. */
 async function pendingUpload(request: NextRequest, { params }: Context) {
   if (!isSameOrigin(request)) return { response: apiError("forbidden", 403) } as const;
-  const auth = await authorize();
-  if (!auth.ok) return { response: authFailure(auth.reason) } as const;
+  const found = await intakeActor(request);
+  if ("response" in found) return { response: found.response } as const;
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) return { response: apiError("not_found", 404) } as const;
 
   const admin = createAdminClient();
+  const [column, value] = actorColumn(found.actor);
   const { data: upload } = await admin
     .from("intake_uploads")
     .select("*")
     .eq("id", id)
-    .eq("owner_id", auth.ctx.userId)
+    .eq(column, value)
     .is("submission_id", null)
     .maybeSingle();
   if (!upload) return { response: apiError("not_found", 404) } as const;
-  return { upload, admin, ctx: auth.ctx } as const;
+  return { upload, admin, actor: found.actor } as const;
 }
 
 /**
@@ -42,7 +44,7 @@ async function pendingUpload(request: NextRequest, { params }: Context) {
 export async function POST(request: NextRequest, context: Context) {
   const found = await pendingUpload(request, context);
   if ("response" in found) return found.response;
-  const { upload, admin, ctx } = found;
+  const { upload, admin, actor } = found;
   if (upload.checksum_sha256) return apiOk({ id: upload.id });
   if (new Date(upload.expires_at).getTime() < Date.now()) return apiError("intent_invalid", 409);
 
@@ -53,10 +55,10 @@ export async function POST(request: NextRequest, context: Context) {
     await admin.from("intake_uploads").delete().eq("id", upload.id);
     await audit(
       {
-        actorId: ctx.userId,
+        actorId: actorId(actor),
         action: "intake.upload_rejected",
-        targetType: "user",
-        targetId: ctx.userId,
+        targetType: actor.kind === "user" ? "user" : "intake_draft",
+        targetId: actor.kind === "user" ? actor.userId : actor.draftId,
         metadata: { reason, declared_mime: upload.mime_type, declared_size: upload.size_bytes },
       },
       meta,
@@ -85,7 +87,7 @@ export async function POST(request: NextRequest, context: Context) {
   return apiOk({ id: upload.id });
 }
 
-/** Removes a document the client attached but no longer wants (before submitting). */
+/** Removes a document the visitor attached but no longer wants (before submitting). */
 export async function DELETE(request: NextRequest, context: Context) {
   const found = await pendingUpload(request, context);
   if ("response" in found) return found.response;

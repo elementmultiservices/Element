@@ -22,6 +22,7 @@ const paramsSchema = z.object({
   q: z.string().trim().max(100).optional().catch(undefined),
   status: z.enum(["new", "reviewed", "all"]).default("new").catch("new"),
   year: z.coerce.number().int().min(2000).max(2100).optional().catch(undefined),
+  assigned: z.enum(["all", "unassigned", "assigned"]).default("all").catch("all"),
   page: z.coerce.number().int().min(1).max(10_000).default(1).catch(1),
 });
 
@@ -41,10 +42,16 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
   const supabase = await createClient();
   let query = supabase
     .from("intake_submissions")
-    .select("id, owner_id, tax_year, filing_status, taxpayer_name, status, signed_at, locale, intake_uploads(count)", { count: "exact" });
+    .select("id, owner_id, contact_email, tax_year, filing_status, taxpayer_name, status, signed_at, locale, intake_uploads(count)", { count: "exact" });
   if (filters.status !== "all") query = query.eq("status", filters.status);
   if (filters.year) query = query.eq("tax_year", filters.year);
-  if (filters.q) query = query.ilike("taxpayer_name", `%${filters.q.replace(/[%_\\]/g, (c) => `\\${c}`)}%`);
+  if (filters.assigned === "unassigned") query = query.is("owner_id", null);
+  if (filters.assigned === "assigned") query = query.not("owner_id", "is", null);
+  if (filters.q) {
+    // Name or email. Wildcards and characters with a meaning in or() filters are dropped.
+    const term = filters.q.replace(/[%_*\\,()"]/g, " ").trim();
+    if (term) query = query.or(`taxpayer_name.ilike.%${term}%,contact_email.ilike.%${term}%`);
+  }
   const from = (filters.page - 1) * PAGE_SIZE;
   const { data, count } = await query.order("signed_at", { ascending: false }).range(from, from + PAGE_SIZE - 1);
   const rows = data ?? [];
@@ -62,7 +69,7 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
       />
 
       <form method="get" role="search" className="mb-4 rounded-[24px] border border-azure-50 bg-white p-4">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-5">
           <div className="space-y-1.5 sm:col-span-2">
             <Label htmlFor="intake-q">{t("Admin.intake.filters.search")}</Label>
             <Input id="intake-q" name="q" type="search" maxLength={100} defaultValue={filters.q ?? ""} placeholder={t("Admin.intake.filters.searchPlaceholder")} className="h-10" />
@@ -84,6 +91,14 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
               <option value="new">{t("Intake.status.new")}</option>
               <option value="reviewed">{t("Intake.status.reviewed")}</option>
               <option value="all">{t("Admin.intake.filters.all")}</option>
+            </NativeSelect>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="intake-assigned">{t("Admin.intake.filters.assignment")}</Label>
+            <NativeSelect id="intake-assigned" name="assigned" defaultValue={filters.assigned}>
+              <option value="all">{t("Admin.intake.filters.all")}</option>
+              <option value="unassigned">{t("Admin.intake.unassigned")}</option>
+              <option value="assigned">{t("Admin.intake.filters.assigned")}</option>
             </NativeSelect>
           </div>
         </div>
@@ -117,12 +132,18 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
                       >
                         {t(`Intake.status.${r.status}` as "Intake.status.new")}
                       </Badge>
+                      {r.owner_id ? null : (
+                        <Badge variant="outline" className="border-warning/30 bg-warning-bg font-normal text-warning">
+                          {t("Admin.intake.unassigned")}
+                        </Badge>
+                      )}
                       <span className="rounded-full bg-azure-25 px-2 py-0.5 font-mono text-[11px] text-navy uppercase">{r.locale}</span>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">
                       {t("Intake.list.item", { year: r.tax_year })} · {t(`Intake.filingStatus.${r.filing_status}` as "Intake.filingStatus.single")} ·{" "}
                       {t("Admin.intake.documents", { count: documents })}
                     </p>
+                    {r.contact_email ? <p className="text-sm break-all text-muted-foreground">{r.contact_email}</p> : null}
                     <p className="text-xs text-muted-foreground">
                       <time dateTime={r.signed_at}>{format.dateTime(new Date(r.signed_at), "long")}</time> · {t("Intake.list.reference", { reference: intakeReference(r.id) })}
                     </p>

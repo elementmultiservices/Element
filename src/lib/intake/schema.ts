@@ -235,6 +235,9 @@ export const intakeSubmitSchema = z.object({
   spouseSignature: signatureImage,
   spouseSignatureMethod: z.string().max(10),
   uploadIds: z.array(z.uuid()).max(MAX_INTAKE_UPLOADS),
+  /** Public form only: reCAPTCHA v3 token and honeypot (must stay empty). */
+  recaptchaToken: z.string().max(4000).default(""),
+  website: z.string().max(500).default(""),
 });
 
 export const intakeUploadIntentSchema = z.object({
@@ -242,6 +245,8 @@ export const intakeUploadIntentSchema = z.object({
   size: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER),
   mime: z.string().max(200),
   docType: z.enum(DOC_TYPES),
+  /** Public form only. */
+  recaptchaToken: z.string().max(4000).default(""),
 });
 
 export const INTAKE_ERROR_KEYS = [

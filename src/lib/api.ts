@@ -29,6 +29,7 @@ export type ApiErrorCode =
   | "intake_limit"
   | "intake_invalid"
   | "intake_uploads_invalid"
+  | "form_expired"
   | "server_error";
 
 const noStore = { "Cache-Control": "private, no-store" };

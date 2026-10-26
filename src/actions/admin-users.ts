@@ -2,6 +2,7 @@
 
 import { randomBytes } from "node:crypto";
 import { after } from "next/server";
+import { inviteClient } from "@/lib/admin/invite";
 import { getUser } from "@/lib/admin/queries";
 import { audit } from "@/lib/audit";
 import { generateInviteLink, generateRecoveryLink } from "@/lib/auth/links";
@@ -60,32 +61,10 @@ export async function inviteUserAction(_prev: InviteState, formData: FormData): 
   if (!parsed.success) return { status: "error", fieldErrors: fieldErrorsFrom<InviteField>(parsed.error) };
   const { fullName, email, locale, quotaMb } = parsed.data;
 
-  const admin = createAdminClient();
-  const { data: existing } = await admin.rpc("auth_user_id_by_email", { p_email: email });
-  if (existing) return { status: "error", error: "emailExists" };
-
-  const link = await generateInviteLink({ email, fullName, locale });
-  if ("error" in link) {
-    if (link.error === "email_exists") return { status: "error", error: "emailExists" };
-    console.error(`[admin] invite failed: ${link.error}`);
-    return { status: "error", error: "generic" };
-  }
-
-  // Invited accounts are authorized to upload from the start.
-  const { error: quotaError } = await admin
-    .from("profiles")
-    .update({ storage_quota_bytes: quotaMb * MB, can_upload: true })
-    .eq("id", link.userId);
-  if (quotaError) console.error(`[admin] invite profile update failed: ${quotaError.code}`);
-
-  await audit(
-    { actorId: g.session.userId, action: "user.invited", targetType: "user", targetId: link.userId, metadata: { locale, quota_mb: quotaMb } },
-    meta,
-  );
-
-  const sent = await sendAuthLinkEmail({ kind: "invitation", to: email, locale, name: fullName, url: link.url });
-  if (!sent) return { status: "error", error: "deliveryFailed", invitedId: link.userId, invitedEmail: email };
-  return { status: "success", invitedId: link.userId, invitedEmail: email };
+  const invited = await inviteClient({ adminId: g.session.userId, fullName, email, locale, quotaMb }, meta);
+  if (!invited.ok) return { status: "error", error: invited.error };
+  if (!invited.sent) return { status: "error", error: "deliveryFailed", invitedId: invited.userId, invitedEmail: email };
+  return { status: "success", invitedId: invited.userId, invitedEmail: email };
 }
 
 // ---------------------------------------------------------------------------

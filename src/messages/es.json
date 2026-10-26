@@ -580,7 +580,9 @@
     "migrationPending": "Falta aplicar la actualización de la base de datos (migración 20261013000100). Ejecútela en el editor SQL de Supabase y vuelva a intentarlo.",
     "noSubscribers": "Todavía no hay suscriptores activos.",
     "codeInvalid": "El código es incorrecto o ya venció. Solicite uno nuevo si es necesario.",
-    "userInactive": "Esta cuenta está desactivada. Actívela antes de forzar el cambio de contraseña."
+    "userInactive": "Esta cuenta está desactivada. Actívela antes de forzar el cambio de contraseña.",
+    "intakeAssignInvalid": "Elige una cuenta de cliente activa.",
+    "intakeAssignConflict": "Alguien cambió la cuenta de este formulario mientras tanto. Recarga la página e inténtalo de nuevo."
   },
   "NotFound": {
     "code": "Error 404",
@@ -1429,7 +1431,7 @@
       "sent": "La actualización fue enviada a los suscriptores."
     },
     "intake": {
-      "description": "Formularios de admisión enviados por los clientes: respuestas, acuerdo firmado y documentos. Descárguelos en PDF en inglés o en español.",
+      "description": "Formularios de admisión enviados por los clientes y desde el formulario público: respuestas, acuerdo firmado y documentos. Asigne cada formulario público a una cuenta de cliente y descárguelo en PDF en inglés o en español.",
       "empty": "Ningún formulario coincide con estos filtros.",
       "view": "Ver",
       "account": "Cuenta",
@@ -1437,10 +1439,12 @@
       "reviewedBy": "Revisado por {name} · {date}",
       "filters": {
         "search": "Buscar",
-        "searchPlaceholder": "Nombre del contribuyente",
+        "searchPlaceholder": "Nombre del contribuyente o correo",
         "status": "Estado",
         "all": "Todos",
-        "allYears": "Todos los años"
+        "allYears": "Todos los años",
+        "assignment": "Cuenta",
+        "assigned": "Asignados"
       },
       "markReviewed": "Marcar como revisado",
       "markReviewedTitle": "¿Marcar este formulario como revisado?",
@@ -1451,7 +1455,39 @@
       "reopenBody": "Volverá a aparecer en la lista de formularios nuevos.",
       "reopened": "Formulario marcado como nuevo.",
       "idMismatch": "Los últimos 4 dígitos del Seguro Social o ITIN de este formulario ({form}) no coinciden con los registrados en la cuenta ({account}). La cuenta no se modificó.",
-      "idMismatchAction": "Revisar la cuenta"
+      "idMismatchAction": "Revisar la cuenta",
+      "unassigned": "Sin asignar",
+      "assign": {
+        "formEmail": "Correo del formulario",
+        "assignedTo": "Asignado a",
+        "assignedBy": "Asignado por {name} · {date}",
+        "emailDiffers": "El correo de la cuenta no es el que se escribió en el formulario.",
+        "publicNote": "Enviado desde el formulario público, sin cuenta. Asígnelo a una cuenta de cliente para que el cliente lo vea en su panel.",
+        "matchFound": "Una cuenta registrada usa este correo",
+        "invitationPending": "invitación pendiente",
+        "matchIsStaff": "Es una cuenta del personal: los formularios solo se asignan a cuentas de cliente.",
+        "matchInactive": "La cuenta está desactivada: actívela antes de asignar el formulario.",
+        "assignMatch": "Asignar a esta cuenta",
+        "assignTitle": "¿Asignar este formulario a {name}?",
+        "assignBody": "El cliente verá el formulario y sus documentos en su panel. Si la cuenta no tiene dígitos del Seguro Social o ITIN registrados, se guardan los últimos 4 del formulario.",
+        "assignConfirm": "Asignar",
+        "assigned": "Formulario asignado.",
+        "noMatch": "Ninguna cuenta registrada usa {email}.",
+        "invite": "Crear cuenta y asignar",
+        "inviteTitle": "¿Crear una cuenta para {email}?",
+        "inviteBody": "Se crea una cuenta de cliente con el nombre y el idioma del formulario, se envía una invitación a ese correo y se le asigna el formulario.",
+        "inviteConfirm": "Crear y asignar",
+        "invited": "Cuenta creada e invitación enviada a {email}.",
+        "unassign": "Quitar asignación",
+        "unassignTitle": "¿Quitar este formulario de su cuenta?",
+        "unassignBody": "El cliente dejará de verlo y volverá a los formularios sin asignar. Los dígitos guardados en la cuenta no cambian.",
+        "unassigned": "Asignación quitada.",
+        "pickerLabel": "Asignar a otra cuenta",
+        "pickerChange": "Mover a otra cuenta",
+        "pickerSubmit": "Asignar",
+        "last4Match": "coincide con el formulario",
+        "last4Differs": "no coincide con el formulario"
+      }
     }
   },
   "Contact": {
@@ -2588,7 +2624,9 @@
         "size_mismatch": "La subida quedó incompleta. Inténtalo de nuevo.",
         "upload_missing": "La subida falló. Inténtalo de nuevo.",
         "intent_invalid": "La subida expiró. Inténtalo de nuevo.",
-        "generic": "No se pudo subir el archivo."
+        "generic": "No se pudo subir el archivo.",
+        "recaptcha_failed": "No pudimos verificar la subida. Inténtalo de nuevo.",
+        "form_expired": "Este formulario expiró. Recarga la página."
       }
     },
     "sign": {
@@ -2693,7 +2731,9 @@
       "uploadsPending": "Espera a que terminen de subir tus documentos.",
       "intake_uploads_invalid": "Algunos documentos expiraron o ya no están disponibles. Quítalos y súbelos de nuevo.",
       "rate_limited": "Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
-      "generic": "Algo salió mal. Inténtalo de nuevo."
+      "generic": "Algo salió mal. Inténtalo de nuevo.",
+      "recaptcha_failed": "No pudimos verificar que no eres un robot. Espera un momento y envíalo de nuevo; tus respuestas se conservan.",
+      "form_expired": "Este formulario estuvo abierto demasiado tiempo. Recarga la página para empezar de nuevo."
     },
     "list": {
       "description": "Tus formularios de admisión. Llena uno antes de tu cita para que preparemos tu declaración más rápido.",
@@ -2736,6 +2776,11 @@
       "attachmentFailed": "Este archivo no se pudo incluir (puede estar protegido). Descárgalo por separado desde el panel de administración.",
       "page": "Página",
       "footer": "Element Multiservices LLC · New York"
+    },
+    "public": {
+      "description": "No necesitas una cuenta. Responde las preguntas, firma y, si quieres, adjunta tus documentos. Nuestro equipo revisará tu formulario y lo vinculará a tu cuenta de cliente.",
+      "submittedTitle": "¡Gracias! Recibimos tu formulario.",
+      "submittedBody": "Tu referencia es {reference}. Te contactaremos para confirmar tu cita."
     }
   },
   "BringPage": {
@@ -2746,13 +2791,13 @@
     "intake": {
       "eyebrow": "Clientes nuevos y recurrentes",
       "title": "Llena el formulario de admisión antes de tu visita",
-      "body": "Inicia sesión o crea tu cuenta, responde unas preguntas, sube tus documentos y firma en línea. Tu cita será más rápida.",
+      "body": "Sin necesidad de cuenta: responde unas preguntas, sube tus documentos y firma en línea. Tu cita será más rápida.",
       "cta": "Llenar el formulario de admisión",
       "note": "Disponible en inglés y en español. Tu información es privada y solo nuestro equipo puede verla.",
       "steps": {
         "account": {
-          "title": "Inicia sesión",
-          "body": "Tu formulario queda guardado en tu cuenta."
+          "title": "Sin cuenta",
+          "body": "Llénalo desde cualquier dispositivo; nosotros lo vinculamos a tu expediente."
         },
         "fill": {
           "title": "Responde",

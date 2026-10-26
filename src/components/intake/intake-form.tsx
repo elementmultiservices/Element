@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ArrowLeft, ArrowRight, CheckCircle2, FileUp, Info, Loader2, Plus, Send, Trash2, X } from "lucide-react";
 import { Wordmark } from "@/components/brand/wordmark";
-import { postJson, putWithProgress } from "@/components/files/upload-form";
+import { putWithProgress } from "@/components/files/upload-form";
 import { FormAlert } from "@/components/forms/form-alert";
 import { FormField } from "@/components/forms/form-field";
 import { SignaturePad, type SignatureLabels } from "@/components/intake/signature-pad";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Textarea } from "@/components/ui/textarea";
+import { useRecaptcha } from "@/hooks/use-recaptcha";
 import { useRouter } from "@/i18n/navigation";
 import { formatBytes } from "@/lib/format";
 import { checkFileName, FILE_KINDS, MAX_FILE_BYTES } from "@/lib/files/rules";
@@ -115,7 +116,12 @@ const UPLOAD_ERRORS = new Set([
   "size_mismatch",
   "upload_missing",
   "intent_invalid",
+  "recaptcha_failed",
+  "form_expired",
 ]);
+
+/** Header carrying the public form's draft token (see src/lib/intake/actor.ts). */
+const DRAFT_HEADER = "X-Intake-Draft";
 
 const ACCEPT = FILE_KINDS.map((k) => (k === "jpg" ? ".jpg,.jpeg" : `.${k}`)).join(",");
 const emptyPerson = (): Record<PersonKey, string> => Object.fromEntries(PERSON_KEYS.map((k) => [k, ""])) as Record<PersonKey, string>;
@@ -140,16 +146,40 @@ function stepOf(path: string): Step {
   return STEPS.find((s) => STEP_FIELDS[s].includes(head)) ?? "you";
 }
 
+/**
+ * The New Client Package. In a client's account it is sent as theirs; with a
+ * `draftToken` it is the public form (no account): every call carries the
+ * token, documents and the final submission get a reCAPTCHA token, a hidden
+ * honeypot field is sent along, and a thank-you note replaces the form.
+ */
 export function IntakeForm({
   taxYears,
   defaults,
+  draftToken,
 }: {
   taxYears: number[];
   defaults: { firstName: string; lastName: string; email: string };
+  draftToken?: string;
 }) {
   const t = useTranslations("Intake");
   const locale = useLocale();
   const router = useRouter();
+  const isPublic = Boolean(draftToken);
+  const getRecaptcha = useRecaptcha({ lazy: !isPublic });
+  const [honeypot, setHoneypot] = useState("");
+  const [submittedRef, setSubmittedRef] = useState<string | null>(null);
+
+  async function send(url: string, method: "POST" | "DELETE", body?: unknown): Promise<{ ok: boolean; data: Record<string, unknown> }> {
+    const res = await fetch(url, {
+      method,
+      headers: { ...(body === undefined ? {} : { "Content-Type": "application/json" }), ...(draftToken ? { [DRAFT_HEADER]: draftToken } : {}) },
+      body: body === undefined ? undefined : JSON.stringify(body),
+      credentials: "same-origin",
+    });
+    const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+    return { ok: res.ok, data };
+  }
+  const recaptcha = async (action: "intake_upload" | "intake_submit") => (isPublic ? await getRecaptcha(action) : "");
   const ids = useId();
   const fileRefs = useRef<Partial<Record<DocType, HTMLInputElement | null>>>({});
   const topRef = useRef<HTMLDivElement>(null);
@@ -286,13 +316,19 @@ export function IntakeForm({
     if (file.size > MAX_FILE_BYTES) return fail("too_large");
 
     try {
-      const intent = await postJson("/api/intake/uploads", { name: file.name, size: file.size, mime: check.mime, docType: type });
+      const intent = await send("/api/intake/uploads", "POST", {
+        name: file.name,
+        size: file.size,
+        mime: check.mime,
+        docType: type,
+        recaptchaToken: await recaptcha("intake_upload"),
+      });
       if (!intent.ok) return fail(String(intent.data.error));
       const id = String(intent.data.id);
       patch({ id });
       await putWithProgress(String(intent.data.uploadUrl), file, String(intent.data.contentType), (progress) => patch({ progress }));
       patch({ status: "verifying", progress: 1 });
-      const confirm = await postJson(`/api/intake/uploads/${id}`, {});
+      const confirm = await send(`/api/intake/uploads/${id}`, "POST", {});
       if (!confirm.ok) return fail(String(confirm.data.error));
       patch({ status: "ready" });
     } catch {
@@ -303,7 +339,7 @@ export function IntakeForm({
   async function removeUpload(item: UploadItem) {
     setUploads((list) => list.filter((u) => u.key !== item.key));
     if (item.id && item.status !== "error") {
-      await fetch(`/api/intake/uploads/${item.id}`, { method: "DELETE", credentials: "same-origin" }).catch(() => undefined);
+      await send(`/api/intake/uploads/${item.id}`, "DELETE").catch(() => undefined);
     }
   }
 
@@ -323,17 +359,23 @@ export function IntakeForm({
     setSubmitting(true);
     setFormError(null);
     try {
-      const res = await postJson("/api/intake/submit", {
+      const res = await send("/api/intake/submit", "POST", {
         data: toPayload(raw),
         locale: locale === "es" ? "es" : "en",
         ...signing,
         spouseSignature: spouseSigns ? signing.spouseSignature : "",
         spouseSignatureMethod: spouseSigns ? signing.spouseSignatureMethod : "",
         uploadIds: uploads.filter((u) => u.status === "ready" && u.id).map((u) => u.id),
+        ...(isPublic ? { recaptchaToken: await recaptcha("intake_submit"), website: honeypot } : {}),
       });
       if (res.ok) {
         setDirty(false);
-        router.push(`/dashboard/intake/${String(res.data.id)}?submitted=1`);
+        if (isPublic) {
+          setSubmittedRef(String(res.data.reference ?? ""));
+          scrollTop();
+        } else {
+          router.push(`/dashboard/intake/${String(res.data.id)}?submitted=1`);
+        }
         return;
       }
       const code = String(res.data.error ?? "");
@@ -344,7 +386,7 @@ export function IntakeForm({
         if (first) setStep(stepOf(first));
         setFormError(t("errors.fixErrors"));
       } else {
-        setFormError(t(`errors.${["intake_uploads_invalid", "rate_limited"].includes(code) ? code : "generic"}` as "errors.generic"));
+        setFormError(t(`errors.${["intake_uploads_invalid", "rate_limited", "recaptcha_failed", "form_expired"].includes(code) ? code : "generic"}` as "errors.generic"));
       }
       scrollTop();
     } catch {
@@ -596,8 +638,28 @@ export function IntakeForm({
   const fullName = (p: { firstName: string; middleInitial: string; lastName: string }) => [p.firstName, p.middleInitial, p.lastName].filter(Boolean).join(" ");
   const steps = useMemo(() => STEPS.map((s) => ({ key: s, label: t(`steps.${s}`) })), [t]);
 
+  if (submittedRef !== null) {
+    return (
+      <div ref={topRef} className="scroll-mt-24 space-y-4 rounded-[24px] border border-azure-50 bg-white p-6 sm:p-8" role="status">
+        <CheckCircle2 aria-hidden="true" className="size-10 text-success" />
+        <h2 className="text-2xl font-semibold text-ink">{t("public.submittedTitle")}</h2>
+        <p className="text-graphite">{t("public.submittedBody", { reference: submittedRef })}</p>
+        <p className="text-sm text-muted-foreground">{t("documents.next")}</p>
+      </div>
+    );
+  }
+
   return (
     <div ref={topRef} className="scroll-mt-24 space-y-6">
+      {isPublic ? (
+        // Honeypot: hidden from people and assistive technology; bots fill it in.
+        <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+          <label>
+            Website
+            <input type="text" name="website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+          </label>
+        </div>
+      ) : null}
       {/* Same band as the paper form: official logo and the form's parts. */}
       <div className="flex flex-col gap-4 rounded-[24px] bg-[linear-gradient(180deg,#050D29_0%,#0B1A44_100%)] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
         <Wordmark inverted className="h-9" />

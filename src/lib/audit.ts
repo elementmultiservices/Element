@@ -73,7 +73,9 @@ export type AuditAction =
   | "intake.pdf_downloaded"
   | "intake.document_downloaded"
   | "intake.reviewed"
-  | "intake.reopened";
+  | "intake.reopened"
+  | "intake.assigned"
+  | "intake.unassigned";
 
 export type AuditEntry = {
   actorId: string | null;
