@@ -32,7 +32,7 @@ export default async function NewIntakePage({ params }: PageProps<"/[locale]/das
           { label: t("Intake.new.title") },
         ]}
       />
-      <div className="max-w-4xl">
+      <div className="max-w-6xl">
         <IntakeForm
           taxYears={taxYearOptions()}
           defaults={{ firstName: firstName.slice(0, 60), lastName: rest.join(" ").slice(0, 60), email: session.email ?? "" }}

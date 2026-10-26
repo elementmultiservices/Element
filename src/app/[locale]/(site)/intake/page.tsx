@@ -40,7 +40,7 @@ export default async function PublicIntakePage({ params }: PageProps<"/[locale]/
         </h1>
         <p className="text-base leading-relaxed text-graphite">{t("Intake.public.description")}</p>
       </div>
-      <div className="w-full max-w-4xl">
+      <div className="w-full">
         <NextIntlClientProvider messages={await clientMessages("Intake")}>
           <IntakeForm taxYears={taxYearOptions()} defaults={{ firstName: "", lastName: "", email: "" }} draftToken={draftToken} />
         </NextIntlClientProvider>
