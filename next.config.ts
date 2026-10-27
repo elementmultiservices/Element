@@ -25,6 +25,10 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  experimental: {
+    // Remind about Next.js releases that fix a published security advisory.
+    agentUpgrade: "security",
+  },
   // Pages that were removed: keep old links working.
   async redirects() {
     return [
