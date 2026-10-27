@@ -27,6 +27,7 @@ import {
   intakeSigningSchema,
   MAX_DEPENDENTS,
   MAX_INTAKE_UPLOADS,
+  needsDeceasedSpouse,
   needsSpouse,
   needsSpouseSignature,
   QUESTION_FOLLOW_UP,
@@ -47,7 +48,7 @@ type Step = (typeof STEPS)[number];
 /** Which answers each step owns (error paths start with one of these). */
 const STEP_FIELDS: Record<Step, string[]> = {
   you: ["taxYear", "preferredLanguage", "taxpayer"],
-  family: ["filingStatus", "married", "spouse", "hasDependents", "dependents"],
+  family: ["filingStatus", "married", "spouse", "deceasedSpouse", "hasDependents", "dependents"],
   income: ["income", "businessDescription", "otherIncome", "deductions", "childcareProvider"],
   questions: ["questions", "questionDetails", "refund", "referral", "referralOther", "notes"],
   sign: ["consent", "pub135", "agreement", "signature", "signatureMethod", "spouseSignature", "spouseSignatureMethod"],
@@ -57,6 +58,7 @@ const STEP_FIELDS: Record<Step, string[]> = {
 type PersonKey = "firstName" | "middleInitial" | "lastName" | "ssn" | "dob" | "ipPin" | "occupation" | "cellPhone" | "email" | "blind" | "claimedByOther";
 type TaxpayerKey = PersonKey | "workPhone" | "street" | "apt" | "city" | "state" | "zip";
 const PERSON_KEYS: PersonKey[] = ["firstName", "middleInitial", "lastName", "ssn", "dob", "ipPin", "occupation", "cellPhone", "email", "blind", "claimedByOther"];
+type DeceasedKey = "firstName" | "middleInitial" | "lastName" | "ssn" | "dob" | "dateOfDeath";
 
 type RawDependent = { key: string; fullName: string; ssn: string; dob: string; relationship: string; months: string };
 
@@ -67,6 +69,7 @@ type Raw = {
   filingStatus: string;
   married: string;
   spouse: Record<PersonKey, string>;
+  deceasedSpouse: Record<DeceasedKey, string>;
   hasDependents: string;
   dependents: RawDependent[];
   income: string[];
@@ -127,12 +130,23 @@ const ACCEPT = FILE_KINDS.map((k) => (k === "jpg" ? ".jpg,.jpeg" : `.${k}`)).joi
 const emptyPerson = (): Record<PersonKey, string> => Object.fromEntries(PERSON_KEYS.map((k) => [k, ""])) as Record<PersonKey, string>;
 const newDependent = (): RawDependent => ({ key: crypto.randomUUID(), fullName: "", ssn: "", dob: "", relationship: "", months: "12" });
 const today = () => new Date().toISOString().slice(0, 10);
+/** Keeps at most 9 digits and masks them as 123-45-6789 while typing. */
+const formatTaxId = (v: string) => {
+  const d = v.replace(/\D/g, "").slice(0, 9);
+  return d.length > 5 ? `${d.slice(0, 3)}-${d.slice(3, 5)}-${d.slice(5)}` : d.length > 3 ? `${d.slice(0, 3)}-${d.slice(3)}` : d;
+};
+/** Keeps at most 10 digits (US number) and masks them as (123) 456-7890 while typing. */
+const formatPhone = (v: string) => {
+  const d = v.replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "").slice(0, 10);
+  return d.length > 6 ? `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}` : d.length > 3 ? `(${d.slice(0, 3)}) ${d.slice(3)}` : d;
+};
 
 function toPayload(raw: Raw) {
   const { refund } = raw;
   return {
     ...raw,
     spouse: needsSpouse(raw.filingStatus, raw.married) ? raw.spouse : null,
+    deceasedSpouse: needsDeceasedSpouse(raw.filingStatus) ? raw.deceasedSpouse : null,
     dependents: raw.hasDependents === "yes" ? raw.dependents.map(({ key: _key, ...d }) => d) : [],
     refund:
       refund.method === "direct"
@@ -203,6 +217,7 @@ export function IntakeForm({
     filingStatus: "",
     married: "",
     spouse: emptyPerson(),
+    deceasedSpouse: { firstName: "", middleInitial: "", lastName: "", ssn: "", dob: "", dateOfDeath: "" },
     hasDependents: "",
     dependents: [],
     income: [],
@@ -235,6 +250,7 @@ export function IntakeForm({
   const stepIndex = STEPS.indexOf(step);
   const spouseShown = needsSpouse(raw.filingStatus, raw.married);
   const spouseSigns = needsSpouseSignature(raw.filingStatus);
+  const deceasedShown = needsDeceasedSpouse(raw.filingStatus);
   const uploadsBusy = uploads.some((u) => u.status === "uploading" || u.status === "verifying");
   const recommended = useMemo(() => recommendedDocs(raw), [raw]);
   const signedDate = useMemo(() => new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date()), [locale]);
@@ -254,6 +270,7 @@ export function IntakeForm({
   const set = <K extends keyof Raw>(k: K, v: Raw[K]) => update((r) => ({ ...r, [k]: v }));
   const setTaxpayer = (k: TaxpayerKey, v: string) => update((r) => ({ ...r, taxpayer: { ...r.taxpayer, [k]: v } }));
   const setSpouse = (k: PersonKey, v: string) => update((r) => ({ ...r, spouse: { ...r.spouse, [k]: v } }));
+  const setDeceased = (k: DeceasedKey, v: string) => update((r) => ({ ...r, deceasedSpouse: { ...r.deceasedSpouse, [k]: v } }));
   const setDependent = (i: number, patch: Partial<RawDependent>) =>
     update((r) => ({ ...r, dependents: r.dependents.map((d, j) => (j === i ? { ...d, ...patch } : d)) }));
   const toggle = (list: "income" | "deductions", value: string) =>
@@ -553,7 +570,7 @@ export function IntakeForm({
         name={`${prefix}.${k}`}
         label={label}
         value={values[k]}
-        onChange={(e) => setValue(k, e.target.value)}
+        onChange={(e) => setValue(k, k === "ssn" ? formatTaxId(e.target.value) : k === "cellPhone" ? formatPhone(e.target.value) : e.target.value)}
         error={err(`${prefix}.${k}`)}
         {...props}
       />
@@ -568,7 +585,7 @@ export function IntakeForm({
           {field("dob", t("fields.dob"), { className: "sm:col-span-2", type: "date", required: true, max: today() })}
           {field("ipPin", t("fields.ipPin"), { className: "sm:col-span-2", inputMode: "numeric", autoComplete: "off", maxLength: 6, hint: t("fields.ipPinHint") })}
           {field("occupation", t("fields.occupation"), { className: "sm:col-span-2", maxLength: 80 })}
-          {field("cellPhone", t("fields.cellPhone"), { className: "sm:col-span-2", type: "tel", required: own, maxLength: 40, autoComplete: own ? "tel" : "off" })}
+          {field("cellPhone", t("fields.cellPhone"), { className: "sm:col-span-2", type: "tel", required: own, maxLength: 14, placeholder: "(555) 123-4567", autoComplete: own ? "tel" : "off" })}
           {own ? (
             <FormField
               className="sm:col-span-2"
@@ -576,9 +593,10 @@ export function IntakeForm({
               name="taxpayer.workPhone"
               type="tel"
               label={t("fields.workPhone")}
-              maxLength={40}
+              maxLength={14}
+              placeholder="(555) 123-4567"
               value={raw.taxpayer.workPhone}
-              onChange={(e) => setTaxpayer("workPhone", e.target.value)}
+              onChange={(e) => setTaxpayer("workPhone", formatPhone(e.target.value))}
               error={err("taxpayer.workPhone")}
             />
           ) : null}
@@ -731,6 +749,37 @@ export function IntakeForm({
             t("sections.filingStatus.body"),
           )}
           {spouseShown ? card(t("sections.spouse.title"), personFields("spouse", raw.spouse, setSpouse), t("sections.spouse.body")) : null}
+          {deceasedShown
+            ? card(
+                t("sections.deceasedSpouse.title"),
+                <div className="grid gap-5 sm:grid-cols-6">
+                  {(
+                    [
+                      ["firstName", "sm:col-span-3", { required: true, maxLength: 60 }],
+                      ["middleInitial", "sm:col-span-1", { maxLength: 2 }],
+                      ["lastName", "sm:col-span-2", { required: true, maxLength: 60 }],
+                      ["ssn", "sm:col-span-2", { required: true, inputMode: "numeric", maxLength: 11, placeholder: "123-45-6789", hint: t("fields.ssnHint") }],
+                      ["dob", "sm:col-span-2", { required: true, type: "date", max: today() }],
+                      ["dateOfDeath", "sm:col-span-2", { required: true, type: "date", max: today() }],
+                    ] as const
+                  ).map(([k, className, props]) => (
+                    <FormField
+                      key={k}
+                      className={className}
+                      id={`${ids}-deceasedSpouse-${k}`}
+                      name={`deceasedSpouse.${k}`}
+                      label={t(`fields.${k}`)}
+                      autoComplete="off"
+                      value={raw.deceasedSpouse[k]}
+                      onChange={(e) => setDeceased(k, k === "ssn" ? formatTaxId(e.target.value) : e.target.value)}
+                      error={err(`deceasedSpouse.${k}`)}
+                      {...props}
+                    />
+                  ))}
+                </div>,
+                t("sections.deceasedSpouse.body"),
+              )
+            : null}
           {card(
             t("sections.dependents.title"),
             <div className="space-y-4">
@@ -753,7 +802,7 @@ export function IntakeForm({
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2">
                           <FormField className="sm:col-span-2" id={`${base}-name`} name={`${p}.fullName`} label={t("fields.fullName")} required maxLength={120} value={d.fullName} onChange={(e) => setDependent(i, { fullName: e.target.value })} error={err(`${p}.fullName`)} />
-                          <FormField id={`${base}-ssn`} name={`${p}.ssn`} label={t("fields.ssn")} required inputMode="numeric" autoComplete="off" maxLength={11} placeholder="123-45-6789" value={d.ssn} onChange={(e) => setDependent(i, { ssn: e.target.value })} error={err(`${p}.ssn`)} />
+                          <FormField id={`${base}-ssn`} name={`${p}.ssn`} label={t("fields.ssn")} required inputMode="numeric" autoComplete="off" maxLength={11} placeholder="123-45-6789" value={d.ssn} onChange={(e) => setDependent(i, { ssn: formatTaxId(e.target.value) })} error={err(`${p}.ssn`)} />
                           <FormField id={`${base}-dob`} name={`${p}.dob`} type="date" label={t("fields.dob")} required max={today()} value={d.dob} onChange={(e) => setDependent(i, { dob: e.target.value })} error={err(`${p}.dob`)} />
                           {selectField(`${base}-rel`, t("fields.relationship"), `${p}.relationship`, d.relationship, (v) => setDependent(i, { relationship: v }), RELATIONSHIPS.map((r) => ({ value: r, label: t(`relationships.${r}`) })))}
                           <FormField id={`${base}-months`} name={`${p}.months`} type="number" min={0} max={12} label={t("fields.months")} required value={d.months} onChange={(e) => setDependent(i, { months: e.target.value })} error={err(`${p}.months`)} />

@@ -2425,6 +2425,10 @@
         "title": "Spouse",
         "body": "Your spouse's information, needed because you are married."
       },
+      "deceasedSpouse": {
+        "title": "Deceased spouse",
+        "body": "Your late spouse's information, needed for the qualifying surviving spouse status."
+      },
       "dependents": {
         "title": "Dependents",
         "body": "Children or relatives you support who may be claimed on your return."
@@ -2466,6 +2470,7 @@
       "ssn": "Social Security or ITIN",
       "ssnHint": "9 digits. Kept private: only our team can see it in full.",
       "dob": "Date of birth",
+      "dateOfDeath": "Date of death",
       "ipPin": "IRS IP PIN (if you have one)",
       "ipPinHint": "6 digits, only if the IRS sent you one.",
       "occupation": "Occupation",
@@ -2666,7 +2671,7 @@
       "clauses": {
         "services": {
           "title": "Our services",
-          "body": "We will prepare your federal and New York State returns for the tax year indicated, with the information and documents you give us. We will file them electronically only after you review your return and sign the IRS and State authorizations (Form 8879 and Form TR-579-IT), which we will give you separately."
+          "body": "We will prepare your federal and State returns for the tax year indicated, with the information and documents you give us. We will file them electronically only after you review your return and sign the IRS and State authorizations (Form 8879 and Form TR-579-IT), which we will give you separately."
         },
         "responsibilities": {
           "title": "Your responsibilities",

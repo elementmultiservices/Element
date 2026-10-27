@@ -60,6 +60,20 @@ export function intakeSummary(data: IntakeData, t: Translate, options: { full: b
   ];
 
   if (data.spouse) sections.push({ title: t("sections.spouse.title"), rows: personRows(data.spouse, true) });
+  const ds = data.deceasedSpouse;
+  if (ds) {
+    sections.push({
+      title: t("sections.deceasedSpouse.title"),
+      rows: [
+        { label: t("fields.firstName"), value: ds.firstName },
+        { label: t("fields.middleInitial"), value: show(ds.middleInitial) },
+        { label: t("fields.lastName"), value: ds.lastName },
+        { label: t("fields.ssn"), value: id(ds.ssn) },
+        { label: t("fields.dob"), value: ds.dob },
+        { label: t("fields.dateOfDeath"), value: ds.dateOfDeath },
+      ],
+    });
+  }
 
   sections.push({
     title: t("sections.dependents.title"),

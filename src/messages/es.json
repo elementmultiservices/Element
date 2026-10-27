@@ -2425,6 +2425,10 @@
         "title": "Cónyuge",
         "body": "Los datos de tu cónyuge, necesarios porque estás casado/a."
       },
+      "deceasedSpouse": {
+        "title": "Cónyuge fallecido/a",
+        "body": "Los datos de tu cónyuge fallecido/a, necesarios para el estado de cónyuge sobreviviente calificado."
+      },
       "dependents": {
         "title": "Dependientes",
         "body": "Hijos o familiares que mantienes y que podrían incluirse en tu declaración."
@@ -2466,6 +2470,7 @@
       "ssn": "Seguro Social o ITIN",
       "ssnHint": "9 dígitos. Es privado: solo nuestro equipo lo ve completo.",
       "dob": "Fecha de nacimiento",
+      "dateOfDeath": "Fecha de fallecimiento",
       "ipPin": "IP PIN del IRS (si tienes)",
       "ipPinHint": "6 dígitos, solo si el IRS te envió uno.",
       "occupation": "Ocupación",
@@ -2666,7 +2671,7 @@
       "clauses": {
         "services": {
           "title": "Nuestros servicios",
-          "body": "Prepararemos tus declaraciones federales y del Estado de Nueva York para el año fiscal indicado, con la información y los documentos que nos entregues. Las presentaremos electrónicamente solo después de que revises tu declaración y firmes las autorizaciones del IRS y del Estado (Formulario 8879 y Formulario TR-579-IT), que te entregaremos aparte."
+          "body": "Prepararemos tus declaraciones federales y del Estado para el año fiscal indicado, con la información y los documentos que nos entregues. Las presentaremos electrónicamente solo después de que revises tu declaración y firmes las autorizaciones del IRS y del Estado (Formulario 8879 y Formulario TR-579-IT), que te entregaremos aparte."
         },
         "responsibilities": {
           "title": "Tus responsabilidades",

@@ -61,6 +61,10 @@ export const MAX_SIGNATURE_BYTES = 300 * 1024;
 export function needsSpouse(status: string, married?: string): boolean {
   return status === "mfj" || status === "mfs" || (status === "unsure" && married === "yes");
 }
+/** A qualifying surviving spouse gives the late spouse's identity and date of death. */
+export function needsDeceasedSpouse(status: string): boolean {
+  return status === "qss";
+}
 /** Both spouses sign only a joint return. */
 export function needsSpouseSignature(status: string): boolean {
   return status === "mfj";
@@ -132,6 +136,17 @@ export const taxpayerSchema = z.object({
 
 export const spouseSchema = z.object({ ...person, cellPhone: optionalPhone, email: optionalEmail });
 
+export const deceasedSpouseSchema = z
+  .object({
+    firstName: person.firstName,
+    middleInitial: person.middleInitial,
+    lastName: person.lastName,
+    ssn: person.ssn,
+    dob: person.dob,
+    dateOfDeath: isoDate,
+  })
+  .refine((v) => v.dateOfDeath >= v.dob, { path: ["dateOfDeath"], error: "dateInvalid" });
+
 export const dependentSchema = z.object({
   fullName: requiredText(120),
   ssn: taxId,
@@ -165,6 +180,8 @@ export const intakeDataSchema = z
     /** Only asked when the filing status is "not sure". */
     married: z.enum(["yes", "no", ""]).default(""),
     spouse: spouseSchema.nullable(),
+    /** Only for a qualifying surviving spouse; older submissions have none. */
+    deceasedSpouse: deceasedSpouseSchema.nullable().default(null),
     hasDependents: yesNo,
     dependents: z.array(dependentSchema).max(MAX_DEPENDENTS),
     income: z.array(z.enum(INCOME_TYPES)).max(INCOME_TYPES.length),
@@ -182,6 +199,7 @@ export const intakeDataSchema = z
   .superRefine((value, ctx) => {
     if (value.filingStatus === "unsure" && !value.married) ctx.addIssue({ code: "custom", path: ["married"], message: "choose" });
     if (needsSpouse(value.filingStatus, value.married) && !value.spouse) ctx.addIssue({ code: "custom", path: ["spouse"], message: "required" });
+    if (needsDeceasedSpouse(value.filingStatus) && !value.deceasedSpouse) ctx.addIssue({ code: "custom", path: ["deceasedSpouse"], message: "required" });
     if (value.hasDependents === "yes" && value.dependents.length === 0) ctx.addIssue({ code: "custom", path: ["dependents"], message: "dependentsRequired" });
     if (value.income.includes("other") && !value.otherIncome) ctx.addIssue({ code: "custom", path: ["otherIncome"], message: "required" });
   })
@@ -190,6 +208,7 @@ export const intakeDataSchema = z
     ...value,
     married: value.filingStatus === "unsure" ? value.married : "",
     spouse: needsSpouse(value.filingStatus, value.married) ? value.spouse : null,
+    deceasedSpouse: needsDeceasedSpouse(value.filingStatus) ? value.deceasedSpouse : null,
     dependents: value.hasDependents === "yes" ? value.dependents : [],
     businessDescription: value.income.includes("selfEmployment") ? value.businessDescription : "",
     otherIncome: value.income.includes("other") ? value.otherIncome : "",
