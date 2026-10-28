@@ -52,6 +52,7 @@ export type PdfLabels = {
   spouseSignedBy: string;
   signedAt: string;
   signerIp: string;
+  facePhoto: string;
   attachmentHeading: string;
   attachmentFailed: string;
   page: string;
@@ -68,6 +69,8 @@ export type PdfInput = {
   attachments: PdfAttachment[];
   signature: PdfSignature;
   spouseSignature: PdfSignature | null;
+  /** JPEG taken after signing; older forms have none. */
+  facePhoto: Uint8Array | null;
   signedAt: string;
   signerIp: string | null;
 };
@@ -260,6 +263,22 @@ export async function buildIntakePdf(input: PdfInput): Promise<Uint8Array> {
   paragraph(L.declaration);
   y -= 10;
   await signatures();
+  if (input.facePhoto) {
+    let photo: PDFImage | null = null;
+    try {
+      photo = await doc.embedJpg(input.facePhoto);
+    } catch {
+      photo = null;
+    }
+    if (photo) {
+      const scale = Math.min(120 / photo.width, 160 / photo.height, 1);
+      ensure(photo.height * scale + 30);
+      textLines([safe(`${L.facePhoto}: ${input.signature.name}`)], MARGIN, bold, 9, INK);
+      y -= 4;
+      page.drawImage(photo, { x: MARGIN, y: y - photo.height * scale, width: photo.width * scale, height: photo.height * scale });
+      y -= photo.height * scale + 10;
+    }
+  }
 
   // Part 2 · Service agreement ---------------------------------------------
   newPage();

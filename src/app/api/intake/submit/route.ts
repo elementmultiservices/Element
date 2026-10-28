@@ -10,6 +10,8 @@ import {
   intakeErrorsFrom,
   intakeSigningSchema,
   intakeSubmitSchema,
+  FACE_PHOTO_PREFIX,
+  MAX_FACE_PHOTO_BYTES,
   MAX_SIGNATURE_BYTES,
   taxYearOptions,
 } from "@/lib/intake/schema";
@@ -30,6 +32,15 @@ function decodeSignature(dataUrl: string): Uint8Array | null {
   return inspectFile(buf, "png").ok ? buf : null;
 }
 
+/** Decodes the face photo (JPEG data URL; the face itself was checked in the browser). */
+function decodeFacePhoto(dataUrl: string): Uint8Array | null {
+  const base64 = dataUrl.slice(FACE_PHOTO_PREFIX.length);
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(base64)) return null;
+  const buf = new Uint8Array(Buffer.from(base64, "base64"));
+  if (buf.byteLength === 0 || buf.byteLength > MAX_FACE_PHOTO_BYTES) return null;
+  return inspectFile(buf, "jpg").ok ? buf : null;
+}
+
 /** What a bot caught by a trap receives: looks like success, stores nothing. */
 function decoy() {
   const id = crypto.randomUUID();
@@ -37,7 +48,8 @@ function decoy() {
 }
 
 /**
- * Receives a completed intake form: answers, drawn signature(s) and the ids of
+ * Receives a completed intake form: answers, drawn signature(s), the face
+ * photo (checked for a face in the browser; here only as a real JPEG) and the ids of
  * documents uploaded (and verified) beforehand. Everything is validated again
  * here; the documents are then attached to the new submission.
  *
@@ -87,6 +99,7 @@ export async function POST(request: NextRequest) {
     signatureMethod: input.signatureMethod,
     spouseSignature: input.spouseSignature,
     spouseSignatureMethod: input.spouseSignatureMethod,
+    facePhoto: input.facePhoto,
   });
   if (!data.success || !signing.success) {
     const fields = { ...(data.success ? {} : intakeErrorsFrom(data.error)), ...(signing.success ? {} : intakeErrorsFrom(signing.error)) };
@@ -105,6 +118,8 @@ export async function POST(request: NextRequest) {
   if (!signature || (withSpouse && !spouseSignature)) {
     return apiOk({ error: "intake_invalid", fields: { [signature ? "spouseSignature" : "signature"]: "signatureRequired" } }, 422);
   }
+  const facePhoto = decodeFacePhoto(signing.data.facePhoto);
+  if (!facePhoto) return apiOk({ error: "intake_invalid", fields: { facePhoto: "facePhotoRequired" } }, 422);
 
   const admin = createAdminClient();
   const [column, value] = actorColumn(actor);
@@ -126,19 +141,21 @@ export async function POST(request: NextRequest) {
   const folder = `${actorFolder(actor)}/${submissionId}`;
   const signaturePath = `${folder}/signature.png`;
   const spousePath = spouseSignature ? `${folder}/spouse-signature.png` : null;
+  const facePath = `${folder}/face.jpg`;
   const written: string[] = [];
   const rollback = async () => {
     if (written.length > 0) await storage.remove(written);
   };
 
-  for (const [path, bytes] of [
-    [signaturePath, signature],
-    [spousePath, spouseSignature],
+  for (const [path, bytes, contentType] of [
+    [signaturePath, signature, "image/png"],
+    [spousePath, spouseSignature, "image/png"],
+    [facePath, facePhoto, "image/jpeg"],
   ] as const) {
     if (!path || !bytes) continue;
-    const { error } = await storage.upload(path, bytes, { contentType: "image/png", upsert: false });
+    const { error } = await storage.upload(path, bytes, { contentType, upsert: false });
     if (error) {
-      console.error("[intake] signature upload failed");
+      console.error("[intake] signature or photo upload failed");
       await rollback();
       return apiError("server_error", 500);
     }
@@ -165,6 +182,7 @@ export async function POST(request: NextRequest) {
     spouse_signer_name: spousePath && s ? fullName(s) : null,
     spouse_signature_path: spousePath && s ? spousePath : null,
     spouse_signature_method: spousePath && s ? signing.data.spouseSignatureMethod || null : null,
+    face_photo_path: facePath,
     pub135_acknowledged: signing.data.pub135,
     agreement_accepted: signing.data.agreement,
     signer_ip: meta.ip,

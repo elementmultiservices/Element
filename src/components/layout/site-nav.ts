@@ -2,9 +2,14 @@ export const publicNav = [
   { href: "/services", key: "services" },
   { href: "/what-to-bring", key: "bring" },
   { href: "/location", key: "location" },
-  { href: "/updates", key: "updates" },
+  { href: "/faq#refund-status", key: "refund" },
   { href: "/faq", key: "faq" },
 ] as const;
+
+export const IRS_REFUND_URL = "https://sa.www4.irs.gov/wmr/";
+
+/** FAQ answer about refund status; the accordion opens it when the URL hash matches. */
+export const REFUND_STATUS_ID = "refund-status";
 
 export const footerSiteNav = [
   { href: "/location", key: "location" },

@@ -7,16 +7,20 @@ import { RoleBadge, UploadAccessBadge, UserStatusBadge } from "@/components/admi
 import { QuotaMeter } from "@/components/files/quota-meter";
 import { FormAlert } from "@/components/forms/form-alert";
 import { PageHeader } from "@/components/layout/page-header";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
 import { getUser, searchAudit } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/auth/session";
+import { intakeReference } from "@/lib/intake/queries";
 import { pageMetadata } from "@/lib/seo";
 import { createClient } from "@/lib/supabase/server";
+import { cn } from "@/lib/utils";
 import { AccountActions, IdLast4Form, QuotaForm, UploadAccessControl } from "./user-controls";
 
 const MB = 1024 * 1024;
+const INTAKE_LIMIT = 10;
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/admin/users/[id]">): Promise<Metadata> {
   const { locale, id } = await params;
@@ -45,6 +49,16 @@ export default async function AdminUserPage({ params }: PageProps<"/[locale]/adm
   const user = await getUser(supabase, id);
   if (!user) notFound();
   const activity = await searchAudit(supabase, { subject: id, page: 1 }, { limit: 10 });
+  const { data: intakeRows, count: intakeCount } =
+    user.role === "user"
+      ? await supabase
+          .from("intake_submissions")
+          .select("id, tax_year, filing_status, taxpayer_name, status, signed_at", { count: "exact" })
+          .eq("owner_id", id)
+          .order("signed_at", { ascending: false })
+          .limit(INTAKE_LIMIT)
+      : { data: null, count: null };
+  const intakes = intakeRows ?? [];
   const isSelf = user.id === session.userId;
   const name = user.fullName.trim() || user.email;
 
@@ -127,6 +141,50 @@ export default async function AdminUserPage({ params }: PageProps<"/[locale]/adm
           </div>
         </Section>
       </div>
+
+      {user.role === "user" ? (
+        <div className="mt-6">
+          <Section title={t("Admin.users.detail.intakeHeading")}>
+            {intakes.length === 0 ? (
+              <p className="text-sm text-muted-foreground">{t("Admin.users.detail.intakeEmpty")}</p>
+            ) : (
+              <>
+                <ul className="divide-y rounded-md border text-sm">
+                  {intakes.map((r) => (
+                    <li key={r.id} className="flex flex-col gap-1 px-4 py-2.5 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Link href={`/admin/intake/${r.id}`} className="font-medium break-words hover:text-electric hover:underline">
+                            {r.taxpayer_name}
+                          </Link>
+                          <Badge
+                            variant="outline"
+                            className={cn("font-normal", r.status === "reviewed" ? "border-success/30 bg-success-bg text-success" : "border-warning/30 bg-warning-bg text-warning")}
+                          >
+                            {t(`Intake.status.${r.status}` as "Intake.status.new")}
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {t("Intake.list.item", { year: r.tax_year })} · {t(`Intake.filingStatus.${r.filing_status}` as "Intake.filingStatus.single")} ·{" "}
+                          {t("Intake.list.reference", { reference: intakeReference(r.id) })}
+                        </p>
+                      </div>
+                      <time dateTime={r.signed_at} className="shrink-0 text-xs text-muted-foreground">
+                        {format.dateTime(new Date(r.signed_at), "long")}
+                      </time>
+                    </li>
+                  ))}
+                </ul>
+                {(intakeCount ?? 0) > intakes.length ? (
+                  <Link href={`/admin/intake?owner=${user.id}`} className="mt-3 inline-block text-sm text-link hover:underline">
+                    {t("Admin.users.detail.intakeViewAll", { count: intakeCount ?? 0 })}
+                  </Link>
+                ) : null}
+              </>
+            )}
+          </Section>
+        </div>
+      ) : null}
 
       {user.role === "user" ? (
         <div className="mt-6">

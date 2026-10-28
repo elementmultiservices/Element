@@ -56,6 +56,8 @@ export type SignatureMethod = (typeof SIGNATURE_METHODS)[number];
 export const MAX_DEPENDENTS = 10;
 export const MAX_INTAKE_UPLOADS = 25;
 export const MAX_SIGNATURE_BYTES = 300 * 1024;
+export const MAX_FACE_PHOTO_BYTES = 400 * 1024;
+export const FACE_PHOTO_PREFIX = "data:image/jpeg;base64,";
 
 /** Spouse details apply to married filing statuses, or when "not sure" and married. */
 export function needsSpouse(status: string, married?: string): boolean {
@@ -222,6 +224,7 @@ export const intakeDataSchema = z
 export type IntakeData = z.output<typeof intakeDataSchema>;
 
 const signatureImage = z.string().max(MAX_SIGNATURE_BYTES * 2);
+const facePhoto = z.string().max(MAX_FACE_PHOTO_BYTES * 2);
 
 /** Declaration, service agreement and signatures; checked together with the answers. */
 export const intakeSigningSchema = z
@@ -234,6 +237,8 @@ export const intakeSigningSchema = z
     signatureMethod: z.enum(SIGNATURE_METHODS),
     spouseSignature: signatureImage,
     spouseSignatureMethod: z.enum([...SIGNATURE_METHODS, ""]),
+    /** JPEG of the taxpayer's face, checked in the browser to show one face. */
+    facePhoto: facePhoto.startsWith(FACE_PHOTO_PREFIX, { error: "facePhotoRequired" }),
   })
   .superRefine((value, ctx) => {
     if (!needsSpouseSignature(value.filingStatus)) return;
@@ -253,6 +258,7 @@ export const intakeSubmitSchema = z.object({
   signatureMethod: z.string().max(10),
   spouseSignature: signatureImage,
   spouseSignatureMethod: z.string().max(10),
+  facePhoto: facePhoto.default(""),
   uploadIds: z.array(z.uuid()).max(MAX_INTAKE_UPLOADS),
   /** Public form only: reCAPTCHA v3 token and honeypot (must stay empty). */
   recaptchaToken: z.string().max(4000).default(""),
@@ -284,6 +290,7 @@ export const INTAKE_ERROR_KEYS = [
   "ipPinInvalid",
   "consentRequired",
   "signatureRequired",
+  "facePhotoRequired",
   "dependentsRequired",
 ] as const;
 export type IntakeErrorKey = (typeof INTAKE_ERROR_KEYS)[number];

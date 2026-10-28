@@ -29,6 +29,7 @@ export function intakePdfContent(
       spouseSignedBy: t("pdf.spouseSignedBy"),
       signedAt: t("pdf.signedAt"),
       signerIp: t("pdf.signerIp"),
+      facePhoto: t("face.title"),
       attachmentHeading: t("pdf.attachment"),
       attachmentFailed: t("pdf.attachmentFailed"),
       page: t("pdf.page"),

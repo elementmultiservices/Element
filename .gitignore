@@ -30,3 +30,6 @@ supabase/signing_keys.json
 npm-debug.log*
 .vercel
 .sentryclirc
+
+# MediaPipe runtime, copied from node_modules (scripts/copy-vision-wasm.mjs)
+/public/vendor/

@@ -1,10 +1,11 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type AccordionItem = { q: string; a: ReactNode };
+/** `id` makes the item linkable: it opens when the URL hash matches. */
+export type AccordionItem = { q: string; a: ReactNode; id?: string };
 
 const ease = "ease-[cubic-bezier(0.16,1,0.3,1)]";
 
@@ -30,16 +31,28 @@ export function Accordion({
   const id = useId();
   const cards = variant === "cards";
 
+  useEffect(() => {
+    const openFromHash = () => {
+      const i = items.findIndex((item) => item.id && `#${item.id}` === window.location.hash);
+      if (i !== -1) setOpen(i);
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => window.removeEventListener("hashchange", openFromHash);
+  }, [items]);
+
   return (
     <div className={cn(cards ? "flex flex-col gap-3" : "border-t border-azure-50", className)}>
-      {items.map(({ q, a }, i) => {
+      {items.map(({ q, a, id: itemId }, i) => {
         const isOpen = open === i;
         const buttonId = `${id}-q${i}`;
         const panelId = `${id}-a${i}`;
         return (
           <div
             key={q}
+            id={itemId}
             className={cn(
+              "scroll-mt-32",
               cards
                 ? cn(
                     "rounded-[20px] border bg-white px-5 transition-[border-color,box-shadow] duration-500 sm:px-6",

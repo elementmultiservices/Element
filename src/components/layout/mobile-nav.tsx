@@ -2,14 +2,19 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Menu, UserRound } from "lucide-react";
+import { ArrowUpRight, Menu, UserRound } from "lucide-react";
 import { Wordmark } from "@/components/brand/wordmark";
+import { StateRefundDialog } from "@/components/marketing/state-refund-dialog";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./language-switcher";
-import { isActivePath, publicNav } from "./site-nav";
+import { openRefundStatus } from "./header-nav";
+import { IRS_REFUND_URL, isActivePath, publicNav } from "./site-nav";
+
+const SUB_ITEM_CLASS =
+  "flex w-full items-center justify-between gap-3 rounded-xl py-2.5 pr-3 pl-7 text-left text-[15px] font-medium text-graphite hover:bg-azure-25 hover:text-electric";
 
 export function MobileNav({ accountHref, accountLabel }: { accountHref: string; accountLabel: string }) {
   const t = useTranslations();
@@ -29,20 +34,40 @@ export function MobileNav({ accountHref, accountLabel }: { accountHref: string; 
           <Wordmark />
         </SheetTitle>
         <nav aria-label={t("Nav.main")} className="flex flex-col gap-1 px-3 pt-6">
-          {publicNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              aria-current={isActivePath(pathname, item.href) ? "page" : undefined}
-              className={cn(
-                "rounded-xl px-3 py-3 text-base font-medium hover:bg-azure-25",
-                isActivePath(pathname, item.href) ? "bg-azure-25 text-electric" : "text-ink",
-              )}
-            >
-              {t(`Nav.${item.key}`)}
-            </Link>
-          ))}
+          {publicNav.map((item) =>
+            item.key === "refund" ? (
+              <div key={item.href} className="flex flex-col">
+                <Link
+                  href={item.href}
+                  onClick={(e) => {
+                    openRefundStatus(e, pathname);
+                    setOpen(false);
+                  }}
+                  className="rounded-xl px-3 py-3 text-base font-medium text-ink hover:bg-azure-25"
+                >
+                  {t(`Nav.${item.key}`)}
+                </Link>
+                <a href={IRS_REFUND_URL} target="_blank" rel="noopener noreferrer" className={SUB_ITEM_CLASS}>
+                  {t("Nav.refundFederal")}
+                  <ArrowUpRight aria-hidden="true" className="size-4" />
+                </a>
+                <StateRefundDialog triggerClassName={SUB_ITEM_CLASS} label={t("Nav.refundState")} />
+              </div>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                aria-current={isActivePath(pathname, item.href) ? "page" : undefined}
+                className={cn(
+                  "rounded-xl px-3 py-3 text-base font-medium hover:bg-azure-25",
+                  isActivePath(pathname, item.href) ? "bg-azure-25 text-electric" : "text-ink",
+                )}
+              >
+                {t(`Nav.${item.key}`)}
+              </Link>
+            ),
+          )}
           <Link
             href={accountHref}
             onClick={() => setOpen(false)}

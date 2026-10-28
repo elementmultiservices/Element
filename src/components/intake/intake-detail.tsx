@@ -132,6 +132,17 @@ export async function IntakeDetail({
             </figure>
           ))}
         </div>
+        {submission.face_photo_path ? (
+          <figure className="mt-6 space-y-2">
+            {/* eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL behind an authorized redirect */}
+            <img
+              src={`/api/intake/submissions/${submission.id}/photo`}
+              alt={t("detail.photoOf", { name: submission.signer_name })}
+              className="aspect-[3/4] w-40 rounded-2xl border border-azure-50 bg-mist object-cover"
+            />
+            <figcaption className="text-sm text-muted-foreground">{t("face.title")}</figcaption>
+          </figure>
+        ) : null}
         <p className="mt-4 text-xs text-muted-foreground">
           {t("pdf.signedAt")}: <time dateTime={submission.signed_at}>{format.dateTime(new Date(submission.signed_at), "long")}</time>
           {full && submission.signer_ip ? ` · ${t("pdf.signerIp")}: ${String(submission.signer_ip)}` : ""}

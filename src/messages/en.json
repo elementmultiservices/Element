@@ -88,7 +88,10 @@
     "call": "Call",
     "whatsapp": "WhatsApp",
     "updates": "Updates",
-    "bring": "What to bring"
+    "bring": "What to bring",
+    "refund": "Check refund",
+    "refundFederal": "Federal refund",
+    "refundState": "State refund"
   },
   "Footer": {
     "tagline": "Every element in its place.",
@@ -1041,6 +1044,9 @@
         "activity": "Recent activity",
         "activityEmpty": "There is no recorded activity for this account.",
         "viewAudit": "View in audit log",
+        "intakeHeading": "Intake forms",
+        "intakeEmpty": "No intake forms are assigned to this account.",
+        "intakeViewAll": "View all {count} forms",
         "self": "This is your own account. Manage it from your profile."
       },
       "actions": {
@@ -1444,7 +1450,8 @@
         "all": "All",
         "allYears": "All years",
         "assignment": "Account",
-        "assigned": "Assigned"
+        "assigned": "Assigned",
+        "owner": "Showing only the forms assigned to {name}."
       },
       "markReviewed": "Mark as reviewed",
       "markReviewedTitle": "Mark this form as reviewed?",
@@ -2731,6 +2738,7 @@
       "ipPinInvalid": "The IP PIN has 6 digits.",
       "consentRequired": "You must check this box to continue.",
       "signatureRequired": "Please sign: draw, type or upload your signature.",
+      "facePhotoRequired": "Take a photo of your face to submit the form.",
       "dependentsRequired": "Add at least one dependent, or answer No.",
       "fixErrors": "Please review the highlighted fields.",
       "uploadsPending": "Wait until your documents finish uploading.",
@@ -2756,6 +2764,7 @@
       "submitted": "Thank you! We received your form (ref. {reference}). We will contact you to confirm your appointment.",
       "download": "Download",
       "signatureOf": "Signature of {name}",
+      "photoOf": "Photo of {name}",
       "confirmations": "Confirmations",
       "pdf": {
         "en": "PDF (English)",
@@ -2786,6 +2795,29 @@
       "description": "No account needed. Answer the questions, sign and, if you like, attach your documents. Our team will review your form and link it to your client account.",
       "submittedTitle": "Thank you! We received your form.",
       "submittedBody": "Your reference is {reference}. We will contact you to confirm your appointment."
+    },
+    "face": {
+      "title": "Verification photo",
+      "body": "To confirm it is you who signs, take a photo of your face. We only use it to verify your identity in your file.",
+      "label": "Photo of your face",
+      "hint": "Face the camera in good light, without a cap or sunglasses.",
+      "cameraHint": "Center your face in the oval and tap “Take photo”.",
+      "openCamera": "Use the camera",
+      "upload": "Upload a photo",
+      "take": "Take photo",
+      "cancel": "Cancel",
+      "retake": "Take another",
+      "checking": "Checking your photo…",
+      "accepted": "Done: we detected your face.",
+      "previewAlt": "Your verification photo",
+      "problems": {
+        "noFace": "We could not detect a face in the photo. Face the camera in good light and try again.",
+        "manyFaces": "We detected more than one face. The photo must show only yours.",
+        "tooFar": "Your face looks too far away. Move closer to the camera and try again.",
+        "camera": "We could not use the camera. Allow camera access in your browser or upload a photo.",
+        "file": "We could not read that image. Try a JPG or PNG photo.",
+        "unavailable": "We could not load the photo check. Update your browser or try another device."
+      }
     }
   },
   "BringPage": {

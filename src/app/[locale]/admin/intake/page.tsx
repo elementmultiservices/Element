@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/routing";
+import { userLabels } from "@/lib/admin/queries";
 import { requireAdmin } from "@/lib/auth/session";
 import { intakeReference } from "@/lib/intake/queries";
 import { pageMetadata } from "@/lib/seo";
@@ -20,9 +21,10 @@ import { cn } from "@/lib/utils";
 const PAGE_SIZE = 20;
 const paramsSchema = z.object({
   q: z.string().trim().max(100).optional().catch(undefined),
-  status: z.enum(["new", "reviewed", "all"]).default("new").catch("new"),
+  status: z.enum(["new", "reviewed", "all"]).default("all").catch("all"),
   year: z.coerce.number().int().min(2000).max(2100).optional().catch(undefined),
   assigned: z.enum(["all", "unassigned", "assigned"]).default("all").catch("all"),
+  owner: z.uuid().optional().catch(undefined),
   page: z.coerce.number().int().min(1).max(10_000).default(1).catch(1),
 });
 
@@ -47,6 +49,7 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
   if (filters.year) query = query.eq("tax_year", filters.year);
   if (filters.assigned === "unassigned") query = query.is("owner_id", null);
   if (filters.assigned === "assigned") query = query.not("owner_id", "is", null);
+  if (filters.owner) query = query.eq("owner_id", filters.owner);
   if (filters.q) {
     // Name or email. Wildcards and characters with a meaning in or() filters are dropped.
     const term = filters.q.replace(/[%_*\\,()"]/g, " ").trim();
@@ -56,6 +59,12 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
   const { data, count } = await query.order("signed_at", { ascending: false }).range(from, from + PAGE_SIZE - 1);
   const rows = data ?? [];
   const total = count ?? 0;
+  const labels = await userLabels(supabase, [...rows.map((r) => r.owner_id), filters.owner]);
+  const ownerLabel = filters.owner ? labels.get(filters.owner) : undefined;
+  const labelOf = (id: string) => {
+    const l = labels.get(id);
+    return l ? l.fullName.trim() || l.email : t("Admin.intake.account");
+  };
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const basePath = "/admin/intake";
   const years = Array.from({ length: 6 }, (_, i) => new Date().getFullYear() - i);
@@ -88,9 +97,9 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
           <div className="space-y-1.5">
             <Label htmlFor="intake-status">{t("Admin.intake.filters.status")}</Label>
             <NativeSelect id="intake-status" name="status" defaultValue={filters.status}>
+              <option value="all">{t("Admin.intake.filters.all")}</option>
               <option value="new">{t("Intake.status.new")}</option>
               <option value="reviewed">{t("Intake.status.reviewed")}</option>
-              <option value="all">{t("Admin.intake.filters.all")}</option>
             </NativeSelect>
           </div>
           <div className="space-y-1.5">
@@ -102,6 +111,12 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
             </NativeSelect>
           </div>
         </div>
+        {filters.owner ? (
+          <p className="mt-4 text-sm text-muted-foreground">
+            <input type="hidden" name="owner" value={filters.owner} />
+            {t("Admin.intake.filters.owner", { name: ownerLabel ? labelOf(filters.owner) : filters.owner })}
+          </p>
+        ) : null}
         <div className="mt-4 flex flex-wrap gap-2">
           <Button type="submit" size="sm">
             {t("Admin.common.apply")}
@@ -144,6 +159,14 @@ export default async function AdminIntakePage({ params, searchParams }: PageProp
                       {t("Admin.intake.documents", { count: documents })}
                     </p>
                     {r.contact_email ? <p className="text-sm break-all text-muted-foreground">{r.contact_email}</p> : null}
+                    {r.owner_id ? (
+                      <p className="text-sm text-muted-foreground">
+                        {t("Admin.intake.assign.assignedTo")}:{" "}
+                        <Link href={`/admin/users/${r.owner_id}`} className="text-link hover:underline">
+                          {labelOf(r.owner_id)}
+                        </Link>
+                      </p>
+                    ) : null}
                     <p className="text-xs text-muted-foreground">
                       <time dateTime={r.signed_at}>{format.dateTime(new Date(r.signed_at), "long")}</time> · {t("Intake.list.reference", { reference: intakeReference(r.id) })}
                     </p>

@@ -149,8 +149,14 @@ describe("intake schema", () => {
       signatureMethod: "type",
       spouseSignature: "",
       spouseSignatureMethod: "",
+      facePhoto: "data:image/jpeg;base64,AAAA",
     };
     expect(intakeSigningSchema.safeParse({ ...base, filingStatus: "single" }).success).toBe(true);
+    for (const facePhoto of ["", "data:image/png;base64,AAAA"]) {
+      const noPhoto = intakeSigningSchema.safeParse({ ...base, facePhoto, filingStatus: "single" });
+      expect(noPhoto.success).toBe(false);
+      if (!noPhoto.success) expect(intakeErrorsFrom(noPhoto.error)).toMatchObject({ facePhoto: "facePhotoRequired" });
+    }
     const joint = intakeSigningSchema.safeParse({ ...base, filingStatus: "mfj" });
     expect(joint.success).toBe(false);
     if (!joint.success) expect(intakeErrorsFrom(joint.error)).toMatchObject({ spouseSignature: "signatureRequired" });
@@ -210,6 +216,8 @@ describe("intake summary and PDF", () => {
         ],
         signature: { name: "Ana Núñez", png, method: t("signatureMethods.type") },
         spouseSignature: { name: "Luis Pérez", png, method: t("signatureMethods.upload") },
+        // Not a JPEG: the photo is skipped instead of breaking the PDF.
+        facePhoto: new Uint8Array([1, 2, 3]),
         signedAt: "Oct 22, 2026",
         signerIp: "203.0.113.7",
       });

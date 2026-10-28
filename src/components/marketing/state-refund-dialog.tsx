@@ -12,7 +12,7 @@ import { STATE_REFUNDS, type RefundStep } from "@/lib/state-refunds";
  * "Check your state refund": a dialog where the visitor picks a state and gets
  * the official lookup page plus step-by-step instructions with screenshots.
  */
-export function StateRefundDialog({ triggerClassName }: { triggerClassName?: string }) {
+export function StateRefundDialog({ triggerClassName, label }: { triggerClassName?: string; label?: string }) {
   const t = useTranslations("FaqPage.refundStates");
   const [code, setCode] = useState("");
   const state = STATE_REFUNDS.find((s) => s.code === code);
@@ -33,7 +33,7 @@ export function StateRefundDialog({ triggerClassName }: { triggerClassName?: str
   return (
     <Dialog.Root>
       <Dialog.Trigger className={triggerClassName}>
-        {t("trigger")}
+        {label ?? t("trigger")}
         <ArrowUpRight aria-hidden="true" className="size-4" />
       </Dialog.Trigger>
       <Dialog.Portal>

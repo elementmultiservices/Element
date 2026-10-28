@@ -6,7 +6,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "predev": "node scripts/copy-vision-wasm.mjs",
     "dev": "next dev -p 3100",
+    "prebuild": "node scripts/copy-vision-wasm.mjs",
     "build": "next build",
     "start": "next start -p 3100",
     "lint": "eslint .",
@@ -29,6 +31,7 @@
     "db:bundle": "node scripts/bundle-schema.mjs"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "1.1.1",
     "@react-email/components": "1.0.12",
     "@react-email/render": "2.1.0",
     "@sentry/nextjs": "11.4.0",

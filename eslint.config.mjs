@@ -19,5 +19,5 @@ export default defineConfig([
       ],
     },
   },
-  globalIgnores([".next/**", "node_modules/**", "supabase/functions/**", "next-env.d.ts", "src/lib/supabase/database.types.ts"]),
+  globalIgnores([".next/**", "node_modules/**", "public/vendor/**", "supabase/functions/**", "next-env.d.ts", "src/lib/supabase/database.types.ts"]),
 ]);

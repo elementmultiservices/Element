@@ -46,9 +46,10 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/i
       new Date(iso),
     );
 
-  const [signaturePng, spousePng, ...files] = await Promise.all([
+  const [signaturePng, spousePng, facePhoto, ...files] = await Promise.all([
     readIntakeObject(submission.signature_path),
     submission.spouse_signature_path ? readIntakeObject(submission.spouse_signature_path) : Promise.resolve(null),
+    submission.face_photo_path ? readIntakeObject(submission.face_photo_path) : Promise.resolve(null),
     ...uploads.map((u) =>
       u.mime_type === "application/pdf" || u.mime_type.startsWith("image/") ? readIntakeObject(u.storage_path) : Promise.resolve(null),
     ),
@@ -80,6 +81,7 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/i
     spouseSignature: submission.spouse_signer_name
       ? { name: submission.spouse_signer_name, png: spousePng, method: method(submission.spouse_signature_method) }
       : null,
+    facePhoto,
     signedAt: dateTime(submission.signed_at),
     signerIp: full ? (submission.signer_ip as string | null) : null,
   });

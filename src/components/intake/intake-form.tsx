@@ -7,6 +7,7 @@ import { Wordmark } from "@/components/brand/wordmark";
 import { putWithProgress } from "@/components/files/upload-form";
 import { FormAlert } from "@/components/forms/form-alert";
 import { FormField } from "@/components/forms/form-field";
+import { FaceCapture } from "@/components/intake/face-capture";
 import { SignaturePad, type SignatureLabels } from "@/components/intake/signature-pad";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -51,7 +52,7 @@ const STEP_FIELDS: Record<Step, string[]> = {
   family: ["filingStatus", "married", "spouse", "deceasedSpouse", "hasDependents", "dependents"],
   income: ["income", "businessDescription", "otherIncome", "deductions", "childcareProvider"],
   questions: ["questions", "questionDetails", "refund", "referral", "referralOther", "notes"],
-  sign: ["consent", "pub135", "agreement", "signature", "signatureMethod", "spouseSignature", "spouseSignatureMethod"],
+  sign: ["consent", "pub135", "agreement", "signature", "signatureMethod", "spouseSignature", "spouseSignatureMethod", "facePhoto"],
   documents: [],
 };
 
@@ -93,6 +94,7 @@ type Signing = {
   signatureMethod: SignatureMethod;
   spouseSignature: string;
   spouseSignatureMethod: SignatureMethod | "";
+  facePhoto: string;
 };
 
 type UploadItem = {
@@ -240,6 +242,7 @@ export function IntakeForm({
     signatureMethod: "draw",
     spouseSignature: "",
     spouseSignatureMethod: "",
+    facePhoto: "",
   });
   const [uploads, setUploads] = useState<UploadItem[]>([]);
   const [errors, setErrors] = useState<Record<string, IntakeErrorKey>>({});
@@ -1022,6 +1025,20 @@ export function IntakeForm({
               </div>
             </div>,
             t("sign.signaturesBody"),
+          )}
+          {card(
+            t("face.title"),
+            <div className="space-y-2">
+              <FaceCapture
+                id={`${ids}-facePhoto`}
+                value={signing.facePhoto}
+                invalid={Boolean(err("facePhoto"))}
+                describedBy={err("facePhoto") ? `${ids}-facePhoto-error` : undefined}
+                onChange={(facePhoto) => setSigning((s) => ({ ...s, facePhoto }))}
+              />
+              {errorText("facePhoto", `${ids}-facePhoto-error`)}
+            </div>,
+            t("face.body"),
           )}
         </>
       ) : null}

@@ -7,7 +7,18 @@ import { getMessages } from "next-intl/server";
  * notice, error boundary, public forms). Server components read every message
  * on the server; only these travel to the browser.
  */
-const SHARED = ["Common", "Nav", "CookieNotice", "ErrorPage", "Errors", "Validation", "Auth", "Contact", "Newsletter"];
+const SHARED = [
+  "Common",
+  "Nav",
+  "CookieNotice",
+  "ErrorPage",
+  "Errors",
+  "Validation",
+  "Auth",
+  "Contact",
+  "Newsletter",
+  "FaqPage.refundStates", // state refund dialog in the header menu
+];
 
 /**
  * Messages for a NextIntlClientProvider: the shared namespaces plus `extra`

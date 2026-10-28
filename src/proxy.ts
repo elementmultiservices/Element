@@ -69,6 +69,8 @@ function buildCsp(nonce: string): string {
       "'self'",
       `'nonce-${nonce}'`,
       "'strict-dynamic'",
+      // WebAssembly compilation only (face detection on the intake form); not eval.
+      "'wasm-unsafe-eval'",
       "https://www.google.com/recaptcha/",
       "https://www.gstatic.com/recaptcha/",
       ...(isDev ? ["'unsafe-eval'"] : []),

@@ -88,7 +88,10 @@
     "call": "Llamar",
     "whatsapp": "WhatsApp",
     "updates": "Actualizaciones",
-    "bring": "Qué traer"
+    "bring": "Qué traer",
+    "refund": "Verificar reembolso",
+    "refundFederal": "Reembolso federal",
+    "refundState": "Reembolso estatal"
   },
   "Footer": {
     "tagline": "Cada elemento en su lugar.",
@@ -1041,6 +1044,9 @@
         "activity": "Actividad reciente",
         "activityEmpty": "No hay actividad registrada para esta cuenta.",
         "viewAudit": "Ver en el registro de auditoría",
+        "intakeHeading": "Formularios de admisión",
+        "intakeEmpty": "Esta cuenta no tiene formularios de admisión asignados.",
+        "intakeViewAll": "Ver los {count} formularios",
         "self": "Esta es su propia cuenta. Adminístrela desde su perfil."
       },
       "actions": {
@@ -1444,7 +1450,8 @@
         "all": "Todos",
         "allYears": "Todos los años",
         "assignment": "Cuenta",
-        "assigned": "Asignados"
+        "assigned": "Asignados",
+        "owner": "Mostrando solo los formularios asignados a {name}."
       },
       "markReviewed": "Marcar como revisado",
       "markReviewedTitle": "¿Marcar este formulario como revisado?",
@@ -2731,6 +2738,7 @@
       "ipPinInvalid": "El IP PIN tiene 6 dígitos.",
       "consentRequired": "Debes marcar esta casilla para continuar.",
       "signatureRequired": "Firma por favor: dibuja, escribe o sube tu firma.",
+      "facePhotoRequired": "Tómate una foto de la cara para poder enviar el formulario.",
       "dependentsRequired": "Agrega al menos un dependiente o responde No.",
       "fixErrors": "Revisa los campos marcados.",
       "uploadsPending": "Espera a que terminen de subir tus documentos.",
@@ -2756,6 +2764,7 @@
       "submitted": "¡Gracias! Recibimos tu formulario (ref. {reference}). Te contactaremos para confirmar tu cita.",
       "download": "Descargar",
       "signatureOf": "Firma de {name}",
+      "photoOf": "Foto de {name}",
       "confirmations": "Confirmaciones",
       "pdf": {
         "en": "PDF (inglés)",
@@ -2786,6 +2795,29 @@
       "description": "No necesitas una cuenta. Responde las preguntas, firma y, si quieres, adjunta tus documentos. Nuestro equipo revisará tu formulario y lo vinculará a tu cuenta de cliente.",
       "submittedTitle": "¡Gracias! Recibimos tu formulario.",
       "submittedBody": "Tu referencia es {reference}. Te contactaremos para confirmar tu cita."
+    },
+    "face": {
+      "title": "Foto de verificación",
+      "body": "Para confirmar que eres tú quien firma, tómate una foto de la cara. Solo la usamos para verificar tu identidad en tu expediente.",
+      "label": "Foto de tu cara",
+      "hint": "Mira de frente, con buena luz y sin gorra ni lentes oscuros.",
+      "cameraHint": "Centra tu cara en el óvalo y toca «Tomar foto».",
+      "openCamera": "Usar la cámara",
+      "upload": "Subir una foto",
+      "take": "Tomar foto",
+      "cancel": "Cancelar",
+      "retake": "Tomar otra",
+      "checking": "Verificando tu foto…",
+      "accepted": "Listo: detectamos tu cara.",
+      "previewAlt": "Tu foto de verificación",
+      "problems": {
+        "noFace": "No detectamos una cara en la foto. Mira de frente a la cámara, con buena luz, e inténtalo de nuevo.",
+        "manyFaces": "Detectamos más de una cara. La foto debe mostrar solo la tuya.",
+        "tooFar": "Tu cara se ve muy lejos. Acércate a la cámara e inténtalo de nuevo.",
+        "camera": "No pudimos usar la cámara. Permite el acceso a la cámara en tu navegador o sube una foto.",
+        "file": "No pudimos leer esa imagen. Prueba con una foto JPG o PNG.",
+        "unavailable": "No pudimos cargar la verificación de la foto. Actualiza tu navegador o prueba desde otro dispositivo."
+      }
     }
   },
   "BringPage": {
