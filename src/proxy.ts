@@ -118,6 +118,11 @@ async function handle(request: NextRequest): Promise<NextResponse> {
   // session without an activity cookie must not be rejected on the way in.
   if (pathname.startsWith("/api/auth/")) return NextResponse.next({ request });
 
+  // Opened by the browser from the public "Fill out the intake form" buttons,
+  // not called by our scripts: it routes signed-in, pending-MFA and anonymous
+  // visitors itself, so it must get redirects, never a JSON error page.
+  const isNavigationApi = pathname === "/api/intake/start";
+
   // 1. Locale ---------------------------------------------------------------
   let locale: AppLocale = defaultLocale;
   let path = pathname;
@@ -172,7 +177,7 @@ async function handle(request: NextRequest): Promise<NextResponse> {
   const endSession = async (): Promise<NextResponse> => {
     await supabase.auth.signOut({ scope: "local" });
     response.cookies.delete(ACTIVITY_COOKIE);
-    if (isApi) return jsonWith(401, "unauthorized", response);
+    if (isApi && !isNavigationApi) return jsonWith(401, "unauthorized", response);
     if (area === "public") return redirectWith(request, `${pathname}${request.nextUrl.search}`, response);
     return redirectWith(request, signInUrl("session_ended"), response);
   };
@@ -200,7 +205,7 @@ async function handle(request: NextRequest): Promise<NextResponse> {
       if (area === "admin" && ctx.role !== "admin") return redirectWith(request, `/${locale}/dashboard`, response);
       if (area === "dashboard" && ctx.role === "admin") return redirectWith(request, `/${locale}/admin`, response);
       if (area === "guest") return redirectWith(request, `/${locale}${home}`, response);
-    } else if (mfaRequired && aal !== "aal2") {
+    } else if (mfaRequired && aal !== "aal2" && !isNavigationApi) {
       return jsonWith(403, "mfa_required", response);
     }
   }
