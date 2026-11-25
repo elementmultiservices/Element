@@ -8,8 +8,6 @@ import { intakePdfContent } from "@/lib/intake/content";
 import { buildIntakePdf } from "@/lib/intake/pdf";
 import { getIntakeSubmission, intakeReference } from "@/lib/intake/queries";
 import { readIntakeObject } from "@/lib/intake/storage";
-import { getSiteSettings } from "@/lib/site-settings";
-import { intakeSummary } from "@/lib/intake/summary";
 import { isAppLocale } from "@/i18n/routing";
 import { rateLimit } from "@/lib/security/rate-limit";
 import { requestMeta } from "@/lib/security/request-meta";
@@ -57,19 +55,17 @@ export async function GET(request: NextRequest, { params }: RouteContext<"/api/i
 
   const reference = intakeReference(submission.id);
   const content = intakePdfContent((key, values) => t(key as never, values as never), {
-    year: submission.tax_year,
-    name: submission.taxpayer_name,
-    reference,
-    submitted: dateTime(submission.signed_at),
     pub135: submission.pub135_acknowledged,
     agreement: submission.agreement_accepted,
   });
   const method = (m: string | null) => t(`signatureMethods.${m ?? "draw"}` as never);
   const pdf = await buildIntakePdf({
     businessName: siteName,
-    footer: [t("pdf.footer"), (await getSiteSettings()).email].filter(Boolean).join(" · "),
     ...content,
-    sections: intakeSummary(submission.data, (key, values) => t(key as never, values as never), { full }),
+    data: submission.data,
+    full,
+    clientName: submission.taxpayer_name,
+    reference,
     attachments: uploads.map((u, i) => ({
       name: u.original_name,
       typeLabel: t(`docTypes.${u.doc_type}` as never),

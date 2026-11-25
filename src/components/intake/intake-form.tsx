@@ -8,6 +8,17 @@ import { putWithProgress } from "@/components/files/upload-form";
 import { FormAlert } from "@/components/forms/form-alert";
 import { FormField } from "@/components/forms/form-field";
 import { FaceCapture } from "@/components/intake/face-capture";
+import {
+  emptyBusiness,
+  emptyProperty as emptyPropertyRow,
+  emptyScheduleCShared,
+  emptyScheduleE,
+  RadioRow,
+  ScheduleCEditor,
+  ScheduleEEditor,
+  withoutKeys,
+  type JsonObj,
+} from "@/components/intake/schedule-sheets";
 import { SignaturePad, type SignatureLabels } from "@/components/intake/signature-pad";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -26,9 +37,14 @@ import {
   intakeDataSchema,
   intakeErrorsFrom,
   intakeSigningSchema,
+  MAX_CHILDCARE_PROVIDERS,
   MAX_DEPENDENTS,
   MAX_INTAKE_UPLOADS,
+  marriedFrom,
   needsDeceasedSpouse,
+  needsProperties,
+  needsScheduleC,
+  needsScheduleE,
   needsSpouse,
   needsSpouseSignature,
   QUESTION_FOLLOW_UP,
@@ -41,49 +57,103 @@ import {
   type IntakeErrorKey,
   type SignatureMethod,
 } from "@/lib/intake/schema";
+import {
+  CLAIMABLE,
+  CLAIMABLE_LABELS,
+  DEDUCTION_LABELS,
+  fill,
+  HOUSING,
+  HOUSING_LABELS,
+  INCOME_LABELS,
+  MAIN,
+  MARITAL_LABELS,
+  MARITAL_STATUSES,
+  pick,
+  type Bi,
+} from "@/lib/intake/sheet";
 import { cn } from "@/lib/utils";
 
-const STEPS = ["you", "family", "income", "questions", "sign", "documents"] as const;
+/** "business" and "rental" only appear when the income answers open Schedule C or Schedule E. */
+const STEPS = ["you", "family", "income", "business", "rental", "questions", "sign", "documents"] as const;
 type Step = (typeof STEPS)[number];
 
 /** Which answers each step owns (error paths start with one of these). */
 const STEP_FIELDS: Record<Step, string[]> = {
-  you: ["taxYear", "preferredLanguage", "taxpayer"],
-  family: ["filingStatus", "married", "spouse", "deceasedSpouse", "hasDependents", "dependents"],
-  income: ["income", "businessDescription", "otherIncome", "deductions", "childcareProvider"],
-  questions: ["questions", "questionDetails", "refund", "referral", "referralOther", "notes"],
+  you: ["taxYear", "preferredLanguage", "taxpayer", "county", "multiState", "statesDetail", "housing"],
+  family: ["filingStatus", "maritalStatus", "spouseDeathYear", "married", "spouse", "deceasedSpouse", "hasDependents", "dependents"],
+  income: ["income", "incomeDetails", "businessDescription", "otherIncome", "deductions", "childcareProvider", "childcare", "estimatedDetails"],
+  business: ["businesses", "scheduleCShared"],
+  rental: ["scheduleE"],
+  questions: ["questions", "questionDetails", "dueDiligence", "refund", "priorReturn", "otherStateLastYear", "authorizedPerson", "referral", "referralOther", "notes"],
   sign: ["consent", "pub135", "agreement", "signature", "signatureMethod", "spouseSignature", "spouseSignatureMethod", "facePhoto"],
   documents: [],
 };
 
-type PersonKey = "firstName" | "middleInitial" | "lastName" | "ssn" | "dob" | "ipPin" | "occupation" | "cellPhone" | "email" | "blind" | "claimedByOther";
+type PersonKey =
+  | "firstName"
+  | "middleInitial"
+  | "lastName"
+  | "ssn"
+  | "dob"
+  | "ipPin"
+  | "occupation"
+  | "cellPhone"
+  | "email"
+  | "blind"
+  | "claimedByOther"
+  | "usCitizen";
 type TaxpayerKey = PersonKey | "workPhone" | "street" | "apt" | "city" | "state" | "zip";
-const PERSON_KEYS: PersonKey[] = ["firstName", "middleInitial", "lastName", "ssn", "dob", "ipPin", "occupation", "cellPhone", "email", "blind", "claimedByOther"];
+const PERSON_KEYS: PersonKey[] = ["firstName", "middleInitial", "lastName", "ssn", "dob", "ipPin", "occupation", "cellPhone", "email", "blind", "claimedByOther", "usCitizen"];
 type DeceasedKey = "firstName" | "middleInitial" | "lastName" | "ssn" | "dob" | "dateOfDeath";
 
-type RawDependent = { key: string; fullName: string; ssn: string; dob: string; relationship: string; months: string };
+type RawDependent = {
+  key: string;
+  fullName: string;
+  ssn: string;
+  dob: string;
+  relationship: string;
+  months: string;
+  student: string;
+  disabled: string;
+  claimable: string;
+};
+type RawProvider = { key: string; provider: string; ein: string; amount: string };
 
 type Raw = {
   taxYear: string;
   preferredLanguage: string;
   taxpayer: Record<TaxpayerKey, string>;
+  county: string;
+  multiState: string;
+  statesDetail: string;
+  housing: string;
   filingStatus: string;
-  married: string;
+  maritalStatus: string;
+  spouseDeathYear: string;
   spouse: Record<PersonKey, string>;
   deceasedSpouse: Record<DeceasedKey, string>;
   hasDependents: string;
   dependents: RawDependent[];
   income: string[];
+  incomeDetails: { w2Employers: string; tipsOvertime: string; keepsRecords: string; necIsBusiness: string; kIsBusiness: string };
   businessDescription: string;
   otherIncome: string;
   deductions: string[];
-  childcareProvider: string;
+  childcare: RawProvider[];
+  estimatedDetails: string;
   questions: Record<string, string>;
   questionDetails: Record<string, string>;
+  dueDiligence: { homeCost: string; childResidence: string; creditDisallowed: string; disallowedYear: string };
   refund: { method: string; bankName: string; routing: string; account: string; accountType: string };
+  priorReturn: string;
+  otherStateLastYear: string;
+  authorizedPerson: string;
   referral: string;
   referralOther: string;
   notes: string;
+  businesses: JsonObj[];
+  scheduleCShared: JsonObj;
+  scheduleE: JsonObj;
 };
 
 type Signing = {
@@ -130,7 +200,18 @@ const DRAFT_HEADER = "X-Intake-Draft";
 
 const ACCEPT = FILE_KINDS.map((k) => (k === "jpg" ? ".jpg,.jpeg" : `.${k}`)).join(",");
 const emptyPerson = (): Record<PersonKey, string> => Object.fromEntries(PERSON_KEYS.map((k) => [k, ""])) as Record<PersonKey, string>;
-const newDependent = (): RawDependent => ({ key: crypto.randomUUID(), fullName: "", ssn: "", dob: "", relationship: "", months: "12" });
+const newDependent = (): RawDependent => ({
+  key: crypto.randomUUID(),
+  fullName: "",
+  ssn: "",
+  dob: "",
+  relationship: "",
+  months: "12",
+  student: "",
+  disabled: "",
+  claimable: "",
+});
+const newProvider = (): RawProvider => ({ key: crypto.randomUUID(), provider: "", ein: "", amount: "" });
 const today = () => new Date().toISOString().slice(0, 10);
 /** Keeps at most 9 digits and masks them as 123-45-6789 while typing. */
 const formatTaxId = (v: string) => {
@@ -143,13 +224,24 @@ const formatPhone = (v: string) => {
   return d.length > 6 ? `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}` : d.length > 3 ? `(${d.slice(0, 3)}) ${d.slice(3)}` : d;
 };
 
+/** "Not sure" filers answer the marital status instead of "are you married?". */
+const marriedOf = (raw: Pick<Raw, "filingStatus" | "maritalStatus">) => (raw.filingStatus === "unsure" ? marriedFrom(raw.maritalStatus) : "");
+
 function toPayload(raw: Raw) {
   const { refund } = raw;
+  const married = marriedOf(raw);
+  const spouse = needsSpouse(raw.filingStatus, married);
+  // Without a spouse, every business and rental belongs to the taxpayer.
+  const owned = (o: JsonObj): JsonObj => (spouse ? o : { ...o, owner: "taxpayer" });
   return {
     ...raw,
-    spouse: needsSpouse(raw.filingStatus, raw.married) ? raw.spouse : null,
+    married,
+    spouse: spouse ? raw.spouse : null,
     deceasedSpouse: needsDeceasedSpouse(raw.filingStatus) ? raw.deceasedSpouse : null,
     dependents: raw.hasDependents === "yes" ? raw.dependents.map(({ key: _key, ...d }) => d) : [],
+    childcare: raw.childcare.map(({ key: _key, ...c }) => c),
+    businesses: needsScheduleC(raw) ? raw.businesses.map((b) => withoutKeys(owned(b))) : [],
+    scheduleE: needsScheduleE(raw) ? withoutKeys(owned(raw.scheduleE)) : null,
     refund:
       refund.method === "direct"
         ? { method: "direct", bankName: refund.bankName, routing: refund.routing.trim(), account: refund.account.trim(), accountType: refund.accountType }
@@ -216,23 +308,37 @@ export function IntakeForm({
       state: "NY",
       zip: "",
     },
+    county: "",
+    multiState: "",
+    statesDetail: "",
+    housing: "",
     filingStatus: "",
-    married: "",
+    maritalStatus: "",
+    spouseDeathYear: "",
     spouse: emptyPerson(),
     deceasedSpouse: { firstName: "", middleInitial: "", lastName: "", ssn: "", dob: "", dateOfDeath: "" },
     hasDependents: "",
     dependents: [],
     income: [],
+    incomeDetails: { w2Employers: "", tipsOvertime: "", keepsRecords: "", necIsBusiness: "", kIsBusiness: "" },
     businessDescription: "",
     otherIncome: "",
     deductions: [],
-    childcareProvider: "",
+    childcare: [],
+    estimatedDetails: "",
     questions: Object.fromEntries(QUESTIONS.map((q) => [q, ""])),
     questionDetails: Object.fromEntries(QUESTIONS.map((q) => [q, ""])),
+    dueDiligence: { homeCost: "", childResidence: "", creditDisallowed: "", disallowedYear: "" },
     refund: { method: "", bankName: "", routing: "", account: "", accountType: "" },
+    priorReturn: "",
+    otherStateLastYear: "",
+    authorizedPerson: "",
     referral: "",
     referralOther: "",
     notes: "",
+    businesses: [],
+    scheduleCShared: emptyScheduleCShared(),
+    scheduleE: emptyScheduleE(),
   }));
   const [signing, setSigning] = useState<Signing>({
     consent: false,
@@ -250,8 +356,15 @@ export function IntakeForm({
   const [submitting, setSubmitting] = useState(false);
   const [dirty, setDirty] = useState(false);
 
-  const stepIndex = STEPS.indexOf(step);
-  const spouseShown = needsSpouse(raw.filingStatus, raw.married);
+  const scheduleC = needsScheduleC(raw);
+  const scheduleE = needsScheduleE(raw);
+  /** Schedule C and E steps only appear when the income answers call for them. */
+  const activeSteps = STEPS.filter((s) => (s !== "business" || scheduleC) && (s !== "rental" || scheduleE));
+  const stepIndex = activeSteps.indexOf(step);
+  const spouseShown = needsSpouse(raw.filingStatus, marriedOf(raw));
+  const bi = (b: Bi) => pick(b, locale);
+  const year = Number(raw.taxYear);
+  const sheetCtx = { locale, year, idPrefix: ids, err: (path: string) => err(path) };
   const spouseSigns = needsSpouseSignature(raw.filingStatus);
   const deceasedShown = needsDeceasedSpouse(raw.filingStatus);
   const uploadsBusy = uploads.some((u) => u.status === "uploading" || u.status === "verifying");
@@ -276,6 +389,10 @@ export function IntakeForm({
   const setDeceased = (k: DeceasedKey, v: string) => update((r) => ({ ...r, deceasedSpouse: { ...r.deceasedSpouse, [k]: v } }));
   const setDependent = (i: number, patch: Partial<RawDependent>) =>
     update((r) => ({ ...r, dependents: r.dependents.map((d, j) => (j === i ? { ...d, ...patch } : d)) }));
+  const setIncomeDetail = (k: keyof Raw["incomeDetails"], v: string) => update((r) => ({ ...r, incomeDetails: { ...r.incomeDetails, [k]: v } }));
+  const setProvider = (i: number, patch: Partial<RawProvider>) =>
+    update((r) => ({ ...r, childcare: r.childcare.map((c, j) => (j === i ? { ...c, ...patch } : c)) }));
+  const setDueDiligence = (k: keyof Raw["dueDiligence"], v: string) => update((r) => ({ ...r, dueDiligence: { ...r.dueDiligence, [k]: v } }));
   const toggle = (list: "income" | "deductions", value: string) =>
     update((r) => ({ ...r, [list]: r[list].includes(value) ? r[list].filter((v) => v !== value) : [...r[list], value] }));
 
@@ -306,7 +423,25 @@ export function IntakeForm({
       requestAnimationFrame(() => document.querySelector<HTMLElement>("[aria-invalid='true']")?.focus());
       return;
     }
-    go(STEPS[stepIndex + 1]!);
+    const next = activeSteps[stepIndex + 1]!;
+    // Open the sheets with one empty row, so the client sees what to fill in.
+    if (next === "business" && raw.businesses.length === 0) update((r) => ({ ...r, businesses: [emptyBusiness(spouseShown ? "" : "taxpayer")] }));
+    if (next === "rental") {
+      update((r) => {
+        const e = r.scheduleE;
+        const props = (e.properties as JsonObj[]) ?? [];
+        const k1s = (e.k1s as JsonObj[]) ?? [];
+        return {
+          ...r,
+          scheduleE: {
+            ...e,
+            properties: needsProperties(r) && props.length === 0 ? [{ ...emptyPropertyRow() }] : props,
+            k1s: r.income.includes("k1") && k1s.length === 0 ? [{ key: crypto.randomUUID(), entity: "", ein: "", type: "", received: "", materially: "", basis: "" }] : k1s,
+          },
+        };
+      });
+    }
+    go(next);
   }
 
   // ---------------------------------------------------------------- uploads
@@ -468,7 +603,7 @@ export function IntakeForm({
   );
 
   /** A yes/no question on one line (radio buttons), with its error. */
-  const yesNoRow = (key: string, label: string, path: string, value: string, onChange: (v: "yes" | "no") => void) => (
+  const yesNoRow = (key: string, label: string, path: string, value: string, onChange: (v: "yes" | "no") => void, required = true) => (
     <fieldset
       key={key}
       aria-invalid={err(path) ? true : undefined}
@@ -478,9 +613,9 @@ export function IntakeForm({
       )}
     >
       <legend className="sr-only">{label}</legend>
-      <p aria-hidden="true" className="text-sm">
+      <p aria-hidden="true" className="text-sm sm:max-w-[70%]">
         {label}
-        <span className="text-destructive"> *</span>
+        {required ? <span className="text-destructive"> *</span> : null}
       </p>
       <div className="flex shrink-0 gap-5 text-sm">
         {(["yes", "no"] as const).map((v) => (
@@ -536,7 +671,7 @@ export function IntakeForm({
               )}
             >
               <input id={id} type="checkbox" checked={checked} onChange={() => toggle(list, o)} className="mt-0.5 size-4 accent-electric" />
-              <span>{t(`${list}.${o}` as "income.w2")}</span>
+              <span>{bi((list === "income" ? INCOME_LABELS : DEDUCTION_LABELS)[o] ?? [o, o])}</span>
             </label>
           );
         })}
@@ -631,6 +766,7 @@ export function IntakeForm({
           </div>
         ) : null}
         <div className="space-y-2">
+          {yesNoRow(`${prefix}-usCitizen`, bi(MAIN.usCitizen), `${prefix}.usCitizen`, values.usCitizen, (v) => setValue("usCitizen", v))}
           {yesNoRow(`${prefix}-blind`, t(`fields.${own ? "blind" : "spouseBlind"}`), `${prefix}.blind`, values.blind, (v) => setValue("blind", v))}
           {yesNoRow(
             `${prefix}-claimed`,
@@ -657,7 +793,7 @@ export function IntakeForm({
     uploadError: t("sign.uploadError"),
   };
   const fullName = (p: { firstName: string; middleInitial: string; lastName: string }) => [p.firstName, p.middleInitial, p.lastName].filter(Boolean).join(" ");
-  const steps = useMemo(() => STEPS.map((s) => ({ key: s, label: t(`steps.${s}`) })), [t]);
+  const steps = activeSteps.map((s) => ({ key: s, label: t(`steps.${s}`) }));
 
   if (submittedRef !== null) {
     return (
@@ -722,6 +858,24 @@ export function IntakeForm({
             t("sections.general.body"),
           )}
           {card(t("sections.taxpayer.title"), personFields("taxpayer", raw.taxpayer, setTaxpayer))}
+          {card(
+            bi(["Home and states", "Vivienda y estados"]),
+            <div className="space-y-4">
+              <FormField id={`${ids}-county`} name="county" label={bi(MAIN.county)} maxLength={80} value={raw.county} onChange={(e) => set("county", e.target.value)} error={err("county")} />
+              {yesNoRow("multiState", bi(fill(MAIN.multiState, { year })), "multiState", raw.multiState, (v) => set("multiState", v))}
+              {raw.multiState === "yes"
+                ? followUp(`${ids}-statesDetail`, bi(fill(MAIN.statesDetail, { year })), "statesDetail", raw.statesDetail, (v) => set("statesDetail", v), { required: true })
+                : null}
+              {choiceCards(
+                "housing",
+                bi(MAIN.housing),
+                "housing",
+                raw.housing,
+                HOUSING.map((h) => ({ value: h, label: bi(HOUSING_LABELS[h]) })),
+                (v) => set("housing", v),
+              )}
+            </div>,
+          )}
         </>
       ) : null}
 
@@ -740,13 +894,32 @@ export function IntakeForm({
                 (v) => set("filingStatus", v),
               )}
               {raw.filingStatus === "unsure" ? (
-                <div className="space-y-2 motion-safe:animate-in motion-safe:fade-in">
-                  {yesNoRow("married", t("fields.married"), "married", raw.married, (v) => set("married", v))}
-                  <p className="flex gap-2 text-xs text-muted-foreground">
-                    <Info aria-hidden="true" className="size-4 shrink-0" />
-                    {t("sections.filingStatus.unsureNote")}
-                  </p>
-                </div>
+                <p className="flex gap-2 text-xs text-muted-foreground motion-safe:animate-in motion-safe:fade-in">
+                  <Info aria-hidden="true" className="size-4 shrink-0" />
+                  {t("sections.filingStatus.unsureNote")}
+                </p>
+              ) : null}
+              {choiceCards(
+                "maritalStatus",
+                bi(fill(MAIN.maritalStatus, { year })),
+                "maritalStatus",
+                raw.maritalStatus,
+                MARITAL_STATUSES.map((m) => ({ value: m, label: bi(MARITAL_LABELS[m]) })),
+                (v) => set("maritalStatus", v),
+                "sm:grid-cols-2",
+              )}
+              {raw.maritalStatus === "widowed" ? (
+                <FormField
+                  className="sm:max-w-xs"
+                  id={`${ids}-spouseDeathYear`}
+                  name="spouseDeathYear"
+                  label={bi(MAIN.spouseDeathYear)}
+                  inputMode="numeric"
+                  maxLength={4}
+                  value={raw.spouseDeathYear}
+                  onChange={(e) => set("spouseDeathYear", e.target.value.replace(/\D/g, ""))}
+                  error={err("spouseDeathYear")}
+                />
               ) : null}
             </div>,
             t("sections.filingStatus.body"),
@@ -810,6 +983,19 @@ export function IntakeForm({
                           {selectField(`${base}-rel`, t("fields.relationship"), `${p}.relationship`, d.relationship, (v) => setDependent(i, { relationship: v }), RELATIONSHIPS.map((r) => ({ value: r, label: t(`relationships.${r}`) })))}
                           <FormField id={`${base}-months`} name={`${p}.months`} type="number" min={0} max={12} label={t("fields.months")} required value={d.months} onChange={(e) => setDependent(i, { months: e.target.value })} error={err(`${p}.months`)} />
                         </div>
+                        <div className="space-y-2">
+                          {yesNoRow(`${d.key}-student`, bi(MAIN.student), `${p}.student`, d.student, (v) => setDependent(i, { student: v }))}
+                          {yesNoRow(`${d.key}-disabled`, bi(MAIN.disabled), `${p}.disabled`, d.disabled, (v) => setDependent(i, { disabled: v }))}
+                          <RadioRow
+                            ctx={sheetCtx}
+                            path={["dependents", i, "claimable"]}
+                            label={bi(MAIN.claimable)}
+                            value={d.claimable}
+                            onChange={(v) => setDependent(i, { claimable: v })}
+                            options={CLAIMABLE.map((c) => ({ value: c, label: CLAIMABLE_LABELS[c] }))}
+                            required
+                          />
+                        </div>
                       </fieldset>
                     );
                   })}
@@ -835,11 +1021,57 @@ export function IntakeForm({
             t("sections.income.title"),
             <div className="space-y-4">
               {checkboxGrid("income", INCOME_TYPES)}
-              {raw.income.includes("selfEmployment")
-                ? followUp(`${ids}-business`, t("fields.businessDescription"), "businessDescription", raw.businessDescription, (v) => set("businessDescription", v), {
+              {raw.income.includes("w2") ? (
+                <div className="space-y-3 rounded-2xl border-l-4 border-electric bg-azure-25 p-4 motion-safe:animate-in motion-safe:fade-in">
+                  <p className="text-sm font-semibold text-ink">{bi(INCOME_LABELS.w2!)}</p>
+                  <FormField
+                    className="sm:max-w-xs"
+                    id={`${ids}-w2Employers`}
+                    name="incomeDetails.w2Employers"
+                    label={bi(MAIN.w2Employers)}
+                    inputMode="numeric"
+                    maxLength={2}
+                    value={raw.incomeDetails.w2Employers}
+                    onChange={(e) => setIncomeDetail("w2Employers", e.target.value.replace(/\D/g, ""))}
+                    error={err("incomeDetails.w2Employers")}
+                  />
+                  {yesNoRow("tipsOvertime", bi(MAIN.tipsOvertime), "incomeDetails.tipsOvertime", raw.incomeDetails.tipsOvertime, (v) => setIncomeDetail("tipsOvertime", v), false)}
+                </div>
+              ) : null}
+              {raw.income.includes("selfEmployment") ? (
+                <>
+                  {followUp(`${ids}-business`, t("fields.businessDescription"), "businessDescription", raw.businessDescription, (v) => set("businessDescription", v), {
                     hint: t("fields.businessDescriptionHint"),
-                  })
+                  })}
+                  {yesNoRow("keepsRecords", bi(MAIN.keepsRecords), "incomeDetails.keepsRecords", raw.incomeDetails.keepsRecords, (v) => setIncomeDetail("keepsRecords", v), false)}
+                </>
+              ) : null}
+              {raw.income.includes("necMisc")
+                ? yesNoRow("necIsBusiness", bi(MAIN.necIsBusiness), "incomeDetails.necIsBusiness", raw.incomeDetails.necIsBusiness, (v) => setIncomeDetail("necIsBusiness", v))
                 : null}
+              {raw.income.includes("paymentApps")
+                ? yesNoRow("kIsBusiness", bi(MAIN.kIsBusiness), "incomeDetails.kIsBusiness", raw.incomeDetails.kIsBusiness, (v) => setIncomeDetail("kIsBusiness", v))
+                : null}
+              {scheduleC || scheduleE ? (
+                <FormAlert variant="info">
+                  {[
+                    scheduleC
+                      ? bi([
+                          "Your answers open the Schedule C sheet (self-employment / business) in the next steps.",
+                          "Sus respuestas abren la hoja del Anexo C (trabajo por cuenta propia / negocio) en los siguientes pasos.",
+                        ])
+                      : "",
+                    scheduleE
+                      ? bi([
+                          "Your answers open the Schedule E sheet (rental property, royalties and K-1s) in the next steps.",
+                          "Sus respuestas abren la hoja del Anexo E (propiedad de alquiler, regalías y K-1) en los siguientes pasos.",
+                        ])
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                </FormAlert>
+              ) : null}
               {raw.income.includes("other")
                 ? followUp(`${ids}-otherIncome`, t("fields.otherIncome"), "otherIncome", raw.otherIncome, (v) => set("otherIncome", v), { required: true })
                 : null}
@@ -850,16 +1082,68 @@ export function IntakeForm({
             t("sections.deductions.title"),
             <div className="space-y-4">
               {checkboxGrid("deductions", DEDUCTION_TYPES)}
-              {raw.deductions.includes("childcare")
-                ? followUp(`${ids}-childcare`, t("fields.childcareProvider"), "childcareProvider", raw.childcareProvider, (v) => set("childcareProvider", v), {
-                    hint: t("fields.childcareProviderHint"),
-                  })
+              {raw.deductions.includes("childcare") ? (
+                <div className="space-y-3 rounded-2xl border-l-4 border-electric bg-azure-25 p-4 motion-safe:animate-in motion-safe:fade-in">
+                  <p className="text-sm font-semibold text-ink">{bi(DEDUCTION_LABELS.childcare!)}</p>
+                  <p className="text-xs text-muted-foreground">{t("fields.childcareProviderHint")}</p>
+                  {raw.childcare.map((c, i) => (
+                    <div key={c.key} className="grid items-end gap-3 sm:grid-cols-[2fr_1fr_1fr_auto]">
+                      <FormField id={`${ids}-cc-${c.key}-provider`} name={`childcare.${i}.provider`} label={bi(MAIN.childcareProvider)} required maxLength={120} value={c.provider} onChange={(e) => setProvider(i, { provider: e.target.value })} error={err(`childcare.${i}.provider`)} />
+                      <FormField id={`${ids}-cc-${c.key}-ein`} name={`childcare.${i}.ein`} label={bi(MAIN.childcareEin)} autoComplete="off" maxLength={11} value={c.ein} onChange={(e) => setProvider(i, { ein: e.target.value })} error={err(`childcare.${i}.ein`)} />
+                      <FormField id={`${ids}-cc-${c.key}-amount`} name={`childcare.${i}.amount`} label={bi(MAIN.childcareAmount)} inputMode="decimal" placeholder="$0.00" maxLength={16} value={c.amount} onChange={(e) => setProvider(i, { amount: e.target.value })} error={err(`childcare.${i}.amount`)} />
+                      <Button type="button" variant="ghost" size="icon-sm" className="mb-1" onClick={() => update((r) => ({ ...r, childcare: r.childcare.filter((x) => x.key !== c.key) }))}>
+                        <Trash2 aria-hidden="true" />
+                        <span className="sr-only">{t("dependents.remove")}</span>
+                      </Button>
+                    </div>
+                  ))}
+                  {raw.childcare.length < MAX_CHILDCARE_PROVIDERS ? (
+                    <Button type="button" variant="outline" size="sm" className="bg-white" onClick={() => update((r) => ({ ...r, childcare: [...r.childcare, newProvider()] }))}>
+                      <Plus aria-hidden="true" />
+                      {bi(["Add provider", "Agregar proveedor"])}
+                    </Button>
+                  ) : null}
+                </div>
+              ) : null}
+              {raw.deductions.includes("estimatedPayments")
+                ? followUp(`${ids}-estimated`, `${bi(DEDUCTION_LABELS.estimatedPayments!)} — ${bi(MAIN.estimatedDetails)}`, "estimatedDetails", raw.estimatedDetails, (v) => set("estimatedDetails", v))
                 : null}
             </div>,
             t("sections.deductions.body"),
           )}
         </>
       ) : null}
+
+      {/* Schedule C · one sheet per business --------------------------- */}
+      {step === "business" && scheduleC
+        ? card(
+            bi(["Schedule C — Self-employment / business", "Anexo C — Trabajo por cuenta propia / negocio"]),
+            <ScheduleCEditor
+              ctx={sheetCtx}
+              businesses={raw.businesses}
+              shared={raw.scheduleCShared}
+              showOwner={spouseShown}
+              ownerDefault={spouseShown ? "" : "taxpayer"}
+              onChange={(businesses) => set("businesses", businesses)}
+              onSharedChange={(scheduleCShared) => set("scheduleCShared", scheduleCShared)}
+            />,
+          )
+        : null}
+
+      {/* Schedule E · rentals, royalties and K-1s ------------------------ */}
+      {step === "rental" && scheduleE
+        ? card(
+            bi(["Schedule E — Rental property, royalties and K-1s", "Anexo E — Propiedad de alquiler, regalías y K-1"]),
+            <ScheduleEEditor
+              ctx={sheetCtx}
+              value={raw.scheduleE}
+              showOwner={spouseShown}
+              showProperties={needsProperties(raw)}
+              showK1s={raw.income.includes("k1")}
+              onChange={(scheduleE) => set("scheduleE", scheduleE)}
+            />,
+          )
+        : null}
 
       {/* 4 · Questions, refund and referral ------------------------------ */}
       {step === "questions" ? (
@@ -877,6 +1161,38 @@ export function IntakeForm({
                     : null}
                 </div>
               ))}
+            </div>,
+          )}
+          {card(
+            bi(["Due-diligence questions", "Preguntas de debida diligencia"]),
+            <div className="space-y-3">
+              {followUp(`${ids}-dd1`, bi(fill(MAIN.dd1, { year })), "dueDiligence.homeCost", raw.dueDiligence.homeCost, (v) => setDueDiligence("homeCost", v))}
+              {raw.hasDependents === "yes"
+                ? followUp(`${ids}-dd2`, bi(fill(MAIN.dd2, { year })), "dueDiligence.childResidence", raw.dueDiligence.childResidence, (v) => setDueDiligence("childResidence", v))
+                : null}
+              {yesNoRow("creditDisallowed", bi(MAIN.dd3), "dueDiligence.creditDisallowed", raw.dueDiligence.creditDisallowed, (v) => setDueDiligence("creditDisallowed", v), false)}
+              {raw.dueDiligence.creditDisallowed === "yes" ? (
+                <FormField
+                  className="sm:max-w-xs"
+                  id={`${ids}-disallowedYear`}
+                  name="dueDiligence.disallowedYear"
+                  label={bi(MAIN.ddYear)}
+                  required
+                  inputMode="numeric"
+                  maxLength={4}
+                  value={raw.dueDiligence.disallowedYear}
+                  onChange={(e) => setDueDiligence("disallowedYear", e.target.value.replace(/\D/g, ""))}
+                  error={err("dueDiligence.disallowedYear")}
+                />
+              ) : null}
+            </div>,
+            bi(MAIN.ddIntro),
+          )}
+          {card(
+            bi(["Records", "Registros"]),
+            <div className="space-y-2">
+              {yesNoRow("priorReturn", bi(MAIN.priorReturn), "priorReturn", raw.priorReturn, (v) => set("priorReturn", v))}
+              {yesNoRow("otherStateLastYear", bi(MAIN.otherStateLastYear), "otherStateLastYear", raw.otherStateLastYear, (v) => set("otherStateLastYear", v))}
             </div>,
           )}
           {card(
@@ -931,6 +1247,15 @@ export function IntakeForm({
               {raw.referral === "other" ? (
                 <FormField id={`${ids}-referralOther`} name="referralOther" label={t("fields.referralOther")} maxLength={120} value={raw.referralOther} onChange={(e) => set("referralOther", e.target.value)} error={err("referralOther")} />
               ) : null}
+              <FormField
+                id={`${ids}-authorizedPerson`}
+                name="authorizedPerson"
+                label={bi(MAIN.authorizedPerson)}
+                maxLength={160}
+                value={raw.authorizedPerson}
+                onChange={(e) => set("authorizedPerson", e.target.value)}
+                error={err("authorizedPerson")}
+              />
               <div className="space-y-1.5">
                 <Label htmlFor={`${ids}-notes`}>{t("fields.notes")}</Label>
                 <Textarea id={`${ids}-notes`} rows={3} maxLength={2000} value={raw.notes} onChange={(e) => set("notes", e.target.value)} />
@@ -1121,7 +1446,7 @@ export function IntakeForm({
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         {stepIndex > 0 ? (
-          <Button type="button" variant="outline" onClick={() => go(STEPS[stepIndex - 1]!)} disabled={submitting}>
+          <Button type="button" variant="outline" onClick={() => go(activeSteps[stepIndex - 1]!)} disabled={submitting}>
             <ArrowLeft aria-hidden="true" />
             {t("nav.back")}
           </Button>

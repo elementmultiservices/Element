@@ -2,7 +2,7 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import type { Database } from "@/lib/supabase/database.types";
-import type { IntakeData } from "./schema";
+import { normalizeIntakeData, type IntakeData } from "./schema";
 
 type Client = SupabaseClient<Database>;
 
@@ -29,7 +29,8 @@ export async function getIntakeSubmission(
     .eq("submission_id", id)
     .order("created_at", { ascending: true });
   // `data` was validated by intakeDataSchema before it was stored.
-  return { submission: submission as IntakeSubmission, uploads: uploads ?? [] };
+  const row = submission as IntakeSubmission;
+  return { submission: { ...row, data: normalizeIntakeData(row.data) }, uploads: uploads ?? [] };
 }
 
 /** Short, non-sequential reference shown to clients and staff. */

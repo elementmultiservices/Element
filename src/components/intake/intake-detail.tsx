@@ -39,7 +39,7 @@ export async function IntakeDetail({
   const t = await getTranslations("Intake");
   const format = await getFormatter();
   const locale = await getLocale();
-  const sections = intakeSummary(submission.data, (key, values) => t(key as never, values as never), { full });
+  const sections = intakeSummary(submission.data, (key, values) => t(key as never, values as never), { full, locale });
 
   const signatures = [
     { who: "taxpayer", name: submission.signer_name, method: submission.signature_method },
